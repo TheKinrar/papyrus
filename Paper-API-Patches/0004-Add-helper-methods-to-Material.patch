@@ -1,0 +1,170 @@
+From 0ad4fb9e6955e0375253da47bc8c62a1755bc9a7 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Sat, 5 Oct 2019 17:51:24 +0100
+Subject: [PATCH] Add helper methods to Material
+
+
+diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
+index 43445c49..c21586a2 100644
+--- a/src/main/java/org/bukkit/Material.java
++++ b/src/main/java/org/bukkit/Material.java
+@@ -7987,4 +7987,156 @@ public class Material implements Keyed {
+             // </editor-fold>
+         }
+     }
++
++    public boolean isWood() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isWood">
++            case "ACACIA_WOOD":
++            case "BIRCH_WOOD":
++            case "DARK_OAK_WOOD":
++            case "JUNGLE_WOOD":
++            case "OAK_WOOD":
++            case "SPRUCE_WOOD":
++                return true;
++            // </editor-fold>
++            default:
++                return false;
++        }
++    }
++
++    public boolean isStrippedWood() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isStrippedWood">
++            case "STRIPPED_ACACIA_WOOD":
++            case "STRIPPED_BIRCH_WOOD":
++            case "STRIPPED_DARK_OAK_WOOD":
++            case "STRIPPED_JUNGLE_WOOD":
++            case "STRIPPED_OAK_WOOD":
++            case "STRIPPED_SPRUCE_WOOD":
++                return true;
++            // </editor-fold>
++            default:
++                return false;
++        }
++    }
++
++    public boolean isSpawnEgg() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isSpawnEgg">
++            case "BAT_SPAWN_EGG":
++            case "BLAZE_SPAWN_EGG":
++            case "CAT_SPAWN_EGG":
++            case "CAVE_SPIDER_SPAWN_EGG":
++            case "CHICKEN_SPAWN_EGG":
++            case "COD_SPAWN_EGG":
++            case "COW_SPAWN_EGG":
++            case "CREEPER_SPAWN_EGG":
++            case "DOLPHIN_SPAWN_EGG":
++            case "DONKEY_SPAWN_EGG":
++            case "DROWNED_SPAWN_EGG":
++            case "ELDER_GUARDIAN_SPAWN_EGG":
++            case "ENDERMAN_SPAWN_EGG":
++            case "ENDERMITE_SPAWN_EGG":
++            case "EVOKER_SPAWN_EGG":
++            case "FOX_SPAWN_EGG":
++            case "GHAST_SPAWN_EGG":
++            case "GUARDIAN_SPAWN_EGG":
++            case "HORSE_SPAWN_EGG":
++            case "HUSK_SPAWN_EGG":
++            case "LLAMA_SPAWN_EGG":
++            case "MAGMA_CUBE_SPAWN_EGG":
++            case "MOOSHROOM_SPAWN_EGG":
++            case "MULE_SPAWN_EGG":
++            case "OCELOT_SPAWN_EGG":
++            case "PANDA_SPAWN_EGG":
++            case "PARROT_SPAWN_EGG":
++            case "PHANTOM_SPAWN_EGG":
++            case "PIG_SPAWN_EGG":
++            case "PILLAGER_SPAWN_EGG":
++            case "POLAR_BEAR_SPAWN_EGG":
++            case "PUFFERFISH_SPAWN_EGG":
++            case "RABBIT_SPAWN_EGG":
++            case "RAVAGER_SPAWN_EGG":
++            case "SALMON_SPAWN_EGG":
++            case "SHEEP_SPAWN_EGG":
++            case "SHULKER_SPAWN_EGG":
++            case "SILVERFISH_SPAWN_EGG":
++            case "SKELETON_HORSE_SPAWN_EGG":
++            case "SKELETON_SPAWN_EGG":
++            case "SLIME_SPAWN_EGG":
++            case "SPIDER_SPAWN_EGG":
++            case "SQUID_SPAWN_EGG":
++            case "STRAY_SPAWN_EGG":
++            case "TRADER_LLAMA_SPAWN_EGG":
++            case "TROPICAL_FISH_SPAWN_EGG":
++            case "TURTLE_SPAWN_EGG":
++            case "VEX_SPAWN_EGG":
++            case "VILLAGER_SPAWN_EGG":
++            case "VINDICATOR_SPAWN_EGG":
++            case "WANDERING_TRADER_SPAWN_EGG":
++            case "WITCH_SPAWN_EGG":
++            case "WITHER_SKELETON_SPAWN_EGG":
++            case "WOLF_SPAWN_EGG":
++            case "ZOMBIE_HORSE_SPAWN_EGG":
++            case "ZOMBIE_PIGMAN_SPAWN_EGG":
++            case "ZOMBIE_SPAWN_EGG":
++            case "ZOMBIE_VILLAGER_SPAWN_EGG":
++                return true;
++            // </editor-fold>
++            default:
++                return false;
++        }
++    }
++
++    public boolean isWool() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isWool">
++            case "BLACK_WOOL":
++            case "BLUE_WOOL":
++            case "BROWN_WOOL":
++            case "CYAN_WOOL":
++            case "GRAY_WOOL":
++            case "GREEN_WOOL":
++            case "COW_SPAWN_EGG":
++            case "LIGHT_GRAY_WOOL":
++            case "LIME_WOOL":
++            case "MAGENTA_WOOL":
++            case "ORANGE_WOOL":
++            case "PINK_WOOL":
++            case "PURPLE_WOOL":
++            case "RED_WOOL":
++            case "WHITE_WOOL":
++            case "YELLOW_WOOL":
++                return true;
++            // </editor-fold>
++            default:
++                return false;
++        }
++    }
++
++    public boolean isStainedGlass() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isStainedGlass">
++            case "BLACK_STAINED_GLASS":
++            case "BLUE_STAINED_GLASS":
++            case "BROWN_STAINED_GLASS":
++            case "CYAN_STAINED_GLASS":
++            case "GRAY_STAINED_GLASS":
++            case "GREEN_STAINED_GLASS":
++            case "COW_SPAWN_EGG":
++            case "LIGHT_GRAY_STAINED_GLASS":
++            case "LIME_STAINED_GLASS":
++            case "MAGENTA_STAINED_GLASS":
++            case "ORANGE_STAINED_GLASS":
++            case "PINK_STAINED_GLASS":
++            case "PURPLE_STAINED_GLASS":
++            case "RED_STAINED_GLASS":
++            case "WHITE_STAINED_GLASS":
++            case "YELLOW_STAINED_GLASS":
++                return true;
++            // </editor-fold>
++            default:
++                return false;
++        }
++    }
+ }
+-- 
+2.23.0
+
