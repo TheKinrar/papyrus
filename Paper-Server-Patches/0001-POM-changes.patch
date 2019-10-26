@@ -1,11 +1,11 @@
-From 4f8023256e8b1b587afb03cd891203395c459ede Mon Sep 17 00:00:00 2001
+From 811d720ac430295a1ab1649e459300a70d07e584 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 03:44:21 +0100
 Subject: [PATCH] POM changes
 
 
 diff --git a/pom.xml b/pom.xml
-index beda5dc8a..6b10821ee 100644
+index beda5dc8a..e247daa39 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -1,11 +1,11 @@
@@ -44,6 +44,15 @@ index beda5dc8a..6b10821ee 100644
              <version>${project.version}</version>
              <scope>compile</scope>
          </dependency>
+@@ -143,7 +143,7 @@
+ 
+     <!-- This builds a completely 'ready to start' jar with all dependencies inside -->
+     <build>
+-        <finalName>paper-${minecraft.version}</finalName>
++        <finalName>papyrus-${minecraft.version}</finalName>
+         <defaultGoal>clean install</defaultGoal> <!-- Paper -->
+         <plugins>
+             <plugin>
 -- 
 2.23.0
 
