@@ -1,11 +1,11 @@
-From 811d720ac430295a1ab1649e459300a70d07e584 Mon Sep 17 00:00:00 2001
+From 6bedc46e4cb4e66af7ff3062eec9a7c4d3594d78 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 03:44:21 +0100
 Subject: [PATCH] POM changes
 
 
 diff --git a/pom.xml b/pom.xml
-index beda5dc8a..e247daa39 100644
+index beda5dc8a..54730360f 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -1,11 +1,11 @@
@@ -53,6 +53,15 @@ index beda5dc8a..e247daa39 100644
          <defaultGoal>clean install</defaultGoal> <!-- Paper -->
          <plugins>
              <plugin>
+@@ -151,7 +151,7 @@
+                 <artifactId>gitdescribe-maven-plugin</artifactId>
+                 <version>1.3</version>
+                 <configuration>
+-                    <outputPrefix>git-Paper-</outputPrefix>
++                    <outputPrefix>git-Papyrus-</outputPrefix>
+                     <scmDirectory>..</scmDirectory>
+                 </configuration>
+                 <executions>
 -- 
 2.23.0
 
