@@ -1,0 +1,56 @@
+From 4ce70e726b3c5ec02bdb74565544535a3c07137a Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Mon, 7 Oct 2019 21:41:17 +0100
+Subject: [PATCH] Add MaterialJsonAdapter
+
+
+diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
+index fb5d5d99..43445c49 100644
+--- a/src/main/java/org/bukkit/Material.java
++++ b/src/main/java/org/bukkit/Material.java
+@@ -7,6 +7,8 @@ import java.util.Locale;
+ import java.util.Map;
+ import java.util.TreeSet;
+ import java.util.function.Consumer;
++
++import com.google.gson.annotations.JsonAdapter;
+ import org.apache.commons.lang.Validate;
+ import org.bukkit.block.data.Ageable;
+ import org.bukkit.block.data.AnaloguePowerable;
+@@ -83,6 +85,7 @@ import org.jetbrains.annotations.Nullable;
+  * An enum of all material IDs accepted by the official server and client
+  */
+ @SuppressWarnings({"DeprecatedIsStillUsed", "deprecation"}) // Paper
++@JsonAdapter(MaterialJsonAdapter.class)
+ public class Material implements Keyed {
+     // Enum compatibility
+     private static final TreeSet<Material> MATERIALS = new TreeSet<>((a, b) -> a.name().compareTo(b.name));
+diff --git a/src/main/java/org/bukkit/MaterialJsonAdapter.java b/src/main/java/org/bukkit/MaterialJsonAdapter.java
+new file mode 100644
+index 00000000..45068ae1
+--- /dev/null
++++ b/src/main/java/org/bukkit/MaterialJsonAdapter.java
+@@ -0,0 +1,20 @@
++package org.bukkit;
++
++import com.google.gson.TypeAdapter;
++import com.google.gson.stream.JsonReader;
++import com.google.gson.stream.JsonWriter;
++
++import java.io.IOException;
++
++public class MaterialJsonAdapter extends TypeAdapter<Material> {
++
++    @Override
++    public void write(JsonWriter out, Material material) throws IOException {
++        out.value(material.name());
++    }
++
++    @Override
++    public Material read(JsonReader in) throws IOException {
++        return Material.valueOf(in.nextString());
++    }
++}
+-- 
+2.23.0
+
