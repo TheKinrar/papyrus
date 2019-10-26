@@ -1,0 +1,54 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Avoid making changes to this file, it has to be deployed manually -->
+    <groupId>fr.thekinrar.papyrus</groupId>
+    <artifactId>papyrus-parent</artifactId>
+    <version>dev-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Papyrus-Parent</name>
+    <description>Parent project for all Papyrus modules.</description>
+    <url>https://github.com/TheKinrar/Papyrus</url>
+
+    <modules>
+        <module>Papyrus-Server</module>
+        <module>Papyrus-API</module>
+    </modules>
+
+    <build>
+        <defaultGoal>clean install</defaultGoal>
+    </build>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>md_5-releases</id>
+            <url>https://repo.md-5.net/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>aikar</id>
+            <url>https://repo.aikar.co/content/groups/aikar/</url>
+        </repository>
+        <repository>
+            <id>destroystokyo-repo</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>papermc-releases</id>
+            <url>https://papermc.io/repo/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>papermc-snapshots</id>
+            <url>https://papermc.io/repo/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>
