@@ -1,0 +1,237 @@
+From 7a6bfe33e5c6f681d5854946223c1d89996b6c92 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Sat, 5 Oct 2019 21:26:23 +0100
+Subject: [PATCH] Implement CommandBlockEditEvent
+
+
+diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
+index ae17cdf23..bc9ffbd7b 100644
+--- a/src/main/java/net/minecraft/server/PlayerConnection.java
++++ b/src/main/java/net/minecraft/server/PlayerConnection.java
+@@ -1,5 +1,7 @@
+ package net.minecraft.server;
+ 
++import co.aikar.timings.MinecraftTimings;
++import com.destroystokyo.paper.event.player.PlayerJumpEvent;
+ import com.google.common.primitives.Doubles;
+ import com.google.common.primitives.Floats;
+ import com.mojang.brigadier.ParseResults;
+@@ -9,20 +11,13 @@ import io.netty.util.concurrent.Future;
+ import io.netty.util.concurrent.GenericFutureListener;
+ import it.unimi.dsi.fastutil.ints.Int2ShortMap;
+ import it.unimi.dsi.fastutil.ints.Int2ShortOpenHashMap;
+-import java.util.Collections;
+-import java.util.Iterator;
+-import java.util.Optional;
+-import java.util.Set;
+-import javax.annotation.Nullable;
+-import org.apache.commons.lang3.StringEscapeUtils;
+ import org.apache.commons.lang3.StringUtils;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+-
+-// CraftBukkit start
+-import java.util.concurrent.ExecutionException;
+-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
++import org.bukkit.Bukkit;
+ import org.bukkit.Location;
++import org.bukkit.craftbukkit.CraftServer;
++import org.bukkit.craftbukkit.block.CraftBlock;
+ import org.bukkit.craftbukkit.entity.CraftPlayer;
+ import org.bukkit.craftbukkit.event.CraftEventFactory;
+ import org.bukkit.craftbukkit.inventory.CraftItemStack;
+@@ -33,35 +28,25 @@ import org.bukkit.craftbukkit.util.Waitable;
+ import org.bukkit.entity.Player;
+ import org.bukkit.event.Event;
+ import org.bukkit.event.block.Action;
++import org.bukkit.event.block.CommandBlockEditEvent;
+ import org.bukkit.event.block.SignChangeEvent;
+-import org.bukkit.event.inventory.ClickType;
+-import org.bukkit.event.inventory.CraftItemEvent;
+-import org.bukkit.event.inventory.InventoryAction;
+-import org.bukkit.event.inventory.InventoryClickEvent;
+-import org.bukkit.event.inventory.InventoryCreativeEvent;
++import org.bukkit.event.inventory.*;
+ import org.bukkit.event.inventory.InventoryType.SlotType;
+-import org.bukkit.event.player.AsyncPlayerChatEvent;
+-import org.bukkit.event.player.PlayerAnimationEvent;
+-import org.bukkit.event.player.PlayerChatEvent;
+-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+-import org.bukkit.event.player.PlayerInteractEntityEvent;
+-import org.bukkit.event.player.PlayerItemHeldEvent;
+-import org.bukkit.event.player.PlayerKickEvent;
+-import org.bukkit.event.player.PlayerMoveEvent;
+-import org.bukkit.event.player.PlayerResourcePackStatusEvent;
+-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+-import org.bukkit.event.player.PlayerTeleportEvent;
+-import org.bukkit.event.player.PlayerToggleFlightEvent;
+-import org.bukkit.event.player.PlayerToggleSneakEvent;
+-import org.bukkit.event.player.PlayerToggleSprintEvent;
++import org.bukkit.event.player.*;
+ import org.bukkit.inventory.CraftingInventory;
+ import org.bukkit.inventory.EquipmentSlot;
+ import org.bukkit.inventory.InventoryView;
+ import org.bukkit.util.NumberConversions;
+-import com.destroystokyo.paper.event.player.IllegalPacketEvent; // Paper
+-import com.destroystokyo.paper.event.player.PlayerJumpEvent; // Paper
+-import co.aikar.timings.MinecraftTimings; // Paper
++
++import javax.annotation.Nullable;
++import java.util.Collections;
++import java.util.Iterator;
++import java.util.Optional;
++import java.util.Set;
++import java.util.concurrent.ExecutionException;
++import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
++
++// CraftBukkit start
+ // CraftBukkit end
+ 
+ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -581,58 +566,99 @@ public class PlayerConnection implements PacketListenerPlayIn {
+     @Override
+     public void a(PacketPlayInSetCommandBlock packetplayinsetcommandblock) {
+         PlayerConnectionUtils.ensureMainThread(packetplayinsetcommandblock, this, this.player.getWorldServer());
+-        if (!this.minecraftServer.getEnableCommandBlock()) {
++
++        CommandBlockListenerAbstract commandblocklistenerabstract = null;
++        TileEntityCommand tileentitycommand = null;
++        BlockPosition blockposition = packetplayinsetcommandblock.b();
++        TileEntity tileentity = this.player.world.getTileEntity(blockposition);
++
++        if (!(tileentity instanceof TileEntityCommand))
++            return;
++
++        tileentitycommand = (TileEntityCommand) tileentity;
++        commandblocklistenerabstract = tileentitycommand.getCommandBlock();
++
++        CommandBlockEditEvent event = new CommandBlockEditEvent(
++            CraftBlock.at(this.player.world, blockposition),
++            (Player) CraftPlayer.getEntity((CraftServer) Bukkit.getServer(), this.player),
++
++            // Command
++            commandblocklistenerabstract.getCommand(),
++            packetplayinsetcommandblock.c(),
++
++            // Type
++            commandBlockTypeFromNMS(tileentitycommand.u()),
++            commandBlockTypeFromNMS(packetplayinsetcommandblock.g()),
++
++            // Conditional
++            tileentity.getBlock().get(BlockCommand.b),
++            packetplayinsetcommandblock.e(),
++
++            // Needs redstone
++            !tileentitycommand.g(),
++            !packetplayinsetcommandblock.f(),
++
++            // Stores output
++            commandblocklistenerabstract.shouldSendFailure(),
++            packetplayinsetcommandblock.d(),
++
++            this.minecraftServer.getEnableCommandBlock(),
++            this.player.isCreativeAndOp()
++        );
++
++        Bukkit.getServer().getPluginManager().callEvent(event);
++
++        if(event.isCancelled())
++            return;
++
++        if (!event.getCommandBlocksEnabled()) {
+             this.player.sendMessage(new ChatMessage("advMode.notEnabled", new Object[0]));
+-        } else if (!this.player.isCreativeAndOp()) {
++        } else if (!event.getPlayerCanEdit()) {
+             this.player.sendMessage(new ChatMessage("advMode.notAllowed", new Object[0]));
+         } else {
+-            CommandBlockListenerAbstract commandblocklistenerabstract = null;
+-            TileEntityCommand tileentitycommand = null;
+-            BlockPosition blockposition = packetplayinsetcommandblock.b();
+-            TileEntity tileentity = this.player.world.getTileEntity(blockposition);
++            EnumDirection enumdirection = (EnumDirection) this.player.world.getType(blockposition).get(BlockCommand.a);
++            IBlockData iblockdata;
+ 
+-            if (tileentity instanceof TileEntityCommand) {
+-                tileentitycommand = (TileEntityCommand) tileentity;
+-                commandblocklistenerabstract = tileentitycommand.getCommandBlock();
++            switch (event.getNewType()) {
++                case CHAIN:
++                    iblockdata = Blocks.CHAIN_COMMAND_BLOCK.getBlockData();
++                    this.player.world.setTypeAndData(blockposition, (IBlockData) ((IBlockData) iblockdata.set(BlockCommand.a, enumdirection)).set(BlockCommand.b, event.getNewConditional()), 2);
++                    break;
++                case REPEAT:
++                    iblockdata = Blocks.REPEATING_COMMAND_BLOCK.getBlockData();
++                    this.player.world.setTypeAndData(blockposition, (IBlockData) ((IBlockData) iblockdata.set(BlockCommand.a, enumdirection)).set(BlockCommand.b, event.getNewConditional()), 2);
++                    break;
++                case IMPULSE:
++                default:
++                    iblockdata = Blocks.COMMAND_BLOCK.getBlockData();
++                    this.player.world.setTypeAndData(blockposition, (IBlockData) ((IBlockData) iblockdata.set(BlockCommand.a, enumdirection)).set(BlockCommand.b, event.getNewConditional()), 2);
+             }
+ 
+-            String s = packetplayinsetcommandblock.c();
+-            boolean flag = packetplayinsetcommandblock.d();
+-
+-            if (commandblocklistenerabstract != null) {
+-                EnumDirection enumdirection = (EnumDirection) this.player.world.getType(blockposition).get(BlockCommand.a);
+-                IBlockData iblockdata;
+-
+-                switch (packetplayinsetcommandblock.g()) {
+-                    case SEQUENCE:
+-                        iblockdata = Blocks.CHAIN_COMMAND_BLOCK.getBlockData();
+-                        this.player.world.setTypeAndData(blockposition, (IBlockData) ((IBlockData) iblockdata.set(BlockCommand.a, enumdirection)).set(BlockCommand.b, packetplayinsetcommandblock.e()), 2);
+-                        break;
+-                    case AUTO:
+-                        iblockdata = Blocks.REPEATING_COMMAND_BLOCK.getBlockData();
+-                        this.player.world.setTypeAndData(blockposition, (IBlockData) ((IBlockData) iblockdata.set(BlockCommand.a, enumdirection)).set(BlockCommand.b, packetplayinsetcommandblock.e()), 2);
+-                        break;
+-                    case REDSTONE:
+-                    default:
+-                        iblockdata = Blocks.COMMAND_BLOCK.getBlockData();
+-                        this.player.world.setTypeAndData(blockposition, (IBlockData) ((IBlockData) iblockdata.set(BlockCommand.a, enumdirection)).set(BlockCommand.b, packetplayinsetcommandblock.e()), 2);
+-                }
+-
+-                tileentity.n();
+-                this.player.world.setTileEntity(blockposition, tileentity);
+-                commandblocklistenerabstract.setCommand(s);
+-                commandblocklistenerabstract.a(flag);
+-                if (!flag) {
+-                    commandblocklistenerabstract.c((IChatBaseComponent) null);
+-                }
++            tileentity.n();
++            this.player.world.setTileEntity(blockposition, tileentity);
++            commandblocklistenerabstract.setCommand(event.getNewCommand());
++            commandblocklistenerabstract.a(event.getNewStoresOutput());
++            if (!event.getNewStoresOutput()) {
++                commandblocklistenerabstract.c((IChatBaseComponent) null);
++            }
+ 
+-                tileentitycommand.b(packetplayinsetcommandblock.f());
+-                commandblocklistenerabstract.e();
+-                if (!UtilColor.b(s)) {
+-                    this.player.sendMessage(new ChatMessage("advMode.setCommand.success", new Object[]{s}));
+-                }
++            tileentitycommand.b(!event.getNewNeedsRedstone());
++            commandblocklistenerabstract.e();
++            if (!UtilColor.b(event.getNewCommand())) {
++                this.player.sendMessage(new ChatMessage("advMode.setCommand.success", new Object[]{s}));
+             }
++        }
++    }
+ 
++    private CommandBlockEditEvent.Type commandBlockTypeFromNMS(TileEntityCommand.Type nms) {
++        switch(nms) {
++            case SEQUENCE:
++                return CommandBlockEditEvent.Type.CHAIN;
++            case AUTO:
++                return CommandBlockEditEvent.Type.REPEAT;
++            case REDSTONE:
++            default:
++                return CommandBlockEditEvent.Type.IMPULSE;
+         }
+     }
+ 
+-- 
+2.23.0
+
