@@ -1,0 +1,22 @@
+From 8db7df1eda83e27123e30b398988ad04bf783f9c Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Sun, 27 Oct 2019 02:19:43 +0000
+Subject: [PATCH] Add PluginDescriptionFile getter to PluginClassLoader
+
+Can be used to get plugin info before main class has been loaded
+
+diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
+index 6f39f571..5524ccd7 100644
+--- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
++++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
+@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
+  */
+ public final class PluginClassLoader extends URLClassLoader { // Spigot
+     public JavaPlugin getPlugin() { return plugin; } // Spigot
++    public PluginDescriptionFile getDescription() { return description; } // Papyrus
+     private final JavaPluginLoader loader;
+     private final Map<String, Class<?>> classes = new ConcurrentHashMap<String, Class<?>>();
+     private final PluginDescriptionFile description;
+-- 
+2.23.0
+
