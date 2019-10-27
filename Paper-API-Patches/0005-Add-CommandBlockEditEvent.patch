@@ -1,4 +1,4 @@
-From d4e9f7ded6d2eddf6a4b01e67df3e15cdf279b59 Mon Sep 17 00:00:00 2001
+From c50402e532cf7e7cb8f3561be2046498fff4ce17 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 5 Oct 2019 21:26:09 +0100
 Subject: [PATCH] Add CommandBlockEditEvent
@@ -6,10 +6,10 @@ Subject: [PATCH] Add CommandBlockEditEvent
 
 diff --git a/src/main/java/org/bukkit/event/block/CommandBlockEditEvent.java b/src/main/java/org/bukkit/event/block/CommandBlockEditEvent.java
 new file mode 100644
-index 00000000..dc439293
+index 00000000..8264fb5c
 --- /dev/null
 +++ b/src/main/java/org/bukkit/event/block/CommandBlockEditEvent.java
-@@ -0,0 +1,269 @@
+@@ -0,0 +1,270 @@
 +package org.bukkit.event.block;
 +
 +import org.bukkit.block.Block;
@@ -61,8 +61,9 @@ index 00000000..dc439293
 +    private boolean commandBlocksEnabled;
 +    private boolean playerCanEdit;
 +
-+    public CommandBlockEditEvent(@NotNull Block block, Player player, String oldCommand, String newCommand,
-+                                 Type oldType, Type newType,
++    public CommandBlockEditEvent(@NotNull Block block, @NotNull Player player,
++                                 @NotNull String oldCommand, @NotNull String newCommand,
++                                 @NotNull Type oldType, @NotNull Type newType,
 +                                 boolean oldConditional, boolean newConditional,
 +                                 boolean oldNeedsRedstone, boolean newNeedsRedstone,
 +                                 boolean oldStoresOutput, boolean newStoresOutput,
