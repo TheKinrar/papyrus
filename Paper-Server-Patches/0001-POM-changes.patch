@@ -1,4 +1,4 @@
-From 6bedc46e4cb4e66af7ff3062eec9a7c4d3594d78 Mon Sep 17 00:00:00 2001
+From b17d542c7f1a66432b5fe32e24b1cc8a001d39bd Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 03:44:21 +0100
 Subject: [PATCH] POM changes
@@ -62,6 +62,19 @@ index beda5dc8a..54730360f 100644
                      <scmDirectory>..</scmDirectory>
                  </configuration>
                  <executions>
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+index 674096cab..b9f5ac9bd 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+@@ -11,7 +11,7 @@ public final class Versioning {
+     public static String getBukkitVersion() {
+         String result = "Unknown-Version";
+ 
+-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/com.destroystokyo.paper/paper-api/pom.properties");
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/fr.thekinrar.papyrus/papyrus-api/pom.properties");
+         Properties properties = new Properties();
+ 
+         if (stream != null) {
 -- 
 2.23.0
 
