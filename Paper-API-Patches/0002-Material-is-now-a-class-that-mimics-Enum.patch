@@ -1,4 +1,4 @@
-From 7b002a2e570cb3859bd7c097cf44d5f19885756c Mon Sep 17 00:00:00 2001
+From 29df0d5ae1ae84553a622b00d1b17f0c5018bec7 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 12:02:30 +0100
 Subject: [PATCH] Material is now a class that mimics Enum
@@ -56,7 +56,7 @@ index 6db69159..911f6207 100644
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index bb0833f6..fb5d5d99 100644
+index bb0833f6..6797bb59 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
 @@ -1,9 +1,11 @@
@@ -7770,6 +7770,25 @@ index bb0833f6..fb5d5d99 100644
 +            case "LEGACY_CONCRETE":
 +            case "LEGACY_CONCRETE_POWDER":
              //</editor-fold>
+                 return true;
+             default:
+@@ -5058,13 +5092,13 @@ public enum Material implements Keyed {
+      * @return True if this material is an air block.
+      */
+     public boolean isAir() {
+-        switch (this) {
++        switch (this.name()) {
+             //<editor-fold defaultstate="collapsed" desc="isAir">
+-            case AIR:
+-            case CAVE_AIR:
+-            case VOID_AIR:
++            case "AIR":
++            case "CAVE_AIR":
++            case "VOID_AIR":
+             // ----- Legacy Separator -----
+-            case LEGACY_AIR:
++            case "LEGACY_AIR":
+                 //</editor-fold>
                  return true;
              default:
 @@ -5084,184 +5118,184 @@ public enum Material implements Keyed {
