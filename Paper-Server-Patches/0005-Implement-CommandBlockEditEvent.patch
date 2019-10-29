@@ -1,11 +1,11 @@
-From 7a6bfe33e5c6f681d5854946223c1d89996b6c92 Mon Sep 17 00:00:00 2001
+From e4163aba408df42a05fc3b54c48e66a75e4d5049 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 5 Oct 2019 21:26:23 +0100
 Subject: [PATCH] Implement CommandBlockEditEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index ae17cdf23..bc9ffbd7b 100644
+index ae17cdf23..3f5f45668 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -1,5 +1,7 @@
@@ -215,7 +215,7 @@ index ae17cdf23..bc9ffbd7b 100644
 +            tileentitycommand.b(!event.getNewNeedsRedstone());
 +            commandblocklistenerabstract.e();
 +            if (!UtilColor.b(event.getNewCommand())) {
-+                this.player.sendMessage(new ChatMessage("advMode.setCommand.success", new Object[]{s}));
++                this.player.sendMessage(new ChatMessage("advMode.setCommand.success", event.getNewCommand()));
              }
 +        }
 +    }
