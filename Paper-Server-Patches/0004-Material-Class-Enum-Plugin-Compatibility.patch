@@ -1,4 +1,4 @@
-From c5ca2e79c91e515f5bf475b6d33ef01c9a004570 Mon Sep 17 00:00:00 2001
+From 38527945ff941012581e919daeb3cf983f68b937 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
@@ -50,7 +50,7 @@ index 54730360f..227b76bab 100644
                                  </relocation>
                                  <relocation>
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 008fb8444..b60bb2830 100644
+index 008fb8444..f2f0724dc 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -1,24 +1,60 @@
@@ -119,15 +119,6 @@ index 008fb8444..b60bb2830 100644
      public static void main(String[] args) {
          // Todo: Installation script
          OptionParser parser = new OptionParser() {
-@@ -238,7 +274,7 @@ public class Main {
-                     System.out.println("Unable to read system info");
-                 }
-                 // Paper end
--                System.setProperty( "library.jansi.version", "Paper" ); // Paper - set meaningless jansi version to prevent git builds from crashing on Windows
-+
-                 System.out.println("Loading libraries, please wait...");
-                 MinecraftServer.main(options);
-             } catch (Throwable t) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/compat/CompatEnumMap.java b/src/main/java/org/bukkit/craftbukkit/compat/CompatEnumMap.java
 new file mode 100644
 index 000000000..fdba94ca3
