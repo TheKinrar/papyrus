@@ -1,14 +1,14 @@
-From 779e6bf27cf2a95373609faad305e41f477d7ac4 Mon Sep 17 00:00:00 2001
+From 7b52794af16099057a47c2b33f4febfdaacba7a9 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 5 Oct 2019 17:51:24 +0100
 Subject: [PATCH] Add helper methods to Material
 
 
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index c9b3659d..4b28e81c 100644
+index 27dae023..18a387d3 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
-@@ -8029,4 +8029,156 @@ public class Material implements Keyed {
+@@ -8049,4 +8049,156 @@ public class Material implements Keyed, Comparable<Material>, Serializable {
              // </editor-fold>
          }
      }

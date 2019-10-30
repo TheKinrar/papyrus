@@ -1,4 +1,4 @@
-From d170e69d43509012dd59af3e3f4aaa8f0aca8dc7 Mon Sep 17 00:00:00 2001
+From 3f73b74ef34bfaf1b045e5ba4e764127e22d0431 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore
@@ -2423,6 +2423,19 @@ index 4539a4a77..773c0864f 100644
      }
  
      static {
+diff --git a/src/test/java/org/bukkit/craftbukkit/inventory/FactoryItemMaterialTest.java b/src/test/java/org/bukkit/craftbukkit/inventory/FactoryItemMaterialTest.java
+index 7580eb290..85d93aec1 100644
+--- a/src/test/java/org/bukkit/craftbukkit/inventory/FactoryItemMaterialTest.java
++++ b/src/test/java/org/bukkit/craftbukkit/inventory/FactoryItemMaterialTest.java
+@@ -34,7 +34,7 @@ public class FactoryItemMaterialTest extends AbstractTestingBase {
+         materials = list.toArray(new Material[list.size()]);
+     }
+ 
+-    static String name(Enum<?> from, Enum<?> to) {
++    static String name(Material from, Material to) {
+         if (from.getClass() == to.getClass()) {
+             return buffer.delete(0, Integer.MAX_VALUE).append(from.getClass().getName()).append(' ').append(from.name()).append(" to ").append(to.name()).toString();
+         }
 -- 
 2.23.0
 
