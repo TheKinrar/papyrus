@@ -1,4 +1,4 @@
-From 58fcd65804403b3e2d0763ebdfc38b6ff9a3b299 Mon Sep 17 00:00:00 2001
+From c5ca2e79c91e515f5bf475b6d33ef01c9a004570 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
@@ -280,7 +280,7 @@ index 000000000..fdba94ca3
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/compat/CompatEnumSet.java b/src/main/java/org/bukkit/craftbukkit/compat/CompatEnumSet.java
 new file mode 100644
-index 000000000..48fe1cc69
+index 000000000..38169381c
 --- /dev/null
 +++ b/src/main/java/org/bukkit/craftbukkit/compat/CompatEnumSet.java
 @@ -0,0 +1,224 @@
@@ -441,7 +441,7 @@ index 000000000..48fe1cc69
 +    void addRange(E from, E to) {
 +        if(realEnum) {
 +            try {
-+                Method m = realSet.getClass().getMethod("addRange", Object.class, Object.class);
++                Method m = realSet.getClass().getDeclaredMethod("addRange", Object.class, Object.class);
 +                m.setAccessible(true);
 +                m.invoke(realSet, from, to);
 +            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -482,7 +482,7 @@ index 000000000..48fe1cc69
 +    void complement() {
 +        if(realEnum) {
 +            try {
-+                Method m = realSet.getClass().getMethod("complement");
++                Method m = realSet.getClass().getDeclaredMethod("complement");
 +                m.setAccessible(true);
 +                m.invoke(realSet);
 +            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
