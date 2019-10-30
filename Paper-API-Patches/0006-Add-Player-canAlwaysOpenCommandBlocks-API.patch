@@ -1,7 +1,7 @@
-From 3ecb55018c0f88ec7e80a3f12b34d6fbecfcd765 Mon Sep 17 00:00:00 2001
+From 83d314b6bd9f77cc11422b297eb80e20d36bb124 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:31:14 +0000
-Subject: [PATCH] Add fake OP permission level API
+Subject: [PATCH] Add Player canAlwaysOpenCommandBlocks API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
