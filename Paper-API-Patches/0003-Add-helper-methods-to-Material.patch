@@ -1,4 +1,4 @@
-From 7b52794af16099057a47c2b33f4febfdaacba7a9 Mon Sep 17 00:00:00 2001
+From 9f7cbb2f6e078fbe41bb4970e61d7c4a674a9ad0 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 5 Oct 2019 17:51:24 +0100
 Subject: [PATCH] Add helper methods to Material

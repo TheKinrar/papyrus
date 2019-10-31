@@ -1,4 +1,4 @@
-From 4ef2d69138b8b53f52878333d0ce6dae32112e9c Mon Sep 17 00:00:00 2001
+From d367c61ae8e49761a6131be3a98a2d01b1cb7011 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 27 Oct 2019 02:19:43 +0000
 Subject: [PATCH] Add PluginDescriptionFile getter to PluginClassLoader
