@@ -10,6 +10,7 @@ function changelog() {
 bukkit=$(changelog work/Bukkit)
 cb=$(changelog work/CraftBukkit)
 spigot=$(changelog work/Spigot)
+paper=$(changelog work/Paper)
 
 updated=""
 logsuffix=""
@@ -25,7 +26,11 @@ if [ ! -z "$spigot" ]; then
     logsuffix="$logsuffix\n\nSpigot Changes:\n$spigot"
     if [ -z "$updated" ]; then updated="Spigot"; else updated="$updated/Spigot"; fi
 fi
-disclaimer="Upstream has released updates that appears to apply and compile correctly.\nThis update has not been tested by PaperMC and as with ANY update, please do your own testing"
+if [ ! -z "$paper" ]; then
+    logsuffix="$logsuffix\n\nPaper Changes:\n$paper"
+    if [ -z "$updated" ]; then updated="Paper"; else updated="$updated/Paper"; fi
+fi
+disclaimer="Upstream has released updates that appear to apply and compile correctly."
 
 if [ ! -z "$1" ]; then
     disclaimer="$@"
