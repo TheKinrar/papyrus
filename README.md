@@ -11,6 +11,7 @@ useful to me or a project I take part in.
 
 ## Planned
 
+- Hybrid online-offline mode with built-in authentication procedure for offline users
 - **Entity registration API**
 
 ## Blocks and items registration API
