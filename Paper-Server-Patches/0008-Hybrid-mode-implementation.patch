@@ -1,4 +1,4 @@
-From 21b498eb9a2b032d0941a8e67feba9ae63bcd46e Mon Sep 17 00:00:00 2001
+From 38f49d7b7cb4c17a6c3cfb26eccd9cc5f1b07f8d Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -624,7 +624,7 @@ index fa79d0bed..336c7a65d 100644
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/LoginListener.java b/src/main/java/net/minecraft/server/LoginListener.java
-index a8773037e..b2e182ee5 100644
+index a8773037e..fe68b0c31 100644
 --- a/src/main/java/net/minecraft/server/LoginListener.java
 +++ b/src/main/java/net/minecraft/server/LoginListener.java
 @@ -4,13 +4,16 @@ import com.destroystokyo.paper.profile.CraftPlayerProfile;
@@ -661,6 +661,15 @@ index a8773037e..b2e182ee5 100644
          this.networkManager = networkmanager;
          LoginListener.random.nextBytes(this.e);
      }
+@@ -190,7 +195,7 @@ public class LoginListener implements PacketLoginInListener {
+     public void a(PacketLoginInStart packetlogininstart) {
+         Validate.validState(this.g == LoginListener.EnumProtocolState.HELLO, "Unexpected hello packet", new Object[0]);
+         this.i = packetlogininstart.b();
+-        if (this.server.getOnlineMode() && !this.networkManager.isLocal()) {
++        if ((this.server.getOnlineMode() || Bukkit.getHybridMode()) && !this.networkManager.isLocal()) {
+             this.g = LoginListener.EnumProtocolState.KEY;
+             this.networkManager.sendPacket(new PacketLoginOutEncryptionBegin("", this.server.getKeyPair().getPublic(), this.e));
+         } else {
 @@ -248,7 +253,31 @@ public class LoginListener implements PacketLoginInListener {
                                  return;
                              }
@@ -780,7 +789,7 @@ index e21f97d93..7d7acd248 100644
  
      public void sendScoreboard(ScoreboardServer scoreboardserver, EntityPlayer entityplayer) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 623adca03..ca5f82cda 100644
+index 623adca03..7af42be8f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -14,6 +14,9 @@ import com.mojang.brigadier.StringReader;
@@ -793,7 +802,15 @@ index 623adca03..ca5f82cda 100644
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufOutputStream;
  import io.netty.buffer.Unpooled;
-@@ -236,6 +239,7 @@ public final class CraftServer implements Server {
+@@ -190,6 +193,7 @@ import org.bukkit.potion.PotionEffectType;
+ import org.bukkit.scheduler.BukkitWorker;
+ import org.bukkit.util.StringUtil;
+ import org.bukkit.util.permissions.DefaultPermissions;
++import org.spigotmc.SpigotConfig;
+ import org.yaml.snakeyaml.Yaml;
+ import org.yaml.snakeyaml.constructor.SafeConstructor;
+ import org.yaml.snakeyaml.error.MarkedYAMLException;
+@@ -236,6 +240,7 @@ public final class CraftServer implements Server {
      private final List<CraftPlayer> playerView;
      public int reloadCount;
      public static Exception excessiveVelEx; // Paper - Velocity warnings
@@ -801,7 +818,7 @@ index 623adca03..ca5f82cda 100644
  
      static {
          ConfigurationSerialization.registerClass(CraftOfflinePlayer.class);
-@@ -391,6 +395,7 @@ public final class CraftServer implements Server {
+@@ -391,6 +396,7 @@ public final class CraftServer implements Server {
              commandMap.registerServerAliases();
              DefaultPermissions.registerCorePermissions();
              CraftDefaultPermissions.registerCorePermissions();
@@ -809,7 +826,7 @@ index 623adca03..ca5f82cda 100644
              if (!com.destroystokyo.paper.PaperConfig.loadPermsBeforePlugins) loadCustomPermissions(); // Paper
              helpMap.initializeCommands();
              syncCommands();
-@@ -828,6 +833,7 @@ public final class CraftServer implements Server {
+@@ -828,6 +834,7 @@ public final class CraftServer implements Server {
          reloadData();
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
@@ -817,7 +834,7 @@ index 623adca03..ca5f82cda 100644
          overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
          ignoreVanillaPermissions = commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2168,4 +2174,22 @@ public final class CraftServer implements Server {
+@@ -2168,4 +2175,26 @@ public final class CraftServer implements Server {
          return net.minecraft.server.MinecraftServer.currentTick;
      }
      // Paper end
@@ -830,10 +847,14 @@ index 623adca03..ca5f82cda 100644
 +
 +    @Override
 +    public boolean getHybridMode() {
-+        if(PapyrusConfig.hybridMode && !getOnlineMode()) {
-+            getLogger().warning("Hybrid mode enabled but server is in offline mode. Disabling hybrid mode.");
-+            PapyrusConfig.hybridMode = false;
-+            return false;
++        if (PapyrusConfig.hybridMode) {
++            if (getOnlineMode()) {
++                getLogger().warning("Hybrid mode enabled but server is in online mode. Disabling hybrid mode.");
++                PapyrusConfig.hybridMode = false;
++            } else if(SpigotConfig.bungee) {
++                getLogger().warning("Hybrid mode enabled but bungee support is enabled. Disabling hybrid mode.");
++                PapyrusConfig.hybridMode = false;
++            }
 +        }
 +
 +        return PapyrusConfig.hybridMode;
