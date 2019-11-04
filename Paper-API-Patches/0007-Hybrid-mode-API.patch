@@ -1,4 +1,4 @@
-From 39a4f3a8f354e4c6bec8e4f67699f2bb2dc3e87a Mon Sep 17 00:00:00 2001
+From 4c5280c2b4334900b22bd08faeddecd1b0864fe0 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
@@ -6,25 +6,18 @@ Subject: [PATCH] Hybrid mode API
 
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java
 new file mode 100644
-index 000000000..8aa4ada1a
+index 000000000..3ed8154f4
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java
-@@ -0,0 +1,36 @@
-+package fr.thekinrar.papyrus;
+@@ -0,0 +1,27 @@
++package fr.thekinrar.papyrus.hybrid;
 +
 +import org.jetbrains.annotations.NotNull;
 +import org.jetbrains.annotations.Nullable;
 +
-+import java.util.Collection;
-+import java.util.Map;
 +import java.util.UUID;
 +
 +public interface HybridEngine {
-+
-+    @NotNull
-+    HybridProfile getProfile(@NotNull UUID id);
-+
-+    boolean isRegistered(@NotNull UUID id);
 +
 +    /**
 +     * Gets the forced offline mapping for the specified username, if any.
@@ -41,33 +34,125 @@ index 000000000..8aa4ada1a
 +     */
 +    void setOfflineMapping(@NotNull String name, @Nullable UUID id);
 +
-+    void importClearPasswords(@NotNull Collection<Map.Entry<String, String>> entries);
-+
-+    void importMD5Passwords(@NotNull Collection<Map.Entry<String, byte[]>> entries);
++    void registerPasswordProvider(@NotNull HybridPasswordProvider provider);
 +
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPasswordProvider.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPasswordProvider.java
 new file mode 100644
-index 000000000..6f5a28d2c
+index 000000000..c23af6b53
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPasswordProvider.java
-@@ -0,0 +1,4 @@
+@@ -0,0 +1,10 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
-+public class HybridPasswordProvider {
++import org.jetbrains.annotations.NotNull;
++
++public interface HybridPasswordProvider {
++
++    boolean hasPassword(@NotNull String username);
++
++    boolean verifyPassword(@NotNull String username, @NotNull String password);
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java
 new file mode 100644
-index 000000000..4e3080c21
+index 000000000..ff7782838
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java
-@@ -0,0 +1,6 @@
-+package fr.thekinrar.papyrus;
+@@ -0,0 +1,8 @@
++package fr.thekinrar.papyrus.hybrid;
 +
 +public interface HybridProfile {
 +
 +    boolean isRegistered();
++
++    boolean isLoggedIn();
 +}
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index a97dab131..3c2b47446 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -14,6 +14,7 @@ import java.util.UUID;
+ import java.util.function.Consumer;
+ import java.util.logging.Logger;
+ 
++import fr.thekinrar.papyrus.hybrid.HybridEngine;
+ import org.bukkit.Warning.WarningState;
+ import org.bukkit.advancement.Advancement;
+ import org.bukkit.block.data.BlockData;
+@@ -1606,6 +1607,22 @@ public final class Bukkit {
+     }
+     // Paper end
+ 
++    // Papyrus start
++    @NotNull
++    public static HybridEngine getHybridEngine() {
++        return server.getHybridEngine();
++    }
++
++    /**
++     * Gets whether the Server is in hybrid mode or not.
++     *
++     * @return true if the server is in hybrid mode, false otherwise
++     */
++    public static boolean getHybridMode() {
++        return server.getHybridMode();
++    }
++    // Papyrus end
++
+     @NotNull
+     public static Server.Spigot spigot()
+     {
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index 91c284314..25b76a96a 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -14,6 +14,7 @@ import java.util.UUID;
+ import java.util.function.Consumer;
+ import java.util.logging.Logger;
+ 
++import fr.thekinrar.papyrus.hybrid.HybridEngine;
+ import org.bukkit.Warning.WarningState;
+ import org.bukkit.advancement.Advancement;
+ import org.bukkit.block.data.BlockData;
+@@ -1407,4 +1408,16 @@ public interface Server extends PluginMessageRecipient {
+      */
+     int getCurrentTick();
+     // Paper end
++
++    // Papyrus start
++    @NotNull
++    HybridEngine getHybridEngine();
++
++    /**
++     * Gets whether the Server is in hybrid mode or not.
++     *
++     * @return true if the server is in hybrid mode, false otherwise
++     */
++    boolean getHybridMode();
++    // Papyrus end
+ }
+diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
+index 2ffbc3756..738409f6d 100644
+--- a/src/main/java/org/bukkit/entity/Player.java
++++ b/src/main/java/org/bukkit/entity/Player.java
+@@ -5,6 +5,7 @@ import java.util.Date; // Paper
+ 
+ import com.destroystokyo.paper.Title;
+ import com.destroystokyo.paper.profile.PlayerProfile;
++import fr.thekinrar.papyrus.hybrid.HybridProfile;
+ import org.bukkit.Achievement;
+ import org.bukkit.BanEntry; // Paper
+ import org.bukkit.BanList; // Paper
+@@ -1994,6 +1995,9 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @param canAlwaysOpenCommandBlocks whether this player can always open command blocks
+      */
+     void setCanAlwaysOpenCommandBlocks(boolean canAlwaysOpenCommandBlocks);
++
++    @NotNull
++    HybridProfile getHybridProfile();
+     // Papyrus end
+ 
+     // Spigot start
 -- 
 2.23.0
 
