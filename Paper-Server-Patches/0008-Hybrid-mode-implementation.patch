@@ -1,4 +1,4 @@
-From 38f49d7b7cb4c17a6c3cfb26eccd9cc5f1b07f8d Mon Sep 17 00:00:00 2001
+From e7d0426a7cae788c1d444e05df360d7a17f476c6 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -18,10 +18,10 @@ index 7c284c9b2..da9d15cec 100644
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
-index 4168eafc0..fb5594f58 100644
+index 4168eafc0..841e5b35a 100644
 --- a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
-@@ -1,34 +1,24 @@
+@@ -1,34 +1,25 @@
  package fr.thekinrar.papyrus;
  
 -import co.aikar.timings.Timings;
@@ -35,7 +35,7 @@ index 4168eafc0..fb5594f58 100644
 +import fr.thekinrar.papyrus.commands.RegisterCommand;
  import net.minecraft.server.MinecraftServer;
  import org.bukkit.Bukkit;
--import org.bukkit.ChatColor;
+ import org.bukkit.ChatColor;
  import org.bukkit.command.Command;
 -import org.bukkit.configuration.ConfigurationSection;
  import org.bukkit.configuration.InvalidConfigurationException;
@@ -58,7 +58,7 @@ index 4168eafc0..fb5594f58 100644
  import java.util.regex.Pattern;
  
  public class PapyrusConfig {
-@@ -62,6 +52,8 @@ public class PapyrusConfig {
+@@ -62,6 +53,8 @@ public class PapyrusConfig {
          verbose = getBoolean("verbose", false);
  
          commands = new HashMap<String, Command>();
@@ -67,7 +67,7 @@ index 4168eafc0..fb5594f58 100644
  
          version = getInt("config-version", 1);
          set("config-version", 1);
-@@ -190,4 +182,9 @@ public class PapyrusConfig {
+@@ -190,4 +183,59 @@ public class PapyrusConfig {
          config.addDefault(path, def);
          return config.getString(path, config.getString(path));
      }
@@ -75,6 +75,56 @@ index 4168eafc0..fb5594f58 100644
 +    public static boolean hybridMode = false;
 +    private static void hybridMode() {
 +        hybridMode = getBoolean("settings.hybridMode", false);
++    }
++
++    public static String hybridRequestLoginMessage = "&e&lPlease login using /login <password>";
++    private static void hybridRequestLoginMessage() {
++        hybridRequestLoginMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.request-login", hybridRequestLoginMessage));
++    }
++
++    public static String hybridRequestRegisterMessage = "&e&lPlease register using /register <password> <password confirmation>";
++    private static void hybridRequestRegisterMessage() {
++        hybridRequestRegisterMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.request-register", hybridRequestRegisterMessage));
++    }
++
++    public static String hybridCommandUnavailableMessage = "&cCommand unavailable.";
++    private static void hybridCommandUnavailableMessage() {
++        hybridCommandUnavailableMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.command-unavailable", hybridCommandUnavailableMessage));
++    }
++
++    public static String hybridPlayerOnlyCommandMessage = "&cOnly players can use this command.";
++    private static void hybridPlayerOnlyCommandMessage() {
++        hybridPlayerOnlyCommandMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.player-only-command", hybridPlayerOnlyCommandMessage));
++    }
++
++    public static String hybridAlreadyLoggedInMessage = "&cAlready logged in.";
++    private static void hybridAlreadyLoggedInMessage() {
++        hybridAlreadyLoggedInMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.already-logged-in", hybridAlreadyLoggedInMessage));
++    }
++
++    public static String hybridAlreadyRegisteredMessage = "&cAlready registered.";
++    private static void hybridAlreadyRegisteredMessage() {
++        hybridAlreadyRegisteredMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.already-registered", hybridAlreadyRegisteredMessage));
++    }
++
++    public static String hybridSuccessfulLoginMessage = "&eSuccessfully logged in.";
++    private static void hybridSuccessfulLoginMessage() {
++        hybridSuccessfulLoginMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.successful-login", hybridSuccessfulLoginMessage));
++    }
++
++    public static String hybridFailedLoginMessage = "&cInvalid password.";
++    private static void hybridFailedLoginMessage() {
++        hybridFailedLoginMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.failed-login", hybridFailedLoginMessage));
++    }
++
++    public static String hybridSuccessfulRegisterMessage = "&eSuccessfully registered.";
++    private static void hybridSuccessfulRegisterMessage() {
++        hybridSuccessfulRegisterMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.successful-register", hybridSuccessfulRegisterMessage));
++    }
++
++    public static String hybridRegisterMismatchMessage = "&cPasswords do not match.";
++    private static void hybridRegisterMismatchMessage() {
++        hybridRegisterMismatchMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.register-mismatch", hybridRegisterMismatchMessage));
 +    }
  }
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java b/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java
@@ -101,12 +151,13 @@ index 000000000..e051d44a4
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/commands/LoginCommand.java b/src/main/java/fr/thekinrar/papyrus/commands/LoginCommand.java
 new file mode 100644
-index 000000000..48c5fe08b
+index 000000000..2f9868928
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/commands/LoginCommand.java
-@@ -0,0 +1,67 @@
+@@ -0,0 +1,68 @@
 +package fr.thekinrar.papyrus.commands;
 +
++import fr.thekinrar.papyrus.PapyrusConfig;
 +import fr.thekinrar.papyrus.hybrid.CraftHybridProfile;
 +import org.bukkit.Bukkit;
 +import org.bukkit.ChatColor;
@@ -138,12 +189,12 @@ index 000000000..48c5fe08b
 +        if (!testPermission(sender)) return true;
 +
 +        if (!Bukkit.getHybridMode()) {
-+            sender.sendMessage(ChatColor.RED + "Command unavailable.");
++            sender.sendMessage(PapyrusConfig.hybridCommandUnavailableMessage);
 +            return true;
 +        }
 +
 +        if (!(sender instanceof Player)) {
-+            sender.sendMessage(ChatColor.RED + "Only players can use this command.");
++            sender.sendMessage(PapyrusConfig.hybridPlayerOnlyCommandMessage);
 +            return true;
 +        }
 +
@@ -160,26 +211,27 @@ index 000000000..48c5fe08b
 +        }
 +
 +        if(profile.isLoggedIn()) {
-+            sender.sendMessage(ChatColor.RED + "Already logged in.");
++            sender.sendMessage(PapyrusConfig.hybridAlreadyLoggedInMessage);
 +            return true;
 +        }
 +
 +        if(profile.login(args[0]))
-+            sender.sendMessage(ChatColor.YELLOW + "Successfully logged in.");
++            sender.sendMessage(PapyrusConfig.hybridSuccessfulLoginMessage);
 +        else
-+            sender.sendMessage(ChatColor.RED + "Invalid password.");
++            sender.sendMessage(PapyrusConfig.hybridFailedLoginMessage);
 +
 +        return true;
 +    }
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/commands/RegisterCommand.java b/src/main/java/fr/thekinrar/papyrus/commands/RegisterCommand.java
 new file mode 100644
-index 000000000..00c98520f
+index 000000000..ee34426e9
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/commands/RegisterCommand.java
-@@ -0,0 +1,66 @@
+@@ -0,0 +1,67 @@
 +package fr.thekinrar.papyrus.commands;
 +
++import fr.thekinrar.papyrus.PapyrusConfig;
 +import fr.thekinrar.papyrus.hybrid.CraftHybridProfile;
 +import org.bukkit.Bukkit;
 +import org.bukkit.ChatColor;
@@ -211,12 +263,12 @@ index 000000000..00c98520f
 +        if (!testPermission(sender)) return true;
 +
 +        if (!Bukkit.getHybridMode()) {
-+            sender.sendMessage(ChatColor.RED + "Command unavailable.");
++            sender.sendMessage(PapyrusConfig.hybridCommandUnavailableMessage);
 +            return true;
 +        }
 +
 +        if (!(sender instanceof Player)) {
-+            sender.sendMessage(ChatColor.RED + "Only players can use this command.");
++            sender.sendMessage(PapyrusConfig.hybridPlayerOnlyCommandMessage);
 +            return true;
 +        }
 +
@@ -228,18 +280,18 @@ index 000000000..00c98520f
 +        CraftHybridProfile profile = ((CraftPlayer) sender).getHybridProfile();
 +
 +        if(profile.isRegistered()) {
-+            sender.sendMessage(ChatColor.RED + "Already registered.");
++            sender.sendMessage(PapyrusConfig.hybridAlreadyRegisteredMessage);
 +            return true;
 +        }
 +
 +        if(!args[0].equals(args[1])) {
-+            sender.sendMessage(ChatColor.RED + "Passwords do not match.");
++            sender.sendMessage(PapyrusConfig.hybridRegisterMismatchMessage);
 +            return true;
 +        }
 +
 +        profile.register(args[0]);
 +
-+        sender.sendMessage(ChatColor.YELLOW + "Successfully registered.");
++        sender.sendMessage(PapyrusConfig.hybridSuccessfulRegisterMessage);
 +
 +        return true;
 +    }
@@ -465,15 +517,14 @@ index 000000000..2457b788d
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
 new file mode 100644
-index 000000000..f4c7846d6
+index 000000000..2f1b4c6e2
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
-@@ -0,0 +1,71 @@
+@@ -0,0 +1,70 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
-+import org.bukkit.ChatColor;
++import fr.thekinrar.papyrus.PapyrusConfig;
 +import org.bukkit.craftbukkit.entity.CraftPlayer;
-+import org.bukkit.entity.Player;
 +
 +import java.util.UUID;
 +
@@ -507,9 +558,9 @@ index 000000000..f4c7846d6
 +
 +    public void sendUnauthenticatedMessage() {
 +        if(loginRequested)
-+            player.sendMessage(ChatColor.YELLOW.toString() + ChatColor.BOLD + "Please login using /login <password>");
++            player.sendMessage(PapyrusConfig.hybridRequestLoginMessage);
 +        else if(registrationRequested)
-+            player.sendMessage(ChatColor.YELLOW.toString() + ChatColor.BOLD + "Please register using /register <password> <password confirmation>");
++            player.sendMessage(PapyrusConfig.hybridRequestRegisterMessage);
 +    }
 +
 +    public void register(String password) {
