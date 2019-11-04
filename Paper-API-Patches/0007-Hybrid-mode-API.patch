@@ -1,0 +1,73 @@
+From 39a4f3a8f354e4c6bec8e4f67699f2bb2dc3e87a Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Mon, 4 Nov 2019 19:42:56 +0000
+Subject: [PATCH] Hybrid mode API
+
+
+diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java
+new file mode 100644
+index 000000000..8aa4ada1a
+--- /dev/null
++++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java
+@@ -0,0 +1,36 @@
++package fr.thekinrar.papyrus;
++
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++
++import java.util.Collection;
++import java.util.Map;
++import java.util.UUID;
++
++public interface HybridEngine {
++
++    @NotNull
++    HybridProfile getProfile(@NotNull UUID id);
++
++    boolean isRegistered(@NotNull UUID id);
++
++    /**
++     * Gets the forced offline mapping for the specified username, if any.
++     * @param name Offline username to get the mapping for
++     * @return The forced UUID or null if none has been set
++     */
++    @Nullable
++    UUID getOfflineMapping(@NotNull String name);
++
++    /**
++     * Sets the forced offline mapping for the specified username.
++     * @param name Offline username to set the mapping for
++     * @param id The forced UUID to set or null to remove forced mapping
++     */
++    void setOfflineMapping(@NotNull String name, @Nullable UUID id);
++
++    void importClearPasswords(@NotNull Collection<Map.Entry<String, String>> entries);
++
++    void importMD5Passwords(@NotNull Collection<Map.Entry<String, byte[]>> entries);
++
++}
+diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPasswordProvider.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPasswordProvider.java
+new file mode 100644
+index 000000000..6f5a28d2c
+--- /dev/null
++++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPasswordProvider.java
+@@ -0,0 +1,4 @@
++package fr.thekinrar.papyrus.hybrid;
++
++public class HybridPasswordProvider {
++}
+diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java
+new file mode 100644
+index 000000000..4e3080c21
+--- /dev/null
++++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java
+@@ -0,0 +1,6 @@
++package fr.thekinrar.papyrus;
++
++public interface HybridProfile {
++
++    boolean isRegistered();
++}
+-- 
+2.23.0
+
