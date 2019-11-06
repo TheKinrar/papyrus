@@ -1,4 +1,4 @@
-From e7d0426a7cae788c1d444e05df360d7a17f476c6 Mon Sep 17 00:00:00 2001
+From 49fc4b71327c5076eac88eac3efe62280e2631cf Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -18,10 +18,10 @@ index 7c284c9b2..da9d15cec 100644
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
-index 4168eafc0..841e5b35a 100644
+index 4168eafc0..8c9e0f6bb 100644
 --- a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
-@@ -1,34 +1,25 @@
+@@ -1,34 +1,26 @@
  package fr.thekinrar.papyrus;
  
 -import co.aikar.timings.Timings;
@@ -31,6 +31,7 @@ index 4168eafc0..841e5b35a 100644
 -import com.google.common.base.Strings;
  import com.google.common.base.Throwables;
 -import com.google.common.collect.Lists;
++import fr.thekinrar.papyrus.commands.ChangepassCommand;
 +import fr.thekinrar.papyrus.commands.LoginCommand;
 +import fr.thekinrar.papyrus.commands.RegisterCommand;
  import net.minecraft.server.MinecraftServer;
@@ -58,16 +59,17 @@ index 4168eafc0..841e5b35a 100644
  import java.util.regex.Pattern;
  
  public class PapyrusConfig {
-@@ -62,6 +53,8 @@ public class PapyrusConfig {
+@@ -62,6 +54,9 @@ public class PapyrusConfig {
          verbose = getBoolean("verbose", false);
  
          commands = new HashMap<String, Command>();
++        commands.put("changepass", new ChangepassCommand("changepass"));
 +        commands.put("login", new LoginCommand("login"));
 +        commands.put("register", new RegisterCommand("register"));
  
          version = getInt("config-version", 1);
          set("config-version", 1);
-@@ -190,4 +183,59 @@ public class PapyrusConfig {
+@@ -190,4 +185,64 @@ public class PapyrusConfig {
          config.addDefault(path, def);
          return config.getString(path, config.getString(path));
      }
@@ -126,13 +128,18 @@ index 4168eafc0..841e5b35a 100644
 +    private static void hybridRegisterMismatchMessage() {
 +        hybridRegisterMismatchMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.register-mismatch", hybridRegisterMismatchMessage));
 +    }
++
++    public static String hybridSuccessfulChangepassMessage = "&eSuccessfully changed password.";
++    private static void hybridSuccessfulChangepassMessage() {
++        hybridSuccessfulChangepassMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.successful-changepass", hybridSuccessfulChangepassMessage));
++    }
  }
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java b/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java
 new file mode 100644
-index 000000000..e051d44a4
+index 000000000..710620090
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java
-@@ -0,0 +1,16 @@
+@@ -0,0 +1,17 @@
 +package fr.thekinrar.papyrus;
 +
 +import org.bukkit.permissions.Permission;
@@ -144,17 +151,91 @@ index 000000000..e051d44a4
 +
 +    public static void registerPermissions() {
 +        Permission parent = DefaultPermissions.registerPermission(ROOT, "Gives the user the ability to use all Papyrus commands");
++        DefaultPermissions.registerPermission(ROOT + ".changepass", "Gives the user the ability to use the /papyrus:changepass command", PermissionDefault.TRUE, parent);
 +        DefaultPermissions.registerPermission(ROOT + ".login", "Gives the user the ability to use the /papyrus:login command", PermissionDefault.TRUE, parent);
 +        DefaultPermissions.registerPermission(ROOT + ".register", "Gives the user the ability to use the /papyrus:register command", PermissionDefault.TRUE, parent);
 +        parent.recalculatePermissibles();
 +    }
 +}
+diff --git a/src/main/java/fr/thekinrar/papyrus/commands/ChangepassCommand.java b/src/main/java/fr/thekinrar/papyrus/commands/ChangepassCommand.java
+new file mode 100644
+index 000000000..c4c751177
+--- /dev/null
++++ b/src/main/java/fr/thekinrar/papyrus/commands/ChangepassCommand.java
+@@ -0,0 +1,67 @@
++package fr.thekinrar.papyrus.commands;
++
++import fr.thekinrar.papyrus.PapyrusConfig;
++import fr.thekinrar.papyrus.hybrid.CraftHybridProfile;
++import org.bukkit.Bukkit;
++import org.bukkit.ChatColor;
++import org.bukkit.Location;
++import org.bukkit.command.Command;
++import org.bukkit.command.CommandSender;
++import org.bukkit.craftbukkit.entity.CraftPlayer;
++import org.bukkit.entity.Player;
++
++import java.util.Collections;
++import java.util.List;
++
++public class ChangepassCommand extends Command {
++
++    public ChangepassCommand(String name) {
++        super(name);
++        this.description = "Password changing for offline players";
++        this.usageMessage = "/changepass <current password> <new password> <new password confirmation>";
++        this.setPermission("papyrus.command.changepass");
++    }
++
++    @Override
++    public List<String> tabComplete(CommandSender sender, String alias, String[] args, Location location) throws IllegalArgumentException {
++        return Collections.emptyList();
++    }
++
++    @Override
++    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
++        if (!testPermission(sender)) return true;
++
++        if (!Bukkit.getHybridMode()) {
++            sender.sendMessage(PapyrusConfig.hybridCommandUnavailableMessage);
++            return true;
++        }
++
++        if (!(sender instanceof Player)) {
++            sender.sendMessage(PapyrusConfig.hybridPlayerOnlyCommandMessage);
++            return true;
++        }
++
++        if (args.length != 3) {
++            sender.sendMessage(ChatColor.RED + "Usage: " + usageMessage);
++            return false;
++        }
++
++        CraftHybridProfile profile = ((CraftPlayer) sender).getHybridProfile();
++
++        if(!args[1].equals(args[2])) {
++            sender.sendMessage(PapyrusConfig.hybridRegisterMismatchMessage);
++            return true;
++        }
++
++        if(!profile.getEngine().verifyPassword(profile.getId(), sender.getName(), args[0])) {
++            sender.sendMessage(PapyrusConfig.hybridFailedLoginMessage);
++            return true;
++        }
++
++        profile.getEngine().setPassword(profile.getId(), args[1]);
++
++        sender.sendMessage(PapyrusConfig.hybridSuccessfulChangepassMessage);
++
++        return true;
++    }
++}
 diff --git a/src/main/java/fr/thekinrar/papyrus/commands/LoginCommand.java b/src/main/java/fr/thekinrar/papyrus/commands/LoginCommand.java
 new file mode 100644
-index 000000000..2f9868928
+index 000000000..8e48cdefd
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/commands/LoginCommand.java
-@@ -0,0 +1,68 @@
+@@ -0,0 +1,69 @@
 +package fr.thekinrar.papyrus.commands;
 +
 +import fr.thekinrar.papyrus.PapyrusConfig;
@@ -177,6 +258,7 @@ index 000000000..2f9868928
 +        this.description = "Login command for offline players";
 +        this.usageMessage = "/login <password>";
 +        this.setPermission("papyrus.command.login");
++        this.setUnauthenticated(true);
 +    }
 +
 +    @Override
@@ -225,10 +307,10 @@ index 000000000..2f9868928
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/commands/RegisterCommand.java b/src/main/java/fr/thekinrar/papyrus/commands/RegisterCommand.java
 new file mode 100644
-index 000000000..ee34426e9
+index 000000000..3eab2a83a
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/commands/RegisterCommand.java
-@@ -0,0 +1,67 @@
+@@ -0,0 +1,68 @@
 +package fr.thekinrar.papyrus.commands;
 +
 +import fr.thekinrar.papyrus.PapyrusConfig;
@@ -251,6 +333,7 @@ index 000000000..ee34426e9
 +        this.description = "Register command for offline players";
 +        this.usageMessage = "/register <password> <password confirmation>";
 +        this.setPermission("papyrus.command.register");
++        this.setUnauthenticated(true);
 +    }
 +
 +    @Override
@@ -298,7 +381,7 @@ index 000000000..ee34426e9
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
 new file mode 100644
-index 000000000..2457b788d
+index 000000000..9023c2bf6
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
 @@ -0,0 +1,213 @@
@@ -466,7 +549,7 @@ index 000000000..2457b788d
 +        return hash;
 +    }
 +
-+    void setPassword(UUID id, String password) {
++    public void setPassword(UUID id, String password) {
 +        passwords.put(id, hashPassword(password));
 +        save();
 +    }
@@ -517,10 +600,10 @@ index 000000000..2457b788d
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
 new file mode 100644
-index 000000000..2f1b4c6e2
+index 000000000..acebad7dc
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
-@@ -0,0 +1,70 @@
+@@ -0,0 +1,78 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import fr.thekinrar.papyrus.PapyrusConfig;
@@ -539,6 +622,14 @@ index 000000000..2f1b4c6e2
 +    CraftHybridProfile(CraftHybridEngine engine, UUID id) {
 +        this.engine = engine;
 +        this.id = id;
++    }
++
++    public CraftHybridEngine getEngine() {
++        return engine;
++    }
++
++    public UUID getId() {
++        return id;
 +    }
 +
 +    public void authenticate(CraftPlayer player) {
@@ -766,7 +857,7 @@ index a8773037e..fe68b0c31 100644
                  }
          }
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 3f5f45668..e231b01a2 100644
+index 3f5f45668..fc59d7eb8 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -7,6 +7,7 @@ import com.google.common.primitives.Floats;
@@ -791,26 +882,20 @@ index 3f5f45668..e231b01a2 100644
                              if (!this.player.H() && (!this.player.getWorldServer().getGameRules().getBoolean(GameRules.DISABLE_ELYTRA_MOVEMENT_CHECK) || !this.player.isGliding())) {
                                  float f2 = this.player.isGliding() ? 300.0F : 100.0F;
  
-@@ -1627,6 +1635,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1627,6 +1635,12 @@ public class PlayerConnection implements PacketListenerPlayIn {
                  }
              }
  
-+            if(player.unauthenticated) {
-+                if(!isSync) {
-+                    CraftHybridEngine.LOGGER.warn(player.getName() + " tried chatting while unauthenticated: " + s);
-+                    getPlayer().getHybridProfile().sendUnauthenticatedMessage();
-+                    return;
-+                } else if(!s.startsWith("/login ") && !s.startsWith("/register ")) { // TODO check command class later instead
-+                    CraftHybridEngine.LOGGER.warn(player.getName() + " tried issuing server command while unauthenticated: " + s);
-+                    getPlayer().getHybridProfile().sendUnauthenticatedMessage();
-+                    return;
-+                }
++            if(player.unauthenticated && !isSync) {
++                CraftHybridEngine.LOGGER.warn(player.getName() + " tried chatting while unauthenticated: " + s);
++                getPlayer().getHybridProfile().sendUnauthenticatedMessage();
++                return;
 +            }
 +
              // CraftBukkit start
              if (isSync) {
                  try {
-@@ -1810,7 +1830,12 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1810,7 +1824,12 @@ public class PlayerConnection implements PacketListenerPlayIn {
          MinecraftTimings.playerCommandTimer.startTiming(); // Paper
          // CraftBukkit start - whole method
          if ( org.spigotmc.SpigotConfig.logCommands ) // Spigot
@@ -911,6 +996,44 @@ index 623adca03..7af42be8f 100644
 +        return PapyrusConfig.hybridMode;
 +    }
 +    // Papyrus end
+ }
+diff --git a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
+index 2fd69c0f9..119602875 100644
+--- a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
++++ b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
+@@ -1,9 +1,13 @@
+ package org.bukkit.craftbukkit.command;
+ 
+ import java.util.Map;
++
++import fr.thekinrar.papyrus.hybrid.CraftHybridEngine;
+ import org.bukkit.Server;
+ import org.bukkit.command.Command;
++import org.bukkit.command.CommandSender;
+ import org.bukkit.command.SimpleCommandMap;
++import org.bukkit.craftbukkit.entity.CraftPlayer;
+ 
+ public class CraftCommandMap extends SimpleCommandMap {
+ 
+@@ -14,4 +18,19 @@ public class CraftCommandMap extends SimpleCommandMap {
+     public Map<String, Command> getKnownCommands() {
+         return knownCommands;
+     }
++
++    @Override
++    protected boolean hybridExecute(Command command, CommandSender sender, String commandLabel, String[] args) {
++        if(sender instanceof CraftPlayer) {
++            CraftPlayer player = (CraftPlayer) sender;
++
++            if(player.getHandle().unauthenticated && !command.isUnauthenticated()) {
++                CraftHybridEngine.LOGGER.warn(player.getName() + " tried issuing server command while unauthenticated");
++                player.getHybridProfile().sendUnauthenticatedMessage();
++                return true;
++            }
++        }
++
++        return super.hybridExecute(command, sender, commandLabel, args);
++    }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 index b183b540b..4030abfa8 100644

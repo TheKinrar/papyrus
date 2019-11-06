@@ -1,4 +1,4 @@
-From 4c5280c2b4334900b22bd08faeddecd1b0864fe0 Mon Sep 17 00:00:00 2001
+From 9092d9d2fb37db92faf83c077a83c5b0f4420a51 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
@@ -131,6 +131,57 @@ index 91c284314..25b76a96a 100644
 +    boolean getHybridMode();
 +    // Papyrus end
  }
+diff --git a/src/main/java/org/bukkit/command/Command.java b/src/main/java/org/bukkit/command/Command.java
+index 0b0d1bd7c..cd2711185 100644
+--- a/src/main/java/org/bukkit/command/Command.java
++++ b/src/main/java/org/bukkit/command/Command.java
+@@ -35,6 +35,7 @@ public abstract class Command {
+     private String permissionMessage;
+     public co.aikar.timings.Timing timings; // Paper
+     @NotNull public String getTimingName() {return getName();} // Paper
++    private boolean unauthenticated; // Papyrus
+ 
+     protected Command(@NotNull String name) {
+         this(name, "", "/" + name, new ArrayList<String>());
+@@ -442,6 +443,14 @@ public abstract class Command {
+         }
+     }
+ 
++    public boolean isUnauthenticated() {
++        return unauthenticated;
++    }
++
++    public void setUnauthenticated(boolean unauthenticated) {
++        this.unauthenticated = unauthenticated;
++    }
++
+     @Override
+     public String toString() {
+         return getClass().getName() + '(' + name + ')';
+diff --git a/src/main/java/org/bukkit/command/SimpleCommandMap.java b/src/main/java/org/bukkit/command/SimpleCommandMap.java
+index 460fda05a..54d3b25df 100644
+--- a/src/main/java/org/bukkit/command/SimpleCommandMap.java
++++ b/src/main/java/org/bukkit/command/SimpleCommandMap.java
+@@ -156,7 +156,7 @@ public class SimpleCommandMap implements CommandMap {
+         try {
+             try (co.aikar.timings.Timing ignored = target.timings.startTiming()) { // Paper - use try with resources
+             // Note: we don't return the result of target.execute as thats success / failure, we return handled (true) or not handled (false)
+-            target.execute(sender, sentCommandLabel, Arrays.copyOfRange(args, 1, args.length));
++            hybridExecute(target, sender, sentCommandLabel, Arrays.copyOfRange(args, 1, args.length));
+             } // target.timings.stopTiming(); // Spigot // Paper
+         } catch (CommandException ex) {
+             server.getPluginManager().callEvent(new ServerExceptionEvent(new ServerCommandException(ex, target, sender, args))); // Paper
+@@ -173,6 +173,10 @@ public class SimpleCommandMap implements CommandMap {
+         return true;
+     }
+ 
++    protected boolean hybridExecute(@NotNull Command command, @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
++        return command.execute(sender, commandLabel, args);
++    }
++
+     @Override
+     public synchronized void clearCommands() {
+         for (Map.Entry<String, Command> entry : knownCommands.entrySet()) {
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
 index 2ffbc3756..738409f6d 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
