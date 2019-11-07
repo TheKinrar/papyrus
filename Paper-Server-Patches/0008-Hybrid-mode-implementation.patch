@@ -1,4 +1,4 @@
-From 49fc4b71327c5076eac88eac3efe62280e2631cf Mon Sep 17 00:00:00 2001
+From 661fbe6a4223b24b85b8b0f0460fd022173a5900 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -600,10 +600,10 @@ index 000000000..9023c2bf6
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
 new file mode 100644
-index 000000000..acebad7dc
+index 000000000..c54e7568d
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
-@@ -0,0 +1,78 @@
+@@ -0,0 +1,88 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import fr.thekinrar.papyrus.PapyrusConfig;
@@ -680,6 +680,16 @@ index 000000000..acebad7dc
 +    @Override
 +    public boolean isLoggedIn() {
 +        return !player.getHandle().unauthenticated;
++    }
++
++    @Override
++    public void setLoggedIn(boolean loggedIn) {
++        if(isRegistered()) {
++            loginRequested = player.getHandle().unauthenticated = !loggedIn;
++
++            if(!loggedIn)
++                sendUnauthenticatedMessage();
++        }
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/EntityHuman.java b/src/main/java/net/minecraft/server/EntityHuman.java
