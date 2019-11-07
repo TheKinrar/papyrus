@@ -1,14 +1,14 @@
-From 9f7cbb2f6e078fbe41bb4970e61d7c4a674a9ad0 Mon Sep 17 00:00:00 2001
+From cd849caee46008273f4b7bc08cb2c2c97ca9c558 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 5 Oct 2019 17:51:24 +0100
 Subject: [PATCH] Add helper methods to Material
 
 
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index 27dae023..18a387d3 100644
+index 27dae0235..87463d191 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
-@@ -8049,4 +8049,156 @@ public class Material implements Keyed, Comparable<Material>, Serializable {
+@@ -8049,4 +8049,644 @@ public class Material implements Keyed, Comparable<Material>, Serializable {
              // </editor-fold>
          }
      }
@@ -22,8 +22,8 @@ index 27dae023..18a387d3 100644
 +            case "JUNGLE_WOOD":
 +            case "OAK_WOOD":
 +            case "SPRUCE_WOOD":
-+                return true;
 +            // </editor-fold>
++                return true;
 +            default:
 +                return false;
 +        }
@@ -38,11 +38,15 @@ index 27dae023..18a387d3 100644
 +            case "STRIPPED_JUNGLE_WOOD":
 +            case "STRIPPED_OAK_WOOD":
 +            case "STRIPPED_SPRUCE_WOOD":
-+                return true;
 +            // </editor-fold>
++                return true;
 +            default:
 +                return false;
 +        }
++    }
++
++    public boolean isAnyWood() {
++        return isWood() || isStrippedWood();
 +    }
 +
 +    public boolean isSpawnEgg() {
@@ -106,8 +110,8 @@ index 27dae023..18a387d3 100644
 +            case "ZOMBIE_PIGMAN_SPAWN_EGG":
 +            case "ZOMBIE_SPAWN_EGG":
 +            case "ZOMBIE_VILLAGER_SPAWN_EGG":
-+                return true;
 +            // </editor-fold>
++                return true;
 +            default:
 +                return false;
 +        }
@@ -122,7 +126,7 @@ index 27dae023..18a387d3 100644
 +            case "CYAN_WOOL":
 +            case "GRAY_WOOL":
 +            case "GREEN_WOOL":
-+            case "COW_SPAWN_EGG":
++            case "LIGHT_BLUE_WOOL":
 +            case "LIGHT_GRAY_WOOL":
 +            case "LIME_WOOL":
 +            case "MAGENTA_WOOL":
@@ -132,8 +136,8 @@ index 27dae023..18a387d3 100644
 +            case "RED_WOOL":
 +            case "WHITE_WOOL":
 +            case "YELLOW_WOOL":
-+                return true;
 +            // </editor-fold>
++                return true;
 +            default:
 +                return false;
 +        }
@@ -148,7 +152,7 @@ index 27dae023..18a387d3 100644
 +            case "CYAN_STAINED_GLASS":
 +            case "GRAY_STAINED_GLASS":
 +            case "GREEN_STAINED_GLASS":
-+            case "COW_SPAWN_EGG":
++            case "LIGHT_BLUE_STAINED_GLASS":
 +            case "LIGHT_GRAY_STAINED_GLASS":
 +            case "LIME_STAINED_GLASS":
 +            case "MAGENTA_STAINED_GLASS":
@@ -158,11 +162,495 @@ index 27dae023..18a387d3 100644
 +            case "RED_STAINED_GLASS":
 +            case "WHITE_STAINED_GLASS":
 +            case "YELLOW_STAINED_GLASS":
-+                return true;
 +            // </editor-fold>
++                return true;
 +            default:
 +                return false;
 +        }
++    }
++
++    public boolean isBanner() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isBanner">
++            case "BLACK_BANNER":
++            case "BLUE_BANNER":
++            case "BROWN_BANNER":
++            case "CYAN_BANNER":
++            case "GRAY_BANNER":
++            case "GREEN_BANNER":
++            case "LIGHT_BLUE_BANNER":
++            case "LIGHT_GRAY_BANNER":
++            case "LIME_BANNER":
++            case "MAGENTA_BANNER":
++            case "ORANGE_BANNER":
++            case "PINK_BANNER":
++            case "PURPLE_BANNER":
++            case "RED_BANNER":
++            case "WHITE_BANNER":
++            case "YELLOW_BANNER":
++            // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isWallBanner() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isWallBanner">
++            case "BLACK_WALL_BANNER":
++            case "BLUE_WALL_BANNER":
++            case "BROWN_WALL_BANNER":
++            case "CYAN_WALL_BANNER":
++            case "GRAY_WALL_BANNER":
++            case "GREEN_WALL_BANNER":
++            case "LIGHT_BLUE_WALL_BANNER":
++            case "LIGHT_GRAY_WALL_BANNER":
++            case "LIME_WALL_BANNER":
++            case "MAGENTA_WALL_BANNER":
++            case "ORANGE_WALL_BANNER":
++            case "PINK_WALL_BANNER":
++            case "PURPLE_WALL_BANNER":
++            case "RED_WALL_BANNER":
++            case "WHITE_WALL_BANNER":
++            case "YELLOW_WALL_BANNER":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isAnyBanner() {
++        return isBanner() || isWallBanner();
++    }
++
++    public boolean isCarpet() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isCarpet">
++            case "BLACK_CARPET":
++            case "BLUE_CARPET":
++            case "BROWN_CARPET":
++            case "CYAN_CARPET":
++            case "GRAY_CARPET":
++            case "GREEN_CARPET":
++            case "LIGHT_BLUE_CARPET":
++            case "LIGHT_GRAY_CARPET":
++            case "LIME_CARPET":
++            case "MAGENTA_CARPET":
++            case "ORANGE_CARPET":
++            case "PINK_CARPET":
++            case "PURPLE_CARPET":
++            case "RED_CARPET":
++            case "WHITE_CARPET":
++            case "YELLOW_CARPET":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isSign() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isSign">
++            case "ACACIA_SIGN":
++            case "BIRCH_SIGN":
++            case "DARK_OAK_SIGN":
++            case "JUNGLE_SIGN":
++            case "OAK_SIGN":
++            case "SPRUCE_SIGN":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isWallSign() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isWallSign">
++            case "ACACIA_WALL_SIGN":
++            case "BIRCH_WALL_SIGN":
++            case "DARK_OAK_WALL_SIGN":
++            case "JUNGLE_WALL_SIGN":
++            case "OAK_WALL_SIGN":
++            case "SPRUCE_WALL_SIGN":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isAnySign() {
++        return isSign() || isWallSign();
++    }
++
++    public boolean isTerracotta() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isTerracotta">
++            case "BLACK_TERRACOTTA":
++            case "BLUE_TERRACOTTA":
++            case "BROWN_TERRACOTTA":
++            case "CYAN_TERRACOTTA":
++            case "GRAY_TERRACOTTA":
++            case "GREEN_TERRACOTTA":
++            case "LIGHT_BLUE_TERRACOTTA":
++            case "LIGHT_GRAY_TERRACOTTA":
++            case "LIME_TERRACOTTA":
++            case "MAGENTA_TERRACOTTA":
++            case "ORANGE_TERRACOTTA":
++            case "PINK_TERRACOTTA":
++            case "PURPLE_TERRACOTTA":
++            case "RED_TERRACOTTA":
++            case "WHITE_TERRACOTTA":
++            case "YELLOW_TERRACOTTA":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isGlazedTerracotta() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isGlazedTerracotta">
++            case "BLACK_GLAZED_TERRACOTTA":
++            case "BLUE_GLAZED_TERRACOTTA":
++            case "BROWN_GLAZED_TERRACOTTA":
++            case "CYAN_GLAZED_TERRACOTTA":
++            case "GRAY_GLAZED_TERRACOTTA":
++            case "GREEN_GLAZED_TERRACOTTA":
++            case "LIGHT_BLUE_GLAZED_TERRACOTTA":
++            case "LIGHT_GRAY_GLAZED_TERRACOTTA":
++            case "LIME_GLAZED_TERRACOTTA":
++            case "MAGENTA_GLAZED_TERRACOTTA":
++            case "ORANGE_GLAZED_TERRACOTTA":
++            case "PINK_GLAZED_TERRACOTTA":
++            case "PURPLE_GLAZED_TERRACOTTA":
++            case "RED_GLAZED_TERRACOTTA":
++            case "WHITE_GLAZED_TERRACOTTA":
++            case "YELLOW_GLAZED_TERRACOTTA":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isAnyTerracotta() {
++        return isTerracotta() || isAnyTerracotta();
++    }
++
++    public boolean isWoodenPressurePlate() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isWoodenPressurePlate">
++            case "ACACIA_PRESSURE_PLATE":
++            case "BIRCH_PRESSURE_PLATE":
++            case "DARK_OAK_PRESSURE_PLATE":
++            case "JUNGLE_PRESSURE_PLATE":
++            case "OAK_PRESSURE_PLATE":
++            case "SPRUCE_PRESSURE_PLATE":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isWeightedPressurePlate() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isWeightedPressurePlate">
++            case "HEAVY_WEIGHTED_PRESSURE_PLATE":
++            case "LIGHT_WEIGHTED_PRESSURE_PLATE":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isAnyPressurePlate() {
++        return isWoodenPressurePlate() || isWeightedPressurePlate() || this == STONE_PRESSURE_PLATE;
++    }
++
++    public boolean isBed() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isBed">
++            case "BLACK_BED":
++            case "BLUE_BED":
++            case "BROWN_BED":
++            case "CYAN_BED":
++            case "GRAY_BED":
++            case "GREEN_BED":
++            case "LIGHT_BLUE_BED":
++            case "LIGHT_GRAY_BED":
++            case "LIME_BED":
++            case "MAGENTA_BED":
++            case "ORANGE_BED":
++            case "PINK_BED":
++            case "PURPLE_BED":
++            case "RED_BED":
++            case "WHITE_BED":
++            case "YELLOW_BED":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isDye() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isDye">
++            case "BLACK_DYE":
++            case "BLUE_DYE":
++            case "BROWN_DYE":
++            case "CYAN_DYE":
++            case "GRAY_DYE":
++            case "GREEN_DYE":
++            case "LIGHT_BLUE_DYE":
++            case "LIGHT_GRAY_DYE":
++            case "LIME_DYE":
++            case "MAGENTA_DYE":
++            case "ORANGE_DYE":
++            case "PINK_DYE":
++            case "PURPLE_DYE":
++            case "RED_DYE":
++            case "WHITE_DYE":
++            case "YELLOW_DYE":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isShulkerBox() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isShulkerBox">
++            case "BLACK_SHULKER_BOX":
++            case "BLUE_SHULKER_BOX":
++            case "BROWN_SHULKER_BOX":
++            case "CYAN_SHULKER_BOX":
++            case "GRAY_SHULKER_BOX":
++            case "GREEN_SHULKER_BOX":
++            case "LIGHT_BLUE_SHULKER_BOX":
++            case "LIGHT_GRAY_SHULKER_BOX":
++            case "LIME_SHULKER_BOX":
++            case "MAGENTA_SHULKER_BOX":
++            case "ORANGE_SHULKER_BOX":
++            case "PINK_SHULKER_BOX":
++            case "PURPLE_SHULKER_BOX":
++            case "RED_SHULKER_BOX":
++            case "SHULKER_BOX":
++            case "WHITE_SHULKER_BOX":
++            case "YELLOW_SHULKER_BOX":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isWoodenButton() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isWoodenButton">
++            case "ACACIA_BUTTON":
++            case "BIRCH_BUTTON":
++            case "DARK_OAK_BUTTON":
++            case "JUNGLE_BUTTON":
++            case "OAK_BUTTON":
++            case "SPRUCE_BUTTON":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isButton() {
++        return isWoodenButton() || this == STONE_BUTTON;
++    }
++
++    public boolean isLeaves() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isLeaves">
++            case "ACACIA_LEAVES":
++            case "BIRCH_LEAVES":
++            case "DARK_OAK_LEAVES":
++            case "JUNGLE_LEAVES":
++            case "OAK_LEAVES":
++            case "SPRUCE_LEAVES":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isPlanks() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isPlanks">
++            case "ACACIA_PLANKS":
++            case "BIRCH_PLANKS":
++            case "DARK_OAK_PLANKS":
++            case "JUNGLE_PLANKS":
++            case "OAK_PLANKS":
++            case "SPRUCE_PLANKS":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isSapling() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isSapling">
++            case "ACACIA_SAPLING":
++            case "BAMBOO_SAPLING":
++            case "BIRCH_SAPLING":
++            case "DARK_OAK_SAPLING":
++            case "JUNGLE_SAPLING":
++            case "OAK_SAPLING":
++            case "SPRUCE_SAPLING":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isPottedSapling() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isPottedSapling">
++            case "POTTED_ACACIA_SAPLING":
++            case "POTTED_BIRCH_SAPLING":
++            case "POTTED_DARK_OAK_SAPLING":
++            case "POTTED_JUNGLE_SAPLING":
++            case "POTTED_OAK_SAPLING":
++            case "POTTED_SPRUCE_SAPLING":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isStairs() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isStairs">
++            case "ACACIA_STAIRS":
++            case "ANDESITE_STAIRS":
++            case "BIRCH_STAIRS":
++            case "BRICK_STAIRS":
++            case "COBBLESTONE_STAIRS":
++            case "DARK_OAK_STAIRS":
++            case "DARK_PRISMARINE_STAIRS":
++            case "DIORITE_STAIRS":
++            case "END_STONE_BRICK_STAIRS":
++            case "GRANITE_STAIRS":
++            case "JUNGLE_STAIRS":
++            case "MOSSY_COBBLESTONE_STAIRS":
++            case "MOSSY_STONE_BRICK_STAIRS":
++            case "NETHER_BRICK_STAIRS":
++            case "OAK_STAIRS":
++            case "POLISHED_ANDESITE_STAIRS":
++            case "POLISHED_DIORITE_STAIRS":
++            case "POLISHED_GRANITE_STAIRS":
++            case "PRISMARINE_BRICK_STAIRS":
++            case "PRISMARINE_STAIRS":
++            case "PURPUR_STAIRS":
++            case "QUARTZ_STAIRS":
++            case "RED_NETHER_BRICK_STAIRS":
++            case "RED_SANDSTONE_STAIRS":
++            case "SANDSTONE_STAIRS":
++            case "SMOOTH_QUARTZ_STAIRS":
++            case "SMOOTH_RED_SANDSTONE_STAIRS":
++            case "SMOOTH_SANDSTONE_STAIRS":
++            case "SPRUCE_STAIRS":
++            case "STONE_BRICK_STAIRS":
++            case "STONE_STAIRS":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isFence() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isFence">
++            case "ACACIA_FENCE":
++            case "BIRCH_FENCE":
++            case "DARK_OAK_FENCE":
++            case "JUNGLE_FENCE":
++            case "NETHER_BRICK_FENCE":
++            case "OAK_FENCE":
++            case "SPRUCE_FENCE":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isFenceGate() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isFenceGate">
++            case "ACACIA_FENCE_GATE":
++            case "BIRCH_FENCE_GATE":
++            case "DARK_OAK_FENCE_GATE":
++            case "JUNGLE_FENCE_GATE":
++            case "OAK_FENCE_GATE":
++            case "SPRUCE_FENCE_GATE":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isWoodenDoor() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isWoodenDoor">
++            case "ACACIA_DOOR":
++            case "BIRCH_DOOR":
++            case "DARK_OAK_DOOR":
++            case "JUNGLE_DOOR":
++            case "OAK_DOOR":
++            case "SPRUCE_DOOR":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isDoor() {
++        return isWoodenDoor() || this == IRON_DOOR;
++    }
++
++    public boolean isWoodenTrapdoor() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isWoodenTrapdoor">
++            case "ACACIA_TRAPDOOR":
++            case "BIRCH_TRAPDOOR":
++            case "DARK_OAK_TRAPDOOR":
++            case "JUNGLE_TRAPDOOR":
++            case "OAK_TRAPDOOR":
++            case "SPRUCE_TRAPDOOR":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isTrapdoor() {
++        return isWoodenTrapdoor() || this == IRON_TRAPDOOR;
 +    }
  }
 -- 
