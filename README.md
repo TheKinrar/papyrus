@@ -8,10 +8,10 @@ useful to me or a project I take part in.
 - **Blocks and items registration API** - see below (WIP)
 - CommandBlockEditEvent and Player#canAlwaysOpenCommandBlocks
 - New helper methods to Material
+- Hybrid online-offline mode with built-in authentication procedure for offline users
 
 ## Planned
 
-- Hybrid online-offline mode with built-in authentication procedure for offline users
 - **Entity registration API**
 
 ## Blocks and items registration API
