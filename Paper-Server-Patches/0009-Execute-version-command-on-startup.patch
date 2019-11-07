@@ -1,0 +1,32 @@
+From e5be27b41d59a863bfff373763d2003ada72d175 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Thu, 7 Nov 2019 11:25:24 +0000
+Subject: [PATCH] Execute /version command on startup
+
+
+diff --git a/src/main/java/net/minecraft/server/DedicatedServer.java b/src/main/java/net/minecraft/server/DedicatedServer.java
+index 096ba1b02..44d6e97af 100644
+--- a/src/main/java/net/minecraft/server/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/DedicatedServer.java
+@@ -31,6 +31,7 @@ import org.apache.logging.log4j.Logger;
+ import java.io.PrintStream;
+ import org.apache.logging.log4j.Level;
+ 
++import org.bukkit.Bukkit;
+ import org.bukkit.command.CommandSender;
+ import org.bukkit.craftbukkit.LoggerOutputStream;
+ import co.aikar.timings.MinecraftTimings; // Paper
+@@ -327,6 +328,10 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
+                 thread1.start();
+             }
+ 
++            // Papyrus start
++            execute(() -> server.getCommandMap().dispatch(server.getConsoleSender(), "bukkit:version"));
++            // Papyrus end
++
+             Items.AIR.a(CreativeModeTab.g, NonNullList.a());
+             return true;
+         }
+-- 
+2.23.0
+
