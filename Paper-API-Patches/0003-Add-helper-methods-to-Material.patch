@@ -1,14 +1,14 @@
-From cd849caee46008273f4b7bc08cb2c2c97ca9c558 Mon Sep 17 00:00:00 2001
+From 060fa23cd03e6663e9385d348ca2405cd5c1e000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 5 Oct 2019 17:51:24 +0100
 Subject: [PATCH] Add helper methods to Material
 
 
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index 27dae0235..87463d191 100644
+index 27dae0235..383dd5f51 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
-@@ -8049,4 +8049,644 @@ public class Material implements Keyed, Comparable<Material>, Serializable {
+@@ -8049,4 +8049,811 @@ public class Material implements Keyed, Comparable<Material>, Serializable {
              // </editor-fold>
          }
      }
@@ -651,6 +651,173 @@ index 27dae0235..87463d191 100644
 +
 +    public boolean isTrapdoor() {
 +        return isWoodenTrapdoor() || this == IRON_TRAPDOOR;
++    }
++
++    public boolean isHelmet() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isHelmet">
++            case "CHAINMAIL_HELMET":
++            case "DIAMOND_HELMET":
++            case "GOLDEN_HELMET":
++            case "IRON_HELMET":
++            case "LEATHER_HELMET":
++            case "TURTLE_HELMET":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isChestplate() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isChestplate">
++            case "CHAINMAIL_CHESTPLATE":
++            case "DIAMOND_CHESTPLATE":
++            case "GOLDEN_CHESTPLATE":
++            case "IRON_CHESTPLATE":
++            case "LEATHER_CHESTPLATE":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isLeggings() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isLeggings">
++            case "CHAINMAIL_LEGGINGS":
++            case "DIAMOND_LEGGINGS":
++            case "GOLDEN_LEGGINGS":
++            case "IRON_LEGGINGS":
++            case "LEATHER_LEGGINGS":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isBoots() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isBoots">
++            case "CHAINMAIL_BOOTS":
++            case "DIAMOND_BOOTS":
++            case "GOLDEN_BOOTS":
++            case "IRON_BOOTS":
++            case "LEATHER_BOOTS":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isPlayerArmor() {
++        return isHelmet() || isChestplate() || isLeggings() || isBoots();
++    }
++
++    public boolean isHorseArmor() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isHorseArmor">
++            case "DIAMOND_HORSE_ARMOR":
++            case "GOLDEN_HORSE_ARMOR":
++            case "IRON_HORSE_ARMOR":
++            case "LEATHER_HORSE_ARMOR":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isSword() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isSword">
++            case "DIAMOND_SWORD":
++            case "GOLDEN_SWORD":
++            case "IRON_SWORD":
++            case "STONE_SWORD":
++            case "WOODEN_SWORD":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isAxe() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isAxe">
++            case "DIAMOND_AXE":
++            case "GOLDEN_AXE":
++            case "IRON_AXE":
++            case "STONE_AXE":
++            case "WOODEN_AXE":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isPickaxe() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isPickaxe">
++            case "DIAMOND_PICKAXE":
++            case "GOLDEN_PICKAXE":
++            case "IRON_PICKAXE":
++            case "STONE_PICKAXE":
++            case "WOODEN_PICKAXE":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isHoe() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isHoe">
++            case "DIAMOND_HOE":
++            case "GOLDEN_HOE":
++            case "IRON_HOE":
++            case "STONE_HOE":
++            case "WOODEN_HOE":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isShovel() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isShovel">
++            case "DIAMOND_SHOVEL":
++            case "GOLDEN_SHOVEL":
++            case "IRON_SHOVEL":
++            case "STONE_SHOVEL":
++            case "WOODEN_SHOVEL":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isAnyPotion() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isAnyPotion">
++            case "LINGERING_POTION":
++            case "POTION":
++            case "SPLASH_POTION":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
 +    }
  }
 -- 
