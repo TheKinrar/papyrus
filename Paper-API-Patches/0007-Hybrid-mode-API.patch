@@ -1,4 +1,4 @@
-From 0046504fcd47b7c9e94d386e51ba050c42138934 Mon Sep 17 00:00:00 2001
+From 51602c79d07d35681f1d32385e156177cb4c0c9f Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
@@ -55,11 +55,13 @@ index 000000000..c23af6b53
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java
 new file mode 100644
-index 000000000..e42911517
+index 000000000..5c6fe886d
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java
-@@ -0,0 +1,10 @@
+@@ -0,0 +1,14 @@
 +package fr.thekinrar.papyrus.hybrid;
++
++import org.jetbrains.annotations.NotNull;
 +
 +public interface HybridProfile {
 +
@@ -68,6 +70,8 @@ index 000000000..e42911517
 +    boolean isLoggedIn();
 +
 +    void setLoggedIn(boolean loggedIn);
++
++    void setPassword(@NotNull String password);
 +}
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
 index a97dab131..3c2b47446 100644

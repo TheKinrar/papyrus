@@ -1,4 +1,4 @@
-From 8037975657d64c99f62dfb54d1259b8800a6625e Mon Sep 17 00:00:00 2001
+From 5c36cdb9964ff8bf76495b3de730d1e739ce0237 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -605,10 +605,10 @@ index 000000000..9023c2bf6
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
 new file mode 100644
-index 000000000..a672dbc22
+index 000000000..b685ad919
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
-@@ -0,0 +1,90 @@
+@@ -0,0 +1,101 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import fr.thekinrar.papyrus.PapyrusConfig;
@@ -696,6 +696,17 @@ index 000000000..a672dbc22
 +
 +            if(!loggedIn)
 +                sendUnauthenticatedMessage();
++        }
++    }
++
++    @Override
++    public void setPassword(String password) {
++        engine.setPassword(id, password);
++
++        if(registrationRequested) {
++            registrationRequested = false;
++            loginRequested = true;
++            sendUnauthenticatedMessage();
 +        }
 +    }
 +}
