@@ -1,9 +1,30 @@
-From ebbe99362208db344b37987d40fd8303578f6c56 Mon Sep 17 00:00:00 2001
+From cfbc1920b53761cfa060019103cdb134e44a849c Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
 
 
+diff --git a/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java b/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java
+index b151a13c1..476969465 100644
+--- a/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java
++++ b/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java
+@@ -7,6 +7,7 @@ import com.mojang.authlib.properties.Property;
+ import com.mojang.authlib.properties.PropertyMap;
+ import net.minecraft.server.MinecraftServer;
+ import net.minecraft.server.UserCache;
++import org.bukkit.Bukkit;
+ import org.bukkit.craftbukkit.entity.CraftPlayer;
+ import org.spigotmc.SpigotConfig;
+ 
+@@ -149,6 +150,8 @@ public class CraftPlayerProfile implements PlayerProfile {
+             boolean isOnlineMode = server.getOnlineMode() || (SpigotConfig.bungee && PaperConfig.bungeeOnlineMode);
+             if (isOnlineMode) {
+                 profile = lookupName ? userCache.getProfile(name) : userCache.getProfileIfCached(name);
++            } else if(Bukkit.getHybridMode()) {
++                profile = new GameProfile(server.server.getHybridEngine().getIdForOfflinePlayer(this.profile), name);
+             } else {
+                 // Make an OfflinePlayer using an offline mode UUID since the name has no profile
+                 profile = new GameProfile(UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8)), name);
 diff --git a/src/main/java/fr/thekinrar/papyrus/Metrics.java b/src/main/java/fr/thekinrar/papyrus/Metrics.java
 index 7c284c9b2..da9d15cec 100644
 --- a/src/main/java/fr/thekinrar/papyrus/Metrics.java
@@ -450,10 +471,10 @@ index 000000000..3eab2a83a
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
 new file mode 100644
-index 000000000..9023c2bf6
+index 000000000..20560b8c5
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
-@@ -0,0 +1,213 @@
+@@ -0,0 +1,248 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import com.mojang.authlib.GameProfile;
@@ -493,6 +514,8 @@ index 000000000..9023c2bf6
 +
 +    private final File file = new File("hybrid.dat");
 +
++    private final Map<String, String> knownNames = new HashMap<>();
++
 +    private final Map<UUID, UUID> onlineMapping = new HashMap<>();
 +    private final Map<String, UUID> offlineMapping = new HashMap<>();
 +
@@ -521,6 +544,12 @@ index 000000000..9023c2bf6
 +
 +        NBTTagCompound root = NBTCompressedStreamTools.readNBT(new DataInputStream(new FileInputStream(file)));
 +
++        knownNames.clear();
++        for(NBTBase base : root.getList("KnownNames", 10)) {
++            NBTTagCompound mapping = (NBTTagCompound) base;
++            knownNames.put(mapping.getString("Key"), mapping.getString("Value"));
++        }
++
 +        onlineMapping.clear();
 +        for(NBTBase base : root.getList("OnlineMapping", 10)) {
 +            NBTTagCompound mapping = (NBTTagCompound) base;
@@ -542,6 +571,15 @@ index 000000000..9023c2bf6
 +
 +    private void save() {
 +        NBTTagCompound root = new NBTTagCompound();
++
++        NBTTagList nbtKnownNames = new NBTTagList();
++        nbtKnownNames.addAll(knownNames.entrySet().stream().map(entry -> {
++            NBTTagCompound nbt = new NBTTagCompound();
++            nbt.setString("Key", entry.getKey());
++            nbt.setString("Value", entry.getValue());
++            return nbt;
++        }).collect(Collectors.toList()));
++        root.set("KnownNames", nbtKnownNames);
 +
 +        NBTTagList nbtOnlineMapping = new NBTTagList();
 +        nbtOnlineMapping.addAll(onlineMapping.entrySet().stream().map(entry -> {
@@ -585,7 +623,7 @@ index 000000000..9023c2bf6
 +
 +        // Unknown player: get, save, and return ID
 +        // Saving current ID ensures ID will not change if name changes
-+        UUID id = EntityHuman.getOfflineUUID(online.getName());
++        UUID id = getIdForOfflinePlayer(online);
 +        LOGGER.info("Saving new mapping for online player " + online.getName());
 +        onlineMapping.put(online.getId(), id);
 +        save();
@@ -593,14 +631,26 @@ index 000000000..9023c2bf6
 +    }
 +
 +    public UUID getIdForOfflinePlayer(GameProfile offline) {
-+        if(offlineMapping.containsKey(offline.getName())) {
++        String low = offline.getName().toLowerCase();
++
++        if(!knownNames.containsKey(low)) {
++            knownNames.put(low, offline.getName());
++            save();
++        }
++
++        String name = knownNames.get(low);
++
++        if(!name.equals(offline.getName()))
++            LOGGER.info("Player " + offline.getName() + " previously known as " + name + ", using the latter instead");
++
++        if(offlineMapping.containsKey(name)) {
 +            // This player has a forced ID, return it
-+            LOGGER.info("Player " + offline.getName() + " has a forced UUID mapping");
-+            return offlineMapping.get(offline.getName());
++            LOGGER.info("Player " + name + " has a forced offline UUID mapping");
++            return offlineMapping.get(name);
 +        }
 +
 +        // No forced ID: returning default offline ID
-+        return EntityHuman.getOfflineUUID(offline.getName());
++        return EntityHuman.getOfflineUUID(name);
 +    }
 +
 +    private byte[] hashPassword(String password) {
@@ -665,6 +715,12 @@ index 000000000..9023c2bf6
 +    @Override
 +    public void registerPasswordProvider(HybridPasswordProvider provider) {
 +        passwordProviders.add(provider);
++    }
++
++    @Override
++    public void importKnownNames(Map<String, String> importNames) {
++        knownNames.putAll(importNames);
++        save();
 +    }
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java

@@ -1,4 +1,4 @@
-From 51602c79d07d35681f1d32385e156177cb4c0c9f Mon Sep 17 00:00:00 2001
+From 642bb5fa0c95367caee06362fb993a809f1fb807 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
@@ -6,15 +6,16 @@ Subject: [PATCH] Hybrid mode API
 
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java
 new file mode 100644
-index 000000000..3ed8154f4
+index 000000000..02fe5b662
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java
-@@ -0,0 +1,27 @@
+@@ -0,0 +1,30 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import org.jetbrains.annotations.NotNull;
 +import org.jetbrains.annotations.Nullable;
 +
++import java.util.Map;
 +import java.util.UUID;
 +
 +public interface HybridEngine {
@@ -35,6 +36,8 @@ index 000000000..3ed8154f4
 +    void setOfflineMapping(@NotNull String name, @Nullable UUID id);
 +
 +    void registerPasswordProvider(@NotNull HybridPasswordProvider provider);
++
++    void importKnownNames(@NotNull Map<String, String> knownNames);
 +
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPasswordProvider.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPasswordProvider.java
