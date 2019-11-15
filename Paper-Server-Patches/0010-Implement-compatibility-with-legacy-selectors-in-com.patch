@@ -1,0 +1,164 @@
+From fd925ccceeaf1bd2ed00421e683659917b51c5fd Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Fri, 15 Nov 2019 00:15:24 +0000
+Subject: [PATCH] Implement compatibility with legacy selectors in command
+ blocks
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
+index 119602875..46ca283e1 100644
+--- a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
++++ b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
+@@ -1,18 +1,30 @@
+ package org.bukkit.craftbukkit.command;
+ 
+-import java.util.Map;
+-
+ import fr.thekinrar.papyrus.hybrid.CraftHybridEngine;
+-import org.bukkit.Server;
++import org.bukkit.Location;
++import org.bukkit.command.BlockCommandSender;
+ import org.bukkit.command.Command;
+ import org.bukkit.command.CommandSender;
+ import org.bukkit.command.SimpleCommandMap;
++import org.bukkit.craftbukkit.CraftServer;
+ import org.bukkit.craftbukkit.entity.CraftPlayer;
+ 
++import java.util.Comparator;
++import java.util.HashMap;
++import java.util.Map;
++import java.util.Random;
++import java.util.stream.Stream;
++
+ public class CraftCommandMap extends SimpleCommandMap {
+ 
+-    public CraftCommandMap(Server server) {
++    private CraftServer server;
++    private Random random;
++
++    public CraftCommandMap(CraftServer server) {
+         super(server);
++
++        this.server = server;
++        this.random = new Random();
+     }
+ 
+     public Map<String, Command> getKnownCommands() {
+@@ -33,4 +45,114 @@ public class CraftCommandMap extends SimpleCommandMap {
+ 
+         return super.hybridExecute(command, sender, commandLabel, args);
+     }
++
++    @Override
++    protected boolean parseSelectors(Command command, BlockCommandSender sender, String label, String[] args) {
++        return parseSelectors(command, sender, label, args, 0);
++    }
++
++    private boolean parseSelectors(Command command, BlockCommandSender sender, String label, String[] args, int start) {
++        for(int i = start; i < args.length; ++i) {
++            if(args[i].startsWith("@p")) {
++                CraftPlayer[] players = selectPlayers(sender.getBlock().getLocation(), args[i], true);
++
++                if(players != null) {
++                    if(players.length == 0)
++                        return true;
++
++                    args[i] = players[0].getName();
++                }
++            } else if(args[i].startsWith("@a")) {
++                CraftPlayer[] players = selectPlayers(sender.getBlock().getLocation(), args[i], false);
++
++                if(players != null) {
++                    if(players.length == 0)
++                        return true;
++
++                    boolean ret = true;
++                    for(CraftPlayer player : players) {
++                        String[] next = new String[args.length];
++                        System.arraycopy(args, 0, next, 0, i);
++                        next[i] = player.getName();
++                        System.arraycopy(args, i+1, next, i+1, args.length - (i+1));
++
++                        ret &= parseSelectors(command, sender, label, next, i + 1);
++                    }
++                    return ret;
++                }
++            } else if(args[i].startsWith("@r")) {
++                CraftPlayer[] players = selectPlayers(sender.getBlock().getLocation(), args[i], false);
++
++                if(players != null) {
++                    if(players.length == 0)
++                        return true;
++
++                    args[i] = players[random.nextInt(players.length)].getName();
++                }
++            }
++        }
++
++        return super.parseSelectors(command, sender, label, args);
++    }
++
++    private Map<Character, Double> parseSelectorArguments(String s) {
++        if(!s.startsWith("[") || !s.endsWith("]"))
++            return null;
++
++        String[] arr = s.substring(1, s.length() - 1).split(",");
++        Map<Character, Double> map = new HashMap<>(arr.length, 1);
++
++        for(String e : arr) {
++            if(e.length() < 3 || e.charAt(1) != '=')
++                return null;
++
++            try {
++                map.put(e.charAt(0), Double.valueOf(e.substring(2)));
++            } catch(NumberFormatException ignored) {
++                return null;
++            }
++        }
++
++        return map;
++    }
++
++    private CraftPlayer[] selectPlayers(Location loc, String selector, boolean sort) {
++        Stream<CraftPlayer> stream = server.getOnlinePlayers().stream()
++                .filter(player -> player.getWorld().equals(loc.getWorld()));
++
++        if(selector.length() > 2) {
++            Map<Character, Double> args = parseSelectorArguments(selector.substring(2));
++
++            if(args == null)
++                return null;
++
++            if(args.containsKey('x'))
++                loc.setX(args.get('x'));
++
++            if(args.containsKey('y'))
++                loc.setY(args.get('y'));
++
++            if(args.containsKey('z'))
++                loc.setZ(args.get('z'));
++
++            if(args.containsKey('m'))
++                stream = stream.filter(player -> player.getGameMode().getValue() == args.get('m'));
++
++            if(args.containsKey('r')) {
++                double r = args.get('r');
++                stream = stream.filter(player -> player.getLocation().distanceSquared(loc) <= r * r);
++            }
++
++            boolean hasC = args.containsKey('c');
++            if(hasC || sort)
++                stream = stream.sorted(Comparator.comparingDouble(p -> p.getLocation().distanceSquared(loc)));
++
++            if(hasC)
++                stream = stream.limit(args.get('c').longValue());
++        } else if(sort) {
++            stream = stream.sorted(Comparator.comparingDouble(p -> p.getLocation().distanceSquared(loc)));
++        }
++
++        return stream.toArray(CraftPlayer[]::new);
++    }
+ }
+-- 
+2.23.0
+

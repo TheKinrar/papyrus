@@ -1,0 +1,40 @@
+From 355accc486407adce201353054c0593573a7bac0 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Fri, 15 Nov 2019 00:12:51 +0000
+Subject: [PATCH] Add API for compatibility with legacy selectors in command
+ blocks
+
+
+diff --git a/src/main/java/org/bukkit/command/SimpleCommandMap.java b/src/main/java/org/bukkit/command/SimpleCommandMap.java
+index 54d3b25df..9e8bfdcf4 100644
+--- a/src/main/java/org/bukkit/command/SimpleCommandMap.java
++++ b/src/main/java/org/bukkit/command/SimpleCommandMap.java
+@@ -156,7 +156,10 @@ public class SimpleCommandMap implements CommandMap {
+         try {
+             try (co.aikar.timings.Timing ignored = target.timings.startTiming()) { // Paper - use try with resources
+             // Note: we don't return the result of target.execute as thats success / failure, we return handled (true) or not handled (false)
+-            hybridExecute(target, sender, sentCommandLabel, Arrays.copyOfRange(args, 1, args.length));
++            if(sender instanceof BlockCommandSender)
++                parseSelectors(target, (BlockCommandSender) sender, sentCommandLabel, Arrays.copyOfRange(args, 1, args.length));
++            else
++                hybridExecute(target, sender, sentCommandLabel, Arrays.copyOfRange(args, 1, args.length));
+             } // target.timings.stopTiming(); // Spigot // Paper
+         } catch (CommandException ex) {
+             server.getPluginManager().callEvent(new ServerExceptionEvent(new ServerCommandException(ex, target, sender, args))); // Paper
+@@ -173,6 +176,13 @@ public class SimpleCommandMap implements CommandMap {
+         return true;
+     }
+ 
++    /**
++     * Parse legacy-style selectors - only for compatibility with command blocks from old versions using Bukkit commands
++     */
++    protected boolean parseSelectors(@NotNull Command command, @NotNull BlockCommandSender sender, @NotNull String label, @NotNull String[] args) {
++        return hybridExecute(command, sender, label, args);
++    }
++
+     protected boolean hybridExecute(@NotNull Command command, @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+         return command.execute(sender, commandLabel, args);
+     }
+-- 
+2.23.0
+
