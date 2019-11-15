@@ -1,4 +1,4 @@
-From cfbc1920b53761cfa060019103cdb134e44a849c Mon Sep 17 00:00:00 2001
+From 697dab8116b138625a65c2a93b351ae486ff8147 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -471,10 +471,10 @@ index 000000000..3eab2a83a
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
 new file mode 100644
-index 000000000..20560b8c5
+index 000000000..555138aee
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
-@@ -0,0 +1,248 @@
+@@ -0,0 +1,258 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import com.mojang.authlib.GameProfile;
@@ -695,6 +695,16 @@ index 000000000..20560b8c5
 +
 +    boolean isRegistered(UUID id, String username) {
 +        return passwords.containsKey(id) || (username != null && passwordProviders.stream().anyMatch(provider -> provider.hasPassword(username)));
++    }
++
++    @Override
++    public UUID getIdForOfflinePlayer(String name) {
++        return getIdForOfflinePlayer(new GameProfile(null, name));
++    }
++
++    @Override
++    public UUID getIdForOnlinePlayer(String name, UUID id) {
++        return getIdForOnlinePlayer(new GameProfile(id, name));
 +    }
 +
 +    @Override

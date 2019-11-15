@@ -1,4 +1,4 @@
-From 642bb5fa0c95367caee06362fb993a809f1fb807 Mon Sep 17 00:00:00 2001
+From c7b175cd4ace6b2229f3ef8fd6e0c7d177b3b989 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
@@ -6,10 +6,10 @@ Subject: [PATCH] Hybrid mode API
 
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java
 new file mode 100644
-index 000000000..02fe5b662
+index 000000000..3d0495812
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java
-@@ -0,0 +1,30 @@
+@@ -0,0 +1,36 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import org.jetbrains.annotations.NotNull;
@@ -19,6 +19,12 @@ index 000000000..02fe5b662
 +import java.util.UUID;
 +
 +public interface HybridEngine {
++
++    @NotNull
++    UUID getIdForOfflinePlayer(@NotNull String name);
++
++    @NotNull
++    UUID getIdForOnlinePlayer(@NotNull String name, @NotNull UUID id);
 +
 +    /**
 +     * Gets the forced offline mapping for the specified username, if any.
