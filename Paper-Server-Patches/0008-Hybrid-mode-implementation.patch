@@ -1,4 +1,4 @@
-From 01ff9353e0b83d405464970d2e3b0372fd52788c Mon Sep 17 00:00:00 2001
+From 912102e2b32047367d657f7697ed09fcecba5997 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -52,7 +52,7 @@ index 7c284c9b2..da9d15cec 100644
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
-index 4168eafc0..8f4e116be 100644
+index 4168eafc0..204c01cdb 100644
 --- a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 @@ -1,34 +1,27 @@
@@ -105,7 +105,7 @@ index 4168eafc0..8f4e116be 100644
  
          version = getInt("config-version", 1);
          set("config-version", 1);
-@@ -190,4 +187,79 @@ public class PapyrusConfig {
+@@ -190,4 +187,84 @@ public class PapyrusConfig {
          config.addDefault(path, def);
          return config.getString(path, config.getString(path));
      }
@@ -158,6 +158,11 @@ index 4168eafc0..8f4e116be 100644
 +    public static String hybridSuccessfulLoginMessage = "&eSuccessfully logged in.";
 +    private static void hybridSuccessfulLoginMessage() {
 +        hybridSuccessfulLoginMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.successful-login", hybridSuccessfulLoginMessage));
++    }
++
++    public static String hybridAutoLoginMessage = "&eSuccessfully logged in (auto).";
++    private static void hybridAutoLoginMessage() {
++        hybridAutoLoginMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.auto-login", hybridAutoLoginMessage));
 +    }
 +
 +    public static String hybridFailedLoginMessage = "&cInvalid password.";
@@ -494,10 +499,10 @@ index 000000000..3eab2a83a
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
 new file mode 100644
-index 000000000..3375eec33
+index 000000000..a5421a811
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
-@@ -0,0 +1,315 @@
+@@ -0,0 +1,347 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import com.mojang.authlib.GameProfile;
@@ -547,6 +552,9 @@ index 000000000..3375eec33
 +    private final Map<UUID, String> authAddresses = new HashMap<>();
 +    private final Map<UUID, Long> authExpiration = new HashMap<>();
 +
++    private final Map<UUID, UUID> onlineIds = new HashMap<>();
++    private final Map<UUID, UUID> authOnlineIds = new HashMap<>();
++
 +    private final List<HybridPasswordProvider> passwordProviders = new ArrayList<>();
 +
 +    private final Map<UUID, CraftHybridProfile> profiles = new HashMap<>();
@@ -577,6 +585,7 @@ index 000000000..3375eec33
 +                    profile.tick();
 +            } else {
 +                profiles.remove(profile.getId());
++                onlineIds.remove(profile.getId());
 +            }
 +        }
 +    }
@@ -622,6 +631,12 @@ index 000000000..3375eec33
 +                authAddresses.put(id, mapping.getString("Address"));
 +                authExpiration.put(id, expiration);
 +            }
++        }
++
++        authOnlineIds.clear();
++        for(NBTBase base : root.getList("OnlineIds", 10)) {
++            NBTTagCompound mapping = (NBTTagCompound) base;
++            authOnlineIds.put(mapping.getUUID("Key"), mapping.getUUID("Value"));
 +        }
 +    }
 +
@@ -674,11 +689,25 @@ index 000000000..3375eec33
 +        }).collect(Collectors.toList()));
 +        root.set("AuthExpiration", nbtAuthExpiration);
 +
++        NBTTagList nbtOnlineIds = new NBTTagList();
++        nbtOnlineIds.addAll(authOnlineIds.entrySet().stream().map(entry -> {
++            NBTTagCompound nbt = new NBTTagCompound();
++            nbt.setUUID("Key", entry.getKey());
++            nbt.setUUID("Value", entry.getValue());
++            return nbt;
++        }).collect(Collectors.toList()));
++        root.set("OnlineIds", nbtOnlineIds);
++
 +        try {
 +            NBTCompressedStreamTools.writeNBT(root, new DataOutputStream(new FileOutputStream(file)));
 +        } catch (IOException e) {
 +            LOGGER.error("Error saving hybrid.dat", e);
 +        }
++    }
++
++    public void setOnlineId(UUID id, UUID online) {
++        onlineIds.put(id, online);
++        save();
 +    }
 +
 +    public UUID getIdForOnlinePlayer(GameProfile online) {
@@ -746,8 +775,16 @@ index 000000000..3375eec33
 +    }
 +
 +    public boolean canSkipAuthentication(UUID id, String address) {
-+        return authExpiration.containsKey(id) && authExpiration.get(id) >= System.currentTimeMillis()
-+                && address.equals(authAddresses.get(id));
++        return (authExpiration.containsKey(id) && authExpiration.get(id) >= System.currentTimeMillis()
++                && address.equals(authAddresses.get(id))) || (authOnlineIds.containsKey(id)
++                && onlineIds.containsKey(id) && onlineIds.get(id).equals(authOnlineIds.get(id)));
++    }
++
++    public void setKnownOnlineId(UUID id) {
++        if(onlineIds.containsKey(id)) {
++            authOnlineIds.put(id, onlineIds.get(id));
++            save();
++        }
 +    }
 +
 +    public boolean verifyPassword(UUID id, String username, String password) {
@@ -815,10 +852,10 @@ index 000000000..3375eec33
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
 new file mode 100644
-index 000000000..e9873cbfc
+index 000000000..a4c18a36a
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
-@@ -0,0 +1,167 @@
+@@ -0,0 +1,172 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import fr.thekinrar.papyrus.PapyrusConfig;
@@ -861,8 +898,11 @@ index 000000000..e9873cbfc
 +    public void authenticate(CraftPlayer player, InetSocketAddress address) {
 +        this.player = player;
 +
-+        if(address == null || !engine.canSkipAuthentication(id, address.getAddress().getHostAddress()))
++        if(address == null || !engine.canSkipAuthentication(id, address.getAddress().getHostAddress())) {
 +            logout();
++        } else {
++            player.sendMessage(PapyrusConfig.hybridAutoLoginMessage);
++        }
 +    }
 +
 +    public void logout() {
@@ -930,6 +970,7 @@ index 000000000..e9873cbfc
 +        player.getHandle().unauthenticated = false;
 +
 +        clearEffects();
++        engine.setKnownOnlineId(id);
 +    }
 +
 +    public boolean login(String password) {
@@ -938,6 +979,7 @@ index 000000000..e9873cbfc
 +            player.getHandle().unauthenticated = false;
 +
 +            clearEffects();
++            engine.setKnownOnlineId(id);
 +
 +            return true;
 +        }
@@ -1113,7 +1155,7 @@ index fa79d0bed..336c7a65d 100644
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/LoginListener.java b/src/main/java/net/minecraft/server/LoginListener.java
-index a8773037e..fe68b0c31 100644
+index a8773037e..2a92eb695 100644
 --- a/src/main/java/net/minecraft/server/LoginListener.java
 +++ b/src/main/java/net/minecraft/server/LoginListener.java
 @@ -4,13 +4,16 @@ import com.destroystokyo.paper.profile.CraftPlayerProfile;
@@ -1159,7 +1201,7 @@ index a8773037e..fe68b0c31 100644
              this.g = LoginListener.EnumProtocolState.KEY;
              this.networkManager.sendPacket(new PacketLoginOutEncryptionBegin("", this.server.getKeyPair().getPublic(), this.e));
          } else {
-@@ -248,7 +253,31 @@ public class LoginListener implements PacketLoginInListener {
+@@ -248,7 +253,32 @@ public class LoginListener implements PacketLoginInListener {
                                  return;
                              }
  
@@ -1167,6 +1209,7 @@ index a8773037e..fe68b0c31 100644
 +                            if(Bukkit.getHybridMode()) {
 +                                GameProfile onlineProfile = LoginListener.this.i;
 +                                UUID id = hybridEngine.getIdForOnlinePlayer(onlineProfile);
++                                hybridEngine.setOnlineId(id, onlineProfile.getId());
 +
 +                                hybridEngine.getLogger().info("Player " + onlineProfile.getName() + " is online with UUID " + onlineProfile.getId());
 +                                hybridEngine.getLogger().info("UUID of player " + onlineProfile.getName() + " is " + id);
@@ -1191,7 +1234,7 @@ index a8773037e..fe68b0c31 100644
                          } else if (LoginListener.this.server.isEmbeddedServer()) {
                              LoginListener.LOGGER.warn("Failed to verify username but will let them in anyway!");
                              LoginListener.this.i = LoginListener.this.a(gameprofile);
-@@ -340,7 +369,10 @@ public class LoginListener implements PacketLoginInListener {
+@@ -340,7 +370,10 @@ public class LoginListener implements PacketLoginInListener {
                                  }
                              }
                              // CraftBukkit end
