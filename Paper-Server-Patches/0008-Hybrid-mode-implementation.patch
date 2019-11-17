@@ -1,4 +1,4 @@
-From 912102e2b32047367d657f7697ed09fcecba5997 Mon Sep 17 00:00:00 2001
+From 0790fc651b4a5d51b67febea7bf8fae348892504 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -499,10 +499,10 @@ index 000000000..3eab2a83a
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
 new file mode 100644
-index 000000000..a5421a811
+index 000000000..3b4d7f430
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
-@@ -0,0 +1,347 @@
+@@ -0,0 +1,353 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import com.mojang.authlib.GameProfile;
@@ -774,10 +774,16 @@ index 000000000..a5421a811
 +        save();
 +    }
 +
-+    public boolean canSkipAuthentication(UUID id, String address) {
-+        return (authExpiration.containsKey(id) && authExpiration.get(id) >= System.currentTimeMillis()
-+                && address.equals(authAddresses.get(id))) || (authOnlineIds.containsKey(id)
-+                && onlineIds.containsKey(id) && onlineIds.get(id).equals(authOnlineIds.get(id)));
++    public String canSkipAuthentication(UUID id, String address) {
++        if(authExpiration.containsKey(id) && authExpiration.get(id) >= System.currentTimeMillis()
++                && address.equals(authAddresses.get(id))) {
++            return "stayed logged in";
++        } else if (authOnlineIds.containsKey(id)
++                && onlineIds.containsKey(id) && onlineIds.get(id).equals(authOnlineIds.get(id))) {
++            return "known online ID";
++        }
++
++        return null;
 +    }
 +
 +    public void setKnownOnlineId(UUID id) {
@@ -852,10 +858,10 @@ index 000000000..a5421a811
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
 new file mode 100644
-index 000000000..a4c18a36a
+index 000000000..72189e4f4
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
-@@ -0,0 +1,172 @@
+@@ -0,0 +1,184 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import fr.thekinrar.papyrus.PapyrusConfig;
@@ -878,6 +884,8 @@ index 000000000..a4c18a36a
 +    private long ticks;
 +    private long startTime;
 +
++    private boolean autoLogin;
++
 +    CraftHybridProfile(CraftHybridEngine engine, UUID id) {
 +        this.engine = engine;
 +        this.id = id;
@@ -898,10 +906,12 @@ index 000000000..a4c18a36a
 +    public void authenticate(CraftPlayer player, InetSocketAddress address) {
 +        this.player = player;
 +
-+        if(address == null || !engine.canSkipAuthentication(id, address.getAddress().getHostAddress())) {
++        String skip = address == null ? null : engine.canSkipAuthentication(id, address.getAddress().getHostAddress());
++        if(skip == null) {
 +            logout();
 +        } else {
-+            player.sendMessage(PapyrusConfig.hybridAutoLoginMessage);
++            engine.getLogger().info("Skipping login for " + player.getName() + " (" + skip + ")");
++            autoLogin = true;
 +        }
 +    }
 +
@@ -918,10 +928,14 @@ index 000000000..a4c18a36a
 +            }
 +
 +            player.getHandle().unauthenticated = true;
-+            sendUnauthenticatedMessage();
 +
 +            ticks = -1;
 +        }
++    }
++
++    public void connectionReady() {
++        if(autoLogin)
++            player.sendMessage(PapyrusConfig.hybridAutoLoginMessage);
 +    }
 +
 +    public void tick() {
@@ -971,6 +985,8 @@ index 000000000..a4c18a36a
 +
 +        clearEffects();
 +        engine.setKnownOnlineId(id);
++
++        engine.getLogger().info(player.getName() + " registered");
 +    }
 +
 +    public boolean login(String password) {
@@ -980,6 +996,8 @@ index 000000000..a4c18a36a
 +
 +            clearEffects();
 +            engine.setKnownOnlineId(id);
++
++            engine.getLogger().info(player.getName() + " logged in");
 +
 +            return true;
 +        }
@@ -1317,7 +1335,7 @@ index 3f5f45668..fc59d7eb8 100644
          CraftPlayer player = this.getPlayer();
  
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index e21f97d93..70d4e3916 100644
+index e21f97d93..170928c03 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
@@ -1358,7 +1376,15 @@ index e21f97d93..70d4e3916 100644
          this.d(entityplayer);
          entityplayer.getStatisticManager().c();
          entityplayer.B().a(entityplayer);
-@@ -1033,11 +1039,22 @@ public abstract class PlayerList {
+@@ -294,6 +300,7 @@ public abstract class PlayerList {
+             scoreboard.addPlayerToTeam(entityplayer.getName(), collideRuleTeam);
+         }
+         // Paper end
++        entityplayer.getBukkitEntity().getHybridProfile().connectionReady(); // Papyrus
+         // CraftBukkit - Moved from above, added world
+         PlayerList.LOGGER.info("{}[{}] logged in with entity id {} at ([{}]{}, {}, {})", entityplayer.getDisplayName().getString(), s1, entityplayer.getId(), entityplayer.world.worldData.getName(), entityplayer.locX, entityplayer.locY, entityplayer.locZ);
+     }
+@@ -1033,11 +1040,22 @@ public abstract class PlayerList {
          // entityplayer.triggerHealthUpdate();
          entityplayer.getBukkitEntity().updateScaledHealth(); // CraftBukkit - Update scaled health on respawn and worldchange
          entityplayer.playerConnection.sendPacket(new PacketPlayOutHeldItemSlot(entityplayer.inventory.itemInHandIndex));
