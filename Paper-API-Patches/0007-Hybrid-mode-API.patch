@@ -1,4 +1,4 @@
-From c7b175cd4ace6b2229f3ef8fd6e0c7d177b3b989 Mon Sep 17 00:00:00 2001
+From 35ee9d327434b27e8b298f635347530f454d1e2a Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
@@ -219,6 +219,21 @@ index 2ffbc3756..738409f6d 100644
      // Papyrus end
  
      // Spigot start
+diff --git a/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java b/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
+index d5f8bde3b..e4d7b9379 100644
+--- a/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
++++ b/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
+@@ -209,6 +209,10 @@ public class EntityPotionEffectEvent extends EntityEvent implements Cancellable
+          * When an illusion illager makes himself disappear.
+          */
+         ILLUSION,
++        /**
++         * When a user is requested to login or register. No event will be triggered for this cause.
++         */
++        HYBRID_AUTH,
+         /**
+          * When all effects are removed due to a bucket of milk.
+          */
 -- 
 2.23.0
 

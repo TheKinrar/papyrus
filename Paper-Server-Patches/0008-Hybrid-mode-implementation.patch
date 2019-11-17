@@ -1,9 +1,22 @@
-From 697dab8116b138625a65c2a93b351ae486ff8147 Mon Sep 17 00:00:00 2001
+From 9272a802d82514ce27d617892053c78025eae2be Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
 
 
+diff --git a/src/main/java/co/aikar/timings/MinecraftTimings.java b/src/main/java/co/aikar/timings/MinecraftTimings.java
+index c6818bc86..8511060dd 100644
+--- a/src/main/java/co/aikar/timings/MinecraftTimings.java
++++ b/src/main/java/co/aikar/timings/MinecraftTimings.java
+@@ -42,6 +42,8 @@ public final class MinecraftTimings {
+     public static final Timing antiXrayUpdateTimer = Timings.ofSafe("anti-xray - update");
+     public static final Timing antiXrayObfuscateTimer = Timings.ofSafe("anti-xray - obfuscate");
+ 
++    public static final Timing hybridEngineTimer = Timings.ofSafe("Hybrid Engine");
++
+     private static final Map<Class<?>, String> taskNameCache = new MapMaker().weakKeys().makeMap();
+ 
+     private MinecraftTimings() {}
 diff --git a/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java b/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java
 index b151a13c1..476969465 100644
 --- a/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java
@@ -39,7 +52,7 @@ index 7c284c9b2..da9d15cec 100644
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
-index 4168eafc0..996db2436 100644
+index 4168eafc0..8f4e116be 100644
 --- a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 @@ -1,34 +1,27 @@
@@ -92,7 +105,7 @@ index 4168eafc0..996db2436 100644
  
          version = getInt("config-version", 1);
          set("config-version", 1);
-@@ -190,4 +187,69 @@ public class PapyrusConfig {
+@@ -190,4 +187,79 @@ public class PapyrusConfig {
          config.addDefault(path, def);
          return config.getString(path, config.getString(path));
      }
@@ -105,6 +118,11 @@ index 4168eafc0..996db2436 100644
 +    public static boolean hybridEnableAuthentication = true;
 +    private static void hybridEnableAuthentication() {
 +        hybridEnableAuthentication = getBoolean("hybrid.authentication", hybridEnableAuthentication);
++    }
++
++    public static int hybridAuthTimeout = 60000;
++    private static void hybridAuthTimeout() {
++        hybridAuthTimeout = getInt("settings.authTimeout", hybridAuthTimeout);
 +    }
 +
 +    public static String hybridRequestLoginMessage = "&e&lPlease login using /login <password>";
@@ -160,6 +178,11 @@ index 4168eafc0..996db2436 100644
 +    public static String hybridSuccessfulChangepassMessage = "&eSuccessfully changed password.";
 +    private static void hybridSuccessfulChangepassMessage() {
 +        hybridSuccessfulChangepassMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.successful-changepass", hybridSuccessfulChangepassMessage));
++    }
++
++    public static String hybridAuthTimeoutMessage = "Login timed out";
++    private static void hybridAuthTimeoutMessage() {
++        hybridAuthTimeoutMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.auth-timeout", hybridAuthTimeoutMessage));
 +    }
  }
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java b/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java
@@ -471,10 +494,10 @@ index 000000000..3eab2a83a
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
 new file mode 100644
-index 000000000..555138aee
+index 000000000..646233059
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
-@@ -0,0 +1,258 @@
+@@ -0,0 +1,277 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import com.mojang.authlib.GameProfile;
@@ -523,6 +546,8 @@ index 000000000..555138aee
 +
 +    private final List<HybridPasswordProvider> passwordProviders = new ArrayList<>();
 +
++    private final Map<UUID, CraftHybridProfile> profiles = new HashMap<>();
++
 +    public CraftHybridEngine(CraftServer server) {
 +        this.server = server;
 +
@@ -534,8 +559,22 @@ index 000000000..555138aee
 +        }
 +    }
 +
++    public CraftServer getServer() {
++        return server;
++    }
++
 +    public Logger getLogger() {
 +        return LOGGER;
++    }
++
++    public void tick() {
++        for(CraftHybridProfile profile : profiles.values().toArray(new CraftHybridProfile[0])) {
++            if(profile.getPlayer().isOnline()) {
++                profile.tick();
++            } else {
++                profiles.remove(profile.getId());
++            }
++        }
 +    }
 +
 +    private void load() throws IOException {
@@ -690,7 +729,10 @@ index 000000000..555138aee
 +    }
 +
 +    public CraftHybridProfile getProfile(UUID id) {
-+        return new CraftHybridProfile(this, id);
++        if(!profiles.containsKey(id))
++            profiles.put(id, new CraftHybridProfile(this, id));
++
++        return profiles.get(id);
 +    }
 +
 +    boolean isRegistered(UUID id, String username) {
@@ -735,14 +777,17 @@ index 000000000..555138aee
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
 new file mode 100644
-index 000000000..eb0393e66
+index 000000000..b4dd18c5b
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
-@@ -0,0 +1,107 @@
+@@ -0,0 +1,156 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import fr.thekinrar.papyrus.PapyrusConfig;
 +import org.bukkit.craftbukkit.entity.CraftPlayer;
++import org.bukkit.event.entity.EntityPotionEffectEvent;
++import org.bukkit.potion.PotionEffect;
++import org.bukkit.potion.PotionEffectType;
 +
 +import java.util.UUID;
 +
@@ -753,6 +798,9 @@ index 000000000..eb0393e66
 +
 +    private CraftPlayer player;
 +    private boolean loginRequested, registrationRequested;
++
++    private long ticks;
++    private long startTime;
 +
 +    CraftHybridProfile(CraftHybridEngine engine, UUID id) {
 +        this.engine = engine;
@@ -765,6 +813,10 @@ index 000000000..eb0393e66
 +
 +    public UUID getId() {
 +        return id;
++    }
++
++    public CraftPlayer getPlayer() {
++        return player;
 +    }
 +
 +    public void authenticate(CraftPlayer player) {
@@ -787,7 +839,37 @@ index 000000000..eb0393e66
 +
 +            player.getHandle().unauthenticated = true;
 +            sendUnauthenticatedMessage();
++
++            ticks = -1;
 +        }
++    }
++
++    public void tick() {
++        ++ticks;
++
++        if(ticks == 0) {
++            startTime = System.currentTimeMillis();
++        } else if(System.currentTimeMillis() - startTime >= PapyrusConfig.hybridAuthTimeout) {
++            engine.getLogger().info(player.getName() + " auth timed out");
++            player.kickPlayer(PapyrusConfig.hybridAuthTimeoutMessage);
++            return;
++        }
++
++        if(ticks % 20 == 0) {
++            addEffect(PotionEffectType.BLINDNESS, 0);
++        }
++    }
++
++    private void addEffect(PotionEffectType type, int amplifier) {
++        player.addPotionEffect(
++                new PotionEffect(type, 100, amplifier, false, false, false),
++                true,
++                EntityPotionEffectEvent.Cause.HYBRID_AUTH
++        );
++    }
++
++    private void clearEffects() {
++        player.removePotionEffect(PotionEffectType.BLINDNESS, EntityPotionEffectEvent.Cause.HYBRID_AUTH);
 +    }
 +
 +    public void sendUnauthenticatedMessage() {
@@ -802,12 +884,16 @@ index 000000000..eb0393e66
 +
 +        registrationRequested = false;
 +        player.getHandle().unauthenticated = false;
++
++        clearEffects();
 +    }
 +
 +    public boolean login(String password) {
 +        if(engine.verifyPassword(id, player.getName(), password)) {
 +            loginRequested = false;
 +            player.getHandle().unauthenticated = false;
++
++            clearEffects();
 +
 +            return true;
 +        }
@@ -830,8 +916,13 @@ index 000000000..eb0393e66
 +        if(isRegistered()) {
 +            loginRequested = player.getHandle().unauthenticated = !loggedIn;
 +
-+            if(!loggedIn)
++            if(!loggedIn) {
 +                sendUnauthenticatedMessage();
++
++                ticks = -1;
++            } else {
++                clearEffects();
++            }
 +        }
 +    }
 +
@@ -901,6 +992,49 @@ index cd73cde8d..95888e7b5 100644
      public float b(IBlockData iblockdata) {
          float f = this.inventory.a(iblockdata);
  
+diff --git a/src/main/java/net/minecraft/server/EntityLiving.java b/src/main/java/net/minecraft/server/EntityLiving.java
+index f675ad2f5..a3d92c97a 100644
+--- a/src/main/java/net/minecraft/server/EntityLiving.java
++++ b/src/main/java/net/minecraft/server/EntityLiving.java
+@@ -860,9 +860,11 @@ public abstract class EntityLiving extends Entity {
+                 override = new MobEffect(mobeffect1).a(mobeffect);
+             }
+ 
+-            EntityPotionEffectEvent event = CraftEventFactory.callEntityPotionEffectChangeEvent(this, mobeffect1, mobeffect, cause, override);
+-            if (event.isCancelled()) {
+-                return false;
++            if(!cause.equals(EntityPotionEffectEvent.Cause.HYBRID_AUTH)) { // Papyrus
++                EntityPotionEffectEvent event = CraftEventFactory.callEntityPotionEffectChangeEvent(this, mobeffect1, mobeffect, cause, override);
++                if (event.isCancelled()) {
++                    return false;
++                }
+             }
+             // CraftBukkit end
+ 
+@@ -871,7 +873,7 @@ public abstract class EntityLiving extends Entity {
+                 this.a(mobeffect);
+                 return true;
+                 // CraftBukkit start
+-            } else if (event.isOverride()) {
++            } else if (override) { // Papyrus - read override directly
+                 mobeffect1.a(mobeffect);
+                 this.a(mobeffect1, true);
+                 // CraftBukkit end
+@@ -916,9 +918,11 @@ public abstract class EntityLiving extends Entity {
+             return null;
+         }
+ 
+-        EntityPotionEffectEvent event = CraftEventFactory.callEntityPotionEffectChangeEvent(this, effect, null, cause);
+-        if (event.isCancelled()) {
+-            return null;
++        if(!cause.equals(EntityPotionEffectEvent.Cause.HYBRID_AUTH)) {
++            EntityPotionEffectEvent event = CraftEventFactory.callEntityPotionEffectChangeEvent(this, effect, null, cause);
++            if (event.isCancelled()) {
++                return null;
++            }
+         }
+ 
+         return (MobEffect) this.effects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
 index fa79d0bed..336c7a65d 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
@@ -1020,6 +1154,23 @@ index a8773037e..fe68b0c31 100644
                              LoginListener.this.g = LoginListener.EnumProtocolState.READY_TO_ACCEPT;
                  }
          }
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 4f07ec1ec..4c35ca7cc 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -1177,6 +1177,12 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+         this.methodProfiler.exitEnter("levels");
+         Iterator iterator = this.getWorlds().iterator();
+ 
++        // Papyrus start
++        MinecraftTimings.hybridEngineTimer.startTiming();
++        this.server.getHybridEngine().tick();
++        MinecraftTimings.hybridEngineTimer.stopTiming();
++        // Papyrus end
++
+         // CraftBukkit start
+         // Run tasks that are waiting on processing
+         MinecraftTimings.processQueueTimer.startTiming(); // Spigot
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
 index 3f5f45668..fc59d7eb8 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
@@ -1199,6 +1350,40 @@ index 2fd69c0f9..119602875 100644
 +        return super.hybridExecute(command, sender, commandLabel, args);
 +    }
  }
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
+index b27fd44dc..fe868e45c 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
+@@ -383,13 +383,17 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+ 
+     @Override
+     public boolean addPotionEffect(PotionEffect effect, boolean force) {
++        return addPotionEffect(effect, force, EntityPotionEffectEvent.Cause.PLUGIN);
++    }
++
++    public boolean addPotionEffect(PotionEffect effect, boolean force, EntityPotionEffectEvent.Cause cause) {
+         if (hasPotionEffect(effect.getType())) {
+             if (!force) {
+                 return false;
+             }
+             removePotionEffect(effect.getType());
+         }
+-        getHandle().addEffect(new MobEffect(MobEffectList.fromId(effect.getType().getId()), effect.getDuration(), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles()), EntityPotionEffectEvent.Cause.PLUGIN);
++        getHandle().addEffect(new MobEffect(MobEffectList.fromId(effect.getType().getId()), effect.getDuration(), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles()), cause);
+         return true;
+     }
+ 
+@@ -418,6 +422,10 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+         getHandle().removeEffect(MobEffectList.fromId(type.getId()), EntityPotionEffectEvent.Cause.PLUGIN);
+     }
+ 
++    public void removePotionEffect(PotionEffectType type, EntityPotionEffectEvent.Cause cause) {
++        getHandle().removeEffect(MobEffectList.fromId(type.getId()), cause);
++    }
++
+     @Override
+     public Collection<PotionEffect> getActivePotionEffects() {
+         List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 index b183b540b..4030abfa8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
