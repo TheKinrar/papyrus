@@ -1,4 +1,4 @@
-From 9272a802d82514ce27d617892053c78025eae2be Mon Sep 17 00:00:00 2001
+From 29bb7270d88efe991f06e05fd97a5828c12fbbd6 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -494,10 +494,10 @@ index 000000000..3eab2a83a
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
 new file mode 100644
-index 000000000..646233059
+index 000000000..f80448dc1
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
-@@ -0,0 +1,277 @@
+@@ -0,0 +1,278 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import com.mojang.authlib.GameProfile;
@@ -570,7 +570,8 @@ index 000000000..646233059
 +    public void tick() {
 +        for(CraftHybridProfile profile : profiles.values().toArray(new CraftHybridProfile[0])) {
 +            if(profile.getPlayer().isOnline()) {
-+                profile.tick();
++                if(!profile.isLoggedIn())
++                    profile.tick();
 +            } else {
 +                profiles.remove(profile.getId());
 +            }
@@ -777,10 +778,10 @@ index 000000000..646233059
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
 new file mode 100644
-index 000000000..b4dd18c5b
+index 000000000..a80858535
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
-@@ -0,0 +1,156 @@
+@@ -0,0 +1,160 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import fr.thekinrar.papyrus.PapyrusConfig;
@@ -855,9 +856,11 @@ index 000000000..b4dd18c5b
 +            return;
 +        }
 +
-+        if(ticks % 20 == 0) {
++        if(ticks % 100 == 0)
++            sendUnauthenticatedMessage();
++
++        if(ticks % 20 == 0)
 +            addEffect(PotionEffectType.BLINDNESS, 0);
-+        }
 +    }
 +
 +    private void addEffect(PotionEffectType type, int amplifier) {
@@ -870,6 +873,8 @@ index 000000000..b4dd18c5b
 +
 +    private void clearEffects() {
 +        player.removePotionEffect(PotionEffectType.BLINDNESS, EntityPotionEffectEvent.Cause.HYBRID_AUTH);
++
++        engine.getServer().getServer().getPlayerList().updateReducedDebugInfo(player.getHandle());
 +    }
 +
 +    public void sendUnauthenticatedMessage() {
@@ -1225,20 +1230,62 @@ index 3f5f45668..fc59d7eb8 100644
          CraftPlayer player = this.getPlayer();
  
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index e21f97d93..7d7acd248 100644
+index e21f97d93..8495e0123 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -296,6 +296,10 @@ public abstract class PlayerList {
-         // Paper end
-         // CraftBukkit - Moved from above, added world
-         PlayerList.LOGGER.info("{}[{}] logged in with entity id {} at ([{}]{}, {}, {})", entityplayer.getDisplayName().getString(), s1, entityplayer.getId(), entityplayer.world.worldData.getName(), entityplayer.locX, entityplayer.locY, entityplayer.locZ);
-+
+@@ -110,6 +110,10 @@ public abstract class PlayerList {
+         }
+         // CraftBukkit end
+ 
 +        // Papyrus start
 +        entityplayer.getBukkitEntity().initHybridProfile();
 +        // Papyrus end
-     }
++
+         // Paper start - support PlayerInitialSpawnEvent
+         Location originalLoc = new Location(entityplayer.world.getWorld(), entityplayer.locX, entityplayer.locY, entityplayer.locZ, entityplayer.yaw, entityplayer.pitch);
+         com.destroystokyo.paper.event.player.PlayerInitialSpawnEvent event = new com.destroystokyo.paper.event.player.PlayerInitialSpawnEvent(entityplayer.getBukkitEntity(), originalLoc);
+@@ -155,7 +159,7 @@ public abstract class PlayerList {
  
-     public void sendScoreboard(ScoreboardServer scoreboardserver, EntityPlayer entityplayer) {
+         // CraftBukkit - getType()
+         // Spigot - view distance
+-        playerconnection.sendPacket(new PacketPlayOutLogin(entityplayer.getId(), entityplayer.playerInteractManager.getGameMode(), worlddata.isHardcore(), worldserver.worldProvider.getDimensionManager().getType(), this.getMaxPlayers(), worlddata.getType(), worldserver.spigotConfig.viewDistance, worldserver.getGameRules().getBoolean(GameRules.REDUCED_DEBUG_INFO)));
++        playerconnection.sendPacket(new PacketPlayOutLogin(entityplayer.getId(), entityplayer.playerInteractManager.getGameMode(), worlddata.isHardcore(), worldserver.worldProvider.getDimensionManager().getType(), this.getMaxPlayers(), worlddata.getType(), worldserver.spigotConfig.viewDistance, hasReducedDebugInfo(entityplayer)));
+         entityplayer.getBukkitEntity().sendSupportedChannels(); // CraftBukkit
+         playerconnection.sendPacket(new PacketPlayOutCustomPayload(PacketPlayOutCustomPayload.a, (new PacketDataSerializer(Unpooled.buffer())).a(this.getServer().getServerModName())));
+         playerconnection.sendPacket(new PacketPlayOutServerDifficulty(worlddata.getDifficulty(), worlddata.isDifficultyLocked()));
+@@ -163,7 +167,7 @@ public abstract class PlayerList {
+         playerconnection.sendPacket(new PacketPlayOutHeldItemSlot(entityplayer.inventory.itemInHandIndex));
+         playerconnection.sendPacket(new PacketPlayOutRecipeUpdate(this.server.getCraftingManager().b()));
+         playerconnection.sendPacket(new PacketPlayOutTags(this.server.getTagRegistry()));
+-        playerconnection.sendPacket(new PacketPlayOutEntityStatus(entityplayer, (byte) (worldserver.getGameRules().getBoolean(GameRules.REDUCED_DEBUG_INFO) ? 22 : 23))); // Paper - fix this rule not being initialized on the client
++        playerconnection.sendPacket(new PacketPlayOutEntityStatus(entityplayer, (byte) (hasReducedDebugInfo(entityplayer) ? 22 : 23))); // Paper - fix this rule not being initialized on the client
+         this.d(entityplayer);
+         entityplayer.getStatisticManager().c();
+         entityplayer.B().a(entityplayer);
+@@ -1033,11 +1037,22 @@ public abstract class PlayerList {
+         // entityplayer.triggerHealthUpdate();
+         entityplayer.getBukkitEntity().updateScaledHealth(); // CraftBukkit - Update scaled health on respawn and worldchange
+         entityplayer.playerConnection.sendPacket(new PacketPlayOutHeldItemSlot(entityplayer.inventory.itemInHandIndex));
++
++        updateReducedDebugInfo(entityplayer); // Papyrus
++    }
++
++    // Papyrus start
++    public void updateReducedDebugInfo(EntityPlayer entityplayer) {
+         // CraftBukkit start - from GameRules
+-        int i = entityplayer.world.getGameRules().getBoolean(GameRules.REDUCED_DEBUG_INFO) ? 22 : 23;
++        int i = hasReducedDebugInfo(entityplayer) ? 22 : 23;
+         entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityStatus(entityplayer, (byte) i));
+         // CraftBukkit end
+     }
++    // Papyrus end
++
++    private boolean hasReducedDebugInfo(EntityPlayer entityplayer) {
++        return entityplayer.world.getGameRules().getBoolean(GameRules.REDUCED_DEBUG_INFO) || entityplayer.unauthenticated;
++    }
+ 
+     public int getPlayerCount() {
+         return this.players.size();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 index 623adca03..7af42be8f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
