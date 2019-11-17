@@ -1,4 +1,4 @@
-From 0790fc651b4a5d51b67febea7bf8fae348892504 Mon Sep 17 00:00:00 2001
+From eb4df53fe67f932a12f15741dcfd20a420d724ef Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -1554,7 +1554,7 @@ index b27fd44dc..fe868e45c 100644
      public Collection<PotionEffect> getActivePotionEffects() {
          List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index b183b540b..564b90908 100644
+index b183b540b..7d4f8d905 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -7,6 +7,8 @@ import com.google.common.base.Preconditions;
@@ -1582,7 +1582,7 @@ index b183b540b..564b90908 100644
  
      public CraftPlayer(CraftServer server, EntityPlayer entity) {
          super(server, entity);
-@@ -2010,6 +2012,21 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2010,6 +2012,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
          MinecraftServer.getServer().getPlayerList().d(getHandle());
      }
@@ -1593,12 +1593,11 @@ index b183b540b..564b90908 100644
 +    }
 +
 +    public void initHybridProfile(InetSocketAddress address) {
-+        if(server.getHybridMode() && hybridProfile == null) {
++        if(hybridProfile == null) {
 +            hybridProfile = server.getHybridEngine().getProfile(getUniqueId());
 +
-+            hybridProfile.authenticate(this, address);
-+        } else {
-+            hybridProfile = null;
++            if(server.getHybridMode())
++                hybridProfile.authenticate(this, address);
 +        }
 +    }
      // Papyrus end
