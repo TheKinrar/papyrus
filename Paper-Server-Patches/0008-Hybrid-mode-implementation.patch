@@ -1,4 +1,4 @@
-From 29bb7270d88efe991f06e05fd97a5828c12fbbd6 Mon Sep 17 00:00:00 2001
+From 01ff9353e0b83d405464970d2e3b0372fd52788c Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -494,10 +494,10 @@ index 000000000..3eab2a83a
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
 new file mode 100644
-index 000000000..f80448dc1
+index 000000000..3375eec33
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
-@@ -0,0 +1,278 @@
+@@ -0,0 +1,315 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import com.mojang.authlib.GameProfile;
@@ -543,6 +543,9 @@ index 000000000..f80448dc1
 +    private final Map<String, UUID> offlineMapping = new HashMap<>();
 +
 +    private final Map<UUID, byte[]> passwords = new HashMap<>();
++
++    private final Map<UUID, String> authAddresses = new HashMap<>();
++    private final Map<UUID, Long> authExpiration = new HashMap<>();
 +
 +    private final List<HybridPasswordProvider> passwordProviders = new ArrayList<>();
 +
@@ -607,6 +610,19 @@ index 000000000..f80448dc1
 +            NBTTagCompound mapping = (NBTTagCompound) base;
 +            passwords.put(mapping.getUUID("Key"), mapping.getByteArray("Value"));
 +        }
++
++        authExpiration.clear();
++        authAddresses.clear();
++        for(NBTBase base : root.getList("AuthExpiration", 10)) {
++            NBTTagCompound mapping = (NBTTagCompound) base;
++            long expiration = mapping.getLong("Expiration");
++
++            if(expiration > System.currentTimeMillis()) {
++                UUID id = mapping.getUUID("Key");
++                authAddresses.put(id, mapping.getString("Address"));
++                authExpiration.put(id, expiration);
++            }
++        }
 +    }
 +
 +    private void save() {
@@ -647,6 +663,16 @@ index 000000000..f80448dc1
 +            return nbt;
 +        }).collect(Collectors.toList()));
 +        root.set("Passwords", nbtPasswords);
++
++        NBTTagList nbtAuthExpiration = new NBTTagList();
++        nbtAuthExpiration.addAll(authExpiration.entrySet().stream().map(entry -> {
++            NBTTagCompound nbt = new NBTTagCompound();
++            nbt.setUUID("Key", entry.getKey());
++            nbt.setLong("Expiration", entry.getValue());
++            nbt.setString("Address", authAddresses.get(entry.getKey()));
++            return nbt;
++        }).collect(Collectors.toList()));
++        root.set("AuthExpiration", nbtAuthExpiration);
 +
 +        try {
 +            NBTCompressedStreamTools.writeNBT(root, new DataOutputStream(new FileOutputStream(file)));
@@ -711,6 +737,17 @@ index 000000000..f80448dc1
 +    public void setPassword(UUID id, String password) {
 +        passwords.put(id, hashPassword(password));
 +        save();
++    }
++
++    public void setAuthExpiration(UUID id, String address, long expiration) {
++        authAddresses.put(id, address);
++        authExpiration.put(id, expiration);
++        save();
++    }
++
++    public boolean canSkipAuthentication(UUID id, String address) {
++        return authExpiration.containsKey(id) && authExpiration.get(id) >= System.currentTimeMillis()
++                && address.equals(authAddresses.get(id));
 +    }
 +
 +    public boolean verifyPassword(UUID id, String username, String password) {
@@ -778,10 +815,10 @@ index 000000000..f80448dc1
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
 new file mode 100644
-index 000000000..a80858535
+index 000000000..e9873cbfc
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
-@@ -0,0 +1,160 @@
+@@ -0,0 +1,167 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import fr.thekinrar.papyrus.PapyrusConfig;
@@ -790,6 +827,7 @@ index 000000000..a80858535
 +import org.bukkit.potion.PotionEffect;
 +import org.bukkit.potion.PotionEffectType;
 +
++import java.net.InetSocketAddress;
 +import java.util.UUID;
 +
 +public class CraftHybridProfile implements HybridProfile {
@@ -820,10 +858,11 @@ index 000000000..a80858535
 +        return player;
 +    }
 +
-+    public void authenticate(CraftPlayer player) {
++    public void authenticate(CraftPlayer player, InetSocketAddress address) {
 +        this.player = player;
 +
-+        logout();
++        if(address == null || !engine.canSkipAuthentication(id, address.getAddress().getHostAddress()))
++            logout();
 +    }
 +
 +    public void logout() {
@@ -940,6 +979,11 @@ index 000000000..a80858535
 +            loginRequested = true;
 +            sendUnauthenticatedMessage();
 +        }
++    }
++
++    @Override
++    public void stayLoggedIn(long millis) {
++        engine.setAuthExpiration(id, player.getAddress().getAddress().getHostAddress(), System.currentTimeMillis() + millis);
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/EntityHuman.java b/src/main/java/net/minecraft/server/EntityHuman.java
@@ -1230,21 +1274,30 @@ index 3f5f45668..fc59d7eb8 100644
          CraftPlayer player = this.getPlayer();
  
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index e21f97d93..8495e0123 100644
+index e21f97d93..70d4e3916 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -110,6 +110,10 @@ public abstract class PlayerList {
+@@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
+ import com.mojang.authlib.GameProfile;
+ import io.netty.buffer.Unpooled;
+ import java.io.File;
++import java.net.InetSocketAddress;
+ import java.net.SocketAddress;
+ import java.text.SimpleDateFormat;
+ import java.util.Collection;
+@@ -110,6 +111,11 @@ public abstract class PlayerList {
          }
          // CraftBukkit end
  
 +        // Papyrus start
-+        entityplayer.getBukkitEntity().initHybridProfile();
++        SocketAddress address = networkmanager.getSocketAddress();
++        entityplayer.getBukkitEntity().initHybridProfile(address instanceof InetSocketAddress ? (InetSocketAddress) address : null);
 +        // Papyrus end
 +
          // Paper start - support PlayerInitialSpawnEvent
          Location originalLoc = new Location(entityplayer.world.getWorld(), entityplayer.locX, entityplayer.locY, entityplayer.locZ, entityplayer.yaw, entityplayer.pitch);
          com.destroystokyo.paper.event.player.PlayerInitialSpawnEvent event = new com.destroystokyo.paper.event.player.PlayerInitialSpawnEvent(entityplayer.getBukkitEntity(), originalLoc);
-@@ -155,7 +159,7 @@ public abstract class PlayerList {
+@@ -155,7 +161,7 @@ public abstract class PlayerList {
  
          // CraftBukkit - getType()
          // Spigot - view distance
@@ -1253,7 +1306,7 @@ index e21f97d93..8495e0123 100644
          entityplayer.getBukkitEntity().sendSupportedChannels(); // CraftBukkit
          playerconnection.sendPacket(new PacketPlayOutCustomPayload(PacketPlayOutCustomPayload.a, (new PacketDataSerializer(Unpooled.buffer())).a(this.getServer().getServerModName())));
          playerconnection.sendPacket(new PacketPlayOutServerDifficulty(worlddata.getDifficulty(), worlddata.isDifficultyLocked()));
-@@ -163,7 +167,7 @@ public abstract class PlayerList {
+@@ -163,7 +169,7 @@ public abstract class PlayerList {
          playerconnection.sendPacket(new PacketPlayOutHeldItemSlot(entityplayer.inventory.itemInHandIndex));
          playerconnection.sendPacket(new PacketPlayOutRecipeUpdate(this.server.getCraftingManager().b()));
          playerconnection.sendPacket(new PacketPlayOutTags(this.server.getTagRegistry()));
@@ -1262,7 +1315,7 @@ index e21f97d93..8495e0123 100644
          this.d(entityplayer);
          entityplayer.getStatisticManager().c();
          entityplayer.B().a(entityplayer);
-@@ -1033,11 +1037,22 @@ public abstract class PlayerList {
+@@ -1033,11 +1039,22 @@ public abstract class PlayerList {
          // entityplayer.triggerHealthUpdate();
          entityplayer.getBukkitEntity().updateScaledHealth(); // CraftBukkit - Update scaled health on respawn and worldchange
          entityplayer.playerConnection.sendPacket(new PacketPlayOutHeldItemSlot(entityplayer.inventory.itemInHandIndex));
@@ -1432,7 +1485,7 @@ index b27fd44dc..fe868e45c 100644
      public Collection<PotionEffect> getActivePotionEffects() {
          List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index b183b540b..4030abfa8 100644
+index b183b540b..564b90908 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -7,6 +7,8 @@ import com.google.common.base.Preconditions;
@@ -1470,11 +1523,11 @@ index b183b540b..4030abfa8 100644
 +        return hybridProfile;
 +    }
 +
-+    public void initHybridProfile() {
++    public void initHybridProfile(InetSocketAddress address) {
 +        if(server.getHybridMode() && hybridProfile == null) {
 +            hybridProfile = server.getHybridEngine().getProfile(getUniqueId());
 +
-+            hybridProfile.authenticate(this);
++            hybridProfile.authenticate(this, address);
 +        } else {
 +            hybridProfile = null;
 +        }
