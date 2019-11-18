@@ -1,4 +1,4 @@
-From a6ce94d3c2959b1a0f4fb43f5e92e0b4ce095926 Mon Sep 17 00:00:00 2001
+From 429088a229b3997483299652eab257bf12df19fa Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -52,7 +52,7 @@ index 7c284c9b2..da9d15cec 100644
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
-index 4168eafc0..204c01cdb 100644
+index 4168eafc0..cd8c60996 100644
 --- a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 @@ -1,34 +1,27 @@
@@ -105,7 +105,7 @@ index 4168eafc0..204c01cdb 100644
  
          version = getInt("config-version", 1);
          set("config-version", 1);
-@@ -190,4 +187,84 @@ public class PapyrusConfig {
+@@ -190,4 +187,89 @@ public class PapyrusConfig {
          config.addDefault(path, def);
          return config.getString(path, config.getString(path));
      }
@@ -188,6 +188,11 @@ index 4168eafc0..204c01cdb 100644
 +    public static String hybridAuthTimeoutMessage = "Login timed out";
 +    private static void hybridAuthTimeoutMessage() {
 +        hybridAuthTimeoutMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.auth-timeout", hybridAuthTimeoutMessage));
++    }
++
++    public static String hybridDuplicateNameMessage = "A player with this name is already logged in";
++    private static void hybridDuplicateNameMessage() {
++        hybridDuplicateNameMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.duplicate-name", hybridDuplicateNameMessage));
 +    }
  }
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java b/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java
@@ -858,10 +863,10 @@ index 000000000..3b4d7f430
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
 new file mode 100644
-index 000000000..72189e4f4
+index 000000000..a6d33216b
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
-@@ -0,0 +1,184 @@
+@@ -0,0 +1,185 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import fr.thekinrar.papyrus.PapyrusConfig;
@@ -943,6 +948,7 @@ index 000000000..72189e4f4
 +
 +        if(ticks == 0) {
 +            startTime = System.currentTimeMillis();
++            engine.getServer().getHandle().updateClient(player.getHandle());
 +        } else if(System.currentTimeMillis() - startTime >= PapyrusConfig.hybridAuthTimeout) {
 +            engine.getLogger().info(player.getName() + " auth timed out");
 +            player.kickPlayer(PapyrusConfig.hybridAuthTimeoutMessage);
@@ -967,7 +973,7 @@ index 000000000..72189e4f4
 +    private void clearEffects() {
 +        player.removePotionEffect(PotionEffectType.BLINDNESS, EntityPotionEffectEvent.Cause.HYBRID_AUTH);
 +
-+        engine.getServer().getServer().getPlayerList().updateReducedDebugInfo(player.getHandle());
++        engine.getServer().getServer().getPlayerList().updateClient(player.getHandle());
 +    }
 +
 +    public void sendUnauthenticatedMessage() {
@@ -1337,18 +1343,21 @@ index 3f5f45668..fc59d7eb8 100644
          CraftPlayer player = this.getPlayer();
  
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index e21f97d93..a0345d523 100644
+index e21f97d93..e9671a09d 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
+@@ -5,8 +5,10 @@ import com.google.common.collect.Lists;
+ import com.google.common.collect.Maps;
+ import com.google.common.collect.Sets;
  import com.mojang.authlib.GameProfile;
++import fr.thekinrar.papyrus.PapyrusConfig;
  import io.netty.buffer.Unpooled;
  import java.io.File;
 +import java.net.InetSocketAddress;
  import java.net.SocketAddress;
  import java.text.SimpleDateFormat;
  import java.util.Collection;
-@@ -110,6 +111,13 @@ public abstract class PlayerList {
+@@ -110,6 +112,13 @@ public abstract class PlayerList {
          }
          // CraftBukkit end
  
@@ -1362,7 +1371,7 @@ index e21f97d93..a0345d523 100644
          // Paper start - support PlayerInitialSpawnEvent
          Location originalLoc = new Location(entityplayer.world.getWorld(), entityplayer.locX, entityplayer.locY, entityplayer.locZ, entityplayer.yaw, entityplayer.pitch);
          com.destroystokyo.paper.event.player.PlayerInitialSpawnEvent event = new com.destroystokyo.paper.event.player.PlayerInitialSpawnEvent(entityplayer.getBukkitEntity(), originalLoc);
-@@ -155,7 +163,7 @@ public abstract class PlayerList {
+@@ -155,7 +164,7 @@ public abstract class PlayerList {
  
          // CraftBukkit - getType()
          // Spigot - view distance
@@ -1371,7 +1380,7 @@ index e21f97d93..a0345d523 100644
          entityplayer.getBukkitEntity().sendSupportedChannels(); // CraftBukkit
          playerconnection.sendPacket(new PacketPlayOutCustomPayload(PacketPlayOutCustomPayload.a, (new PacketDataSerializer(Unpooled.buffer())).a(this.getServer().getServerModName())));
          playerconnection.sendPacket(new PacketPlayOutServerDifficulty(worlddata.getDifficulty(), worlddata.isDifficultyLocked()));
-@@ -163,7 +171,7 @@ public abstract class PlayerList {
+@@ -163,7 +172,7 @@ public abstract class PlayerList {
          playerconnection.sendPacket(new PacketPlayOutHeldItemSlot(entityplayer.inventory.itemInHandIndex));
          playerconnection.sendPacket(new PacketPlayOutRecipeUpdate(this.server.getCraftingManager().b()));
          playerconnection.sendPacket(new PacketPlayOutTags(this.server.getTagRegistry()));
@@ -1380,7 +1389,7 @@ index e21f97d93..a0345d523 100644
          this.d(entityplayer);
          entityplayer.getStatisticManager().c();
          entityplayer.B().a(entityplayer);
-@@ -294,6 +302,10 @@ public abstract class PlayerList {
+@@ -294,6 +303,10 @@ public abstract class PlayerList {
              scoreboard.addPlayerToTeam(entityplayer.getName(), collideRuleTeam);
          }
          // Paper end
@@ -1391,7 +1400,28 @@ index e21f97d93..a0345d523 100644
          // CraftBukkit - Moved from above, added world
          PlayerList.LOGGER.info("{}[{}] logged in with entity id {} at ([{}]{}, {}, {})", entityplayer.getDisplayName().getString(), s1, entityplayer.getId(), entityplayer.world.worldData.getName(), entityplayer.locX, entityplayer.locY, entityplayer.locZ);
      }
-@@ -1033,11 +1045,22 @@ public abstract class PlayerList {
+@@ -491,6 +504,11 @@ public abstract class PlayerList {
+         for (int i = 0; i < this.players.size(); ++i) {
+             entityplayer = (EntityPlayer) this.players.get(i);
+             if (entityplayer.getUniqueID().equals(uuid)) {
++                if(cserver.getHybridMode()) {
++                    loginlistener.disconnect(PapyrusConfig.hybridDuplicateNameMessage);
++                    return null;
++                }
++
+                 list.add(entityplayer);
+             }
+         }
+@@ -1029,15 +1047,30 @@ public abstract class PlayerList {
+     }
+ 
+     public void updateClient(EntityPlayer entityplayer) {
+-        entityplayer.updateInventory(entityplayer.defaultContainer);
++        // Papyrus start
++        if(entityplayer.unauthenticated)
++            entityplayer.updateInventory(new ContainerPlayer(new PlayerInventory(entityplayer), true, entityplayer));
++        else // Papyrus end
++            entityplayer.updateInventory(entityplayer.defaultContainer);
          // entityplayer.triggerHealthUpdate();
          entityplayer.getBukkitEntity().updateScaledHealth(); // CraftBukkit - Update scaled health on respawn and worldchange
          entityplayer.playerConnection.sendPacket(new PacketPlayOutHeldItemSlot(entityplayer.inventory.itemInHandIndex));
