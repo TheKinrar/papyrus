@@ -1,4 +1,4 @@
-From 429088a229b3997483299652eab257bf12df19fa Mon Sep 17 00:00:00 2001
+From f4ee50913693bd6f26acff9296175d9edfc09a79 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -52,10 +52,10 @@ index 7c284c9b2..da9d15cec 100644
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
-index 4168eafc0..cd8c60996 100644
+index 4168eafc0..6cbe48711 100644
 --- a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
-@@ -1,34 +1,27 @@
+@@ -1,34 +1,28 @@
  package fr.thekinrar.papyrus;
  
 -import co.aikar.timings.Timings;
@@ -85,6 +85,7 @@ index 4168eafc0..cd8c60996 100644
  import java.lang.reflect.Method;
  import java.lang.reflect.Modifier;
 -import java.nio.charset.StandardCharsets;
++import java.util.Collections;
  import java.util.HashMap;
  import java.util.List;
  import java.util.Map;
@@ -94,7 +95,7 @@ index 4168eafc0..cd8c60996 100644
  import java.util.regex.Pattern;
  
  public class PapyrusConfig {
-@@ -62,6 +55,10 @@ public class PapyrusConfig {
+@@ -62,6 +56,10 @@ public class PapyrusConfig {
          verbose = getBoolean("verbose", false);
  
          commands = new HashMap<String, Command>();
@@ -105,7 +106,7 @@ index 4168eafc0..cd8c60996 100644
  
          version = getInt("config-version", 1);
          set("config-version", 1);
-@@ -190,4 +187,89 @@ public class PapyrusConfig {
+@@ -190,4 +188,100 @@ public class PapyrusConfig {
          config.addDefault(path, def);
          return config.getString(path, config.getString(path));
      }
@@ -113,6 +114,12 @@ index 4168eafc0..cd8c60996 100644
 +    public static boolean hybridMode = false;
 +    private static void hybridMode() {
 +        hybridMode = getBoolean("settings.hybridMode", false);
++    }
++
++    public static List<String> hybridOfflineOnlyHosts = Collections.emptyList();
++    private static void hybridOfflineOnlyHosts()
++    {
++        hybridOfflineOnlyHosts = getList( "hybrid.offline-only-hosts", hybridOfflineOnlyHosts);
 +    }
 +
 +    public static boolean hybridEnableAuthentication = true;
@@ -193,6 +200,11 @@ index 4168eafc0..cd8c60996 100644
 +    public static String hybridDuplicateNameMessage = "A player with this name is already logged in";
 +    private static void hybridDuplicateNameMessage() {
 +        hybridDuplicateNameMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.duplicate-name", hybridDuplicateNameMessage));
++    }
++
++    public static String hybridInvalidSessionWorkaroundMessage = "&eYour Minecraft client is using an invalid session; authentication with Mojang servers has been temporarily disabled for you.";
++    private static void hybridInvalidSessionWorkaroundMessage() {
++        hybridInvalidSessionWorkaroundMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.invalid-session-workaround", hybridInvalidSessionWorkaroundMessage));
 +    }
  }
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java b/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java
@@ -504,10 +516,10 @@ index 000000000..3eab2a83a
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
 new file mode 100644
-index 000000000..3b4d7f430
+index 000000000..1618871c0
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
-@@ -0,0 +1,353 @@
+@@ -0,0 +1,385 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import com.mojang.authlib.GameProfile;
@@ -517,6 +529,7 @@ index 000000000..3b4d7f430
 +import net.minecraft.server.NBTTagCompound;
 +import net.minecraft.server.NBTTagList;
 +import org.apache.commons.codec.digest.DigestUtils;
++import org.apache.commons.lang3.tuple.Pair;
 +import org.apache.logging.log4j.LogManager;
 +import org.apache.logging.log4j.Logger;
 +import org.bukkit.craftbukkit.CraftServer;
@@ -527,14 +540,19 @@ index 000000000..3b4d7f430
 +import java.io.FileInputStream;
 +import java.io.FileOutputStream;
 +import java.io.IOException;
++import java.net.InetAddress;
++import java.net.InetSocketAddress;
++import java.net.SocketAddress;
 +import java.nio.charset.StandardCharsets;
 +import java.security.MessageDigest;
 +import java.security.SecureRandom;
 +import java.util.ArrayList;
 +import java.util.Arrays;
 +import java.util.HashMap;
++import java.util.HashSet;
 +import java.util.List;
 +import java.util.Map;
++import java.util.Set;
 +import java.util.UUID;
 +import java.util.stream.Collectors;
 +
@@ -563,6 +581,9 @@ index 000000000..3b4d7f430
 +    private final List<HybridPasswordProvider> passwordProviders = new ArrayList<>();
 +
 +    private final Map<UUID, CraftHybridProfile> profiles = new HashMap<>();
++
++    private final Set<Pair<InetAddress, String>> invalidSessions = new HashSet<>();
++    private final Set<UUID> invalidSessionWorkarounds = new HashSet<>();
 +
 +    public CraftHybridEngine(CraftServer server) {
 +        this.server = server;
@@ -825,6 +846,29 @@ index 000000000..3b4d7f430
 +        return passwords.containsKey(id) || (username != null && passwordProviders.stream().anyMatch(provider -> provider.hasPassword(username)));
 +    }
 +
++    private InetAddress resolveInetAddress(SocketAddress address) {
++        if(address instanceof InetSocketAddress)
++            return ((InetSocketAddress) address).getAddress();
++
++        return null;
++    }
++
++    public void setInvalidSession(SocketAddress address, String name) {
++        invalidSessions.add(Pair.of(resolveInetAddress(address), name));
++    }
++
++    public boolean hasInvalidSession(SocketAddress address, String name) {
++        return invalidSessions.contains(Pair.of(resolveInetAddress(address), name));
++    }
++
++    public void setInvalidSessionWorkaround(UUID id) {
++        invalidSessionWorkarounds.add(id);
++    }
++
++    public boolean hasInvalidSessionWorkaround(UUID id) {
++        return invalidSessionWorkarounds.contains(id);
++    }
++
 +    @Override
 +    public UUID getIdForOfflinePlayer(String name) {
 +        return getIdForOfflinePlayer(new GameProfile(null, name));
@@ -863,10 +907,10 @@ index 000000000..3b4d7f430
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
 new file mode 100644
-index 000000000..a6d33216b
+index 000000000..b8372c0a4
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
-@@ -0,0 +1,185 @@
+@@ -0,0 +1,188 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import fr.thekinrar.papyrus.PapyrusConfig;
@@ -974,6 +1018,9 @@ index 000000000..a6d33216b
 +        player.removePotionEffect(PotionEffectType.BLINDNESS, EntityPotionEffectEvent.Cause.HYBRID_AUTH);
 +
 +        engine.getServer().getServer().getPlayerList().updateClient(player.getHandle());
++
++        if(engine.hasInvalidSessionWorkaround(id))
++            player.sendMessage(PapyrusConfig.hybridInvalidSessionWorkaroundMessage);
 +    }
 +
 +    public void sendUnauthenticatedMessage() {
@@ -1179,15 +1226,16 @@ index fa79d0bed..336c7a65d 100644
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/LoginListener.java b/src/main/java/net/minecraft/server/LoginListener.java
-index a8773037e..2a92eb695 100644
+index a8773037e..9dae68bb2 100644
 --- a/src/main/java/net/minecraft/server/LoginListener.java
 +++ b/src/main/java/net/minecraft/server/LoginListener.java
-@@ -4,13 +4,16 @@ import com.destroystokyo.paper.profile.CraftPlayerProfile;
+@@ -4,13 +4,17 @@ import com.destroystokyo.paper.profile.CraftPlayerProfile;
  import com.destroystokyo.paper.profile.PlayerProfile;
  import com.mojang.authlib.GameProfile;
  import com.mojang.authlib.exceptions.AuthenticationUnavailableException;
 -import io.netty.channel.ChannelFuture;
 +import com.mojang.authlib.properties.Property;
++import fr.thekinrar.papyrus.PapyrusConfig;
 +import fr.thekinrar.papyrus.hybrid.CraftHybridEngine;
 +
  import java.math.BigInteger;
@@ -1200,7 +1248,7 @@ index a8773037e..2a92eb695 100644
  import java.util.Random;
  import java.util.UUID;
  import java.util.concurrent.atomic.AtomicInteger;
-@@ -34,6 +37,7 @@ public class LoginListener implements PacketLoginInListener {
+@@ -34,6 +38,7 @@ public class LoginListener implements PacketLoginInListener {
      private static final Random random = new Random();
      private final byte[] e = new byte[4];
      private final MinecraftServer server;
@@ -1208,7 +1256,13 @@ index a8773037e..2a92eb695 100644
      public final NetworkManager networkManager;
      private LoginListener.EnumProtocolState g; public final LoginListener.EnumProtocolState getLoginState() { return this.g; }; // Paper - OBFHELPER
      private int h;
-@@ -48,6 +52,7 @@ public class LoginListener implements PacketLoginInListener {
+@@ -43,11 +48,13 @@ public class LoginListener implements PacketLoginInListener {
+     private EntityPlayer l;
+     public String hostname = ""; // CraftBukkit - add field
+     private int velocityLoginMessageId = -1; // Paper - Velocity support
++    private boolean invalidSession;
+ 
+     public LoginListener(MinecraftServer minecraftserver, NetworkManager networkmanager) {
          this.g = LoginListener.EnumProtocolState.HELLO;
          this.j = "";
          this.server = minecraftserver;
@@ -1216,16 +1270,61 @@ index a8773037e..2a92eb695 100644
          this.networkManager = networkmanager;
          LoginListener.random.nextBytes(this.e);
      }
-@@ -190,7 +195,7 @@ public class LoginListener implements PacketLoginInListener {
+@@ -120,6 +127,12 @@ public class LoginListener implements PacketLoginInListener {
+     // Spigot start
+     public void initUUID()
+     {
++        if(Bukkit.getHybridMode()) {
++            this.i = new GameProfile(hybridEngine.getIdForOfflinePlayer(this.i), this.i.getName());
++
++            if(invalidSession)
++                hybridEngine.setInvalidSessionWorkaround(i.getId());
++        } else {
+         UUID uuid;
+         if ( networkManager.spoofedUUID != null )
+         {
+@@ -130,6 +143,7 @@ public class LoginListener implements PacketLoginInListener {
+         }
+ 
+         this.i = new GameProfile( uuid, this.i.getName() );
++        }
+ 
+         if (networkManager.spoofedProfile != null)
+         {
+@@ -190,7 +204,20 @@ public class LoginListener implements PacketLoginInListener {
      public void a(PacketLoginInStart packetlogininstart) {
          Validate.validState(this.g == LoginListener.EnumProtocolState.HELLO, "Unexpected hello packet", new Object[0]);
          this.i = packetlogininstart.b();
 -        if (this.server.getOnlineMode() && !this.networkManager.isLocal()) {
-+        if ((this.server.getOnlineMode() || Bukkit.getHybridMode()) && !this.networkManager.isLocal()) {
++
++        boolean encryption = this.server.getOnlineMode();
++        if(!encryption && this.server.server.getHybridMode()) {
++            if(PapyrusConfig.hybridOfflineOnlyHosts.contains(this.networkManager.virtualHost.getHostString())) {
++                hybridEngine.getLogger().info("Forcing offline mode for player " + getGameProfile().getName() + " (offline host: " + this.networkManager.virtualHost.getHostString() + ")");
++            } else if(hybridEngine.hasInvalidSession(networkManager.getSocketAddress(), getGameProfile().getName())) {
++                hybridEngine.getLogger().info("Forcing offline mode for player " + getGameProfile().getName() + " (invalid session)");
++                invalidSession = true;
++            } else {
++                encryption = true;
++            }
++        }
++
++        if (encryption) {
              this.g = LoginListener.EnumProtocolState.KEY;
              this.networkManager.sendPacket(new PacketLoginOutEncryptionBegin("", this.server.getKeyPair().getPublic(), this.e));
          } else {
-@@ -248,7 +253,32 @@ public class LoginListener implements PacketLoginInListener {
+@@ -209,6 +236,10 @@ public class LoginListener implements PacketLoginInListener {
+                 public void run() {
+                     try {
+                         initUUID();
++
++                        hybridEngine.getLogger().info("Player " + i.getName() + " is offline");
++                        hybridEngine.getLogger().info("UUID of player " + i.getName() + " is " + i.getId());
++
+                         new LoginHandler().fireEvents();
+                     } catch (Exception ex) {
+                         disconnect("Failed to verify username!");
+@@ -248,7 +279,32 @@ public class LoginListener implements PacketLoginInListener {
                                  return;
                              }
  
@@ -1258,7 +1357,7 @@ index a8773037e..2a92eb695 100644
                          } else if (LoginListener.this.server.isEmbeddedServer()) {
                              LoginListener.LOGGER.warn("Failed to verify username but will let them in anyway!");
                              LoginListener.this.i = LoginListener.this.a(gameprofile);
-@@ -340,7 +370,10 @@ public class LoginListener implements PacketLoginInListener {
+@@ -340,7 +396,10 @@ public class LoginListener implements PacketLoginInListener {
                                  }
                              }
                              // CraftBukkit end
@@ -1289,6 +1388,42 @@ index 4f07ec1ec..c166a9358 100644
          // CraftBukkit start
          // Run tasks that are waiting on processing
          MinecraftTimings.processQueueTimer.startTiming(); // Spigot
+diff --git a/src/main/java/net/minecraft/server/NetworkManager.java b/src/main/java/net/minecraft/server/NetworkManager.java
+index 96a785af2..715707316 100644
+--- a/src/main/java/net/minecraft/server/NetworkManager.java
++++ b/src/main/java/net/minecraft/server/NetworkManager.java
+@@ -2,6 +2,7 @@ package net.minecraft.server;
+ 
+ import com.google.common.collect.Queues;
+ import com.google.common.util.concurrent.ThreadFactoryBuilder;
++import fr.thekinrar.papyrus.hybrid.CraftHybridEngine;
+ import io.netty.channel.Channel;
+ import io.netty.channel.ChannelFuture;
+ import io.netty.channel.ChannelFutureListener;
+@@ -25,6 +26,7 @@ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ import org.apache.logging.log4j.Marker;
+ import org.apache.logging.log4j.MarkerManager;
++import org.bukkit.Bukkit;
+ 
+ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
+ 
+@@ -373,6 +375,15 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
+                             final com.mojang.authlib.GameProfile profile = loginListener.getGameProfile(); /* Should be non-null at this stage */
+                             new com.destroystokyo.paper.event.player.PlayerConnectionCloseEvent(profile.getId(), profile.getName(),
+                                 ((java.net.InetSocketAddress)socketAddress).getAddress(), false).callEvent();
++                            // Papyrus start
++                            break;
++                        case KEY:
++                            if(Bukkit.getHybridMode()) {
++                                CraftHybridEngine engine = MinecraftServer.getServer().server.getHybridEngine();
++                                engine.getLogger().info("Player " + loginListener.getGameProfile().getName() + " seems to have invalid session");
++                                engine.setInvalidSession(this.getSocketAddress(), loginListener.getGameProfile().getName());
++                            }
++                            // Papyrus end
+                     }
+                 }
+                 // Paper end
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
 index 3f5f45668..fc59d7eb8 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
