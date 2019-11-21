@@ -1,0 +1,27 @@
+From 28087ac7a6a690fee97da3543cd2c95767a96991 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Thu, 21 Nov 2019 11:58:39 +0000
+Subject: [PATCH] Add Block#getCenter
+
+
+diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
+index 038de5a64..8167669d4 100644
+--- a/src/main/java/org/bukkit/block/Block.java
++++ b/src/main/java/org/bukkit/block/Block.java
+@@ -227,6 +227,13 @@ public interface Block extends Metadatable {
+     @NotNull
+     Location getLocation();
+ 
++    /**
++     * Gets the Location of the center of the block
++     * @return Location of center of block
++     */
++    @NotNull
++    Location getCenter();
++
+     /**
+      * Stores the location of the block in the provided Location object.
+      * <p>
+-- 
+2.23.0
+

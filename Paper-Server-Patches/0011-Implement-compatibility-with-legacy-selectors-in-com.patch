@@ -1,4 +1,4 @@
-From fd925ccceeaf1bd2ed00421e683659917b51c5fd Mon Sep 17 00:00:00 2001
+From c02b5154a58273cee50da3d955b16816d1ac5ba2 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 15 Nov 2019 00:15:24 +0000
 Subject: [PATCH] Implement compatibility with legacy selectors in command
@@ -6,7 +6,7 @@ Subject: [PATCH] Implement compatibility with legacy selectors in command
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
-index 119602875..46ca283e1 100644
+index 119602875..1a2bc52c9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
 +++ b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
 @@ -1,18 +1,30 @@
@@ -57,7 +57,7 @@ index 119602875..46ca283e1 100644
 +    private boolean parseSelectors(Command command, BlockCommandSender sender, String label, String[] args, int start) {
 +        for(int i = start; i < args.length; ++i) {
 +            if(args[i].startsWith("@p")) {
-+                CraftPlayer[] players = selectPlayers(sender.getBlock().getLocation(), args[i], true);
++                CraftPlayer[] players = selectPlayers(sender.getBlock().getCenter(), args[i], true);
 +
 +                if(players != null) {
 +                    if(players.length == 0)
@@ -66,7 +66,7 @@ index 119602875..46ca283e1 100644
 +                    args[i] = players[0].getName();
 +                }
 +            } else if(args[i].startsWith("@a")) {
-+                CraftPlayer[] players = selectPlayers(sender.getBlock().getLocation(), args[i], false);
++                CraftPlayer[] players = selectPlayers(sender.getBlock().getCenter(), args[i], false);
 +
 +                if(players != null) {
 +                    if(players.length == 0)
@@ -84,7 +84,7 @@ index 119602875..46ca283e1 100644
 +                    return ret;
 +                }
 +            } else if(args[i].startsWith("@r")) {
-+                CraftPlayer[] players = selectPlayers(sender.getBlock().getLocation(), args[i], false);
++                CraftPlayer[] players = selectPlayers(sender.getBlock().getCenter(), args[i], false);
 +
 +                if(players != null) {
 +                    if(players.length == 0)
@@ -130,13 +130,13 @@ index 119602875..46ca283e1 100644
 +                return null;
 +
 +            if(args.containsKey('x'))
-+                loc.setX(args.get('x'));
++                loc.setX(args.get('x') + 0.5);
 +
 +            if(args.containsKey('y'))
-+                loc.setY(args.get('y'));
++                loc.setY(args.get('y') + 0.5);
 +
 +            if(args.containsKey('z'))
-+                loc.setZ(args.get('z'));
++                loc.setZ(args.get('z') + 0.5);
 +
 +            if(args.containsKey('m'))
 +                stream = stream.filter(player -> player.getGameMode().getValue() == args.get('m'));
