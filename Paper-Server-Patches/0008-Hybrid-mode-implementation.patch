@@ -1,4 +1,4 @@
-From f4ee50913693bd6f26acff9296175d9edfc09a79 Mon Sep 17 00:00:00 2001
+From f7abba0ef097d2ef168e7d4edd77e0f668a4b321 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -1226,7 +1226,7 @@ index fa79d0bed..336c7a65d 100644
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/LoginListener.java b/src/main/java/net/minecraft/server/LoginListener.java
-index a8773037e..9dae68bb2 100644
+index a8773037e..f71e0acb0 100644
 --- a/src/main/java/net/minecraft/server/LoginListener.java
 +++ b/src/main/java/net/minecraft/server/LoginListener.java
 @@ -4,13 +4,17 @@ import com.destroystokyo.paper.profile.CraftPlayerProfile;
@@ -1313,18 +1313,20 @@ index a8773037e..9dae68bb2 100644
              this.g = LoginListener.EnumProtocolState.KEY;
              this.networkManager.sendPacket(new PacketLoginOutEncryptionBegin("", this.server.getKeyPair().getPublic(), this.e));
          } else {
-@@ -209,6 +236,10 @@ public class LoginListener implements PacketLoginInListener {
+@@ -209,6 +236,12 @@ public class LoginListener implements PacketLoginInListener {
                  public void run() {
                      try {
                          initUUID();
 +
-+                        hybridEngine.getLogger().info("Player " + i.getName() + " is offline");
-+                        hybridEngine.getLogger().info("UUID of player " + i.getName() + " is " + i.getId());
++                        if(Bukkit.getHybridMode()) {
++                            hybridEngine.getLogger().info("Player " + i.getName() + " is offline");
++                            hybridEngine.getLogger().info("UUID of player " + i.getName() + " is " + i.getId());
++                        }
 +
                          new LoginHandler().fireEvents();
                      } catch (Exception ex) {
                          disconnect("Failed to verify username!");
-@@ -248,7 +279,32 @@ public class LoginListener implements PacketLoginInListener {
+@@ -248,7 +281,32 @@ public class LoginListener implements PacketLoginInListener {
                                  return;
                              }
  
@@ -1357,7 +1359,7 @@ index a8773037e..9dae68bb2 100644
                          } else if (LoginListener.this.server.isEmbeddedServer()) {
                              LoginListener.LOGGER.warn("Failed to verify username but will let them in anyway!");
                              LoginListener.this.i = LoginListener.this.a(gameprofile);
-@@ -340,7 +396,10 @@ public class LoginListener implements PacketLoginInListener {
+@@ -340,7 +398,10 @@ public class LoginListener implements PacketLoginInListener {
                                  }
                              }
                              // CraftBukkit end
