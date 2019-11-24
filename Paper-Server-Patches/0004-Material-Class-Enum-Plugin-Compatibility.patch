@@ -1,25 +1,18 @@
-From 538e881af9b0a36fbe8862e6031894fe7b582f12 Mon Sep 17 00:00:00 2001
+From 647158ab8e979818a1c7c76bad772e7611c6f1e9 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
 
 
 diff --git a/pom.xml b/pom.xml
-index 54730360f..227b76bab 100644
+index 54730360f..18af17e0b 100644
 --- a/pom.xml
 +++ b/pom.xml
-@@ -119,6 +119,20 @@
+@@ -119,6 +119,13 @@
              <version>1.3</version>
              <scope>test</scope>
          </dependency>
-+        <!-- Paper - javaagent -->
-+        <dependency>
-+            <groupId>com.sun</groupId>
-+            <artifactId>tools</artifactId>
-+            <version>1.8.0</version>
-+            <scope>system</scope>
-+            <systemPath>${java.home}/../lib/tools.jar</systemPath>
-+        </dependency>
++        <!-- Papyrus - Compatibility -->
 +        <dependency>
 +            <groupId>org.javassist</groupId>
 +            <artifactId>javassist</artifactId>
@@ -29,103 +22,21 @@ index 54730360f..227b76bab 100644
      </dependencies>
  
      <repositories>
-@@ -179,6 +193,11 @@
-                             <Specification-Title>Bukkit</Specification-Title>
-                             <Specification-Version>${api.version}</Specification-Version>
-                             <Specification-Vendor>Bukkit Team</Specification-Vendor>
-+
-+                            <!-- Paper - javaagent -->
-+                            <Agent-Class>org.bukkit.craftbukkit.compat.CompatJavaAgent</Agent-Class>
-+                            <Can-Redefine-Classes>true</Can-Redefine-Classes>
-+                            <Can-Retransform-Classes>true</Can-Retransform-Classes>
-                         </manifestEntries>
-                         <manifestSections>
-                             <manifestSection>
-@@ -254,6 +273,7 @@
+@@ -254,6 +261,7 @@
                                      <shadedPattern>org.bukkit.craftbukkit.v${minecraft_version}</shadedPattern>
                                      <excludes>
                                          <exclude>org.bukkit.craftbukkit.Main*</exclude>
-+                                        <exclude>org.bukkit.craftbukkit.compat.*</exclude>
++                                        <exclude>fr.thekinrar.papyrus.compat.*</exclude>
                                      </excludes>
                                  </relocation>
                                  <relocation>
-diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 008fb8444..f2f0724dc 100644
---- a/src/main/java/org/bukkit/craftbukkit/Main.java
-+++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -1,24 +1,60 @@
- package org.bukkit.craftbukkit;
- 
-+import com.sun.tools.attach.VirtualMachine;
-+import joptsimple.OptionParser;
-+import joptsimple.OptionSet;
-+import net.minecraft.server.MinecraftServer;
-+import net.minecrell.terminalconsole.TerminalConsoleAppender;
-+
- import java.io.File;
- import java.io.IOException;
-+import java.lang.management.ManagementFactory;
- import java.text.SimpleDateFormat;
- import java.util.Arrays;
- import java.util.Calendar;
- import java.util.Date;
- import java.util.List;
--import java.util.concurrent.TimeUnit;
- import java.util.logging.Level;
- import java.util.logging.Logger;
--import joptsimple.OptionParser;
--import joptsimple.OptionSet;
--import net.minecraft.server.MinecraftServer;
--import net.minecrell.terminalconsole.TerminalConsoleAppender; // Paper
-+import java.lang.reflect.Method;
-+import java.net.URL;
-+import java.net.URLClassLoader;
- 
- public class Main {
-     public static boolean useJline = true;
-     public static boolean useConsole = true;
- 
-+    static {
-+        try {
-+            String javaHome = System.getProperty("java.home");
-+            String toolsJarURL = "file:" + javaHome + "/../lib/tools.jar";
-+
-+            // Make addURL public
-+            Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-+            method.setAccessible(true);
-+
-+            URLClassLoader sysloader = (URLClassLoader)ClassLoader.getSystemClassLoader();
-+            if (sysloader.getResourceAsStream("/com/sun/tools/attach/VirtualMachine.class") == null) {
-+                method.invoke(sysloader, (Object) new URL(toolsJarURL));
-+                Thread.currentThread().getContextClassLoader().loadClass("com.sun.tools.attach.VirtualMachine");
-+                Thread.currentThread().getContextClassLoader().loadClass("com.sun.tools.attach.AttachNotSupportedException");
-+            }
-+        } catch(Exception e) {
-+            e.printStackTrace();
-+        }
-+
-+        String vmName = ManagementFactory.getRuntimeMXBean().getName();
-+
-+        try {
-+            VirtualMachine vm = VirtualMachine.attach(vmName.substring(0, vmName.indexOf('@')));
-+            vm.loadAgent(new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getAbsolutePath());
-+            vm.detach();
-+        } catch (Exception e) {
-+            e.printStackTrace();
-+            Runtime.getRuntime().exit(1);
-+        }
-+    }
-+
-     public static void main(String[] args) {
-         // Todo: Installation script
-         OptionParser parser = new OptionParser() {
-diff --git a/src/main/java/org/bukkit/craftbukkit/compat/CompatEnumMap.java b/src/main/java/org/bukkit/craftbukkit/compat/CompatEnumMap.java
+diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumMap.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumMap.java
 new file mode 100644
-index 000000000..fdba94ca3
+index 000000000..9d46fe510
 --- /dev/null
-+++ b/src/main/java/org/bukkit/craftbukkit/compat/CompatEnumMap.java
++++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumMap.java
 @@ -0,0 +1,144 @@
-+package org.bukkit.craftbukkit.compat;
++package fr.thekinrar.papyrus.compat;
 +
 +import org.bukkit.Material;
 +
@@ -269,13 +180,13 @@ index 000000000..fdba94ca3
 +        return new CompatEnumMap<K, V>(this);
 +    }
 +}
-diff --git a/src/main/java/org/bukkit/craftbukkit/compat/CompatEnumSet.java b/src/main/java/org/bukkit/craftbukkit/compat/CompatEnumSet.java
+diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumSet.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumSet.java
 new file mode 100644
-index 000000000..38169381c
+index 000000000..5a4172fba
 --- /dev/null
-+++ b/src/main/java/org/bukkit/craftbukkit/compat/CompatEnumSet.java
++++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumSet.java
 @@ -0,0 +1,224 @@
-+package org.bukkit.craftbukkit.compat;
++package fr.thekinrar.papyrus.compat;
 +
 +import org.bukkit.Material;
 +
@@ -499,13 +410,13 @@ index 000000000..38169381c
 +        return realEnum ? realSet.size() : materialSet.size();
 +    }
 +}
-diff --git a/src/main/java/org/bukkit/craftbukkit/compat/CompatJavaAgent.java b/src/main/java/org/bukkit/craftbukkit/compat/CompatJavaAgent.java
+diff --git a/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java b/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java
 new file mode 100644
-index 000000000..1f805328a
+index 000000000..8c847e32e
 --- /dev/null
-+++ b/src/main/java/org/bukkit/craftbukkit/compat/CompatJavaAgent.java
-@@ -0,0 +1,98 @@
-+package org.bukkit.craftbukkit.compat;
++++ b/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java
+@@ -0,0 +1,81 @@
++package fr.thekinrar.papyrus.compat;
 +
 +import javassist.CannotCompileException;
 +import javassist.ClassPool;
@@ -523,86 +434,90 @@ index 000000000..1f805328a
 +import java.security.ProtectionDomain;
 +import java.util.Arrays;
 +
-+public class CompatJavaAgent {
++public class PapyrusCompat {
 +
-+    public static void agentmain(String args, Instrumentation instrumentation) {
-+        instrumentation.addTransformer(new Transformer());
-+    }
++    private static CompatExprEditor editor = new CompatExprEditor();
 +
-+    private static class Transformer implements ClassFileTransformer {
++    public static byte[] transform(byte[] classfileBuffer) {
++        try {
++            ClassPool cp = ClassPool.getDefault();
++            CtClass cc = cp.makeClass(new ByteArrayInputStream(classfileBuffer));
 +
-+        private CompatExprEditor editor;
++            ConstPool pool = cc.getClassFile().getConstPool();
++            pool.renameClass("java/util/EnumMap", "fr/thekinrar/papyrus/compat/CompatEnumMap");
++            pool.renameClass("java/util/EnumSet", "fr/thekinrar/papyrus/compat/CompatEnumSet");
 +
-+        Transformer() {
-+            editor = new CompatExprEditor();
-+        }
-+
-+        @Override
-+        public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
-+                                ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-+            if(!loader.getClass().getName().equals("org.bukkit.plugin.java.PluginClassLoader"))
-+                return classfileBuffer;
-+
-+            try {
-+                ClassPool cp = ClassPool.getDefault();
-+                CtClass cc = cp.makeClass(new ByteArrayInputStream(classfileBuffer));
-+
-+                ConstPool pool = cc.getClassFile().getConstPool();
-+                pool.renameClass("java/util/EnumMap", "org/bukkit/craftbukkit/compat/CompatEnumMap");
-+                pool.renameClass("java/util/EnumSet", "org/bukkit/craftbukkit/compat/CompatEnumSet");
-+
-+                for(CtField field : cc.getDeclaredFields()) {
-+                    if(field.getFieldInfo().getDescriptor().equals("Ljava/util/EnumMap;")) {
-+                        field.setType(cp.get("org.bukkit.craftbukkit.compat.CompatEnumMap"));
-+                    } else if(field.getFieldInfo().getDescriptor().equals("Ljava/util/EnumSet;")) {
-+                        field.setType(cp.get("org.bukkit.craftbukkit.compat.CompatEnumSet"));
-+                    }
++            for(CtField field : cc.getDeclaredFields()) {
++                if(field.getFieldInfo().getDescriptor().equals("Ljava/util/EnumMap;")) {
++                    field.setType(cp.get("fr.thekinrar.papyrus.compat.CompatEnumMap"));
++                } else if(field.getFieldInfo().getDescriptor().equals("Ljava/util/EnumSet;")) {
++                    field.setType(cp.get("fr.thekinrar.papyrus.compat.CompatEnumSet"));
 +                }
++            }
 +
-+                if(cc.getClassInitializer() != null)
-+                    cc.getClassInitializer().instrument(editor);
++            if(cc.getClassInitializer() != null)
++                cc.getClassInitializer().instrument(editor);
 +
-+                Arrays.stream(cc.getDeclaredMethods()).forEach(method -> {
-+                    String descriptor = method.getMethodInfo().getDescriptor();
++            Arrays.stream(cc.getDeclaredMethods()).forEach(method -> {
++                String descriptor = method.getMethodInfo().getDescriptor();
 +
-+                    if(descriptor.contains("Ljava/util/EnumSet;") || descriptor.contains("Ljava/util/EnumMap;")) {
-+                        method.getMethodInfo().setDescriptor(descriptor
-+                            .replace("Ljava/util/EnumSet;", "Lorg/bukkit/craftbukkit/compat/CompatEnumSet;")
-+                            .replace("Ljava/util/EnumMap;", "Lorg/bukkit/craftbukkit/compat/CompatEnumMap;"));
-+
-+                        try {
-+                            method.getMethodInfo().rebuildStackMap(cp);
-+                        } catch (BadBytecode badBytecode) {
-+                            throw new RuntimeException(badBytecode);
-+                        }
-+                    }
++                if(descriptor.contains("Ljava/util/EnumSet;") || descriptor.contains("Ljava/util/EnumMap;")) {
++                    method.getMethodInfo().setDescriptor(descriptor
++                        .replace("Ljava/util/EnumSet;", "Lfr/thekinrar/papyrus/compat/CompatEnumSet;")
++                        .replace("Ljava/util/EnumMap;", "Lfr/thekinrar/papyrus/compat/CompatEnumMap;"));
 +
 +                    try {
-+                        method.instrument(editor);
-+                    } catch (CannotCompileException e) {
-+                        throw new RuntimeException(e);
++                        method.getMethodInfo().rebuildStackMap(cp);
++                    } catch (BadBytecode badBytecode) {
++                        throw new RuntimeException(badBytecode);
 +                    }
-+                });
-+
-+                return cc.toBytecode();
-+            } catch (Exception e) {
-+                throw new RuntimeException(e);
-+            }
-+        }
-+
-+        private static class CompatExprEditor extends ExprEditor {
-+
-+            @Override
-+            public void edit(MethodCall m) throws CannotCompileException {
-+                if(m.getClassName().equals("org.bukkit.craftbukkit.compat.CompatEnumSet") && (m.getMethodName().equals("of") || m.getMethodName().equals("noneOf"))) {
-+                    m.replace("{ $_ = org.bukkit.craftbukkit.compat.CompatEnumSet." + m.getMethodName() + "($$); }");
-+                } else if(m.getClassName().equals("org.bukkit.craftbukkit.compat.CompatEnumMap") && (m.getMethodName().equals("put"))) {
-+                    m.replace("{ $_ = $0." + m.getMethodName() + "($$); }");
 +                }
++
++                try {
++                    method.instrument(editor);
++                } catch (CannotCompileException e) {
++                    throw new RuntimeException(e);
++                }
++            });
++
++            return cc.toBytecode();
++        } catch (Exception e) {
++            throw new RuntimeException(e);
++        }
++    }
++
++    private static class CompatExprEditor extends ExprEditor {
++        @Override
++        public void edit(MethodCall m) throws CannotCompileException {
++            if(m.getClassName().equals("fr.thekinrar.papyrus.compat.CompatEnumSet") && (m.getMethodName().equals("of") || m.getMethodName().equals("noneOf"))) {
++                m.replace("{ $_ = fr.thekinrar.papyrus.compat.CompatEnumSet." + m.getMethodName() + "($$); }");
++            } else if(m.getClassName().equals("fr.thekinrar.papyrus.compat.CompatEnumMap") && (m.getMethodName().equals("put"))) {
++                m.replace("{ $_ = $0." + m.getMethodName() + "($$); }");
 +            }
 +        }
 +    }
 +}
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
+index 61f102355..b570b5804 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
+@@ -14,6 +14,8 @@ import java.util.jar.JarEntry;
+ import java.util.jar.JarFile;
+ import java.util.jar.JarOutputStream;
+ import java.util.zip.ZipEntry;
++
++import fr.thekinrar.papyrus.compat.PapyrusCompat;
+ import joptsimple.OptionParser;
+ import joptsimple.OptionSet;
+ import joptsimple.OptionSpec;
+@@ -451,6 +453,6 @@ public class Commodore
+             }
+         }, 0 );
+ 
+-        return cw.toByteArray();
++        return PapyrusCompat.transform(cw.toByteArray());
+     }
+ }
 -- 
 2.23.0
 
