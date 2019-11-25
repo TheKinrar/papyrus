@@ -1,4 +1,4 @@
-From 6de082f7b3387cc906fc7ac55ca0b0f85d8e88d7 Mon Sep 17 00:00:00 2001
+From 8b695adcb5e991fb166eb94a985bcbb5b176c507 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
@@ -485,10 +485,10 @@ index 000000000..50c5799cc
 +@interface Compatibility {}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java b/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java
 new file mode 100644
-index 000000000..832928ab4
+index 000000000..d60b9844b
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java
-@@ -0,0 +1,103 @@
+@@ -0,0 +1,113 @@
 +package fr.thekinrar.papyrus.compat;
 +
 +import javassist.CannotCompileException;
@@ -538,10 +538,20 @@ index 000000000..832928ab4
 +            Arrays.stream(cc.getDeclaredMethods()).forEach(method -> {
 +                String descriptor = method.getMethodInfo().getDescriptor();
 +
-+                if(descriptor.contains("Ljava/util/EnumSet;") || descriptor.contains("Ljava/util/EnumMap;") || descriptor.contains("Ljava/lang/Enum;")) {
++                if(descriptor.contains("Ljava/util/EnumSet;") || descriptor.contains("Ljava/util/EnumMap;")) {
 +                    method.getMethodInfo().setDescriptor(descriptor
 +                        .replace("Ljava/util/EnumSet;", "Lfr/thekinrar/papyrus/compat/CompatEnumSet;")
-+                        .replace("Ljava/util/EnumMap;", "Lfr/thekinrar/papyrus/compat/CompatEnumMap;")
++                        .replace("Ljava/util/EnumMap;", "Lfr/thekinrar/papyrus/compat/CompatEnumMap;"));
++
++                    try {
++                        method.getMethodInfo().rebuildStackMap(cp);
++                    } catch (BadBytecode badBytecode) {
++                        throw new RuntimeException(badBytecode);
++                    }
++                }
++
++                if(cc.getName().equals("com.earth2me.essentials.utils.EnumUtil") && descriptor.contains("Ljava/lang/Enum;")) {
++                    method.getMethodInfo().setDescriptor(descriptor
 +                        .replace("Ljava/lang/Enum;", "Ljava/lang/Object;"));
 +
 +                    try {
@@ -571,13 +581,13 @@ index 000000000..832928ab4
 +                m.replace("{ $_ = fr.thekinrar.papyrus.compat.CompatEnumSet." + m.getMethodName() + "($$); }");
 +            } else if(m.getClassName().equals("fr.thekinrar.papyrus.compat.CompatEnumMap") && (m.getMethodName().equals("put"))) {
 +                m.replace("{ $_ = $0." + m.getMethodName() + "($$); }");
-+            } else if(m.getClassName().equals("java.lang.Class") && m.getMethodName().equals("getEnumConstants")) {
++            }/* else if(m.getClassName().equals("java.lang.Class") && m.getMethodName().equals("getEnumConstants")) {
 +                m.replace("{ $_ = fr.thekinrar.papyrus.compat.CompatClass.getEnumConstants($0); }");
 +            } else if(m.getClassName().equals("java.lang.Class") && m.getMethodName().equals("isEnum")) {
 +                m.replace("{ $_ = fr.thekinrar.papyrus.compat.CompatClass.isEnum($0); }");
-+            } else if(m.getClassName().equals("java.lang.reflect.Field") && m.getMethodName().equals("isEnumConstant")) {
++            }*/ else if(m.getEnclosingClass().getName().equals("com.earth2me.essentials.utils.EnumUtil") && m.getClassName().equals("java.lang.reflect.Field") && m.getMethodName().equals("isEnumConstant")) {
 +                m.replace("{ $_ = fr.thekinrar.papyrus.compat.CompatField.isEnumConstant($0); }");
-+            } else if(m.getSignature().contains("Ljava/lang/Enum;")) {
++            } else if(m.getClassName().equals("com.earth2me.essentials.utils.EnumUtil") && m.getSignature().contains("Ljava/lang/Enum;")) {
 +                m.replace("{ $_ = $0." + m.getMethodName() + "($$); }");
 +            }
 +        }
@@ -585,7 +595,7 @@ index 000000000..832928ab4
 +        @Override
 +        public void edit(Cast c) throws CannotCompileException {
 +            try {
-+                if(c.getType().getName().equals("java.lang.Enum")) {
++                if(c.getEnclosingClass().getName().equals("com.earth2me.essentials.utils.EnumUtil") && c.getType().getName().equals("java.lang.Enum")) {
 +                    c.replace("{ $_ = fr.thekinrar.papyrus.compat.PapyrusCompat.cast($$); }");
 +                }
 +            } catch (NotFoundException ignored) {}
