@@ -1,4 +1,4 @@
-From 647158ab8e979818a1c7c76bad772e7611c6f1e9 Mon Sep 17 00:00:00 2001
+From 6de082f7b3387cc906fc7ac55ca0b0f85d8e88d7 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
@@ -30,6 +30,36 @@ index 54730360f..18af17e0b 100644
                                      </excludes>
                                  </relocation>
                                  <relocation>
+diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatClass.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatClass.java
+new file mode 100644
+index 000000000..812175524
+--- /dev/null
++++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatClass.java
+@@ -0,0 +1,24 @@
++package fr.thekinrar.papyrus.compat;
++
++import org.bukkit.Material;
++
++public class CompatClass {
++
++    private static final Class<Material> handle = Material.class;
++
++    @Compatibility
++    public static boolean isEnum(Class clazz) {
++        if(clazz.equals(handle))
++            return true;
++
++        return clazz.isEnum();
++    }
++
++    @Compatibility
++    public static Object[] getEnumConstants(Class clazz) {
++        if(clazz.equals(handle))
++            return Material.values();
++
++        return clazz.getEnumConstants();
++    }
++}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumMap.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumMap.java
 new file mode 100644
 index 000000000..9d46fe510
@@ -410,33 +440,80 @@ index 000000000..5a4172fba
 +        return realEnum ? realSet.size() : materialSet.size();
 +    }
 +}
+diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatField.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatField.java
+new file mode 100644
+index 000000000..39ed4779a
+--- /dev/null
++++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatField.java
+@@ -0,0 +1,18 @@
++package fr.thekinrar.papyrus.compat;
++
++import org.bukkit.Material;
++
++import java.lang.reflect.Field;
++
++public class CompatField {
++
++    private static final Class<Material> handle = Material.class;
++
++    @Compatibility
++    public static boolean isEnumConstant(Field field) {
++        if(field.getDeclaringClass().equals(handle))
++            return true;
++
++        return field.isEnumConstant();
++    }
++}
+diff --git a/src/main/java/fr/thekinrar/papyrus/compat/Compatibility.java b/src/main/java/fr/thekinrar/papyrus/compat/Compatibility.java
+new file mode 100644
+index 000000000..50c5799cc
+--- /dev/null
++++ b/src/main/java/fr/thekinrar/papyrus/compat/Compatibility.java
+@@ -0,0 +1,13 @@
++package fr.thekinrar.papyrus.compat;
++
++import java.lang.annotation.ElementType;
++import java.lang.annotation.Retention;
++import java.lang.annotation.RetentionPolicy;
++import java.lang.annotation.Target;
++
++/**
++ * Indicates that a method has a different behaviour than the default Class behaviour for compatibility reasons
++ */
++@Target(ElementType.METHOD)
++@Retention(RetentionPolicy.SOURCE)
++@interface Compatibility {}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java b/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java
 new file mode 100644
-index 000000000..8c847e32e
+index 000000000..832928ab4
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java
-@@ -0,0 +1,81 @@
+@@ -0,0 +1,103 @@
 +package fr.thekinrar.papyrus.compat;
 +
 +import javassist.CannotCompileException;
 +import javassist.ClassPool;
 +import javassist.CtClass;
 +import javassist.CtField;
++import javassist.NotFoundException;
 +import javassist.bytecode.BadBytecode;
 +import javassist.bytecode.ConstPool;
++import javassist.expr.Cast;
 +import javassist.expr.ExprEditor;
 +import javassist.expr.MethodCall;
++import org.bukkit.Material;
 +
 +import java.io.ByteArrayInputStream;
-+import java.lang.instrument.ClassFileTransformer;
-+import java.lang.instrument.IllegalClassFormatException;
-+import java.lang.instrument.Instrumentation;
-+import java.security.ProtectionDomain;
 +import java.util.Arrays;
 +
 +public class PapyrusCompat {
 +
-+    private static CompatExprEditor editor = new CompatExprEditor();
++    private static final CompatExprEditor editor = new CompatExprEditor();
++
++    @Compatibility
++    public static Object cast(Object o) {
++        return o;
++    }
 +
 +    public static byte[] transform(byte[] classfileBuffer) {
 +        try {
@@ -461,10 +538,11 @@ index 000000000..8c847e32e
 +            Arrays.stream(cc.getDeclaredMethods()).forEach(method -> {
 +                String descriptor = method.getMethodInfo().getDescriptor();
 +
-+                if(descriptor.contains("Ljava/util/EnumSet;") || descriptor.contains("Ljava/util/EnumMap;")) {
++                if(descriptor.contains("Ljava/util/EnumSet;") || descriptor.contains("Ljava/util/EnumMap;") || descriptor.contains("Ljava/lang/Enum;")) {
 +                    method.getMethodInfo().setDescriptor(descriptor
 +                        .replace("Ljava/util/EnumSet;", "Lfr/thekinrar/papyrus/compat/CompatEnumSet;")
-+                        .replace("Ljava/util/EnumMap;", "Lfr/thekinrar/papyrus/compat/CompatEnumMap;"));
++                        .replace("Ljava/util/EnumMap;", "Lfr/thekinrar/papyrus/compat/CompatEnumMap;")
++                        .replace("Ljava/lang/Enum;", "Ljava/lang/Object;"));
 +
 +                    try {
 +                        method.getMethodInfo().rebuildStackMap(cp);
@@ -493,7 +571,24 @@ index 000000000..8c847e32e
 +                m.replace("{ $_ = fr.thekinrar.papyrus.compat.CompatEnumSet." + m.getMethodName() + "($$); }");
 +            } else if(m.getClassName().equals("fr.thekinrar.papyrus.compat.CompatEnumMap") && (m.getMethodName().equals("put"))) {
 +                m.replace("{ $_ = $0." + m.getMethodName() + "($$); }");
++            } else if(m.getClassName().equals("java.lang.Class") && m.getMethodName().equals("getEnumConstants")) {
++                m.replace("{ $_ = fr.thekinrar.papyrus.compat.CompatClass.getEnumConstants($0); }");
++            } else if(m.getClassName().equals("java.lang.Class") && m.getMethodName().equals("isEnum")) {
++                m.replace("{ $_ = fr.thekinrar.papyrus.compat.CompatClass.isEnum($0); }");
++            } else if(m.getClassName().equals("java.lang.reflect.Field") && m.getMethodName().equals("isEnumConstant")) {
++                m.replace("{ $_ = fr.thekinrar.papyrus.compat.CompatField.isEnumConstant($0); }");
++            } else if(m.getSignature().contains("Ljava/lang/Enum;")) {
++                m.replace("{ $_ = $0." + m.getMethodName() + "($$); }");
 +            }
++        }
++
++        @Override
++        public void edit(Cast c) throws CannotCompileException {
++            try {
++                if(c.getType().getName().equals("java.lang.Enum")) {
++                    c.replace("{ $_ = fr.thekinrar.papyrus.compat.PapyrusCompat.cast($$); }");
++                }
++            } catch (NotFoundException ignored) {}
 +        }
 +    }
 +}
