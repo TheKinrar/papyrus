@@ -1,11 +1,11 @@
-From a7db090beb8e3fdd9b14172dbc7e3ae8d11576c7 Mon Sep 17 00:00:00 2001
+From d26b842a903e655c47538f0215b7793d0460b2b7 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:31:14 +0000
 Subject: [PATCH] Add Player canAlwaysOpenCommandBlocks API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 8d8d8957..2ffbc375 100644
+index 8d8d89576..2ffbc3756 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -1979,6 +1979,23 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
