@@ -1,11 +1,11 @@
-From c08f97d9ebcc455aea7e9ebe9810f1b5e5aef6be Mon Sep 17 00:00:00 2001
+From 2afe31eb477a39bcaf80db4061b33870680dec8a Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
 
 
 diff --git a/src/main/java/co/aikar/timings/MinecraftTimings.java b/src/main/java/co/aikar/timings/MinecraftTimings.java
-index c6818bc86..8511060dd 100644
+index c6818bc8..8511060d 100644
 --- a/src/main/java/co/aikar/timings/MinecraftTimings.java
 +++ b/src/main/java/co/aikar/timings/MinecraftTimings.java
 @@ -42,6 +42,8 @@ public final class MinecraftTimings {
@@ -18,7 +18,7 @@ index c6818bc86..8511060dd 100644
  
      private MinecraftTimings() {}
 diff --git a/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java b/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java
-index b151a13c1..476969465 100644
+index b151a13c..47696946 100644
 --- a/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java
 +++ b/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java
 @@ -7,6 +7,7 @@ import com.mojang.authlib.properties.Property;
@@ -39,7 +39,7 @@ index b151a13c1..476969465 100644
                  // Make an OfflinePlayer using an offline mode UUID since the name has no profile
                  profile = new GameProfile(UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8)), name);
 diff --git a/src/main/java/fr/thekinrar/papyrus/Metrics.java b/src/main/java/fr/thekinrar/papyrus/Metrics.java
-index 7c284c9b2..da9d15cec 100644
+index 7c284c9b..da9d15ce 100644
 --- a/src/main/java/fr/thekinrar/papyrus/Metrics.java
 +++ b/src/main/java/fr/thekinrar/papyrus/Metrics.java
 @@ -593,7 +593,7 @@ public class Metrics {
@@ -52,7 +52,7 @@ index 7c284c9b2..da9d15cec 100644
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
-index 4168eafc0..6cbe48711 100644
+index 4168eafc..6cbe4871 100644
 --- a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 @@ -1,34 +1,28 @@
@@ -209,7 +209,7 @@ index 4168eafc0..6cbe48711 100644
  }
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java b/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java
 new file mode 100644
-index 000000000..e3d6d8bb2
+index 00000000..e3d6d8bb
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java
 @@ -0,0 +1,18 @@
@@ -233,7 +233,7 @@ index 000000000..e3d6d8bb2
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/commands/ChangepassCommand.java b/src/main/java/fr/thekinrar/papyrus/commands/ChangepassCommand.java
 new file mode 100644
-index 000000000..c4c751177
+index 00000000..c4c75117
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/commands/ChangepassCommand.java
 @@ -0,0 +1,67 @@
@@ -306,7 +306,7 @@ index 000000000..c4c751177
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/commands/LoginCommand.java b/src/main/java/fr/thekinrar/papyrus/commands/LoginCommand.java
 new file mode 100644
-index 000000000..8e48cdefd
+index 00000000..8e48cdef
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/commands/LoginCommand.java
 @@ -0,0 +1,69 @@
@@ -381,7 +381,7 @@ index 000000000..8e48cdefd
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/commands/LogoutCommand.java b/src/main/java/fr/thekinrar/papyrus/commands/LogoutCommand.java
 new file mode 100644
-index 000000000..092857612
+index 00000000..09285761
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/commands/LogoutCommand.java
 @@ -0,0 +1,55 @@
@@ -442,7 +442,7 @@ index 000000000..092857612
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/commands/RegisterCommand.java b/src/main/java/fr/thekinrar/papyrus/commands/RegisterCommand.java
 new file mode 100644
-index 000000000..3eab2a83a
+index 00000000..3eab2a83
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/commands/RegisterCommand.java
 @@ -0,0 +1,68 @@
@@ -516,7 +516,7 @@ index 000000000..3eab2a83a
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
 new file mode 100644
-index 000000000..1618871c0
+index 00000000..1618871c
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
 @@ -0,0 +1,385 @@
@@ -907,7 +907,7 @@ index 000000000..1618871c0
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
 new file mode 100644
-index 000000000..b8372c0a4
+index 00000000..b8372c0a
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
 @@ -0,0 +1,188 @@
@@ -1100,7 +1100,7 @@ index 000000000..b8372c0a4
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/EntityHuman.java b/src/main/java/net/minecraft/server/EntityHuman.java
-index cd73cde8d..95888e7b5 100644
+index cd73cde8..95888e7b 100644
 --- a/src/main/java/net/minecraft/server/EntityHuman.java
 +++ b/src/main/java/net/minecraft/server/EntityHuman.java
 @@ -17,9 +17,12 @@ import javax.annotation.Nullable;
@@ -1155,7 +1155,7 @@ index cd73cde8d..95888e7b5 100644
          float f = this.inventory.a(iblockdata);
  
 diff --git a/src/main/java/net/minecraft/server/EntityLiving.java b/src/main/java/net/minecraft/server/EntityLiving.java
-index f675ad2f5..a3d92c97a 100644
+index f675ad2f..a3d92c97 100644
 --- a/src/main/java/net/minecraft/server/EntityLiving.java
 +++ b/src/main/java/net/minecraft/server/EntityLiving.java
 @@ -860,9 +860,11 @@ public abstract class EntityLiving extends Entity {
@@ -1198,7 +1198,7 @@ index f675ad2f5..a3d92c97a 100644
  
          return (MobEffect) this.effects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index fa79d0bed..336c7a65d 100644
+index c747b5de..a04a00b5 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -25,6 +25,8 @@ import org.bukkit.craftbukkit.CraftWorld;
@@ -1210,7 +1210,7 @@ index fa79d0bed..336c7a65d 100644
  import org.bukkit.event.inventory.InventoryType;
  import org.bukkit.event.player.PlayerChangedMainHandEvent;
  import org.bukkit.event.player.PlayerChangedWorldEvent;
-@@ -1960,4 +1962,14 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -1962,4 +1964,14 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
          return (CraftPlayer) super.getBukkitEntity();
      }
      // CraftBukkit end
@@ -1226,7 +1226,7 @@ index fa79d0bed..336c7a65d 100644
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/LoginListener.java b/src/main/java/net/minecraft/server/LoginListener.java
-index a8773037e..f71e0acb0 100644
+index a8773037..f71e0acb 100644
 --- a/src/main/java/net/minecraft/server/LoginListener.java
 +++ b/src/main/java/net/minecraft/server/LoginListener.java
 @@ -4,13 +4,17 @@ import com.destroystokyo.paper.profile.CraftPlayerProfile;
@@ -1372,7 +1372,7 @@ index a8773037e..f71e0acb0 100644
                  }
          }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 4f07ec1ec..c166a9358 100644
+index 4f07ec1e..c166a935 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1177,6 +1177,14 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
@@ -1391,7 +1391,7 @@ index 4f07ec1ec..c166a9358 100644
          // Run tasks that are waiting on processing
          MinecraftTimings.processQueueTimer.startTiming(); // Spigot
 diff --git a/src/main/java/net/minecraft/server/NetworkManager.java b/src/main/java/net/minecraft/server/NetworkManager.java
-index 96a785af2..715707316 100644
+index 96a785af..71570731 100644
 --- a/src/main/java/net/minecraft/server/NetworkManager.java
 +++ b/src/main/java/net/minecraft/server/NetworkManager.java
 @@ -2,6 +2,7 @@ package net.minecraft.server;
@@ -1427,7 +1427,7 @@ index 96a785af2..715707316 100644
                  }
                  // Paper end
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 3f5f45668..fc59d7eb8 100644
+index 3f5f4566..fc59d7eb 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -7,6 +7,7 @@ import com.google.common.primitives.Floats;
@@ -1480,7 +1480,7 @@ index 3f5f45668..fc59d7eb8 100644
          CraftPlayer player = this.getPlayer();
  
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index e21f97d93..e9671a09d 100644
+index a25b511b..b8290be6 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -5,8 +5,10 @@ import com.google.common.collect.Lists;
@@ -1549,7 +1549,7 @@ index e21f97d93..e9671a09d 100644
                  list.add(entityplayer);
              }
          }
-@@ -1029,15 +1047,30 @@ public abstract class PlayerList {
+@@ -1031,15 +1049,30 @@ public abstract class PlayerList {
      }
  
      public void updateClient(EntityPlayer entityplayer) {
@@ -1583,7 +1583,7 @@ index e21f97d93..e9671a09d 100644
      public int getPlayerCount() {
          return this.players.size();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 623adca03..e6bf6c068 100644
+index 623adca0..e6bf6c06 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -14,6 +14,9 @@ import com.mojang.brigadier.StringReader;
@@ -1668,7 +1668,7 @@ index 623adca03..e6bf6c068 100644
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
-index 2fd69c0f9..119602875 100644
+index 2fd69c0f..11960287 100644
 --- a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
 +++ b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
 @@ -1,9 +1,13 @@
@@ -1706,7 +1706,7 @@ index 2fd69c0f9..119602875 100644
 +    }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index b27fd44dc..fe868e45c 100644
+index b27fd44d..fe868e45 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 @@ -383,13 +383,17 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
@@ -1740,7 +1740,7 @@ index b27fd44dc..fe868e45c 100644
      public Collection<PotionEffect> getActivePotionEffects() {
          List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index b183b540b..c3ec6a303 100644
+index b183b540..c3ec6a30 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -7,6 +7,8 @@ import com.google.common.base.Preconditions;
@@ -1788,7 +1788,7 @@ index b183b540b..c3ec6a303 100644
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index d476e1878..e37723167 100644
+index d476e187..e3772316 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -11,6 +11,8 @@ import java.util.EnumMap;
@@ -1816,7 +1816,7 @@ index d476e1878..e37723167 100644
          return event;
      }
 diff --git a/src/main/resources/log4j2.xml b/src/main/resources/log4j2.xml
-index d6f1d5785..2dc1da5cb 100644
+index d6f1d578..2dc1da5c 100644
 --- a/src/main/resources/log4j2.xml
 +++ b/src/main/resources/log4j2.xml
 @@ -6,8 +6,10 @@

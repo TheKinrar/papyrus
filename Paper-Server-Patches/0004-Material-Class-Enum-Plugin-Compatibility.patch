@@ -1,11 +1,11 @@
-From 8b695adcb5e991fb166eb94a985bcbb5b176c507 Mon Sep 17 00:00:00 2001
+From 3b5dae708e1c6d88e83f696e47636d0af287129d Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
 
 
 diff --git a/pom.xml b/pom.xml
-index 54730360f..18af17e0b 100644
+index 54730360..18af17e0 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -119,6 +119,13 @@
@@ -32,7 +32,7 @@ index 54730360f..18af17e0b 100644
                                  <relocation>
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatClass.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatClass.java
 new file mode 100644
-index 000000000..812175524
+index 00000000..81217552
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatClass.java
 @@ -0,0 +1,24 @@
@@ -62,7 +62,7 @@ index 000000000..812175524
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumMap.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumMap.java
 new file mode 100644
-index 000000000..9d46fe510
+index 00000000..9d46fe51
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumMap.java
 @@ -0,0 +1,144 @@
@@ -212,10 +212,10 @@ index 000000000..9d46fe510
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumSet.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumSet.java
 new file mode 100644
-index 000000000..5a4172fba
+index 00000000..88cc987d
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumSet.java
-@@ -0,0 +1,224 @@
+@@ -0,0 +1,238 @@
 +package fr.thekinrar.papyrus.compat;
 +
 +import org.bukkit.Material;
@@ -237,7 +237,16 @@ index 000000000..5a4172fba
 +    private EnumSet realSet;
 +    private Enum[] realUniverse;
 +
++    private final Class clazz;
++
 +    private HashSet<Material> materialSet;
++
++    public CompatEnumSet(Class<Enum> clazz, EnumSet realSet) {
++        this.realSet = realSet;
++        this.realEnum = true;
++        this.realUniverse = clazz.getEnumConstants();
++        this.clazz = clazz;
++    }
 +
 +    private CompatEnumSet(Class elementType) {
 +        if(elementType.isEnum()) {
@@ -251,6 +260,8 @@ index 000000000..5a4172fba
 +        } else {
 +            materialSet = new HashSet<>(Material.values().length);
 +        }
++
++        this.clazz = elementType;
 +    }
 +
 +    public static <E> CompatEnumSet<E> noneOf(Class elementType) {
@@ -351,6 +362,12 @@ index 000000000..5a4172fba
 +    }
 +
 +    public static <E> CompatEnumSet<E> of(Object first, Object... rest) {
++        Class clazz = declaringClass(first.getClass());
++
++        if(clazz.isEnum()) {
++            return new CompatEnumSet(clazz, EnumSet.of((Enum) first, (Enum[]) rest));
++        }
++
 +        CompatEnumSet<E> result = noneOf(declaringClass(first.getClass()));
 +        result.add((E) first);
 +        for (Object e : rest)
@@ -391,24 +408,21 @@ index 000000000..5a4172fba
 +
 +    public boolean add(E o) {
 +        if(realEnum) {
-+            try {
-+                Method m = realSet.getClass().getMethod("add", Object.class);
-+                m.setAccessible(true);
-+                return (boolean) m.invoke(realSet, o);
-+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-+                throw new RuntimeException(e);
-+            }
++            return realSet.add(o);
 +        } else {
 +            return materialSet.add((Material) o);
 +        }
 +    }
 +
 +    public CompatEnumSet<E> clone() {
-+        try {
-+            return (CompatEnumSet<E>) super.clone();
-+        } catch(CloneNotSupportedException e) {
-+            throw new AssertionError(e);
++        CompatEnumSet copy;
++        if(realEnum) {
++            copy = new CompatEnumSet(clazz, realSet.clone());
++        } else {
++            copy = new CompatEnumSet(Material.class);
++            copy.addAll(this);
 +        }
++        return copy;
 +    }
 +
 +    void complement() {
@@ -442,7 +456,7 @@ index 000000000..5a4172fba
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatField.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatField.java
 new file mode 100644
-index 000000000..39ed4779a
+index 00000000..39ed4779
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatField.java
 @@ -0,0 +1,18 @@
@@ -466,7 +480,7 @@ index 000000000..39ed4779a
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/Compatibility.java b/src/main/java/fr/thekinrar/papyrus/compat/Compatibility.java
 new file mode 100644
-index 000000000..50c5799cc
+index 00000000..50c5799c
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/Compatibility.java
 @@ -0,0 +1,13 @@
@@ -485,7 +499,7 @@ index 000000000..50c5799cc
 +@interface Compatibility {}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java b/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java
 new file mode 100644
-index 000000000..d60b9844b
+index 00000000..d60b9844
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java
 @@ -0,0 +1,113 @@
@@ -603,7 +617,7 @@ index 000000000..d60b9844b
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
-index 61f102355..b570b5804 100644
+index 61f10235..b570b580 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 @@ -14,6 +14,8 @@ import java.util.jar.JarEntry;
