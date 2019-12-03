@@ -1,0 +1,52 @@
+From 09b5a11dacf9f586b2446497f2d8865f4a68f24a Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Tue, 3 Dec 2019 17:34:43 +0000
+Subject: [PATCH] Implement CommandBlockExecuteEvent
+
+
+diff --git a/src/main/java/net/minecraft/server/CommandBlockListenerAbstract.java b/src/main/java/net/minecraft/server/CommandBlockListenerAbstract.java
+index 23a69ba57..d6afaab10 100644
+--- a/src/main/java/net/minecraft/server/CommandBlockListenerAbstract.java
++++ b/src/main/java/net/minecraft/server/CommandBlockListenerAbstract.java
+@@ -1,10 +1,14 @@
+ package net.minecraft.server;
+ 
+-import com.mojang.brigadier.context.CommandContext;
+ import java.text.SimpleDateFormat;
+ import java.util.Date;
+ import javax.annotation.Nullable;
++
++import org.bukkit.Bukkit;
+ import org.bukkit.command.CommandSender;
++import org.bukkit.craftbukkit.block.CraftBlock;
++import org.bukkit.craftbukkit.entity.CraftEntity;
++import org.bukkit.event.block.CommandBlockExecuteEvent;
+ 
+ public abstract class CommandBlockListenerAbstract implements ICommandListener {
+ 
+@@ -106,8 +110,20 @@ public abstract class CommandBlockListenerAbstract implements ICommandListener {
+ 
+                 if (minecraftserver != null && minecraftserver.F() && minecraftserver.getEnableCommandBlock() && !UtilColor.b(this.command)) {
+                     try {
+-                        this.lastOutput = null;
+-                        this.successCount = minecraftserver.getCommandDispatcher().dispatchServerCommand(this.getWrapper(), this.command); // CraftBukkit
++                        Entity entity = this.getWrapper().getEntity();
++
++                        CommandBlockExecuteEvent event = new CommandBlockExecuteEvent(
++                                this.getBukkitSender(this.getWrapper()),
++                                entity == null ? CraftBlock.at(this.getWrapper().getWorld(), new BlockPosition(this.getWrapper().getPosition())) : null,
++                                entity == null ? null : CraftEntity.getEntity(minecraftserver.server, entity),
++                                this.command);
++
++                        Bukkit.getServer().getPluginManager().callEvent(event);
++
++                        if(!event.isCancelled()) {
++                            this.lastOutput = null;
++                            this.successCount = minecraftserver.getCommandDispatcher().dispatchServerCommand(this.getWrapper(), event.getCommand()); // CraftBukkit
++                        }
+                     } catch (Throwable throwable) {
+                         CrashReport crashreport = CrashReport.a(throwable, "Executing command block");
+                         CrashReportSystemDetails crashreportsystemdetails = crashreport.a("Command to be executed");
+-- 
+2.23.0
+
