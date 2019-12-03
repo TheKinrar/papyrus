@@ -1,4 +1,4 @@
-From 9748c0622a4bc8af6a19066ce2d344671e5f94bd Mon Sep 17 00:00:00 2001
+From 92e0a71c6a623305c26fd6552a3d35a769f0f573 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 3 Dec 2019 17:35:08 +0000
 Subject: [PATCH] Add CommandBlockExecuteEvent
@@ -6,12 +6,13 @@ Subject: [PATCH] Add CommandBlockExecuteEvent
 
 diff --git a/src/main/java/org/bukkit/event/block/CommandBlockExecuteEvent.java b/src/main/java/org/bukkit/event/block/CommandBlockExecuteEvent.java
 new file mode 100644
-index 000000000..17a64825d
+index 000000000..98e68dbdf
 --- /dev/null
 +++ b/src/main/java/org/bukkit/event/block/CommandBlockExecuteEvent.java
-@@ -0,0 +1,74 @@
+@@ -0,0 +1,82 @@
 +package org.bukkit.event.block;
 +
++import org.bukkit.Location;
 +import org.bukkit.block.Block;
 +import org.bukkit.command.CommandSender;
 +import org.bukkit.entity.Entity;
@@ -20,6 +21,8 @@ index 000000000..17a64825d
 +import org.bukkit.event.HandlerList;
 +import org.jetbrains.annotations.NotNull;
 +import org.jetbrains.annotations.Nullable;
++
++import java.util.Objects;
 +
 +public class CommandBlockExecuteEvent extends Event implements Cancellable {
 +
@@ -51,6 +54,11 @@ index 000000000..17a64825d
 +    @Nullable
 +    public Entity getEntity() {
 +        return entity;
++    }
++
++    @NotNull
++    public Location getLocation() {
++        return block != null ? block.getLocation() : Objects.requireNonNull(entity).getLocation();
 +    }
 +
 +    @NotNull
