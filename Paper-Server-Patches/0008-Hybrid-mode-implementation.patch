@@ -1,4 +1,4 @@
-From 842e3c85ef0d303114d40df07e04bfd52ef6d309 Mon Sep 17 00:00:00 2001
+From 689b498d075f14d81394cef1036e6f351aed7ef2 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation

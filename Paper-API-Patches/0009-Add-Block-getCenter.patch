@@ -1,4 +1,4 @@
-From 28087ac7a6a690fee97da3543cd2c95767a96991 Mon Sep 17 00:00:00 2001
+From 09c5fbfc4b810843397b6fd4386eadecfcd46286 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Thu, 21 Nov 2019 11:58:39 +0000
 Subject: [PATCH] Add Block#getCenter

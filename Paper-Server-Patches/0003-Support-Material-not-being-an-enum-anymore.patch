@@ -1,11 +1,11 @@
-From 01aa00c4cb8f88e5afe19d5613217fdfb7fb32b8 Mon Sep 17 00:00:00 2001
+From 6adb0a4baa4e7b358e3b09b1b2b52235e319f74f Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index 3e5571f7d..0a4c0f157 100644
+index 68d36a512..e5b9ae640 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 @@ -585,7 +585,7 @@ public class PaperWorldConfig {

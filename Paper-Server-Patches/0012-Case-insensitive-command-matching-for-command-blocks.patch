@@ -1,4 +1,4 @@
-From 3ffcbbe34b6622590b7ee98dd29a7668095594fe Mon Sep 17 00:00:00 2001
+From fceedfb35e332120114916e684ca8bf79d6da800 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 23 Nov 2019 02:29:24 +0000
 Subject: [PATCH] Case-insensitive command matching for command blocks

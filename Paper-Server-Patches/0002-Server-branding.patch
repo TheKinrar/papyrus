@@ -1,4 +1,4 @@
-From 018a3557e2afd41cf30e2bd5e9dfe2a0dff9b4e9 Mon Sep 17 00:00:00 2001
+From 0157f6d06cb01592abbe9f87b66179c4a3e1eb49 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 11:26:33 +0100
 Subject: [PATCH] Server branding
@@ -910,7 +910,7 @@ index 105d31906..623adca03 100644
              world.worldData.setDifficulty(config.difficulty);
              world.setSpawnFlags(config.spawnMonsters, config.spawnAnimals);
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 008fb8444..3b693cbbb 100644
+index 56ac679b2..fd5db7196 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -137,6 +137,14 @@ public class Main {

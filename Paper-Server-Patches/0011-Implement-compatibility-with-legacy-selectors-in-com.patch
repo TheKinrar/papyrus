@@ -1,4 +1,4 @@
-From 01d5bfb487c359bd988e63629b9f7d9a11563d23 Mon Sep 17 00:00:00 2001
+From 93f9d1348c98da9f30edd6392521310a6fe2922a Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 15 Nov 2019 00:15:24 +0000
 Subject: [PATCH] Implement compatibility with legacy selectors in command
