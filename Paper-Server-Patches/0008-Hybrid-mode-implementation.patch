@@ -1,4 +1,4 @@
-From 66cc3f379f0d396f32ffe856ad599529553b6934 Mon Sep 17 00:00:00 2001
+From 096420da11c357479b6b60befb001c86e9b12726 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -538,10 +538,10 @@ index 000000000..3eab2a83a
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
 new file mode 100644
-index 000000000..f72fc0177
+index 000000000..20c6b7ccd
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
-@@ -0,0 +1,406 @@
+@@ -0,0 +1,419 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import com.mojang.authlib.GameProfile;
@@ -598,7 +598,15 @@ index 000000000..f72fc0177
 +    private final Map<UUID, String> authAddresses = new HashMap<>();
 +    private final Map<UUID, Long> authExpiration = new HashMap<>();
 +
++    /**
++     * Maps hybrid IDs to online IDs
++     */
 +    private final Map<UUID, UUID> onlineIds = new HashMap<>();
++
++    /**
++     * Persistent.
++     * Maps hybrid IDs to online IDs allowed to skip authentication
++     */
 +    private final Map<UUID, UUID> authOnlineIds = new HashMap<>();
 +
 +    private final List<HybridPasswordProvider> passwordProviders = new ArrayList<>();
@@ -827,9 +835,14 @@ index 000000000..f72fc0177
 +        if(authExpiration.containsKey(id) && authExpiration.get(id) >= System.currentTimeMillis()
 +                && address.equals(authAddresses.get(id))) {
 +            return AutoLoginReason.EXPIRATION;
-+        } else if (authOnlineIds.containsKey(id)
-+                && onlineIds.containsKey(id) && onlineIds.get(id).equals(authOnlineIds.get(id))) {
-+            return AutoLoginReason.ONLINE;
++        } else if(onlineIds.containsKey(id)) { // Online player
++            if(authOnlineIds.containsKey(id)) { // Known online player
++                if(onlineIds.get(id).equals(authOnlineIds.get(id))) { // Known ID match
++                    return AutoLoginReason.ONLINE;
++                }
++            } else { // Unknown online player
++                return AutoLoginReason.ONLINE;
++            }
 +        }
 +
 +        return null;
