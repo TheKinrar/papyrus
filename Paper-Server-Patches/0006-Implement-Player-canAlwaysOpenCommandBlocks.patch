@@ -1,4 +1,4 @@
-From 3088c999341473320aa5bc85f175d42d0630204d Mon Sep 17 00:00:00 2001
+From 7e3d9ed9de4ca2e6a9e4bdbf64dc352d6732199e Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
@@ -27,6 +27,35 @@ index e3b090898..dcd37cec8 100644
              entityhuman.a((TileEntityCommand) tileentity);
              return true;
          } else {
+diff --git a/src/main/java/net/minecraft/server/ItemRestricted.java b/src/main/java/net/minecraft/server/ItemRestricted.java
+new file mode 100644
+index 000000000..f5ed0c82a
+--- /dev/null
++++ b/src/main/java/net/minecraft/server/ItemRestricted.java
+@@ -0,0 +1,23 @@
++package net.minecraft.server;
++
++import org.bukkit.craftbukkit.entity.CraftPlayer;
++
++import javax.annotation.Nullable;
++
++public class ItemRestricted extends ItemBlock {
++
++    public ItemRestricted(Block block, Info item_info) {
++        super(block, item_info);
++    }
++
++    @Nullable
++    @Override
++    protected IBlockData c(BlockActionContext blockactioncontext) {
++        EntityHuman entityhuman = blockactioncontext.getEntity();
++
++        return entityhuman != null && !(
++                entityhuman.isCreativeAndOp() ||
++                ((CraftPlayer) entityhuman.getBukkitEntity()).canAlwaysOpenCommandBlocks()
++        ) ? null : super.c(blockactioncontext);
++    }
++}
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
 index 4ba349e1a..a25b511b9 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
