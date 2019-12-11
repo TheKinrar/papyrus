@@ -1,4 +1,4 @@
-From 689b498d075f14d81394cef1036e6f351aed7ef2 Mon Sep 17 00:00:00 2001
+From b15d8d2f7bcf62a692d13009c71f6c85e3e6d9df Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -52,10 +52,10 @@ index 7c284c9b2..da9d15cec 100644
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
-index 4168eafc0..6cbe48711 100644
+index 4168eafc0..4c620ff7e 100644
 --- a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
-@@ -1,34 +1,28 @@
+@@ -1,34 +1,29 @@
  package fr.thekinrar.papyrus;
  
 -import co.aikar.timings.Timings;
@@ -69,6 +69,7 @@ index 4168eafc0..6cbe48711 100644
 +import fr.thekinrar.papyrus.commands.LoginCommand;
 +import fr.thekinrar.papyrus.commands.LogoutCommand;
 +import fr.thekinrar.papyrus.commands.RegisterCommand;
++import fr.thekinrar.papyrus.hybrid.CraftHybridEngine;
  import net.minecraft.server.MinecraftServer;
  import org.bukkit.Bukkit;
  import org.bukkit.ChatColor;
@@ -95,7 +96,7 @@ index 4168eafc0..6cbe48711 100644
  import java.util.regex.Pattern;
  
  public class PapyrusConfig {
-@@ -62,6 +56,10 @@ public class PapyrusConfig {
+@@ -62,6 +57,10 @@ public class PapyrusConfig {
          verbose = getBoolean("verbose", false);
  
          commands = new HashMap<String, Command>();
@@ -106,7 +107,7 @@ index 4168eafc0..6cbe48711 100644
  
          version = getInt("config-version", 1);
          set("config-version", 1);
-@@ -190,4 +188,100 @@ public class PapyrusConfig {
+@@ -190,4 +189,116 @@ public class PapyrusConfig {
          config.addDefault(path, def);
          return config.getString(path, config.getString(path));
      }
@@ -167,9 +168,25 @@ index 4168eafc0..6cbe48711 100644
 +        hybridSuccessfulLoginMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.successful-login", hybridSuccessfulLoginMessage));
 +    }
 +
-+    public static String hybridAutoLoginMessage = "&eSuccessfully logged in (auto).";
-+    private static void hybridAutoLoginMessage() {
-+        hybridAutoLoginMessage = ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.auto-login", hybridAutoLoginMessage));
++    public static Map<CraftHybridEngine.AutoLoginReason, String> hybridAutoLoginMessages = new HashMap<>(CraftHybridEngine.AutoLoginReason.values().length);
++    private static void hybridAutoLoginMessages() {
++        Object old = config.get("messages.hybrid.auto-login", null);
++
++        if(old instanceof String) {
++            config.set("messages.hybrid.auto-login", null);
++
++            if(!old.equals("&eSuccessfully logged in (auto).")) {
++                for (CraftHybridEngine.AutoLoginReason reason : CraftHybridEngine.AutoLoginReason.values()) {
++                    hybridAutoLoginMessages.put(reason, ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.auto-login." + reason.name().toLowerCase(), (String) old)));
++                }
++            } else {
++                hybridAutoLoginMessages();
++            }
++        } else {
++            for(CraftHybridEngine.AutoLoginReason reason : CraftHybridEngine.AutoLoginReason.values()) {
++                hybridAutoLoginMessages.put(reason, ChatColor.translateAlternateColorCodes('&', getString("messages.hybrid.auto-login." + reason.name().toLowerCase(), "&eSuccessfully logged in (auto: " + reason + ").")));
++            }
++        }
 +    }
 +
 +    public static String hybridFailedLoginMessage = "&cInvalid password.";
@@ -516,13 +533,14 @@ index 000000000..3eab2a83a
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
 new file mode 100644
-index 000000000..1618871c0
+index 000000000..f72fc0177
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
-@@ -0,0 +1,385 @@
+@@ -0,0 +1,406 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import com.mojang.authlib.GameProfile;
++import fr.thekinrar.papyrus.PapyrusConfig;
 +import net.minecraft.server.EntityHuman;
 +import net.minecraft.server.NBTBase;
 +import net.minecraft.server.NBTCompressedStreamTools;
@@ -800,13 +818,13 @@ index 000000000..1618871c0
 +        save();
 +    }
 +
-+    public String canSkipAuthentication(UUID id, String address) {
++    public AutoLoginReason canSkipAuthentication(UUID id, String address) {
 +        if(authExpiration.containsKey(id) && authExpiration.get(id) >= System.currentTimeMillis()
 +                && address.equals(authAddresses.get(id))) {
-+            return "stayed logged in";
++            return AutoLoginReason.EXPIRATION;
 +        } else if (authOnlineIds.containsKey(id)
 +                && onlineIds.containsKey(id) && onlineIds.get(id).equals(authOnlineIds.get(id))) {
-+            return "known online ID";
++            return AutoLoginReason.ONLINE;
 +        }
 +
 +        return null;
@@ -904,13 +922,33 @@ index 000000000..1618871c0
 +        knownNames.putAll(importNames);
 +        save();
 +    }
++
++    public enum AutoLoginReason {
++        EXPIRATION("stayed logged in"),
++        ONLINE("known online ID");
++
++        private String message;
++
++        AutoLoginReason(String message) {
++            this.message = message;
++        }
++
++        @Override
++        public String toString() {
++            return message;
++        }
++
++        public String getMessage() {
++            return PapyrusConfig.hybridAutoLoginMessages.get(this);
++        }
++    }
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
 new file mode 100644
-index 000000000..b8372c0a4
+index 000000000..455c76a8b
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
-@@ -0,0 +1,188 @@
+@@ -0,0 +1,187 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import fr.thekinrar.papyrus.PapyrusConfig;
@@ -933,7 +971,7 @@ index 000000000..b8372c0a4
 +    private long ticks;
 +    private long startTime;
 +
-+    private boolean autoLogin;
++    private CraftHybridEngine.AutoLoginReason autoLogin;
 +
 +    CraftHybridProfile(CraftHybridEngine engine, UUID id) {
 +        this.engine = engine;
@@ -955,12 +993,11 @@ index 000000000..b8372c0a4
 +    public void authenticate(CraftPlayer player, InetSocketAddress address) {
 +        this.player = player;
 +
-+        String skip = address == null ? null : engine.canSkipAuthentication(id, address.getAddress().getHostAddress());
-+        if(skip == null) {
++        autoLogin = address == null ? null : engine.canSkipAuthentication(id, address.getAddress().getHostAddress());
++        if(autoLogin == null) {
 +            logout();
 +        } else {
-+            engine.getLogger().info("Skipping login for " + player.getName() + " (" + skip + ")");
-+            autoLogin = true;
++            engine.getLogger().info("Skipping login for " + player.getName() + " (" + autoLogin + ")");
 +        }
 +    }
 +
@@ -983,8 +1020,8 @@ index 000000000..b8372c0a4
 +    }
 +
 +    public void connectionReady() {
-+        if(autoLogin)
-+            player.sendMessage(PapyrusConfig.hybridAutoLoginMessage);
++        if(autoLogin != null)
++            player.sendMessage(autoLogin.getMessage());
 +    }
 +
 +    public void tick() {
