@@ -13,7 +13,7 @@ function getRef {
 }
 function update {
     cd "$workdir/$1"
-    $gitcmd fetch && $gitcmd clean -fd && $gitcmd reset --hard origin/$2
+    $gitcmd fetch && $gitcmd clean -fd && $gitcmd reset --hard $2
     refRemote=$(git rev-parse HEAD)
     cd ../
     $gitcmd add $1
@@ -24,14 +24,14 @@ function update {
     fi
 }
 
-update Bukkit master
-update CraftBukkit master
-update Spigot master
-update Paper ver/1.14
+update Bukkit 6bdfd3854d6a3e62670b8b505bd9be43829bc8b1
+update CraftBukkit 656701746abf477beb78cb6108298b20dc053cf1
+update Spigot 56f84710b85569a76df91e08104baa55000b565a
+update Paper origin/ver/1.14
 
 if [[ "$2" = "all" || "$2" = "a" ]] ; then
-	update BuildData master
-	update Paperclip master
+	update BuildData 2dbde4c18d3b3e34142da21d42cea4b1beb33d7d
+	update Paperclip origin/master
 fi
 if [ "$updated" == "1" ]; then
     echo "Rebuilding patches without filtering to improve apply ability"
