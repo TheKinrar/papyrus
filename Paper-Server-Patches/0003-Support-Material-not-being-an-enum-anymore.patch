@@ -1,4 +1,4 @@
-From 466a7c079571ce8804f6eb69e9ddc67d395f766e Mon Sep 17 00:00:00 2001
+From 6333e83a7d1dc42bb750566e07985b5f00560b38 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore
@@ -87,10 +87,10 @@ index 100ed8a8f..ae1582e01 100644
              default:
                  throw new IllegalArgumentException("Unknown DyeColor for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-index fc65cef63..c089a481e 100644
+index d9749adb7..0aeb722c6 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-@@ -328,151 +328,151 @@ public class CraftBlock implements Block {
+@@ -325,151 +325,151 @@ public class CraftBlock implements Block {
          // Paper end
          Material material = getType();
  
@@ -2050,10 +2050,10 @@ index 7262920c1..ada2afce9 100644
          default:
              return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
-index e6ca5e707..769e0adbc 100644
+index 753bf7786..039a03c90 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
-@@ -91,9 +91,9 @@ class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
+@@ -85,9 +85,9 @@ class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
  
      @Override
      boolean applicableTo(Material type) {
@@ -2201,7 +2201,7 @@ index bb921c928..0a5f5c816 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
-index aee97b9f0..59655db7e 100644
+index c29a78fd3..ece9a38fc 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
 @@ -100,19 +100,19 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {

@@ -1,4 +1,4 @@
-From 1fc60cc922e35763a3e24ccfcd4ba683420cb9b5 Mon Sep 17 00:00:00 2001
+From 2e8e2ceb65120a95d8d226078b687f7453dc70f7 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
@@ -56,6 +56,19 @@ index 000000000..f5ed0c82a
 +        ) ? null : super.c(blockactioncontext);
 +    }
 +}
+diff --git a/src/main/java/net/minecraft/server/PlayerInteractManager.java b/src/main/java/net/minecraft/server/PlayerInteractManager.java
+index c77e812b0..90e6014cb 100644
+--- a/src/main/java/net/minecraft/server/PlayerInteractManager.java
++++ b/src/main/java/net/minecraft/server/PlayerInteractManager.java
+@@ -335,7 +335,7 @@ public class PlayerInteractManager {
+             TileEntity tileentity = this.world.getTileEntity(blockposition);
+             Block block = iblockdata.getBlock();
+ 
+-            if ((block instanceof BlockCommand || block instanceof BlockStructure || block instanceof BlockJigsaw) && !this.player.isCreativeAndOp()) {
++            if ((block instanceof BlockCommand || block instanceof BlockStructure || block instanceof BlockJigsaw) && !this.player.isCreativeAndOp() && !this.player.getBukkitEntity().canAlwaysOpenCommandBlocks()) {
+                 this.world.notify(blockposition, iblockdata, iblockdata, 3);
+                 return false;
+             } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
 index 4ba349e1a..a25b511b9 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java

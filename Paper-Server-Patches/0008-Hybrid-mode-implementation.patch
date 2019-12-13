@@ -1,4 +1,4 @@
-From 7165d257f221a53944adc04daa332f18959df9eb Mon Sep 17 00:00:00 2001
+From b11ecb0bd535ed2b20e5fd5eff4215a20cf39033 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -1211,7 +1211,7 @@ index cd73cde8d..95888e7b5 100644
          float f = this.inventory.a(iblockdata);
  
 diff --git a/src/main/java/net/minecraft/server/EntityLiving.java b/src/main/java/net/minecraft/server/EntityLiving.java
-index f675ad2f5..a3d92c97a 100644
+index addbafe66..813fffc81 100644
 --- a/src/main/java/net/minecraft/server/EntityLiving.java
 +++ b/src/main/java/net/minecraft/server/EntityLiving.java
 @@ -860,9 +860,11 @@ public abstract class EntityLiving extends Entity {
@@ -1483,7 +1483,7 @@ index 96a785af2..715707316 100644
                  }
                  // Paper end
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 3f5f45668..9e589501c 100644
+index 9c0050b57..00b2b19de 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -7,6 +7,7 @@ import com.google.common.primitives.Floats;
@@ -1543,7 +1543,7 @@ index 3f5f45668..9e589501c 100644
                  this.player.clearActiveItem();
                  return;
              case START_DESTROY_BLOCK:
-@@ -1627,6 +1643,12 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1631,6 +1647,12 @@ public class PlayerConnection implements PacketListenerPlayIn {
                  }
              }
  
@@ -1556,7 +1556,7 @@ index 3f5f45668..9e589501c 100644
              // CraftBukkit start
              if (isSync) {
                  try {
-@@ -1810,7 +1832,12 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1814,7 +1836,12 @@ public class PlayerConnection implements PacketListenerPlayIn {
          MinecraftTimings.playerCommandTimer.startTiming(); // Paper
          // CraftBukkit start - whole method
          if ( org.spigotmc.SpigotConfig.logCommands ) // Spigot
