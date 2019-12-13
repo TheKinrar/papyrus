@@ -24,7 +24,7 @@ function update {
     fi
 }
 
-update Bukkit 6bdfd3854d6a3e62670b8b505bd9be43829bc8b1
+update Bukkit 8b6dd103832def3e8d1a7c3cdb98cde9826d543c
 update CraftBukkit 656701746abf477beb78cb6108298b20dc053cf1
 update Spigot 56f84710b85569a76df91e08104baa55000b565a
 update Paper origin/ver/1.14
