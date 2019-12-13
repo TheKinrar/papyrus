@@ -1,4 +1,4 @@
-From 780899bfc9b222c3820b7de7e8d97a31e54e5050 Mon Sep 17 00:00:00 2001
+From 1b89fb8f19ffb214695ce847154e91778d46c783 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Thu, 7 Nov 2019 11:25:24 +0000
 Subject: [PATCH] Execute /version command on startup

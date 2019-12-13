@@ -1,4 +1,4 @@
-From 187fff1ddc22afb4ffd90eb643e15131e0ab844a Mon Sep 17 00:00:00 2001
+From c987aad61a8e05e43d1b0e44c174b76c18576d00 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Thu, 21 Nov 2019 11:59:46 +0000
 Subject: [PATCH] Implement Block#getCenter

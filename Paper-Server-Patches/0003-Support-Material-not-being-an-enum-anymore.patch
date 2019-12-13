@@ -1,4 +1,4 @@
-From 6adb0a4baa4e7b358e3b09b1b2b52235e319f74f Mon Sep 17 00:00:00 2001
+From 466a7c079571ce8804f6eb69e9ddc67d395f766e Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore

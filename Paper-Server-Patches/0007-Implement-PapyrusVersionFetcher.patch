@@ -1,4 +1,4 @@
-From a623ab7537909850b923c36e9b3f504651fc8fbf Mon Sep 17 00:00:00 2001
+From a559dd1b810ce8056d1044b521be5e0a3e26c96a Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 1 Nov 2019 01:32:27 +0000
 Subject: [PATCH] Implement PapyrusVersionFetcher
