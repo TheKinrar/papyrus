@@ -1,4 +1,4 @@
-From b11ecb0bd535ed2b20e5fd5eff4215a20cf39033 Mon Sep 17 00:00:00 2001
+From c97adfdddcd47d4d21fdb78591e085400326b2a7 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -39,7 +39,7 @@ index b151a13c1..476969465 100644
                  // Make an OfflinePlayer using an offline mode UUID since the name has no profile
                  profile = new GameProfile(UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8)), name);
 diff --git a/src/main/java/fr/thekinrar/papyrus/Metrics.java b/src/main/java/fr/thekinrar/papyrus/Metrics.java
-index 7c284c9b2..da9d15cec 100644
+index 7c284c9b2..ff7346e59 100644
 --- a/src/main/java/fr/thekinrar/papyrus/Metrics.java
 +++ b/src/main/java/fr/thekinrar/papyrus/Metrics.java
 @@ -593,7 +593,7 @@ public class Metrics {
@@ -47,7 +47,7 @@ index 7c284c9b2..da9d15cec 100644
  
                  metrics.addCustomChart(new Metrics.SingleLineChart("players", () -> Bukkit.getOnlinePlayers().size()));
 -                metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : "offline"));
-+                metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? (Bukkit.getHybridMode() ? "hybrid" : "online") : "offline"));
++                metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : (Bukkit.getHybridMode() ? "hybrid" : "offline")));
                  metrics.addCustomChart(new Metrics.SimplePie("papyrus_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown"));
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
