@@ -1,4 +1,4 @@
-From aa52d8027a4d48fcde8398fb29cc3204db7a7377 Mon Sep 17 00:00:00 2001
+From aef565cdb617c50e0ee447fdba08110af0ca8b53 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 13 Dec 2019 18:26:58 +0000
 Subject: [PATCH] Add showInvalidBedMessage world config
@@ -20,13 +20,13 @@ index 52274c1bb..4cdcd5104 100644
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index b8290be65..1891c68d6 100644
+index dfd96f155..2e2114484 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -676,7 +676,10 @@ public abstract class PlayerList {
+@@ -677,7 +677,10 @@ public abstract class PlayerList {
                      location = new Location(cworld, vec3d.x, vec3d.y, vec3d.z);
                  } else {
-                     entityplayer1.setRespawnPosition(null, true);
+                     entityplayer1.setRespawnPosition(null, true, false);
 +
 +                    if(cworld.getHandle().papyrusConfig.showInvalidBedMessage) {
                      entityplayer1.playerConnection.sendPacket(new PacketPlayOutGameStateChange(0, 0.0F));

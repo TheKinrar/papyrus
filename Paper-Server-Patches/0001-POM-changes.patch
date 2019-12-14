@@ -1,11 +1,11 @@
-From 1247dbe070e52c096b005bdffc8632f4b7e64e53 Mon Sep 17 00:00:00 2001
+From 20297db04e007e890b27b6e7b1861760ed2b6aae Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 03:44:21 +0100
 Subject: [PATCH] POM changes
 
 
 diff --git a/pom.xml b/pom.xml
-index beda5dc8a..54730360f 100644
+index d10c219e3..f2fe480ab 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -1,11 +1,11 @@
@@ -15,7 +15,7 @@ index beda5dc8a..54730360f 100644
 -    <artifactId>paper</artifactId>
 +    <artifactId>papyrus</artifactId>
      <packaging>jar</packaging>
-     <version>1.14.4-R0.1-SNAPSHOT</version>
+     <version>1.15-R0.1-SNAPSHOT</version>
 -    <name>Paper</name>
 -    <url>https://papermc.io</url>
 +    <name>Papyrus</name>

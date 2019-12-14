@@ -1,11 +1,11 @@
-From 3f916869fa54202b483d62fbaec91678f1acae50 Mon Sep 17 00:00:00 2001
+From b5836c83dc6207497c8c61bc4d0b3097152c1388 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 5 Oct 2019 21:26:23 +0100
 Subject: [PATCH] Implement CommandBlockEditEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index ae17cdf23..3f5f45668 100644
+index c559a7b95..f4585cd5b 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -1,5 +1,7 @@
@@ -89,7 +89,7 @@ index ae17cdf23..3f5f45668 100644
  // CraftBukkit end
  
  public class PlayerConnection implements PacketListenerPlayIn {
-@@ -581,58 +566,99 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -584,63 +569,117 @@ public class PlayerConnection implements PacketListenerPlayIn {
      @Override
      public void a(PacketPlayInSetCommandBlock packetplayinsetcommandblock) {
          PlayerConnectionUtils.ensureMainThread(packetplayinsetcommandblock, this, this.player.getWorldServer());
@@ -106,6 +106,8 @@ index ae17cdf23..3f5f45668 100644
 +        tileentitycommand = (TileEntityCommand) tileentity;
 +        commandblocklistenerabstract = tileentitycommand.getCommandBlock();
 +
++        TileEntityCommand.Type tileentitycommand_type = tileentitycommand.m();
++
 +        CommandBlockEditEvent event = new CommandBlockEditEvent(
 +            CraftBlock.at(this.player.world, blockposition),
 +            (Player) CraftPlayer.getEntity((CraftServer) Bukkit.getServer(), this.player),
@@ -115,7 +117,7 @@ index ae17cdf23..3f5f45668 100644
 +            packetplayinsetcommandblock.c(),
 +
 +            // Type
-+            commandBlockTypeFromNMS(tileentitycommand.u()),
++            commandBlockTypeFromNMS(tileentitycommand.m()),
 +            commandBlockTypeFromNMS(packetplayinsetcommandblock.g()),
 +
 +            // Conditional
@@ -174,6 +176,7 @@ index ae17cdf23..3f5f45668 100644
 -            boolean flag = packetplayinsetcommandblock.d();
 -
 -            if (commandblocklistenerabstract != null) {
+-                TileEntityCommand.Type tileentitycommand_type = tileentitycommand.m();
 -                EnumDirection enumdirection = (EnumDirection) this.player.world.getType(blockposition).get(BlockCommand.a);
 -                IBlockData iblockdata;
 -
@@ -192,14 +195,14 @@ index ae17cdf23..3f5f45668 100644
 -                        this.player.world.setTypeAndData(blockposition, (IBlockData) ((IBlockData) iblockdata.set(BlockCommand.a, enumdirection)).set(BlockCommand.b, packetplayinsetcommandblock.e()), 2);
 -                }
 -
--                tileentity.n();
+-                tileentity.r();
 -                this.player.world.setTileEntity(blockposition, tileentity);
 -                commandblocklistenerabstract.setCommand(s);
 -                commandblocklistenerabstract.a(flag);
 -                if (!flag) {
 -                    commandblocklistenerabstract.c((IChatBaseComponent) null);
 -                }
-+            tileentity.n();
++            tileentity.r();
 +            this.player.world.setTileEntity(blockposition, tileentity);
 +            commandblocklistenerabstract.setCommand(event.getNewCommand());
 +            commandblocklistenerabstract.a(event.getNewStoresOutput());
@@ -208,11 +211,18 @@ index ae17cdf23..3f5f45668 100644
 +            }
  
 -                tileentitycommand.b(packetplayinsetcommandblock.f());
+-                if (tileentitycommand_type != packetplayinsetcommandblock.g()) {
+-                    tileentitycommand.h();
+-                }
++            tileentitycommand.b(!event.getNewNeedsRedstone());
++            if(tileentitycommand_type != commandBlockTypeToNMS(event.getNewType())) {
++                tileentitycommand.h();
++            }
+ 
 -                commandblocklistenerabstract.e();
 -                if (!UtilColor.b(s)) {
 -                    this.player.sendMessage(new ChatMessage("advMode.setCommand.success", new Object[]{s}));
 -                }
-+            tileentitycommand.b(!event.getNewNeedsRedstone());
 +            commandblocklistenerabstract.e();
 +            if (!UtilColor.b(event.getNewCommand())) {
 +                this.player.sendMessage(new ChatMessage("advMode.setCommand.success", event.getNewCommand()));
@@ -229,6 +239,18 @@ index ae17cdf23..3f5f45668 100644
 +            case REDSTONE:
 +            default:
 +                return CommandBlockEditEvent.Type.IMPULSE;
++        }
++    }
++
++    private TileEntityCommand.Type commandBlockTypeToNMS(CommandBlockEditEvent.Type nms) {
++        switch(nms) {
++            case CHAIN:
++                return TileEntityCommand.Type.SEQUENCE;
++            case REPEAT:
++                return TileEntityCommand.Type.AUTO;
++            case IMPULSE:
++            default:
++                return TileEntityCommand.Type.REDSTONE;
          }
      }
  

@@ -1,14 +1,14 @@
-From 8a03a10fca25e94339b75a7ebd2ab5975a9fd596 Mon Sep 17 00:00:00 2001
+From 7f123c4b50bd585663346eee6155edd7d19a1bf1 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 11:26:33 +0100
 Subject: [PATCH] Server branding
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 93c0c422d..5209b805f 100644
+index 1d7d1ffbf..5bb4912ce 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-@@ -98,7 +98,7 @@ public class PaperConfig {
+@@ -97,7 +97,7 @@ public class PaperConfig {
          }
  
          if (!metricsStarted) {
@@ -924,7 +924,7 @@ index 000000000..52274c1bb
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/DedicatedServer.java b/src/main/java/net/minecraft/server/DedicatedServer.java
-index 5bc19cd08..096ba1b02 100644
+index 3ed74ae0e..b17af5a12 100644
 --- a/src/main/java/net/minecraft/server/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/DedicatedServer.java
 @@ -186,6 +186,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
@@ -944,10 +944,10 @@ index 5bc19cd08..096ba1b02 100644
          this.setSpawnAnimals(dedicatedserverproperties.spawnAnimals);
          this.setSpawnNPCs(dedicatedserverproperties.spawnNpcs);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 0b0058138..4f07ec1ec 100644
+index edb3a6035..9739f155e 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1462,7 +1462,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1474,7 +1474,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      }
  
      public String getServerModName() {
@@ -957,10 +957,10 @@ index 0b0058138..4f07ec1ec 100644
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 1bea6dffe..c39c9b3d1 100644
+index 985f30372..484fde21a 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
-@@ -122,6 +122,8 @@ public abstract class World implements IIBlockAccess, GeneratorAccess, AutoClose
+@@ -121,6 +121,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
      final java.lang.Object stuctureLock = new Object();
      // Paper end
  
@@ -969,7 +969,7 @@ index 1bea6dffe..c39c9b3d1 100644
      public CraftWorld getWorld() {
          return this.world;
      }
-@@ -137,6 +139,7 @@ public abstract class World implements IIBlockAccess, GeneratorAccess, AutoClose
+@@ -136,6 +138,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
      protected World(WorldData worlddata, DimensionManager dimensionmanager, BiFunction<World, WorldProvider, IChunkProvider> bifunction, GameProfilerFiller gameprofilerfiller, boolean flag, org.bukkit.generator.ChunkGenerator gen, org.bukkit.World.Environment env) {
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig( worlddata.getName() ); // Spigot
          this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(worlddata.getName(), this.spigotConfig); // Paper
@@ -978,10 +978,10 @@ index 1bea6dffe..c39c9b3d1 100644
          this.generator = gen;
          this.world = new CraftWorld((WorldServer) this, gen, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 105d31906..623adca03 100644
+index f3da3a82d..8221f83bf 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -200,7 +200,7 @@ import javax.annotation.Nullable; // Paper
+@@ -201,7 +201,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
@@ -990,7 +990,7 @@ index 105d31906..623adca03 100644
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
-@@ -793,6 +793,7 @@ public final class CraftServer implements Server {
+@@ -794,6 +794,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
@@ -999,7 +999,7 @@ index 105d31906..623adca03 100644
              world.worldData.setDifficulty(config.difficulty);
              world.setSpawnFlags(config.spawnMonsters, config.spawnAnimals);
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 56ac679b2..fd5db7196 100644
+index 140b82275..d00da8a26 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -137,6 +137,14 @@ public class Main {

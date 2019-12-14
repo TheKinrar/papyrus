@@ -1,11 +1,11 @@
-From 6333e83a7d1dc42bb750566e07985b5f00560b38 Mon Sep 17 00:00:00 2001
+From 30b015ab38a32aa701f453a2ae937173df56688a Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index 68d36a512..e5b9ae640 100644
+index 917dc6253..d70752332 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 @@ -585,7 +585,7 @@ public class PaperWorldConfig {
@@ -87,10 +87,10 @@ index 100ed8a8f..ae1582e01 100644
              default:
                  throw new IllegalArgumentException("Unknown DyeColor for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-index d9749adb7..0aeb722c6 100644
+index a667e58ed..58606982d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-@@ -325,151 +325,151 @@ public class CraftBlock implements Block {
+@@ -325,154 +325,154 @@ public class CraftBlock implements Block {
          // Paper end
          Material material = getType();
  
@@ -357,6 +357,11 @@ index d9749adb7..0aeb722c6 100644
 -        case SMOKER:
 +        case "SMOKER":
              return new CraftSmoker(this);
+-        case BEEHIVE:
+-        case BEE_NEST:
++        case "BEEHIVE":
++        case "BEE_NEST":
+             return new CraftBeehive(this);
          default:
              TileEntity tileEntity = world.getTileEntity(position);
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftSkull.java b/src/main/java/org/bukkit/craftbukkit/block/CraftSkull.java
@@ -402,10 +407,10 @@ index 2dd2f476f..c7f46082e 100644
              default:
                  throw new IllegalArgumentException("Unknown SkullType for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index dc15703fd..d476e1878 100644
+index 4fb1092ce..42656be41 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1291,14 +1291,14 @@ public class CraftEventFactory {
+@@ -1290,14 +1290,14 @@ public class CraftEventFactory {
          org.bukkit.World bukkitWorld = world.getWorld();
          Block igniter = bukkitWorld.getBlockAt(source.getX(), source.getY(), source.getZ());
          IgniteCause cause;
@@ -425,10 +430,10 @@ index dc15703fd..d476e1878 100644
                  cause = IgniteCause.SPREAD;
          }
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
-index 3cddf254a..d84a7ff15 100644
+index 23d775645..1513f9825 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
-@@ -68,202 +68,202 @@ public final class CraftItemFactory implements ItemFactory {
+@@ -68,205 +68,205 @@ public final class CraftItemFactory implements ItemFactory {
  
      private ItemMeta getItemMeta(Material material, CraftMetaItem meta) {
          material = CraftLegacy.fromLegacy(material); // This may be called from legacy item stacks, try to get the right material
@@ -566,6 +571,7 @@ index 3cddf254a..d84a7ff15 100644
 +        case "YELLOW_WALL_BANNER":
              return meta instanceof CraftMetaBanner ? meta : new CraftMetaBanner(meta);
 -        case BAT_SPAWN_EGG:
+-        case BEE_SPAWN_EGG:
 -        case BLAZE_SPAWN_EGG:
 -        case CAT_SPAWN_EGG:
 -        case CAVE_SPIDER_SPAWN_EGG:
@@ -624,6 +630,7 @@ index 3cddf254a..d84a7ff15 100644
 -        case ZOMBIE_SPAWN_EGG:
 -        case ZOMBIE_VILLAGER_SPAWN_EGG:
 +        case "BAT_SPAWN_EGG":
++        case "BEE_SPAWN_EGG":
 +        case "BLAZE_SPAWN_EGG":
 +        case "CAT_SPAWN_EGG":
 +        case "CAVE_SPIDER_SPAWN_EGG":
@@ -743,6 +750,10 @@ index 3cddf254a..d84a7ff15 100644
 -        case JIGSAW:
 -        case LECTERN:
 -        case SMOKER:
+-        case BEEHIVE:
+-        case BEE_NEST:
+-            return new CraftMetaBlockState(meta, material);
+-        case TROPICAL_FISH_BUCKET:
 +        case "FURNACE":
 +        case "CHEST":
 +        case "TRAPPED_CHEST":
@@ -798,8 +809,9 @@ index 3cddf254a..d84a7ff15 100644
 +        case "JIGSAW":
 +        case "LECTERN":
 +        case "SMOKER":
-           return new CraftMetaBlockState(meta, material);
--        case TROPICAL_FISH_BUCKET:
++        case "BEEHIVE":
++        case "BEE_NEST":
++          return new CraftMetaBlockState(meta, material);
 +        case "TROPICAL_FISH_BUCKET":
              return meta instanceof CraftMetaTropicalFishBucket ? meta : new CraftMetaTropicalFishBucket(meta);
 -        case CROSSBOW:
@@ -811,10 +823,10 @@ index 3cddf254a..d84a7ff15 100644
          default:
              return new CraftMetaItem(meta);
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
-index b1ea5b93d..dd1f2ecd5 100644
+index d5e8a7ee6..91acd1e39 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
-@@ -278,200 +278,200 @@ public final class CraftItemStack extends ItemStack {
+@@ -279,203 +279,203 @@ public final class CraftItemStack extends ItemStack {
          if (!hasItemMeta(item)) {
              return CraftItemFactory.instance().getItemMeta(getType(item));
          }
@@ -949,6 +961,7 @@ index b1ea5b93d..dd1f2ecd5 100644
 +            case "YELLOW_WALL_BANNER":
                  return new CraftMetaBanner(item.getTag());
 -            case BAT_SPAWN_EGG:
+-            case BEE_SPAWN_EGG:
 -            case BLAZE_SPAWN_EGG:
 -            case CAT_SPAWN_EGG:
 -            case CAVE_SPIDER_SPAWN_EGG:
@@ -1007,6 +1020,7 @@ index b1ea5b93d..dd1f2ecd5 100644
 -            case ZOMBIE_SPAWN_EGG:
 -            case ZOMBIE_VILLAGER_SPAWN_EGG:
 +            case "BAT_SPAWN_EGG":
++            case "BEE_SPAWN_EGG":
 +            case "BLAZE_SPAWN_EGG":
 +            case "CAT_SPAWN_EGG":
 +            case "CAVE_SPIDER_SPAWN_EGG":
@@ -1126,6 +1140,8 @@ index b1ea5b93d..dd1f2ecd5 100644
 -            case JIGSAW:
 -            case LECTERN:
 -            case SMOKER:
+-            case BEEHIVE:
+-            case BEE_NEST:
 +            case "FURNACE":
 +            case "CHEST":
 +            case "TRAPPED_CHEST":
@@ -1181,6 +1197,8 @@ index b1ea5b93d..dd1f2ecd5 100644
 +            case "JIGSAW":
 +            case "LECTERN":
 +            case "SMOKER":
++            case "BEEHIVE":
++            case "BEE_NEST":
                  return new CraftMetaBlockState(item.getTag(), CraftMagicNumbers.getMaterial(item.getItem()));
 -            case TROPICAL_FISH_BUCKET:
 +            case "TROPICAL_FISH_BUCKET":
@@ -1286,10 +1304,10 @@ index 2f72f0ce5..4ceaacc2e 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBlockState.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBlockState.java
-index 1529f30f7..3b78b377e 100644
+index 9ef1f0d5e..aa0767617 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBlockState.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBlockState.java
-@@ -182,62 +182,62 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
+@@ -184,64 +184,64 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
  
      @Override
      boolean applicableTo(Material type) {
@@ -1349,6 +1367,8 @@ index 1529f30f7..3b78b377e 100644
 -            case JIGSAW:
 -            case LECTERN:
 -            case SMOKER:
+-            case BEEHIVE:
+-            case BEE_NEST:
 +        switch(type.name()){
 +            case "FURNACE":
 +            case "CHEST":
@@ -1405,10 +1425,12 @@ index 1529f30f7..3b78b377e 100644
 +            case "JIGSAW":
 +            case "LECTERN":
 +            case "SMOKER":
++            case "BEEHIVE":
++            case "BEE_NEST":
                  return true;
          }
          return false;
-@@ -260,242 +260,242 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
+@@ -264,248 +264,248 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
      @Override
      public BlockState getBlockState() {
          if (blockEntityTag != null) {
@@ -1771,7 +1793,15 @@ index 1529f30f7..3b78b377e 100644
              if (te == null){
                  te = new TileEntitySmoker();
              }
-@@ -510,159 +510,159 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
+             return new CraftSmoker(material, (TileEntitySmoker) te);
+-        case BEE_NEST:
+-        case BEEHIVE:
++        case "BEE_NEST":
++        case "BEEHIVE":
+             if (te == null){
+                 te = new TileEntityBeehive();
+             }
+@@ -520,163 +520,163 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
          Validate.notNull(blockState, "blockState must not be null");
  
          boolean valid;
@@ -2031,9 +2061,15 @@ index 1529f30f7..3b78b377e 100644
 +        case "SMOKER":
              valid = blockState instanceof CraftSmoker;
              break;
+-        case BEEHIVE:
+-        case BEE_NEST:
++        case "BEEHIVE":
++        case "BEE_NEST":
+             valid = blockState instanceof CraftBeehive;
+             break;
          default:
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
-index 7262920c1..ada2afce9 100644
+index 1bf74bdae..7396ca4d9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
 @@ -160,9 +160,9 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
@@ -2050,7 +2086,7 @@ index 7262920c1..ada2afce9 100644
          default:
              return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
-index 753bf7786..039a03c90 100644
+index 0ea7a9606..dab352659 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
 @@ -85,9 +85,9 @@ class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
@@ -2127,7 +2163,7 @@ index 7a1c4d619..2d6a5e945 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaKnowledgeBook.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaKnowledgeBook.java
-index 2d2d73cc0..9ae4a9e12 100644
+index 8c86fe208..9464af1a0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaKnowledgeBook.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaKnowledgeBook.java
 @@ -83,8 +83,8 @@ public class CraftMetaKnowledgeBook extends CraftMetaItem implements KnowledgeBo
@@ -2142,7 +2178,7 @@ index 2d2d73cc0..9ae4a9e12 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaLeatherArmor.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaLeatherArmor.java
-index ecb12457a..1d8e561c9 100644
+index e7b45310a..9cee7a9a5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaLeatherArmor.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaLeatherArmor.java
 @@ -66,12 +66,12 @@ class CraftMetaLeatherArmor extends CraftMetaItem implements LeatherArmorMeta {
@@ -2165,7 +2201,7 @@ index ecb12457a..1d8e561c9 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java
-index 7489e63a1..c37a488d7 100644
+index bb0c062b9..737779601 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java
 @@ -115,8 +115,8 @@ class CraftMetaMap extends CraftMetaItem implements MapMeta {
@@ -2238,15 +2274,16 @@ index c29a78fd3..ece9a38fc 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSpawnEgg.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSpawnEgg.java
-index 082f85119..d43212478 100644
+index 0634fb36d..3de92ca61 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSpawnEgg.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSpawnEgg.java
-@@ -109,65 +109,65 @@ public class CraftMetaSpawnEgg extends CraftMetaItem implements SpawnEggMeta {
+@@ -109,66 +109,66 @@ public class CraftMetaSpawnEgg extends CraftMetaItem implements SpawnEggMeta {
  
      @Override
      boolean applicableTo(Material type) {
 -        switch (type) {
 -            case BAT_SPAWN_EGG:
+-            case BEE_SPAWN_EGG:
 -            case BLAZE_SPAWN_EGG:
 -            case CAT_SPAWN_EGG:
 -            case CAVE_SPIDER_SPAWN_EGG:
@@ -2306,6 +2343,7 @@ index 082f85119..d43212478 100644
 -            case ZOMBIE_VILLAGER_SPAWN_EGG:
 +        switch (type.name()) {
 +            case "BAT_SPAWN_EGG":
++            case "BEE_SPAWN_EGG":
 +            case "BLAZE_SPAWN_EGG":
 +            case "CAT_SPAWN_EGG":
 +            case "CAVE_SPIDER_SPAWN_EGG":

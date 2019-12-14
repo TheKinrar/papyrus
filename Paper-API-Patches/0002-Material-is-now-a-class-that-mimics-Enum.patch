@@ -1,4 +1,4 @@
-From 04f3e9a7e0a1f4f4f757c595d5ebfb36063afa16 Mon Sep 17 00:00:00 2001
+From e64c41354a4f9471ca206a4ae7495917bc8f323b Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 12:02:30 +0100
 Subject: [PATCH] Material is now a class that mimics Enum
@@ -56,7 +56,7 @@ index 231bc6e31..a97dab131 100644
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index bb0833f62..27dae0235 100644
+index 535179c29..423c9a111 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
 @@ -1,10 +1,8 @@
@@ -72,7 +72,7 @@ index bb0833f62..27dae0235 100644
  import org.apache.commons.lang.Validate;
  import org.bukkit.block.data.Ageable;
  import org.bukkit.block.data.AnaloguePowerable;
-@@ -77,3201 +75,3224 @@ import org.bukkit.material.MaterialData;
+@@ -78,3214 +76,3237 @@ import org.bukkit.material.MaterialData;
  import org.jetbrains.annotations.NotNull;
  import org.jetbrains.annotations.Nullable;
  
@@ -241,13 +241,18 @@ index bb0833f62..27dae0235 100644
 -    BEACON(6608),
 -    BEDROCK(23130),
 -    BEEF(4803),
--    BEETROOT(23305),
 +    public static final Material BARREL = new Material("BARREL", 22396, Directional.class);
 +    public static final Material BARRIER = new Material("BARRIER", 26453);
 +    public static final Material BAT_SPAWN_EGG = new Material("BAT_SPAWN_EGG", 14607);
 +    public static final Material BEACON = new Material("BEACON", 6608);
 +    public static final Material BEDROCK = new Material("BEDROCK", 23130);
 +    public static final Material BEEF = new Material("BEEF", 4803);
+     /**
+      * BlockData: {@link Beehive}
+      */
+-    BEEHIVE(11830, Beehive.class),
+-    BEETROOT(23305),
++    public static final Material BEEHIVE = new Material("BEEHIVE", 11830, Beehive.class);
 +    public static final Material BEETROOT = new Material("BEETROOT", 23305);
      /**
       * BlockData: {@link Ageable}
@@ -258,6 +263,13 @@ index bb0833f62..27dae0235 100644
 +    public static final Material BEETROOTS = new Material("BEETROOTS", 22075, Ageable.class);
 +    public static final Material BEETROOT_SEEDS = new Material("BEETROOT_SEEDS", 21282);
 +    public static final Material BEETROOT_SOUP = new Material("BEETROOT_SOUP", 16036, 1);
+     /**
+      * BlockData: {@link Beehive}
+      */
+-    BEE_NEST(8825, Beehive.class),
+-    BEE_SPAWN_EGG(22924),
++    public static final Material BEE_NEST = new Material("BEE_NEST", 8825, Beehive.class);
++    public static final Material BEE_SPAWN_EGG = new Material("BEE_SPAWN_EGG", 22924);
      /**
       * BlockData: {@link Bell}
       */
@@ -1433,7 +1445,15 @@ index bb0833f62..27dae0235 100644
       * BlockData: {@link AnaloguePowerable}
       */
 -    HEAVY_WEIGHTED_PRESSURE_PLATE(16970, AnaloguePowerable.class),
+-    HONEYCOMB(9482),
+-    HONEYCOMB_BLOCK(28780),
+-    HONEY_BLOCK(30615),
+-    HONEY_BOTTLE(22927, 16),
 +    public static final Material HEAVY_WEIGHTED_PRESSURE_PLATE = new Material("HEAVY_WEIGHTED_PRESSURE_PLATE", 16970, AnaloguePowerable.class);
++    public static final Material HONEYCOMB = new Material("HONEYCOMB", 9482);
++    public static final Material HONEYCOMB_BLOCK = new Material("HONEYCOMB_BLOCK", 28780);
++    public static final Material HONEY_BLOCK = new Material("HONEY_BLOCK", 30615);
++    public static final Material HONEY_BOTTLE = new Material("HONEY_BOTTLE", 22927, 16);
      /**
       * BlockData: {@link Hopper}
       */
@@ -4741,7 +4761,7 @@ index bb0833f62..27dae0235 100644
          this.id = id;
          this.durability = (short) durability;
          this.maxStack = stack;
-@@ -3290,18 +3311,97 @@ public enum Material implements Keyed {
+@@ -3304,18 +3325,97 @@ public enum Material implements Keyed {
          } catch (SecurityException ex) {
              throw new AssertionError(ex);
          }
@@ -4843,7 +4863,7 @@ index bb0833f62..27dae0235 100644
                  return true;
          }
          return false;
-@@ -3330,6 +3430,11 @@ public enum Material implements Keyed {
+@@ -3344,6 +3444,11 @@ public enum Material implements Keyed {
          return legacy;
      }
  
@@ -4855,7 +4875,7 @@ index bb0833f62..27dae0235 100644
      @NotNull
      @Override
      public NamespacedKey getKey() {
-@@ -3437,684 +3542,684 @@ public enum Material implements Keyed {
+@@ -3451,688 +3556,688 @@ public enum Material implements Keyed {
       * @return true if this material is a block
       */
      public boolean isBlock() {
@@ -4894,7 +4914,9 @@ index bb0833f62..27dae0235 100644
 -            case BARRIER:
 -            case BEACON:
 -            case BEDROCK:
+-            case BEEHIVE:
 -            case BEETROOTS:
+-            case BEE_NEST:
 -            case BELL:
 -            case BIRCH_BUTTON:
 -            case BIRCH_DOOR:
@@ -5140,6 +5162,8 @@ index bb0833f62..27dae0235 100644
 -            case GRINDSTONE:
 -            case HAY_BLOCK:
 -            case HEAVY_WEIGHTED_PRESSURE_PLATE:
+-            case HONEYCOMB_BLOCK:
+-            case HONEY_BLOCK:
 -            case HOPPER:
 -            case HORN_CORAL:
 -            case HORN_CORAL_BLOCK:
@@ -5570,7 +5594,9 @@ index bb0833f62..27dae0235 100644
 +            case "BARRIER":
 +            case "BEACON":
 +            case "BEDROCK":
++            case "BEEHIVE":
 +            case "BEETROOTS":
++            case "BEE_NEST":
 +            case "BELL":
 +            case "BIRCH_BUTTON":
 +            case "BIRCH_DOOR":
@@ -5816,6 +5842,8 @@ index bb0833f62..27dae0235 100644
 +            case "GRINDSTONE":
 +            case "HAY_BLOCK":
 +            case "HEAVY_WEIGHTED_PRESSURE_PLATE":
++            case "HONEYCOMB_BLOCK":
++            case "HONEY_BLOCK":
 +            case "HOPPER":
 +            case "HORN_CORAL":
 +            case "HORN_CORAL_BLOCK":
@@ -6217,7 +6245,7 @@ index bb0833f62..27dae0235 100644
              //</editor-fold>
                  return true;
              default:
-@@ -4128,77 +4233,77 @@ public enum Material implements Keyed {
+@@ -4146,78 +4251,78 @@ public enum Material implements Keyed {
       * @return true if this Material is edible.
       */
      public boolean isEdible() {
@@ -6246,6 +6274,7 @@ index bb0833f62..27dae0235 100644
 -            case ENCHANTED_GOLDEN_APPLE:
 -            case GOLDEN_APPLE:
 -            case GOLDEN_CARROT:
+-            case HONEY_BOTTLE:
 -            case MELON_SLICE:
 -            case MUSHROOM_STEW:
 -            case MUTTON:
@@ -6284,6 +6313,7 @@ index bb0833f62..27dae0235 100644
 +            case "ENCHANTED_GOLDEN_APPLE":
 +            case "GOLDEN_APPLE":
 +            case "GOLDEN_CARROT":
++            case "HONEY_BOTTLE":
 +            case "MELON_SLICE":
 +            case "MUSHROOM_STEW":
 +            case "MUTTON":
@@ -6364,7 +6394,7 @@ index bb0833f62..27dae0235 100644
              //</editor-fold>
                  return true;
              default:
-@@ -4285,30 +4390,24 @@ public enum Material implements Keyed {
+@@ -4304,30 +4409,24 @@ public enum Material implements Keyed {
          return getMaterial(filtered, legacyName);
      }
  
@@ -6408,7 +6438,7 @@ index bb0833f62..27dae0235 100644
              //</editor-fold>
                  return true;
              default:
-@@ -4325,726 +4424,726 @@ public enum Material implements Keyed {
+@@ -4344,730 +4443,730 @@ public enum Material implements Keyed {
          if (!isBlock() || id == 0) {
              return false;
          }
@@ -6438,6 +6468,8 @@ index bb0833f62..27dae0235 100644
 -            case BARRIER:
 -            case BEACON:
 -            case BEDROCK:
+-            case BEEHIVE:
+-            case BEE_NEST:
 -            case BELL:
 -            case BIRCH_DOOR:
 -            case BIRCH_FENCE:
@@ -6639,6 +6671,8 @@ index bb0833f62..27dae0235 100644
 -            case GRINDSTONE:
 -            case HAY_BLOCK:
 -            case HEAVY_WEIGHTED_PRESSURE_PLATE:
+-            case HONEYCOMB_BLOCK:
+-            case HONEY_BLOCK:
 -            case HOPPER:
 -            case HORN_CORAL_BLOCK:
 -            case ICE:
@@ -6956,6 +6990,8 @@ index bb0833f62..27dae0235 100644
 +            case "BARRIER":
 +            case "BEACON":
 +            case "BEDROCK":
++            case "BEEHIVE":
++            case "BEE_NEST":
 +            case "BELL":
 +            case "BIRCH_DOOR":
 +            case "BIRCH_FENCE":
@@ -7157,6 +7193,8 @@ index bb0833f62..27dae0235 100644
 +            case "GRINDSTONE":
 +            case "HAY_BLOCK":
 +            case "HEAVY_WEIGHTED_PRESSURE_PLATE":
++            case "HONEYCOMB_BLOCK":
++            case "HONEY_BLOCK":
 +            case "HOPPER":
 +            case "HORN_CORAL_BLOCK":
 +            case "ICE":
@@ -7853,7 +7891,7 @@ index bb0833f62..27dae0235 100644
              //</editor-fold>
                  return true;
              default:
-@@ -5058,13 +5157,13 @@ public enum Material implements Keyed {
+@@ -5081,13 +5180,13 @@ public enum Material implements Keyed {
       * @return True if this material is an air block.
       */
      public boolean isAir() {
@@ -7872,7 +7910,7 @@ index bb0833f62..27dae0235 100644
                  //</editor-fold>
                  return true;
              default:
-@@ -5084,184 +5183,184 @@ public enum Material implements Keyed {
+@@ -5107,184 +5206,184 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -8233,7 +8271,7 @@ index bb0833f62..27dae0235 100644
              //</editor-fold>
                  return true;
              default:
-@@ -5278,265 +5377,265 @@ public enum Material implements Keyed {
+@@ -5301,267 +5400,267 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -8256,6 +8294,8 @@ index bb0833f62..27dae0235 100644
 -            case BAMBOO:
 -            case BAMBOO_SAPLING:
 -            case BARREL:
+-            case BEEHIVE:
+-            case BEE_NEST:
 -            case BIRCH_DOOR:
 -            case BIRCH_FENCE:
 -            case BIRCH_FENCE_GATE:
@@ -8457,6 +8497,8 @@ index bb0833f62..27dae0235 100644
 +            case "BAMBOO":
 +            case "BAMBOO_SAPLING":
 +            case "BARREL":
++            case "BEEHIVE":
++            case "BEE_NEST":
 +            case "BIRCH_DOOR":
 +            case "BIRCH_FENCE":
 +            case "BIRCH_FENCE_GATE":
@@ -8756,7 +8798,7 @@ index bb0833f62..27dae0235 100644
              //</editor-fold>
                  return true;
              default:
-@@ -5553,171 +5652,171 @@ public enum Material implements Keyed {
+@@ -5578,173 +5677,173 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -8774,6 +8816,8 @@ index bb0833f62..27dae0235 100644
 -            case ALLIUM:
 -            case AZURE_BLUET:
 -            case BAMBOO:
+-            case BEEHIVE:
+-            case BEE_NEST:
 -            case BIRCH_FENCE:
 -            case BIRCH_FENCE_GATE:
 -            case BIRCH_LEAVES:
@@ -8899,6 +8943,8 @@ index bb0833f62..27dae0235 100644
 +            case "ALLIUM":
 +            case "AZURE_BLUET":
 +            case "BAMBOO":
++            case "BEEHIVE":
++            case "BEE_NEST":
 +            case "BIRCH_FENCE":
 +            case "BIRCH_FENCE_GATE":
 +            case "BIRCH_LEAVES":
@@ -9091,7 +9137,7 @@ index bb0833f62..27dae0235 100644
              //</editor-fold>
                  return true;
              default:
-@@ -5731,250 +5830,250 @@ public enum Material implements Keyed {
+@@ -5758,250 +5857,250 @@ public enum Material implements Keyed {
       * @return true if this Material can be used as fuel.
       */
      public boolean isFuel() {
@@ -9584,7 +9630,7 @@ index bb0833f62..27dae0235 100644
              //</editor-fold>
                  return true;
              default:
-@@ -5991,354 +6090,354 @@ public enum Material implements Keyed {
+@@ -6018,357 +6117,357 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -9598,6 +9644,8 @@ index bb0833f62..27dae0235 100644
 -            case BARREL:
 -            case BARRIER:
 -            case BEDROCK:
+-            case BEEHIVE:
+-            case BEE_NEST:
 -            case BIRCH_LOG:
 -            case BIRCH_PLANKS:
 -            case BIRCH_WOOD:
@@ -9691,6 +9739,7 @@ index bb0833f62..27dae0235 100644
 -            case GREEN_TERRACOTTA:
 -            case GREEN_WOOL:
 -            case HAY_BLOCK:
+-            case HONEYCOMB_BLOCK:
 -            case HORN_CORAL_BLOCK:
 -            case INFESTED_CHISELED_STONE_BRICKS:
 -            case INFESTED_COBBLESTONE:
@@ -9845,6 +9894,8 @@ index bb0833f62..27dae0235 100644
 +            case "BARREL":
 +            case "BARRIER":
 +            case "BEDROCK":
++            case "BEEHIVE":
++            case "BEE_NEST":
 +            case "BIRCH_LOG":
 +            case "BIRCH_PLANKS":
 +            case "BIRCH_WOOD":
@@ -9938,6 +9989,7 @@ index bb0833f62..27dae0235 100644
 +            case "GREEN_TERRACOTTA":
 +            case "GREEN_WOOL":
 +            case "HAY_BLOCK":
++            case "HONEYCOMB_BLOCK":
 +            case "HORN_CORAL_BLOCK":
 +            case "INFESTED_CHISELED_STONE_BRICKS":
 +            case "INFESTED_COBBLESTONE":
@@ -10285,7 +10337,7 @@ index bb0833f62..27dae0235 100644
              //</editor-fold>
                  return true;
              default:
-@@ -6353,36 +6452,36 @@ public enum Material implements Keyed {
+@@ -6383,36 +6482,36 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -10350,7 +10402,7 @@ index bb0833f62..27dae0235 100644
              //</editor-fold>
                  return true;
              default:
-@@ -6396,152 +6495,152 @@ public enum Material implements Keyed {
+@@ -6426,152 +6525,152 @@ public enum Material implements Keyed {
       * @return true if this material is an item
       */
      public boolean isItem() {
@@ -10647,7 +10699,7 @@ index bb0833f62..27dae0235 100644
              //</editor-fold>
                  return false;
              default:
-@@ -6566,190 +6665,190 @@ public enum Material implements Keyed {
+@@ -6596,192 +6695,192 @@ public enum Material implements Keyed {
       * @return true if this material can be interacted with.
       */
      public boolean isInteractable() {
@@ -10666,6 +10718,8 @@ index bb0833f62..27dae0235 100644
 -            case ANVIL:
 -            case BARREL:
 -            case BEACON:
+-            case BEEHIVE:
+-            case BEE_NEST:
 -            case BELL:
 -            case BIRCH_BUTTON:
 -            case BIRCH_DOOR:
@@ -10848,6 +10902,8 @@ index bb0833f62..27dae0235 100644
 +            case "ANVIL":
 +            case "BARREL":
 +            case "BEACON":
++            case "BEEHIVE":
++            case "BEE_NEST":
 +            case "BELL":
 +            case "BIRCH_BUTTON":
 +            case "BIRCH_DOOR":
@@ -11021,7 +11077,7 @@ index bb0833f62..27dae0235 100644
                  // </editor-fold>
                  return true;
              default:
-@@ -6768,580 +6867,580 @@ public enum Material implements Keyed {
+@@ -6800,583 +6899,583 @@ public enum Material implements Keyed {
       */
      public float getHardness() {
          Validate.isTrue(isBlock(), "The Material is not a block!");
@@ -11147,6 +11203,7 @@ index bb0833f62..27dae0235 100644
 +            case "WHITE_BED":
 +            case "YELLOW_BED":
                  return 0.2F;
+-            case BEE_NEST:
 -            case BLACK_STAINED_GLASS:
 -            case BLACK_STAINED_GLASS_PANE:
 -            case BLUE_STAINED_GLASS:
@@ -11184,6 +11241,7 @@ index bb0833f62..27dae0235 100644
 -            case WHITE_STAINED_GLASS_PANE:
 -            case YELLOW_STAINED_GLASS:
 -            case YELLOW_STAINED_GLASS_PANE:
++            case "BEE_NEST":
 +            case "BLACK_STAINED_GLASS":
 +            case "BLACK_STAINED_GLASS_PANE":
 +            case "BLUE_STAINED_GLASS":
@@ -11336,19 +11394,23 @@ index bb0833f62..27dae0235 100644
 +            case "WHITE_CONCRETE_POWDER":
 +            case "YELLOW_CONCRETE_POWDER":
                  return 0.5F;
+-            case BEEHIVE:
 -            case CLAY:
 -            case COMPOSTER:
 -            case FARMLAND:
 -            case GRASS_BLOCK:
 -            case GRAVEL:
+-            case HONEYCOMB_BLOCK:
 -            case MYCELIUM:
 -            case SPONGE:
 -            case WET_SPONGE:
++            case "BEEHIVE":
 +            case "CLAY":
 +            case "COMPOSTER":
 +            case "FARMLAND":
 +            case "GRASS_BLOCK":
 +            case "GRAVEL":
++            case "HONEYCOMB_BLOCK":
 +            case "MYCELIUM":
 +            case "SPONGE":
 +            case "WET_SPONGE":
@@ -11374,10 +11436,6 @@ index bb0833f62..27dae0235 100644
 -            case CUT_RED_SANDSTONE:
 -            case CUT_SANDSTONE:
 -            case CYAN_WOOL:
--            case END_STONE_BRICKS:
--            case END_STONE_BRICK_SLAB:
--            case END_STONE_BRICK_STAIRS:
--            case END_STONE_BRICK_WALL:
 -            case GRAY_WOOL:
 -            case GREEN_WOOL:
 -            case LIGHT_BLUE_WOOL:
@@ -11409,10 +11467,6 @@ index bb0833f62..27dae0235 100644
 +            case "CUT_RED_SANDSTONE":
 +            case "CUT_SANDSTONE":
 +            case "CYAN_WOOL":
-+            case "END_STONE_BRICKS":
-+            case "END_STONE_BRICK_SLAB":
-+            case "END_STONE_BRICK_STAIRS":
-+            case "END_STONE_BRICK_WALL":
 +            case "GRAY_WOOL":
 +            case "GREEN_WOOL":
 +            case "LIGHT_BLUE_WOOL":
@@ -12047,6 +12101,10 @@ index bb0833f62..27dae0235 100644
 -            case DRAGON_EGG:
 -            case EMERALD_ORE:
 -            case END_STONE:
+-            case END_STONE_BRICKS:
+-            case END_STONE_BRICK_SLAB:
+-            case END_STONE_BRICK_STAIRS:
+-            case END_STONE_BRICK_WALL:
 -            case GOLD_BLOCK:
 -            case GOLD_ORE:
 -            case HOPPER:
@@ -12075,6 +12133,10 @@ index bb0833f62..27dae0235 100644
 +            case "DRAGON_EGG":
 +            case "EMERALD_ORE":
 +            case "END_STONE":
++            case "END_STONE_BRICKS":
++            case "END_STONE_BRICK_SLAB":
++            case "END_STONE_BRICK_STAIRS":
++            case "END_STONE_BRICK_WALL":
 +            case "GOLD_BLOCK":
 +            case "GOLD_ORE":
 +            case "HOPPER":
@@ -12151,7 +12213,7 @@ index bb0833f62..27dae0235 100644
                  return 100.0F;
              default:
                  return 0F;
-@@ -7361,589 +7460,589 @@ public enum Material implements Keyed {
+@@ -7396,592 +7495,592 @@ public enum Material implements Keyed {
       */
      public float getBlastResistance() {
          Validate.isTrue(isBlock(), "The Material is not a block!");
@@ -12250,6 +12312,7 @@ index bb0833f62..27dae0235 100644
 +            case "WHITE_BED":
 +            case "YELLOW_BED":
                  return 0.2F;
+-            case BEE_NEST:
 -            case BLACK_STAINED_GLASS:
 -            case BLACK_STAINED_GLASS_PANE:
 -            case BLUE_STAINED_GLASS:
@@ -12287,6 +12350,7 @@ index bb0833f62..27dae0235 100644
 -            case WHITE_STAINED_GLASS_PANE:
 -            case YELLOW_STAINED_GLASS:
 -            case YELLOW_STAINED_GLASS_PANE:
++            case "BEE_NEST":
 +            case "BLACK_STAINED_GLASS":
 +            case "BLACK_STAINED_GLASS_PANE":
 +            case "BLUE_STAINED_GLASS":
@@ -12437,19 +12501,23 @@ index bb0833f62..27dae0235 100644
 +            case "WHITE_CONCRETE_POWDER":
 +            case "YELLOW_CONCRETE_POWDER":
                  return 0.5F;
+-            case BEEHIVE:
 -            case CLAY:
 -            case COMPOSTER:
 -            case FARMLAND:
 -            case GRASS_BLOCK:
 -            case GRAVEL:
+-            case HONEYCOMB_BLOCK:
 -            case MYCELIUM:
 -            case SPONGE:
 -            case WET_SPONGE:
++            case "BEEHIVE":
 +            case "CLAY":
 +            case "COMPOSTER":
 +            case "FARMLAND":
 +            case "GRASS_BLOCK":
 +            case "GRAVEL":
++            case "HONEYCOMB_BLOCK":
 +            case "MYCELIUM":
 +            case "SPONGE":
 +            case "WET_SPONGE":
@@ -12488,10 +12556,6 @@ index bb0833f62..27dae0235 100644
 -            case CUT_RED_SANDSTONE:
 -            case CUT_SANDSTONE:
 -            case CYAN_WOOL:
--            case END_STONE_BRICKS:
--            case END_STONE_BRICK_SLAB:
--            case END_STONE_BRICK_STAIRS:
--            case END_STONE_BRICK_WALL:
 -            case GRAY_WOOL:
 -            case GREEN_WOOL:
 -            case LIGHT_BLUE_WOOL:
@@ -12523,10 +12587,6 @@ index bb0833f62..27dae0235 100644
 +            case "CUT_RED_SANDSTONE":
 +            case "CUT_SANDSTONE":
 +            case "CYAN_WOOL":
-+            case "END_STONE_BRICKS":
-+            case "END_STONE_BRICK_SLAB":
-+            case "END_STONE_BRICK_STAIRS":
-+            case "END_STONE_BRICK_WALL":
 +            case "GRAY_WOOL":
 +            case "GREEN_WOOL":
 +            case "LIGHT_BLUE_WOOL":
@@ -13248,8 +13308,16 @@ index bb0833f62..27dae0235 100644
                  return 6.0F;
 -            case DRAGON_EGG:
 -            case END_STONE:
+-            case END_STONE_BRICKS:
+-            case END_STONE_BRICK_SLAB:
+-            case END_STONE_BRICK_STAIRS:
+-            case END_STONE_BRICK_WALL:
 +            case "DRAGON_EGG":
 +            case "END_STONE":
++            case "END_STONE_BRICKS":
++            case "END_STONE_BRICK_SLAB":
++            case "END_STONE_BRICK_STAIRS":
++            case "END_STONE_BRICK_WALL":
                  return 9.0F;
 -            case LAVA:
 -            case WATER:

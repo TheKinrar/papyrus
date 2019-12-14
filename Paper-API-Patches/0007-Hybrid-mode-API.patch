@@ -1,4 +1,4 @@
-From 164eede6f1cf6510aee090793ae77e571bd4d0d6 Mon Sep 17 00:00:00 2001
+From d6a52bd591b91d5ee39cc7b10bf8ebdbefbf152c Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
@@ -200,18 +200,18 @@ index 460fda05a..54d3b25df 100644
      public synchronized void clearCommands() {
          for (Map.Entry<String, Command> entry : knownCommands.entrySet()) {
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 2ffbc3756..738409f6d 100644
+index 2209c5807..0506ef677 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -5,6 +5,7 @@ import java.util.Date; // Paper
- 
- import com.destroystokyo.paper.Title;
- import com.destroystokyo.paper.profile.PlayerProfile;
+@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
+ import com.destroystokyo.paper.Title; // Paper
+ import com.destroystokyo.paper.profile.PlayerProfile; // Paper
+ import java.util.Date; // Paper
 +import fr.thekinrar.papyrus.hybrid.HybridProfile;
- import org.bukkit.Achievement;
  import org.bukkit.BanEntry; // Paper
  import org.bukkit.BanList; // Paper
-@@ -1994,6 +1995,9 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+ import org.bukkit.Bukkit; // Paper
+@@ -1959,6 +1960,9 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * @param canAlwaysOpenCommandBlocks whether this player can always open command blocks
       */
      void setCanAlwaysOpenCommandBlocks(boolean canAlwaysOpenCommandBlocks);

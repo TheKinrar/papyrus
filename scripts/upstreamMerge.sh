@@ -24,13 +24,13 @@ function update {
     fi
 }
 
-update Bukkit 8b6dd103832def3e8d1a7c3cdb98cde9826d543c
-update CraftBukkit 656701746abf477beb78cb6108298b20dc053cf1
-update Spigot 56f84710b85569a76df91e08104baa55000b565a
-update Paper origin/ver/1.14
+update Bukkit origin/master
+update CraftBukkit origin/master
+update Spigot origin/master
+update Paper origin/wip/1.15
 
 if [[ "$2" = "all" || "$2" = "a" ]] ; then
-	update BuildData 2dbde4c18d3b3e34142da21d42cea4b1beb33d7d
+	update BuildData origin/master
 	update Paperclip origin/master
 fi
 if [ "$updated" == "1" ]; then
