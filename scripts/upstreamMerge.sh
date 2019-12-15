@@ -27,7 +27,7 @@ function update {
 update Bukkit origin/master
 update CraftBukkit origin/master
 update Spigot origin/master
-update Paper origin/wip/1.15
+update Paper origin/master
 
 if [[ "$2" = "all" || "$2" = "a" ]] ; then
 	update BuildData origin/master

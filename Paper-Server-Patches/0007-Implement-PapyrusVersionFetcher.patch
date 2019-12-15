@@ -1,4 +1,4 @@
-From a559dd1b810ce8056d1044b521be5e0a3e26c96a Mon Sep 17 00:00:00 2001
+From f9edc1dbfe4b637f729065362acb908e3ae04b5a Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 1 Nov 2019 01:32:27 +0000
 Subject: [PATCH] Implement PapyrusVersionFetcher
@@ -114,7 +114,7 @@ index 000000000..9c84de518
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 921c16dff..9989743ac 100644
+index 21bfdf9e7..759b08416 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -16,6 +16,8 @@ import java.util.Locale;

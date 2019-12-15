@@ -1,11 +1,11 @@
-From 7d43f37997f91507de44d1a7c329c42caf99b65d Mon Sep 17 00:00:00 2001
+From 916cbbcaf41ce156a96d3c0ef59ad8339c5a754b Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
 
 
 diff --git a/pom.xml b/pom.xml
-index 54730360f..18af17e0b 100644
+index f2fe480ab..179cfbf14 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -119,6 +119,13 @@
