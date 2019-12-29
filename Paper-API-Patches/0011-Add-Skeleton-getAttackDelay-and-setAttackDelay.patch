@@ -1,0 +1,24 @@
+From 08e7c19ed924442be7cb763128836283593167a0 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Sun, 29 Dec 2019 22:06:28 +0000
+Subject: [PATCH] Add Skeleton#getAttackDelay and setAttackDelay
+
+
+diff --git a/src/main/java/org/bukkit/entity/Skeleton.java b/src/main/java/org/bukkit/entity/Skeleton.java
+index 1c367f78..f48a2092 100644
+--- a/src/main/java/org/bukkit/entity/Skeleton.java
++++ b/src/main/java/org/bukkit/entity/Skeleton.java
+@@ -27,6 +27,10 @@ public interface Skeleton extends Monster, RangedEntity { // Paper
+     @Contract("_ -> fail")
+     public void setSkeletonType(SkeletonType type);
+ 
++    public int getAttackDelay();
++
++    public void setAttackDelay(int delay);
++
+     /*
+      * @deprecated classes are different types
+      */
+-- 
+2.23.0
+
