@@ -1,4 +1,4 @@
-From f9edc1dbfe4b637f729065362acb908e3ae04b5a Mon Sep 17 00:00:00 2001
+From 0d7384daf740715b4392d7e8583824971e5bbd97 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 1 Nov 2019 01:32:27 +0000
 Subject: [PATCH] Implement PapyrusVersionFetcher
@@ -6,7 +6,7 @@ Subject: [PATCH] Implement PapyrusVersionFetcher
 
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
 new file mode 100644
-index 000000000..9c84de518
+index 0000000000..9c84de518c
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
 @@ -0,0 +1,103 @@
@@ -114,7 +114,7 @@ index 000000000..9c84de518
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 21bfdf9e7..759b08416 100644
+index ab3ebc79ea..3cc076dd04 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -16,6 +16,8 @@ import java.util.Locale;
@@ -133,8 +133,8 @@ index 21bfdf9e7..759b08416 100644
 -        return new com.destroystokyo.paper.PaperVersionFetcher();
 +        return new PapyrusVersionFetcher();
      }
-     // Paper end
  
+     @Override
 -- 
-2.23.0
+2.24.1
 
