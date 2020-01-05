@@ -1,4 +1,4 @@
-From 0d7384daf740715b4392d7e8583824971e5bbd97 Mon Sep 17 00:00:00 2001
+From f634c187e8280b97321974970386f82195beec0c Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 1 Nov 2019 01:32:27 +0000
 Subject: [PATCH] Implement PapyrusVersionFetcher
@@ -6,7 +6,7 @@ Subject: [PATCH] Implement PapyrusVersionFetcher
 
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
 new file mode 100644
-index 0000000000..9c84de518c
+index 0000000000..783b9bbf19
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
 @@ -0,0 +1,103 @@
@@ -83,7 +83,7 @@ index 0000000000..9c84de518c
 +        if (siteApiVersion == null) { return -1; }
 +        try {
 +            try (BufferedReader reader = Resources.asCharSource(
-+                    new URL("http://212.83.182.121:8080/job/Papyrus-" + siteApiVersion + "/lastStableBuild/api/json"),
++                    new URL("http://136.243.139.183:8080/job/Papyrus-" + siteApiVersion + "/lastStableBuild/api/json"),
 +                    Charsets.UTF_8
 +            ).openBufferedStream()) {
 +                JsonObject json = new Gson().fromJson(reader, JsonObject.class);
