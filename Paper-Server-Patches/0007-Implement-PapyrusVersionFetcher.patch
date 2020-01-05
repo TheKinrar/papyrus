@@ -1,4 +1,4 @@
-From a559dd1b810ce8056d1044b521be5e0a3e26c96a Mon Sep 17 00:00:00 2001
+From b5603e5a7a4bc67e71277c710d57572d9aeb6c77 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 1 Nov 2019 01:32:27 +0000
 Subject: [PATCH] Implement PapyrusVersionFetcher
@@ -6,7 +6,7 @@ Subject: [PATCH] Implement PapyrusVersionFetcher
 
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
 new file mode 100644
-index 000000000..9c84de518
+index 0000000000..783b9bbf19
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
 @@ -0,0 +1,103 @@
@@ -83,7 +83,7 @@ index 000000000..9c84de518
 +        if (siteApiVersion == null) { return -1; }
 +        try {
 +            try (BufferedReader reader = Resources.asCharSource(
-+                    new URL("http://212.83.182.121:8080/job/Papyrus-" + siteApiVersion + "/lastStableBuild/api/json"),
++                    new URL("http://136.243.139.183:8080/job/Papyrus-" + siteApiVersion + "/lastStableBuild/api/json"),
 +                    Charsets.UTF_8
 +            ).openBufferedStream()) {
 +                JsonObject json = new Gson().fromJson(reader, JsonObject.class);
@@ -114,7 +114,7 @@ index 000000000..9c84de518
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 921c16dff..9989743ac 100644
+index 921c16dffc..9989743acc 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -16,6 +16,8 @@ import java.util.Locale;
@@ -136,5 +136,5 @@ index 921c16dff..9989743ac 100644
      // Paper end
  
 -- 
-2.23.0
+2.24.1
 
