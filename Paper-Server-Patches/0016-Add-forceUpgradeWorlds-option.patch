@@ -1,0 +1,85 @@
+From ed870846e9af933531fbf4a0c60884fadde0fc0f Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Mon, 6 Jan 2020 00:11:45 +0000
+Subject: [PATCH] Add forceUpgradeWorlds option
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index c166a93586..dac47ea24d 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -56,6 +56,7 @@ import joptsimple.NonOptionArgumentSpec;
+ import joptsimple.OptionParser;
+ import joptsimple.OptionSet;
+ import joptsimple.OptionSpec;
++import org.apache.commons.lang3.ArrayUtils;
+ import org.apache.commons.lang3.Validate;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+@@ -151,6 +152,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+     private boolean aq;
+     private boolean forceUpgrade;
+     private boolean eraseCache;
++    private String[] forceUpgradeWorlds;
+     private float at;
+     public final Executor executorService;
+     @Nullable
+@@ -274,6 +276,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+         }
+ 
+         if (this.forceUpgrade) {
++            if(this.forceUpgradeWorlds == null || ArrayUtils.contains(this.forceUpgradeWorlds, s)) {
+             MinecraftServer.LOGGER.info("Forcing world upgrade! {}", s); // CraftBukkit
+             WorldData worlddata = this.getConvertable().b(s); // CraftBukkit
+ 
+@@ -308,6 +311,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+                     }
+                 }
+             }
++            }
+         }
+ 
+     }
+@@ -1392,6 +1396,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+                 dedicatedserver.setEraseCache(true);
+             }
+ 
++            if (optionset.has("forceUpgradeWorlds")) {
++                dedicatedserver.setForceUpgradeWorlds(((String) optionset.valueOf("forceUpgradeWorlds")).split(","));
++            }
++
+             dedicatedserver.serverThread.start();
+             // CraftBukkit end
+         } catch (Exception exception) {
+@@ -1412,6 +1420,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+         this.eraseCache = flag;
+     }
+ 
++    protected void setForceUpgradeWorlds(String[] value) {
++        this.forceUpgradeWorlds = value;
++    }
++
+     public void startServerThread() {
+         /* CraftBukkit start - prevent abuse
+         this.serverThread.start();
+diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
+index fd5db7196c..1165b9abf0 100644
+--- a/src/main/java/org/bukkit/craftbukkit/Main.java
++++ b/src/main/java/org/bukkit/craftbukkit/Main.java
+@@ -113,6 +113,13 @@ public class Main {
+                 acceptsAll(asList("forceUpgrade"), "Whether to force a world upgrade");
+                 acceptsAll(asList("eraseCache"), "Whether to force cache erase during world upgrade");
+ 
++                // Papyrus start
++                acceptsAll(asList("forceUpgradeWorlds"), "Worlds to force upgrade")
++                        .withOptionalArg()
++                        .ofType(String.class)
++                        .describedAs("Comma-separated list of world names");
++                // Papyrus end
++
+                 acceptsAll(asList("nojline"), "Disables jline and emulates the vanilla console");
+ 
+                 acceptsAll(asList("noconsole"), "Disables the console");
+-- 
+2.24.1
+
