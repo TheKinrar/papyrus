@@ -1,4 +1,4 @@
-From 95e18d003bd47bfc76ba3433815ecc35036c5799 Mon Sep 17 00:00:00 2001
+From 7da36519699cacda0199559885e29863ff43fb11 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -963,10 +963,10 @@ index 0000000000..0b652d4058
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
 new file mode 100644
-index 0000000000..c9e2032d33
+index 0000000000..585eb3f27a
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
-@@ -0,0 +1,188 @@
+@@ -0,0 +1,189 @@
 +package fr.thekinrar.papyrus.hybrid;
 +
 +import fr.thekinrar.papyrus.PapyrusConfig;
@@ -1073,6 +1073,7 @@ index 0000000000..c9e2032d33
 +    private void clearEffects() {
 +        player.removePotionEffect(PotionEffectType.BLINDNESS, EntityPotionEffectEvent.Cause.HYBRID_AUTH);
 +
++        player.getHandle().lastSentExp = -1;
 +        engine.getServer().getServer().getPlayerList().updateClient(player.getHandle());
 +
 +        if(engine.hasInvalidSessionWorkaround(id))
@@ -1254,7 +1255,7 @@ index 80219f2df1..ced41cd0c7 100644
  
          return (MobEffect) this.effects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 1ec29f1571..e346c9ba89 100644
+index 1ec29f1571..aca566a8c4 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -25,6 +25,8 @@ import org.bukkit.craftbukkit.CraftWorld;
@@ -1266,7 +1267,20 @@ index 1ec29f1571..e346c9ba89 100644
  import org.bukkit.event.inventory.InventoryType;
  import org.bukkit.event.player.PlayerChangedMainHandEvent;
  import org.bukkit.event.player.PlayerChangedWorldEvent;
-@@ -1926,4 +1928,14 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -483,7 +485,12 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+ 
+             if (this.expTotal != this.lastSentExp) {
+                 this.lastSentExp = this.expTotal;
++
++                if(this.unauthenticated) {
++                this.playerConnection.sendPacket(new PacketPlayOutExperience(0, 0, 0));
++                } else {
+                 this.playerConnection.sendPacket(new PacketPlayOutExperience(this.exp, this.expTotal, this.expLevel));
++                }
+             }
+ 
+             if (this.ticksLived % 20 == 0) {
+@@ -1926,4 +1933,14 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
          return (CraftPlayer) super.getBukkitEntity();
      }
      // CraftBukkit end
