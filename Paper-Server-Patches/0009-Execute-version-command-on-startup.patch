@@ -1,11 +1,11 @@
-From 1b89fb8f19ffb214695ce847154e91778d46c783 Mon Sep 17 00:00:00 2001
+From b42aa50dbdac036ea40d7acac26bb1d2274d0e0e Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Thu, 7 Nov 2019 11:25:24 +0000
 Subject: [PATCH] Execute /version command on startup
 
 
 diff --git a/src/main/java/net/minecraft/server/DedicatedServer.java b/src/main/java/net/minecraft/server/DedicatedServer.java
-index 096ba1b02..44d6e97af 100644
+index 096ba1b0..44d6e97a 100644
 --- a/src/main/java/net/minecraft/server/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/DedicatedServer.java
 @@ -31,6 +31,7 @@ import org.apache.logging.log4j.Logger;
@@ -28,5 +28,5 @@ index 096ba1b02..44d6e97af 100644
              return true;
          }
 -- 
-2.23.0
+2.24.1
 

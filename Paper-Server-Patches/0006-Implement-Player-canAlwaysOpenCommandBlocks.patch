@@ -1,11 +1,11 @@
-From 2e8e2ceb65120a95d8d226078b687f7453dc70f7 Mon Sep 17 00:00:00 2001
+From ffbd213fe8e53c4b3d5c147891a0b45773a86102 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
 
 
 diff --git a/src/main/java/net/minecraft/server/BlockCommand.java b/src/main/java/net/minecraft/server/BlockCommand.java
-index e3b090898..dcd37cec8 100644
+index e3b09089..dcd37cec 100644
 --- a/src/main/java/net/minecraft/server/BlockCommand.java
 +++ b/src/main/java/net/minecraft/server/BlockCommand.java
 @@ -4,6 +4,7 @@ import java.util.Random;
@@ -29,7 +29,7 @@ index e3b090898..dcd37cec8 100644
          } else {
 diff --git a/src/main/java/net/minecraft/server/ItemRestricted.java b/src/main/java/net/minecraft/server/ItemRestricted.java
 new file mode 100644
-index 000000000..f5ed0c82a
+index 00000000..f5ed0c82
 --- /dev/null
 +++ b/src/main/java/net/minecraft/server/ItemRestricted.java
 @@ -0,0 +1,23 @@
@@ -57,7 +57,7 @@ index 000000000..f5ed0c82a
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/PlayerInteractManager.java b/src/main/java/net/minecraft/server/PlayerInteractManager.java
-index c77e812b0..90e6014cb 100644
+index c77e812b..90e6014c 100644
 --- a/src/main/java/net/minecraft/server/PlayerInteractManager.java
 +++ b/src/main/java/net/minecraft/server/PlayerInteractManager.java
 @@ -335,7 +335,7 @@ public class PlayerInteractManager {
@@ -70,7 +70,7 @@ index c77e812b0..90e6014cb 100644
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 4ba349e1a..a25b511b9 100644
+index 4ba349e1..a25b511b 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -758,6 +758,9 @@ public abstract class PlayerList {
@@ -84,7 +84,7 @@ index 4ba349e1a..a25b511b9 100644
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index e920545df..b183b540b 100644
+index e920545d..b183b540 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -44,6 +44,7 @@ import net.minecraft.server.EnumGamemode;
@@ -133,5 +133,5 @@ index e920545df..b183b540b 100644
      private final Player.Spigot spigot = new Player.Spigot()
      {
 -- 
-2.23.0
+2.24.1
 

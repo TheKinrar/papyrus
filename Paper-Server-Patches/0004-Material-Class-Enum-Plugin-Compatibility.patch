@@ -1,11 +1,11 @@
-From 7d43f37997f91507de44d1a7c329c42caf99b65d Mon Sep 17 00:00:00 2001
+From 2dd4c8581bf3d79632cba640ebe83cfaffc624cc Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
 
 
 diff --git a/pom.xml b/pom.xml
-index 54730360f..18af17e0b 100644
+index 54730360..18af17e0 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -119,6 +119,13 @@
@@ -32,7 +32,7 @@ index 54730360f..18af17e0b 100644
                                  <relocation>
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatClass.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatClass.java
 new file mode 100644
-index 000000000..812175524
+index 00000000..81217552
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatClass.java
 @@ -0,0 +1,24 @@
@@ -62,7 +62,7 @@ index 000000000..812175524
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumMap.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumMap.java
 new file mode 100644
-index 000000000..9d46fe510
+index 00000000..9d46fe51
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumMap.java
 @@ -0,0 +1,144 @@
@@ -212,7 +212,7 @@ index 000000000..9d46fe510
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumSet.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumSet.java
 new file mode 100644
-index 000000000..e7ebe8d9f
+index 00000000..e7ebe8d9
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumSet.java
 @@ -0,0 +1,250 @@
@@ -468,7 +468,7 @@ index 000000000..e7ebe8d9f
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatField.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatField.java
 new file mode 100644
-index 000000000..39ed4779a
+index 00000000..39ed4779
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatField.java
 @@ -0,0 +1,18 @@
@@ -492,7 +492,7 @@ index 000000000..39ed4779a
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/Compatibility.java b/src/main/java/fr/thekinrar/papyrus/compat/Compatibility.java
 new file mode 100644
-index 000000000..50c5799cc
+index 00000000..50c5799c
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/Compatibility.java
 @@ -0,0 +1,13 @@
@@ -511,7 +511,7 @@ index 000000000..50c5799cc
 +@interface Compatibility {}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java b/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java
 new file mode 100644
-index 000000000..707268ea3
+index 00000000..707268ea
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java
 @@ -0,0 +1,117 @@
@@ -633,7 +633,7 @@ index 000000000..707268ea3
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
-index 61f102355..b570b5804 100644
+index 61f10235..b570b580 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 @@ -14,6 +14,8 @@ import java.util.jar.JarEntry;
@@ -654,5 +654,5 @@ index 61f102355..b570b5804 100644
      }
  }
 -- 
-2.23.0
+2.24.1
 

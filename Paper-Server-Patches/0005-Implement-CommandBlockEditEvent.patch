@@ -1,11 +1,11 @@
-From 3f916869fa54202b483d62fbaec91678f1acae50 Mon Sep 17 00:00:00 2001
+From 46148bb0d5844f09cbe3a59c51a738f10d8aa552 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 5 Oct 2019 21:26:23 +0100
 Subject: [PATCH] Implement CommandBlockEditEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index ae17cdf23..3f5f45668 100644
+index c9872cbd..9c0050b5 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -1,5 +1,7 @@
@@ -233,5 +233,5 @@ index ae17cdf23..3f5f45668 100644
      }
  
 -- 
-2.23.0
+2.24.1
 
