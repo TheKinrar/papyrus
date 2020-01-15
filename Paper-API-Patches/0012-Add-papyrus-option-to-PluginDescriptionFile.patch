@@ -1,0 +1,56 @@
+From 508ebaeccde699d512d968761ab7412861b22e1b Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Wed, 15 Jan 2020 02:38:47 +0000
+Subject: [PATCH] Add papyrus option to PluginDescriptionFile
+
+
+diff --git a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
+index cb31a6d5a..c37cfb108 100644
+--- a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
++++ b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
+@@ -235,6 +235,7 @@ public final class PluginDescriptionFile {
+     private PermissionDefault defaultPerm = PermissionDefault.OP;
+     private Set<PluginAwareness> awareness = ImmutableSet.of();
+     private String apiVersion = null;
++    private boolean papyrus = false;
+ 
+     public PluginDescriptionFile(@NotNull final InputStream stream) throws InvalidDescriptionException {
+         loadMap(asMap(YAML.get().load(stream)));
+@@ -890,6 +891,10 @@ public final class PluginDescriptionFile {
+         return apiVersion;
+     }
+ 
++    public boolean isPapyrus() {
++        return papyrus;
++    }
++
+     /**
+      * @return unused
+      * @deprecated unused
+@@ -1053,6 +1058,14 @@ public final class PluginDescriptionFile {
+         if (map.get("prefix") != null) {
+             prefix = map.get("prefix").toString();
+         }
++
++        if (map.get("papyrus") != null) {
++            try {
++                papyrus = (Boolean) map.get("papyrus");
++            } catch (ClassCastException ex) {
++                throw new InvalidDescriptionException(ex, "papyrus has wrong type");
++            }
++        }
+     }
+ 
+     @NotNull
+@@ -1119,6 +1132,8 @@ public final class PluginDescriptionFile {
+             map.put("prefix", prefix);
+         }
+ 
++        map.put("papyrus", papyrus);
++
+         return map;
+     }
+ 
+-- 
+2.24.1
+
