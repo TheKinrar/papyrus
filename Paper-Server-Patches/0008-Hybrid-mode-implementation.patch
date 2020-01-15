@@ -1,4 +1,4 @@
-From 4c3890e02afb4c0f57cae0f0e36b367633660ac4 Mon Sep 17 00:00:00 2001
+From a4bfa7b0a5e9b78afa5fcfc583257612622c2435 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -1255,7 +1255,7 @@ index 80219f2df1..ced41cd0c7 100644
  
          return (MobEffect) this.effects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 1ec29f1571..aca566a8c4 100644
+index 638d1469bd..b6d196d8e9 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -25,6 +25,8 @@ import org.bukkit.craftbukkit.CraftWorld;
@@ -1280,7 +1280,7 @@ index 1ec29f1571..aca566a8c4 100644
              }
  
              if (this.ticksLived % 20 == 0) {
-@@ -1926,4 +1933,14 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -1952,4 +1959,14 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
          return (CraftPlayer) super.getBukkitEntity();
      }
      // CraftBukkit end
@@ -1893,7 +1893,7 @@ index e44ad40584..098f68ad32 100644
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 83267b1fd1..54efd5e405 100644
+index 8e5c56919d..c2e5dc940d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -11,6 +11,8 @@ import java.util.EnumMap;
@@ -1905,7 +1905,7 @@ index 83267b1fd1..54efd5e405 100644
  import net.minecraft.server.BlockPosition;
  import net.minecraft.server.BlockPropertyInstrument;
  import net.minecraft.server.ChatMessage;
-@@ -454,7 +456,13 @@ public class CraftEventFactory {
+@@ -455,7 +457,13 @@ public class CraftEventFactory {
          if (cancelledBlock) {
              event.setUseInteractedBlock(Event.Result.DENY);
          }

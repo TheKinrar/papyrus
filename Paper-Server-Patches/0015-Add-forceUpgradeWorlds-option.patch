@@ -1,4 +1,4 @@
-From e25e11773f17cedb0c66749c9f6ef0d91b52308d Mon Sep 17 00:00:00 2001
+From 9fdb608754b390f144afe7c5bf1c8b156dafe734 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 6 Jan 2020 00:11:45 +0000
 Subject: [PATCH] Add forceUpgradeWorlds option

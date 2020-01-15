@@ -1,4 +1,4 @@
-From a522c832ff1738a882815a7843ceb0064b830a23 Mon Sep 17 00:00:00 2001
+From bd0d1dee23c387f5c16fadea879a5097a72b3e5a Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore
@@ -407,10 +407,10 @@ index 2dd2f476f0..c7f46082ea 100644
              default:
                  throw new IllegalArgumentException("Unknown SkullType for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index c0fd2948e3..83267b1fd1 100644
+index 39ce40bd58..8e5c56919d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1294,14 +1294,14 @@ public class CraftEventFactory {
+@@ -1295,14 +1295,14 @@ public class CraftEventFactory {
          org.bukkit.World bukkitWorld = world.getWorld();
          Block igniter = bukkitWorld.getBlockAt(source.getX(), source.getY(), source.getZ());
          IgniteCause cause;
@@ -2237,7 +2237,7 @@ index 9fd4c2bc7f..e312a37038 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
-index 18545e5ef2..86128e5ecd 100644
+index 96d62bbf88..bfbc8739d7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
 @@ -102,19 +102,19 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {

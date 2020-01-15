@@ -1,4 +1,4 @@
-From c3b903c87cc30d74bf7cf3315489a47796321ee2 Mon Sep 17 00:00:00 2001
+From 681020312d98e3750e7008f2693bf29f70966e32 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 15 Nov 2019 00:15:24 +0000
 Subject: [PATCH] Implement compatibility with legacy selectors in command
@@ -6,7 +6,7 @@ Subject: [PATCH] Implement compatibility with legacy selectors in command
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
-index 119602875..1a2bc52c9 100644
+index 1196028756..1a2bc52c9e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
 +++ b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
 @@ -1,18 +1,30 @@
@@ -160,5 +160,5 @@ index 119602875..1a2bc52c9 100644
 +    }
  }
 -- 
-2.23.0
+2.24.1
 
