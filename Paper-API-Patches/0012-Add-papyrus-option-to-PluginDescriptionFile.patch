@@ -1,4 +1,4 @@
-From 508ebaeccde699d512d968761ab7412861b22e1b Mon Sep 17 00:00:00 2001
+From b91fc2db88002363124f137c1e347c0b456e8128 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 15 Jan 2020 02:38:47 +0000
 Subject: [PATCH] Add papyrus option to PluginDescriptionFile
@@ -51,6 +51,32 @@ index cb31a6d5a..c37cfb108 100644
          return map;
      }
  
+diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
+index 5524ccd7b..c3c2948dd 100644
+--- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
++++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
+@@ -15,7 +15,10 @@ import java.util.concurrent.ConcurrentHashMap;
+ import java.util.jar.JarEntry;
+ import java.util.jar.JarFile;
+ import java.util.jar.Manifest;
++import java.util.logging.Level;
++
+ import org.apache.commons.lang.Validate;
++import org.bukkit.Bukkit;
+ import org.bukkit.plugin.InvalidPluginException;
+ import org.bukkit.plugin.PluginDescriptionFile;
+ import org.jetbrains.annotations.NotNull;
+@@ -58,6 +61,10 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
+ 
+         this.logger = com.destroystokyo.paper.utils.PaperPluginLogger.getLogger(description); // Paper - Register logger early
+ 
++        if(!description.isPapyrus()) {
++            Bukkit.getLogger().log(Level.INFO, "Applying Papyrus compatibility layer to " + description.getFullName());
++        }
++
+         try {
+             Class<?> jarClass;
+             try {
 -- 
 2.24.1
 

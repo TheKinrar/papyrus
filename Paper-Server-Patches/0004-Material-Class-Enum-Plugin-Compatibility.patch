@@ -1,4 +1,4 @@
-From dadc0061b81078b6e8f47e01d6dbd0c6b792db19 Mon Sep 17 00:00:00 2001
+From 9ba571c23af9ffa8f4f9eec029efefaea2890cf4 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
@@ -646,16 +646,15 @@ index 61f1023557..2a9ebd77f9 100644
  import joptsimple.OptionSet;
  import joptsimple.OptionSpec;
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index ab3ebc79ea..d94ad42753 100644
+index ab3ebc79ea..a77c7f0ebf 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -281,6 +281,11 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -281,6 +281,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
      public byte[] processClass(PluginDescriptionFile pdf, String path, byte[] clazz) {
          try {
              clazz = Commodore.convert(clazz, !isLegacy(pdf));
 +
 +            if(!pdf.isPapyrus()) {
-+                Bukkit.getLogger().log(Level.INFO, "Applying Papyrus compatibility layer to " + pdf.getFullName());
 +                clazz = fr.thekinrar.papyrus.compat.PapyrusCompat.transform(clazz);
 +            }
          } catch (Exception ex) {
