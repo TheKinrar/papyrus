@@ -1,4 +1,4 @@
-From a0d5a7e924cf45b33820400e34f736272bb5d565 Mon Sep 17 00:00:00 2001
+From e1f1e629337450fe4de1d702660876b7737596cb Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
@@ -6,7 +6,7 @@ Subject: [PATCH] Hybrid mode API
 
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java
 new file mode 100644
-index 000000000..3d0495812
+index 00000000..3d049581
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java
 @@ -0,0 +1,36 @@
@@ -48,7 +48,7 @@ index 000000000..3d0495812
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPasswordProvider.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPasswordProvider.java
 new file mode 100644
-index 000000000..c23af6b53
+index 00000000..c23af6b5
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPasswordProvider.java
 @@ -0,0 +1,10 @@
@@ -64,7 +64,7 @@ index 000000000..c23af6b53
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java
 new file mode 100644
-index 000000000..68a938843
+index 00000000..68a93884
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java
 @@ -0,0 +1,16 @@
@@ -85,7 +85,7 @@ index 000000000..68a938843
 +    void stayLoggedIn(long millis);
 +}
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index a97dab131..3c2b47446 100644
+index a97dab13..3c2b4744 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -14,6 +14,7 @@ import java.util.UUID;
@@ -120,7 +120,7 @@ index a97dab131..3c2b47446 100644
      public static Server.Spigot spigot()
      {
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 91c284314..25b76a96a 100644
+index 91c28431..25b76a96 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -14,6 +14,7 @@ import java.util.UUID;
@@ -149,7 +149,7 @@ index 91c284314..25b76a96a 100644
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/command/Command.java b/src/main/java/org/bukkit/command/Command.java
-index 0b0d1bd7c..cd2711185 100644
+index 0b0d1bd7..cd271118 100644
 --- a/src/main/java/org/bukkit/command/Command.java
 +++ b/src/main/java/org/bukkit/command/Command.java
 @@ -35,6 +35,7 @@ public abstract class Command {
@@ -176,7 +176,7 @@ index 0b0d1bd7c..cd2711185 100644
      public String toString() {
          return getClass().getName() + '(' + name + ')';
 diff --git a/src/main/java/org/bukkit/command/SimpleCommandMap.java b/src/main/java/org/bukkit/command/SimpleCommandMap.java
-index 460fda05a..54d3b25df 100644
+index 460fda05..54d3b25d 100644
 --- a/src/main/java/org/bukkit/command/SimpleCommandMap.java
 +++ b/src/main/java/org/bukkit/command/SimpleCommandMap.java
 @@ -156,7 +156,7 @@ public class SimpleCommandMap implements CommandMap {
@@ -200,7 +200,7 @@ index 460fda05a..54d3b25df 100644
      public synchronized void clearCommands() {
          for (Map.Entry<String, Command> entry : knownCommands.entrySet()) {
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 2209c5807..0506ef677 100644
+index 5384ecfc..8eecb025 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
@@ -211,7 +211,7 @@ index 2209c5807..0506ef677 100644
  import org.bukkit.BanEntry; // Paper
  import org.bukkit.BanList; // Paper
  import org.bukkit.Bukkit; // Paper
-@@ -1959,6 +1960,9 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -1984,6 +1985,9 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * @param canAlwaysOpenCommandBlocks whether this player can always open command blocks
       */
      void setCanAlwaysOpenCommandBlocks(boolean canAlwaysOpenCommandBlocks);
@@ -222,7 +222,7 @@ index 2209c5807..0506ef677 100644
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java b/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
-index d5f8bde3b..e4d7b9379 100644
+index d5f8bde3..e4d7b937 100644
 --- a/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
 +++ b/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
 @@ -209,6 +209,10 @@ public class EntityPotionEffectEvent extends EntityEvent implements Cancellable
@@ -237,5 +237,5 @@ index d5f8bde3b..e4d7b9379 100644
           * When all effects are removed due to a bucket of milk.
           */
 -- 
-2.23.0
+2.24.1
 

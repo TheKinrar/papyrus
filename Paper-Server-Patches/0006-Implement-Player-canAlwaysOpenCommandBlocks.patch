@@ -1,11 +1,11 @@
-From 8d68616a08e200af63bedf3ce21e793f63089f0f Mon Sep 17 00:00:00 2001
+From 1c28ed532e2103e47bba35b6294ad762364200f2 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
 
 
 diff --git a/src/main/java/net/minecraft/server/BlockCommand.java b/src/main/java/net/minecraft/server/BlockCommand.java
-index d0f75c8f93..eb154a5ec5 100644
+index d0f75c8f9..eb154a5ec 100644
 --- a/src/main/java/net/minecraft/server/BlockCommand.java
 +++ b/src/main/java/net/minecraft/server/BlockCommand.java
 @@ -4,6 +4,7 @@ import java.util.Random;
@@ -29,7 +29,7 @@ index d0f75c8f93..eb154a5ec5 100644
          } else {
 diff --git a/src/main/java/net/minecraft/server/ItemRestricted.java b/src/main/java/net/minecraft/server/ItemRestricted.java
 new file mode 100644
-index 0000000000..f5ed0c82ac
+index 000000000..f5ed0c82a
 --- /dev/null
 +++ b/src/main/java/net/minecraft/server/ItemRestricted.java
 @@ -0,0 +1,23 @@
@@ -57,7 +57,7 @@ index 0000000000..f5ed0c82ac
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/PlayerInteractManager.java b/src/main/java/net/minecraft/server/PlayerInteractManager.java
-index 8f7b08a6d1..6beae39188 100644
+index 8f7b08a6d..6beae3918 100644
 --- a/src/main/java/net/minecraft/server/PlayerInteractManager.java
 +++ b/src/main/java/net/minecraft/server/PlayerInteractManager.java
 @@ -342,7 +342,7 @@ public class PlayerInteractManager {
@@ -70,7 +70,7 @@ index 8f7b08a6d1..6beae39188 100644
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 7b79ee4fe5..588442ef80 100644
+index 7b79ee4fe..588442ef8 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -759,6 +759,9 @@ public abstract class PlayerList {
@@ -84,7 +84,7 @@ index 7b79ee4fe5..588442ef80 100644
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 3afcfeae11..e44ad40584 100644
+index c1acec87f..15b9082cb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -44,6 +44,7 @@ import net.minecraft.server.EnumGamemode;
@@ -95,7 +95,7 @@ index 3afcfeae11..e44ad40584 100644
  import net.minecraft.server.NBTTagCompound;
  import net.minecraft.server.PacketDataSerializer;
  import net.minecraft.server.PacketPlayOutBlockChange;
-@@ -63,6 +64,7 @@ import net.minecraft.server.PacketPlayOutWorldEvent;
+@@ -64,6 +65,7 @@ import net.minecraft.server.PacketPlayOutWorldEvent;
  import net.minecraft.server.PacketPlayOutWorldParticles;
  import net.minecraft.server.PlayerChunkMap;
  import net.minecraft.server.PlayerConnection;
@@ -103,7 +103,7 @@ index 3afcfeae11..e44ad40584 100644
  import net.minecraft.server.TileEntitySign;
  import net.minecraft.server.Vec3D;
  import net.minecraft.server.WhiteListEntry;
-@@ -141,6 +143,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -142,6 +144,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime;
      // Paper end
@@ -111,7 +111,7 @@ index 3afcfeae11..e44ad40584 100644
  
      public CraftPlayer(CraftServer server, EntityPlayer entity) {
          super(server, entity);
-@@ -1982,6 +1985,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2003,6 +2006,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      }
      // Paper end
  
