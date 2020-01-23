@@ -1,11 +1,11 @@
-From 1d342ebec0ff444102a5b0c1dd28687ff4feb0b8 Mon Sep 17 00:00:00 2001
+From 48025725937179db27041b6bd7c1a1d11c12e395 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 29 Dec 2019 22:09:11 +0000
 Subject: [PATCH] Implement Skeleton#getAttackDelay and setAttackDelay
 
 
 diff --git a/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java b/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java
-index fdeb8980d9..374a694c65 100644
+index fdeb8980..374a694c 100644
 --- a/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java
 +++ b/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java
 @@ -6,6 +6,7 @@ import javax.annotation.Nullable;
@@ -18,7 +18,7 @@ index fdeb8980d9..374a694c65 100644
          @Override
 diff --git a/src/main/java/net/minecraft/server/PathfinderGoalBowShoot.java b/src/main/java/net/minecraft/server/PathfinderGoalBowShoot.java
 new file mode 100644
-index 0000000000..37398e68bc
+index 00000000..37398e68
 --- /dev/null
 +++ b/src/main/java/net/minecraft/server/PathfinderGoalBowShoot.java
 @@ -0,0 +1,129 @@
@@ -152,7 +152,7 @@ index 0000000000..37398e68bc
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftSkeleton.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftSkeleton.java
-index 02df66ecfe..d157909c7d 100644
+index 02df66ec..d157909c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftSkeleton.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftSkeleton.java
 @@ -36,4 +36,14 @@ public class CraftSkeleton extends CraftMonster implements Skeleton, CraftRanged

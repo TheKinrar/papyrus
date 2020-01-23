@@ -1,11 +1,11 @@
-From 0cd8c92fb4242dba2fb33e1ef515438d1568ca02 Mon Sep 17 00:00:00 2001
+From d1ec92d55f517a02ef9a95d70f1897b309692937 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 11:26:33 +0100
 Subject: [PATCH] Server branding
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 1d7d1ffbf..5bb4912ce 100644
+index 1d7d1ffb..5bb4912c 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -97,7 +97,7 @@ public class PaperConfig {
@@ -19,7 +19,7 @@ index 1d7d1ffbf..5bb4912ce 100644
      }
 diff --git a/src/main/java/fr/thekinrar/papyrus/Metrics.java b/src/main/java/fr/thekinrar/papyrus/Metrics.java
 new file mode 100644
-index 000000000..7c284c9b2
+index 00000000..7c284c9b
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/Metrics.java
 @@ -0,0 +1,633 @@
@@ -658,7 +658,7 @@ index 000000000..7c284c9b2
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 new file mode 100644
-index 000000000..4168eafc0
+index 00000000..4168eafc
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 @@ -0,0 +1,193 @@
@@ -857,7 +857,7 @@ index 000000000..4168eafc0
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
 new file mode 100644
-index 000000000..52274c1bb
+index 00000000..52274c1b
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
 @@ -0,0 +1,62 @@
@@ -924,7 +924,7 @@ index 000000000..52274c1bb
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/DedicatedServer.java b/src/main/java/net/minecraft/server/DedicatedServer.java
-index 3ed74ae0e..b17af5a12 100644
+index 3ed74ae0..b17af5a1 100644
 --- a/src/main/java/net/minecraft/server/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/DedicatedServer.java
 @@ -186,6 +186,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
@@ -944,7 +944,7 @@ index 3ed74ae0e..b17af5a12 100644
          this.setSpawnAnimals(dedicatedserverproperties.spawnAnimals);
          this.setSpawnNPCs(dedicatedserverproperties.spawnNpcs);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 0365cebcf..3c775e1be 100644
+index 0365cebc..3c775e1b 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1474,7 +1474,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
@@ -957,7 +957,7 @@ index 0365cebcf..3c775e1be 100644
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 5460ace8f..caf1f98f1 100644
+index 5460ace8..caf1f98f 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -121,6 +121,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -978,7 +978,7 @@ index 5460ace8f..caf1f98f1 100644
          this.generator = gen;
          this.world = new CraftWorld((WorldServer) this, gen, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index ee5c57ca2..f00cdd5c2 100644
+index ee5c57ca..f00cdd5c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -201,7 +201,7 @@ import javax.annotation.Nullable; // Paper
@@ -999,7 +999,7 @@ index ee5c57ca2..f00cdd5c2 100644
              world.worldData.setDifficulty(config.difficulty);
              world.setSpawnFlags(config.spawnMonsters, config.spawnAnimals);
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 7b7f3b8c0..f71665b79 100644
+index 7b7f3b8c..f71665b7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -137,6 +137,14 @@ public class Main {
@@ -1018,7 +1018,7 @@ index 7b7f3b8c0..f71665b79 100644
                  acceptsAll(asList("server-name"), "Name of the server")
                          .withRequiredArg()
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index 5bdcdcf9e..ca92913be 100644
+index 5bdcdcf9..ca92913b 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
 @@ -25,7 +25,7 @@ public class WatchdogThread extends Thread
@@ -1073,7 +1073,7 @@ index 5bdcdcf9e..ca92913be 100644
  
  
 diff --git a/src/main/resources/log4j2.xml b/src/main/resources/log4j2.xml
-index 6711e6dff..d6f1d5785 100644
+index 6711e6df..d6f1d578 100644
 --- a/src/main/resources/log4j2.xml
 +++ b/src/main/resources/log4j2.xml
 @@ -6,7 +6,7 @@

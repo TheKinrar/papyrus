@@ -1,11 +1,11 @@
-From 9fdb608754b390f144afe7c5bf1c8b156dafe734 Mon Sep 17 00:00:00 2001
+From acb80d59ada355da5b9416110ed8beddafb84efd Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 6 Jan 2020 00:11:45 +0000
 Subject: [PATCH] Add forceUpgradeWorlds option
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 22c54ef6d3..0e0f435fee 100644
+index 22c54ef6..0e0f435f 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -56,6 +56,7 @@ import joptsimple.NonOptionArgumentSpec;
@@ -63,7 +63,7 @@ index 22c54ef6d3..0e0f435fee 100644
          /* CraftBukkit start - prevent abuse
          this.serverThread.start();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 3e793c6344..c93f311693 100644
+index f71665b7..71b6728a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -113,6 +113,13 @@ public class Main {

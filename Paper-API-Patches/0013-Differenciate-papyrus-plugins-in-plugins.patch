@@ -1,11 +1,11 @@
-From 657cdfc6dd6eba0a0da265940d7cbdd9f4ba93e7 Mon Sep 17 00:00:00 2001
+From 3a7b99b1f917b2aa4cf68ad52c7950012c81afff Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 15 Jan 2020 07:27:06 +0000
 Subject: [PATCH] Differenciate papyrus plugins in /plugins
 
 
 diff --git a/src/main/java/org/bukkit/command/defaults/PluginsCommand.java b/src/main/java/org/bukkit/command/defaults/PluginsCommand.java
-index 6cfd9f3c6..46df48f2f 100644
+index 6cfd9f3c..46df48f2 100644
 --- a/src/main/java/org/bukkit/command/defaults/PluginsCommand.java
 +++ b/src/main/java/org/bukkit/command/defaults/PluginsCommand.java
 @@ -43,11 +43,19 @@ public class PluginsCommand extends BukkitCommand {
