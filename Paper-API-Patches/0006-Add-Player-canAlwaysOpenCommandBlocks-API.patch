@@ -1,4 +1,4 @@
-From d2d7b2d8888212dcde48185ac33853714b92dc86 Mon Sep 17 00:00:00 2001
+From 99f88b230344abcb59c8b903c2f115b089d8458b Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:31:14 +0000
 Subject: [PATCH] Add Player canAlwaysOpenCommandBlocks API

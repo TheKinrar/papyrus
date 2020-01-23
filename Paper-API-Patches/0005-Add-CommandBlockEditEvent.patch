@@ -1,4 +1,4 @@
-From 78bb42fcd8225be2e84b5b8c5d3b0e303b79ff4b Mon Sep 17 00:00:00 2001
+From 69c4bc171d1581e399c0c36b4d0ccf8f4a2aae0f Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 5 Oct 2019 21:26:09 +0100
 Subject: [PATCH] Add CommandBlockEditEvent
