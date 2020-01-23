@@ -1,4 +1,4 @@
-From c43bb416e89a88fcf8873e51085fd1aeb6ad1f80 Mon Sep 17 00:00:00 2001
+From cd40a58f6398e10f3d4a0e5a57fef73fbdff8edb Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 3 Dec 2019 17:34:43 +0000
 Subject: [PATCH] Implement CommandBlockExecuteEvent
@@ -6,7 +6,7 @@ Subject: [PATCH] Implement CommandBlockExecuteEvent
 
 diff --git a/src/main/java/net/minecraft/server/#CommandBlockListenerAbstract.java# b/src/main/java/net/minecraft/server/#CommandBlockListenerAbstract.java#
 new file mode 100644
-index 00000000..ae1aaa24
+index 000000000..ae1aaa248
 --- /dev/null
 +++ b/src/main/java/net/minecraft/server/#CommandBlockListenerAbstract.java#
 @@ -0,0 +1,230 @@
@@ -241,7 +241,7 @@ index 00000000..ae1aaa24
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/CommandBlockListenerAbstract.java b/src/main/java/net/minecraft/server/CommandBlockListenerAbstract.java
-index 278593ef..272d8c92 100644
+index ef2a496ed..8fd1c0583 100644
 --- a/src/main/java/net/minecraft/server/CommandBlockListenerAbstract.java
 +++ b/src/main/java/net/minecraft/server/CommandBlockListenerAbstract.java
 @@ -1,10 +1,14 @@
@@ -262,7 +262,7 @@ index 278593ef..272d8c92 100644
  
 @@ -109,15 +113,27 @@ public abstract class CommandBlockListenerAbstract implements ICommandListener {
  
-                 if (minecraftserver != null && minecraftserver.J() && minecraftserver.getEnableCommandBlock() && !UtilColor.b(this.command)) {
+                 if (minecraftserver != null && minecraftserver.K() && minecraftserver.getEnableCommandBlock() && !UtilColor.b(this.command)) {
                      try {
 -                        this.lastOutput = null;
 -                        CommandListenerWrapper commandlistenerwrapper = this.getWrapper().a((commandcontext, flag, i) -> {

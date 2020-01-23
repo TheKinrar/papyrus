@@ -1,11 +1,11 @@
-From c7ace1431606ba75f8db3479484753cb129a8971 Mon Sep 17 00:00:00 2001
+From 8b42c7d984ec3ac32eeb0c7cdbae1dde8ae53316 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 03:44:21 +0100
 Subject: [PATCH] POM changes
 
 
 diff --git a/pom.xml b/pom.xml
-index 495e11f0..be4ab11b 100644
+index 907807ee5..fbc3b30a7 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -1,11 +1,11 @@
@@ -15,7 +15,7 @@ index 495e11f0..be4ab11b 100644
 -    <artifactId>paper</artifactId>
 +    <artifactId>papyrus</artifactId>
      <packaging>jar</packaging>
-     <version>1.15.1-R0.1-SNAPSHOT</version>
+     <version>1.15.2-R0.1-SNAPSHOT</version>
 -    <name>Paper</name>
 -    <url>https://papermc.io</url>
 +    <name>Papyrus</name>
@@ -63,7 +63,7 @@ index 495e11f0..be4ab11b 100644
                  </configuration>
                  <executions>
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
-index 674096ca..b9f5ac9b 100644
+index 674096cab..b9f5ac9bd 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 @@ -11,7 +11,7 @@ public final class Versioning {

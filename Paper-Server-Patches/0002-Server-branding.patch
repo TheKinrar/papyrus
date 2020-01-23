@@ -1,11 +1,11 @@
-From d1ec92d55f517a02ef9a95d70f1897b309692937 Mon Sep 17 00:00:00 2001
+From c0d54033832211824bf747fcb7577e8a8f837922 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 11:26:33 +0100
 Subject: [PATCH] Server branding
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 1d7d1ffb..5bb4912c 100644
+index 1d7d1ffbf..5bb4912ce 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -97,7 +97,7 @@ public class PaperConfig {
@@ -19,7 +19,7 @@ index 1d7d1ffb..5bb4912c 100644
      }
 diff --git a/src/main/java/fr/thekinrar/papyrus/Metrics.java b/src/main/java/fr/thekinrar/papyrus/Metrics.java
 new file mode 100644
-index 00000000..7c284c9b
+index 000000000..7c284c9b2
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/Metrics.java
 @@ -0,0 +1,633 @@
@@ -658,7 +658,7 @@ index 00000000..7c284c9b
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 new file mode 100644
-index 00000000..4168eafc
+index 000000000..4168eafc0
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 @@ -0,0 +1,193 @@
@@ -857,7 +857,7 @@ index 00000000..4168eafc
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
 new file mode 100644
-index 00000000..52274c1b
+index 000000000..52274c1bb
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
 @@ -0,0 +1,62 @@
@@ -924,10 +924,10 @@ index 00000000..52274c1b
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/DedicatedServer.java b/src/main/java/net/minecraft/server/DedicatedServer.java
-index 3ed74ae0..b17af5a1 100644
+index a74fae9ed..3d4504c8d 100644
 --- a/src/main/java/net/minecraft/server/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/DedicatedServer.java
-@@ -186,6 +186,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
+@@ -187,6 +187,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
          com.destroystokyo.paper.PaperConfig.registerCommands();
          com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // load version history now
          // Paper end
@@ -944,10 +944,10 @@ index 3ed74ae0..b17af5a1 100644
          this.setSpawnAnimals(dedicatedserverproperties.spawnAnimals);
          this.setSpawnNPCs(dedicatedserverproperties.spawnNpcs);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 0365cebc..3c775e1b 100644
+index 346664cee..7ce0e0d11 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1474,7 +1474,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1484,7 +1484,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      }
  
      public String getServerModName() {
@@ -957,7 +957,7 @@ index 0365cebc..3c775e1b 100644
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 5460ace8..caf1f98f 100644
+index 9df079d8a..91da287ef 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -121,6 +121,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -978,7 +978,7 @@ index 5460ace8..caf1f98f 100644
          this.generator = gen;
          this.world = new CraftWorld((WorldServer) this, gen, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index ee5c57ca..f00cdd5c 100644
+index ee5c57ca2..f00cdd5c2 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -201,7 +201,7 @@ import javax.annotation.Nullable; // Paper
@@ -999,10 +999,10 @@ index ee5c57ca..f00cdd5c 100644
              world.worldData.setDifficulty(config.difficulty);
              world.setSpawnFlags(config.spawnMonsters, config.spawnAnimals);
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 7b7f3b8c..f71665b7 100644
+index eb5f44e30..d3c729efb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -137,6 +137,14 @@ public class Main {
+@@ -138,6 +138,14 @@ public class Main {
                          .describedAs("Yml file");
                  // Paper end
  
@@ -1018,7 +1018,7 @@ index 7b7f3b8c..f71665b7 100644
                  acceptsAll(asList("server-name"), "Name of the server")
                          .withRequiredArg()
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index 5bdcdcf9..ca92913b 100644
+index 5bdcdcf9e..ca92913be 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
 @@ -25,7 +25,7 @@ public class WatchdogThread extends Thread
@@ -1073,10 +1073,10 @@ index 5bdcdcf9..ca92913b 100644
  
  
 diff --git a/src/main/resources/log4j2.xml b/src/main/resources/log4j2.xml
-index 6711e6df..d6f1d578 100644
+index 869bff4af..138349891 100644
 --- a/src/main/resources/log4j2.xml
 +++ b/src/main/resources/log4j2.xml
-@@ -6,7 +6,7 @@
+@@ -12,7 +12,7 @@
                  <LoggerNamePatternSelector defaultPattern="%highlightError{[%d{HH:mm:ss} %level]: [%logger] %minecraftFormatting{%msg}%n%xEx}">
                      <!-- Log root, Minecraft, Mojang and Bukkit loggers without prefix -->
                      <!-- Disable prefix for various plugins that bypass the plugin logger -->
@@ -1085,7 +1085,7 @@ index 6711e6df..d6f1d578 100644
                                    pattern="%highlightError{[%d{HH:mm:ss} %level]: %minecraftFormatting{%msg}%n%xEx}" />
                  </LoggerNamePatternSelector>
              </PatternLayout>
-@@ -16,7 +16,7 @@
+@@ -22,7 +22,7 @@
                  <LoggerNamePatternSelector defaultPattern="[%d{HH:mm:ss}] [%t/%level]: [%logger] %minecraftFormatting{%msg}{strip}%n">
                      <!-- Log root, Minecraft, Mojang and Bukkit loggers without prefix -->
                      <!-- Disable prefix for various plugins that bypass the plugin logger -->

@@ -1,11 +1,11 @@
-From 7147746a5d52f0fc579ef678c520594edc1baee3 Mon Sep 17 00:00:00 2001
+From 156c52a42f4a9c0fc35e4a8acacf818a99721ad5 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index 3b8488d3..383bbb7c 100644
+index 3b8488d3f..383bbb7c0 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 @@ -578,7 +578,7 @@ public class PaperWorldConfig {
@@ -27,7 +27,7 @@ index 3b8488d3..383bbb7c 100644
              return;
          }
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBed.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBed.java
-index 100ed8a8..ae1582e0 100644
+index 100ed8a8f..ae1582e01 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBed.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBed.java
 @@ -18,38 +18,38 @@ public class CraftBed extends CraftBlockEntityState<TileEntityBed> implements Be
@@ -87,7 +87,7 @@ index 100ed8a8..ae1582e0 100644
              default:
                  throw new IllegalArgumentException("Unknown DyeColor for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-index 78e84c3d..267baba3 100644
+index 78e84c3d6..267baba34 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 @@ -325,154 +325,154 @@ public class CraftBlock implements Block {
@@ -365,7 +365,7 @@ index 78e84c3d..267baba3 100644
          default:
              TileEntity tileEntity = world.getTileEntity(position);
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftSkull.java b/src/main/java/org/bukkit/craftbukkit/block/CraftSkull.java
-index 2dd2f476..c7f46082 100644
+index 2dd2f476f..c7f46082e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftSkull.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftSkull.java
 @@ -141,24 +141,24 @@ public class CraftSkull extends CraftBlockEntityState<TileEntitySkull> implement
@@ -407,7 +407,7 @@ index 2dd2f476..c7f46082 100644
              default:
                  throw new IllegalArgumentException("Unknown SkullType for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 39ce40bd..8e5c5691 100644
+index 39ce40bd5..8e5c56919 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -1295,14 +1295,14 @@ public class CraftEventFactory {
@@ -430,7 +430,7 @@ index 39ce40bd..8e5c5691 100644
                  cause = IgniteCause.SPREAD;
          }
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
-index 23d77564..1513f982 100644
+index 23d775645..1513f9825 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
 @@ -68,205 +68,205 @@ public final class CraftItemFactory implements ItemFactory {
@@ -823,7 +823,7 @@ index 23d77564..1513f982 100644
          default:
              return new CraftMetaItem(meta);
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
-index d5e8a7ee..91acd1e3 100644
+index d5e8a7ee6..91acd1e39 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 @@ -279,203 +279,203 @@ public final class CraftItemStack extends ItemStack {
@@ -1212,7 +1212,7 @@ index d5e8a7ee..91acd1e3 100644
              default:
                  return new CraftMetaItem(item.getTag());
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaArmorStand.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaArmorStand.java
-index 3723facc..e2f90d0e 100644
+index 3723facca..e2f90d0e7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaArmorStand.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaArmorStand.java
 @@ -144,8 +144,8 @@ public class CraftMetaArmorStand extends CraftMetaItem implements com.destroysto
@@ -1227,7 +1227,7 @@ index 3723facc..e2f90d0e 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBanner.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBanner.java
-index 7541e95b..0ef59feb 100644
+index 7541e95b2..0ef59feb1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBanner.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBanner.java
 @@ -203,39 +203,39 @@ public class CraftMetaBanner extends CraftMetaItem implements BannerMeta {
@@ -1304,7 +1304,7 @@ index 7541e95b..0ef59feb 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBlockState.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBlockState.java
-index 9ef1f0d5..aa076761 100644
+index 9ef1f0d5e..aa0767617 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBlockState.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBlockState.java
 @@ -184,64 +184,64 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
@@ -2069,7 +2069,7 @@ index 9ef1f0d5..aa076761 100644
              break;
          default:
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
-index 6ddb1335..f10ebd17 100644
+index 6ddb13358..f10ebd17c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
 @@ -160,9 +160,9 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
@@ -2086,7 +2086,7 @@ index 6ddb1335..f10ebd17 100644
          default:
              return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
-index 0ea7a960..dab35265 100644
+index 0ea7a9606..dab352659 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
 @@ -85,9 +85,9 @@ class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
@@ -2103,7 +2103,7 @@ index 0ea7a960..dab35265 100644
          default:
              return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaCharge.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaCharge.java
-index 1ff9ff3f..f4bc44ed 100644
+index 1ff9ff3f2..f4bc44eda 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaCharge.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaCharge.java
 @@ -67,8 +67,8 @@ class CraftMetaCharge extends CraftMetaItem implements FireworkEffectMeta {
@@ -2118,7 +2118,7 @@ index 1ff9ff3f..f4bc44ed 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaCrossbow.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaCrossbow.java
-index 15fc0115..7640c4ca 100644
+index 15fc0115c..7640c4cae 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaCrossbow.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaCrossbow.java
 @@ -97,8 +97,8 @@ public class CraftMetaCrossbow extends CraftMetaItem implements CrossbowMeta {
@@ -2133,7 +2133,7 @@ index 15fc0115..7640c4ca 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaEnchantedBook.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaEnchantedBook.java
-index f5feea20..8cf1b908 100644
+index f5feea207..8cf1b9080 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaEnchantedBook.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaEnchantedBook.java
 @@ -56,8 +56,8 @@ class CraftMetaEnchantedBook extends CraftMetaItem implements EnchantmentStorage
@@ -2148,7 +2148,7 @@ index f5feea20..8cf1b908 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaFirework.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaFirework.java
-index 7a1c4d61..2d6a5e94 100644
+index 7a1c4d619..2d6a5e945 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaFirework.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaFirework.java
 @@ -254,8 +254,8 @@ class CraftMetaFirework extends CraftMetaItem implements FireworkMeta {
@@ -2163,7 +2163,7 @@ index 7a1c4d61..2d6a5e94 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaKnowledgeBook.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaKnowledgeBook.java
-index 8c86fe20..9464af1a 100644
+index 8c86fe208..9464af1a0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaKnowledgeBook.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaKnowledgeBook.java
 @@ -83,8 +83,8 @@ public class CraftMetaKnowledgeBook extends CraftMetaItem implements KnowledgeBo
@@ -2178,7 +2178,7 @@ index 8c86fe20..9464af1a 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaLeatherArmor.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaLeatherArmor.java
-index e7b45310..9cee7a9a 100644
+index e7b45310a..9cee7a9a5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaLeatherArmor.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaLeatherArmor.java
 @@ -66,12 +66,12 @@ class CraftMetaLeatherArmor extends CraftMetaItem implements LeatherArmorMeta {
@@ -2201,7 +2201,7 @@ index e7b45310..9cee7a9a 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java
-index 15bc3b35..2cdd1fcd 100644
+index 15bc3b356..2cdd1fcd7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java
 @@ -119,8 +119,8 @@ class CraftMetaMap extends CraftMetaItem implements MapMeta {
@@ -2216,7 +2216,7 @@ index 15bc3b35..2cdd1fcd 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaPotion.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaPotion.java
-index 9fd4c2bc..e312a370 100644
+index 9fd4c2bc7..e312a3703 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaPotion.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaPotion.java
 @@ -147,11 +147,11 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
@@ -2237,7 +2237,7 @@ index 9fd4c2bc..e312a370 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
-index 96d62bbf..bfbc8739 100644
+index 96d62bbf8..bfbc8739d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSkull.java
 @@ -102,19 +102,19 @@ class CraftMetaSkull extends CraftMetaItem implements SkullMeta {
@@ -2274,7 +2274,7 @@ index 96d62bbf..bfbc8739 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSpawnEgg.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSpawnEgg.java
-index 0634fb36..3de92ca6 100644
+index 0634fb36d..3de92ca61 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSpawnEgg.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaSpawnEgg.java
 @@ -109,66 +109,66 @@ public class CraftMetaSpawnEgg extends CraftMetaItem implements SpawnEggMeta {
@@ -2405,7 +2405,7 @@ index 0634fb36..3de92ca6 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaTropicalFishBucket.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaTropicalFishBucket.java
-index eee51f07..b3edb92a 100644
+index eee51f07a..b3edb92ae 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaTropicalFishBucket.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaTropicalFishBucket.java
 @@ -57,8 +57,8 @@ class CraftMetaTropicalFishBucket extends CraftMetaItem implements TropicalFishB
@@ -2420,29 +2420,10 @@ index eee51f07..b3edb92a 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftLegacy.java b/src/main/java/org/bukkit/craftbukkit/util/CraftLegacy.java
-index 4539a4a7..773c0864 100644
+index c8dde75de..d46cb302b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftLegacy.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftLegacy.java
-@@ -213,8 +213,7 @@ public class CraftLegacy {
-     }
- 
-     public static Material[] values() {
--        Material[] values = Material.values();
--        return Arrays.copyOfRange(values, Material.LEGACY_AIR.ordinal(), values.length);
-+        return Material.legacyValues();
-     }
- 
-     public static Material valueOf(String name) {
-@@ -232,7 +231,7 @@ public class CraftLegacy {
-     public static int ordinal(Material material) {
-         Preconditions.checkArgument(material.isLegacy(), "ordinal on modern Material");
- 
--        return material.ordinal() - Material.LEGACY_AIR.ordinal();
-+        return material.legacyOrdinal();
-     }
- 
-     public static String name(Material material) {
-@@ -244,8 +243,7 @@ public class CraftLegacy {
+@@ -27,8 +27,7 @@ public final class CraftLegacy {
      }
  
      public static Material[] modern_values() {
@@ -2452,17 +2433,16 @@ index 4539a4a7..773c0864 100644
      }
  
      public static int modern_ordinal(Material material) {
-@@ -254,7 +252,7 @@ public class CraftLegacy {
+@@ -37,6 +36,6 @@ public final class CraftLegacy {
              throw new NoSuchFieldError("Legacy field ordinal: " + material);
          }
  
 -        return material.ordinal();
 +        return material.modernOrdinal();
      }
- 
-     static {
+ }
 diff --git a/src/test/java/org/bukkit/craftbukkit/inventory/FactoryItemMaterialTest.java b/src/test/java/org/bukkit/craftbukkit/inventory/FactoryItemMaterialTest.java
-index 7580eb29..85d93aec 100644
+index 7580eb290..85d93aec1 100644
 --- a/src/test/java/org/bukkit/craftbukkit/inventory/FactoryItemMaterialTest.java
 +++ b/src/test/java/org/bukkit/craftbukkit/inventory/FactoryItemMaterialTest.java
 @@ -34,7 +34,7 @@ public class FactoryItemMaterialTest extends AbstractTestingBase {
