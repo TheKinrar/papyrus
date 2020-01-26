@@ -11,6 +11,10 @@ updated="0"
 function getRef {
     git ls-tree $1 $2  | cut -d' ' -f3 | cut -f1
 }
+function getPaperRef {
+    cd "$workdir/Paper"
+    getRef HEAD "work/$1"
+}
 function update {
     cd "$workdir/$1"
     $gitcmd fetch && $gitcmd clean -fd && $gitcmd reset --hard $2
@@ -23,15 +27,18 @@ function update {
         export updated="1"
     fi
 }
+function updateP() {
+    update $1 $(getPaperRef $1)
+}
 
-update Bukkit origin/master
-update CraftBukkit origin/master
-update Spigot origin/master
 update Paper origin/master
+updateP Bukkit
+updateP CraftBukkit
+updateP Spigot
 
 if [[ "$2" = "all" || "$2" = "a" ]] ; then
-	update BuildData origin/master
-	update Paperclip origin/master
+	updateP BuildData origin/master
+	updateP Paperclip origin/master
 fi
 if [ "$updated" == "1" ]; then
     echo "Rebuilding patches without filtering to improve apply ability"
