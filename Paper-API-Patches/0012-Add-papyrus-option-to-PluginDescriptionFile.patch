@@ -1,11 +1,11 @@
-From bf0be57e71c47c4e4b8a1edc5bf1bf738fc0d26f Mon Sep 17 00:00:00 2001
+From 761354c1579af330691fac1056e4fabb5f876582 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 15 Jan 2020 02:38:47 +0000
 Subject: [PATCH] Add papyrus option to PluginDescriptionFile
 
 
 diff --git a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
-index cb31a6d5..c37cfb10 100644
+index cb31a6d5a..c37cfb108 100644
 --- a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
 +++ b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
 @@ -235,6 +235,7 @@ public final class PluginDescriptionFile {
@@ -52,7 +52,7 @@ index cb31a6d5..c37cfb10 100644
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index c1190697..d83c2caa 100644
+index c1190697e..d83c2caa6 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -16,7 +16,10 @@ import java.util.concurrent.ConcurrentHashMap;

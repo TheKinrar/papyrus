@@ -1,11 +1,11 @@
-From b728d6f32787188d6094d9e7dad2418cea395e43 Mon Sep 17 00:00:00 2001
+From fdcb8d2637af4fa017007e71039a6b6276e33813 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
 
 
 diff --git a/src/main/java/net/minecraft/server/BlockCommand.java b/src/main/java/net/minecraft/server/BlockCommand.java
-index d0f75c8f..eb154a5e 100644
+index d0f75c8f93..eb154a5ec5 100644
 --- a/src/main/java/net/minecraft/server/BlockCommand.java
 +++ b/src/main/java/net/minecraft/server/BlockCommand.java
 @@ -4,6 +4,7 @@ import java.util.Random;
@@ -29,7 +29,7 @@ index d0f75c8f..eb154a5e 100644
          } else {
 diff --git a/src/main/java/net/minecraft/server/ItemRestricted.java b/src/main/java/net/minecraft/server/ItemRestricted.java
 new file mode 100644
-index 00000000..f5ed0c82
+index 0000000000..f5ed0c82ac
 --- /dev/null
 +++ b/src/main/java/net/minecraft/server/ItemRestricted.java
 @@ -0,0 +1,23 @@
@@ -57,7 +57,7 @@ index 00000000..f5ed0c82
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/PlayerInteractManager.java b/src/main/java/net/minecraft/server/PlayerInteractManager.java
-index 8f7b08a6..6beae391 100644
+index 8f7b08a6d1..6beae39188 100644
 --- a/src/main/java/net/minecraft/server/PlayerInteractManager.java
 +++ b/src/main/java/net/minecraft/server/PlayerInteractManager.java
 @@ -342,7 +342,7 @@ public class PlayerInteractManager {
@@ -70,7 +70,7 @@ index 8f7b08a6..6beae391 100644
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 7b79ee4f..588442ef 100644
+index 7b79ee4fe5..588442ef80 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -759,6 +759,9 @@ public abstract class PlayerList {
@@ -84,7 +84,7 @@ index 7b79ee4f..588442ef 100644
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index c1acec87..15b9082c 100644
+index c1acec87f9..15b9082cbe 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -44,6 +44,7 @@ import net.minecraft.server.EnumGamemode;
