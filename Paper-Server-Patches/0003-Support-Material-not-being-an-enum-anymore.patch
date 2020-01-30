@@ -1,14 +1,14 @@
-From 7ebb5bae7714b056d9c59ae57868037203040174 Mon Sep 17 00:00:00 2001
+From 0c59015a994640077273fa0a46daf253ebd095d2 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index 3b8488d3ff..383bbb7c02 100644
+index bce502181f..88a1176b76 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-@@ -578,7 +578,7 @@ public class PaperWorldConfig {
+@@ -584,7 +584,7 @@ public class PaperWorldConfig {
  
          altItemDespawnRateEnabled = getBoolean(path + ".enabled", false);
  
@@ -17,7 +17,7 @@ index 3b8488d3ff..383bbb7c02 100644
          altItemDespawnRateMapDefault.put(Material.COBBLESTONE, 300);
          for (Material key : altItemDespawnRateMapDefault.keySet()) {
              config.addDefault("world-settings.default." + path + ".items." + key, altItemDespawnRateMapDefault.get(key));
-@@ -600,7 +600,7 @@ public class PaperWorldConfig {
+@@ -606,7 +606,7 @@ public class PaperWorldConfig {
              altItemDespawnRateEnabled = false;
          }
  

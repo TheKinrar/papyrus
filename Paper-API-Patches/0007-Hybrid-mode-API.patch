@@ -1,4 +1,4 @@
-From 47558c8d09043566f7de8622e2d7fb5604401ce4 Mon Sep 17 00:00:00 2001
+From 8c397b47e99cbde373d88f45f30aa65bc706a869 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
@@ -85,7 +85,7 @@ index 000000000..68a938843
 +    void stayLoggedIn(long millis);
 +}
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index a97dab131..3c2b47446 100644
+index 39a8867f0..3f94ba059 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -14,6 +14,7 @@ import java.util.UUID;
@@ -117,10 +117,10 @@ index a97dab131..3c2b47446 100644
 +    // Papyrus end
 +
      @NotNull
-     public static Server.Spigot spigot()
-     {
+     public static Server.Spigot spigot() {
+         return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 91c284314..25b76a96a 100644
+index c3f6f051c..579a61c9e 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -14,6 +14,7 @@ import java.util.UUID;
@@ -131,7 +131,7 @@ index 91c284314..25b76a96a 100644
  import org.bukkit.Warning.WarningState;
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
-@@ -1407,4 +1408,16 @@ public interface Server extends PluginMessageRecipient {
+@@ -1405,4 +1406,16 @@ public interface Server extends PluginMessageRecipient {
       */
      int getCurrentTick();
      // Paper end
@@ -200,7 +200,7 @@ index 460fda05a..54d3b25df 100644
      public synchronized void clearCommands() {
          for (Map.Entry<String, Command> entry : knownCommands.entrySet()) {
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 5384ecfc4..8eecb0255 100644
+index 098ca3eb8..38c033d69 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -4,6 +4,7 @@ import java.net.InetSocketAddress;

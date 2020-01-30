@@ -1,4 +1,4 @@
-From af98e2cc7736ae93d50f799e1648d6f6acea5800 Mon Sep 17 00:00:00 2001
+From 9b926837aa374d2f77ff6003d4496fbdb9598f62 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 12:02:30 +0100
 Subject: [PATCH] Material is now a class that mimics Enum
@@ -44,7 +44,7 @@ index c91ea2a06..a28c2eefa 100644
  
      @NotNull
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 231bc6e31..a97dab131 100644
+index 388c2bbfa..39a8867f0 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -13,6 +13,7 @@ import java.util.Set;
@@ -56,7 +56,7 @@ index 231bc6e31..a97dab131 100644
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index 535179c29..423c9a111 100644
+index 03f7cec58..ff90330ad 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
 @@ -1,10 +1,8 @@
@@ -6394,7 +6394,7 @@ index 535179c29..423c9a111 100644
              //</editor-fold>
                  return true;
              default:
-@@ -4304,30 +4409,24 @@ public enum Material implements Keyed {
+@@ -4310,30 +4415,24 @@ public enum Material implements Keyed {
          return getMaterial(filtered, legacyName);
      }
  
@@ -6438,7 +6438,7 @@ index 535179c29..423c9a111 100644
              //</editor-fold>
                  return true;
              default:
-@@ -4344,730 +4443,730 @@ public enum Material implements Keyed {
+@@ -4350,730 +4449,730 @@ public enum Material implements Keyed {
          if (!isBlock() || id == 0) {
              return false;
          }
@@ -7891,7 +7891,7 @@ index 535179c29..423c9a111 100644
              //</editor-fold>
                  return true;
              default:
-@@ -5081,13 +5180,13 @@ public enum Material implements Keyed {
+@@ -5087,13 +5186,13 @@ public enum Material implements Keyed {
       * @return True if this material is an air block.
       */
      public boolean isAir() {
@@ -7910,7 +7910,7 @@ index 535179c29..423c9a111 100644
                  //</editor-fold>
                  return true;
              default:
-@@ -5107,184 +5206,184 @@ public enum Material implements Keyed {
+@@ -5113,184 +5212,184 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -8271,7 +8271,7 @@ index 535179c29..423c9a111 100644
              //</editor-fold>
                  return true;
              default:
-@@ -5301,267 +5400,267 @@ public enum Material implements Keyed {
+@@ -5307,267 +5406,267 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -8798,7 +8798,7 @@ index 535179c29..423c9a111 100644
              //</editor-fold>
                  return true;
              default:
-@@ -5578,173 +5677,173 @@ public enum Material implements Keyed {
+@@ -5584,173 +5683,173 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -9137,7 +9137,7 @@ index 535179c29..423c9a111 100644
              //</editor-fold>
                  return true;
              default:
-@@ -5758,250 +5857,250 @@ public enum Material implements Keyed {
+@@ -5764,250 +5863,250 @@ public enum Material implements Keyed {
       * @return true if this Material can be used as fuel.
       */
      public boolean isFuel() {
@@ -9630,7 +9630,7 @@ index 535179c29..423c9a111 100644
              //</editor-fold>
                  return true;
              default:
-@@ -6018,357 +6117,357 @@ public enum Material implements Keyed {
+@@ -6024,357 +6123,357 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -10337,7 +10337,7 @@ index 535179c29..423c9a111 100644
              //</editor-fold>
                  return true;
              default:
-@@ -6383,36 +6482,36 @@ public enum Material implements Keyed {
+@@ -6389,36 +6488,36 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -10402,7 +10402,7 @@ index 535179c29..423c9a111 100644
              //</editor-fold>
                  return true;
              default:
-@@ -6426,152 +6525,152 @@ public enum Material implements Keyed {
+@@ -6432,152 +6531,152 @@ public enum Material implements Keyed {
       * @return true if this material is an item
       */
      public boolean isItem() {
@@ -10699,7 +10699,7 @@ index 535179c29..423c9a111 100644
              //</editor-fold>
                  return false;
              default:
-@@ -6596,192 +6695,192 @@ public enum Material implements Keyed {
+@@ -6602,192 +6701,192 @@ public enum Material implements Keyed {
       * @return true if this material can be interacted with.
       */
      public boolean isInteractable() {
@@ -11077,7 +11077,7 @@ index 535179c29..423c9a111 100644
                  // </editor-fold>
                  return true;
              default:
-@@ -6800,583 +6899,583 @@ public enum Material implements Keyed {
+@@ -6806,583 +6905,583 @@ public enum Material implements Keyed {
       */
      public float getHardness() {
          Validate.isTrue(isBlock(), "The Material is not a block!");
@@ -12213,7 +12213,7 @@ index 535179c29..423c9a111 100644
                  return 100.0F;
              default:
                  return 0F;
-@@ -7396,592 +7495,592 @@ public enum Material implements Keyed {
+@@ -7402,592 +7501,592 @@ public enum Material implements Keyed {
       */
      public float getBlastResistance() {
          Validate.isTrue(isBlock(), "The Material is not a block!");
@@ -13437,7 +13437,7 @@ index 9d0d0d745..013bdf7db 100644
          @Override
          public T get(@NotNull NamespacedKey key) {
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 314704790..91c284314 100644
+index a13717306..c3f6f051c 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -13,6 +13,7 @@ import java.util.Set;

@@ -1,4 +1,4 @@
-From 198a29958d7dd88d68da6b966be56fe663553ce9 Mon Sep 17 00:00:00 2001
+From 1f8d4e771119d1e58d0c654d9a734ccaabb1ac6f Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 1 Nov 2019 01:32:27 +0000
 Subject: [PATCH] Implement PapyrusVersionFetcher
@@ -114,7 +114,7 @@ index 0000000000..783b9bbf19
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 6072d37975..7a69b4477f 100644
+index 41668607de..c3f97278d4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -16,6 +16,8 @@ import java.util.Locale;
@@ -126,7 +126,7 @@ index 6072d37975..7a69b4477f 100644
  import net.minecraft.server.AdvancementDataWorld;
  import net.minecraft.server.Block;
  import net.minecraft.server.ChatDeserializer;
-@@ -302,7 +304,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -303,7 +305,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
  
      @Override
      public com.destroystokyo.paper.util.VersionFetcher getVersionFetcher() {

@@ -1,4 +1,4 @@
-From 761354c1579af330691fac1056e4fabb5f876582 Mon Sep 17 00:00:00 2001
+From 4279b41add4fff928e3026c570131158a96e3df7 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 15 Jan 2020 02:38:47 +0000
 Subject: [PATCH] Add papyrus option to PluginDescriptionFile
@@ -52,21 +52,20 @@ index cb31a6d5a..c37cfb108 100644
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index c1190697e..d83c2caa6 100644
+index c271074e4..fa9c52ade 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-@@ -16,7 +16,10 @@ import java.util.concurrent.ConcurrentHashMap;
- import java.util.jar.JarEntry;
+@@ -18,7 +18,9 @@ import java.util.jar.JarEntry;
  import java.util.jar.JarFile;
  import java.util.jar.Manifest;
-+import java.util.logging.Level;
+ import java.util.logging.Level;
 +
  import org.apache.commons.lang.Validate;
 +import org.bukkit.Bukkit;
  import org.bukkit.plugin.InvalidPluginException;
  import org.bukkit.plugin.PluginDescriptionFile;
- import org.jetbrains.annotations.NotNull;
-@@ -59,6 +62,10 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
+ import org.bukkit.plugin.SimplePluginManager;
+@@ -63,6 +65,10 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
  
          this.logger = com.destroystokyo.paper.utils.PaperPluginLogger.getLogger(description); // Paper - Register logger early
  

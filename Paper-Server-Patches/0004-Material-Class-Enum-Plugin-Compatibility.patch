@@ -1,4 +1,4 @@
-From 0929b50a112bca9a1e5fe86de5a8b1fc14039b86 Mon Sep 17 00:00:00 2001
+From e434f8e7e63c03fed23daba2c1bdab2d3f76b509 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
@@ -646,10 +646,10 @@ index 0a4b5328ec..9602092bdb 100644
  import joptsimple.OptionSet;
  import joptsimple.OptionSpec;
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 6a6e4fe486..6072d37975 100644
+index 8d93ad6b45..41668607de 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -283,6 +283,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -284,6 +284,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
      public byte[] processClass(PluginDescriptionFile pdf, String path, byte[] clazz) {
          try {
              clazz = Commodore.convert(clazz, !isLegacy(pdf));

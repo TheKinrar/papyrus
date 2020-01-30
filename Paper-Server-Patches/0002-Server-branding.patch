@@ -1,4 +1,4 @@
-From 23a83314c7a6e4790fd5cc76dae329f7654c9584 Mon Sep 17 00:00:00 2001
+From b5f0676e2770bd0c0e5ca621f64f254e81889de7 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 11:26:33 +0100
 Subject: [PATCH] Server branding
@@ -924,10 +924,10 @@ index 0000000000..52274c1bb3
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/DedicatedServer.java b/src/main/java/net/minecraft/server/DedicatedServer.java
-index a74fae9ed5..3d4504c8db 100644
+index 349a0ea213..8c04990d85 100644
 --- a/src/main/java/net/minecraft/server/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/DedicatedServer.java
-@@ -187,6 +187,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
+@@ -194,6 +194,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
          com.destroystokyo.paper.PaperConfig.registerCommands();
          com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // load version history now
          // Paper end
@@ -957,10 +957,10 @@ index 346664cee0..7ce0e0d119 100644
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 9df079d8af..91da287ef2 100644
+index 9135113884..3e32affb80 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
-@@ -121,6 +121,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -105,6 +105,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
      final java.lang.Object stuctureLock = new Object();
      // Paper end
  
@@ -969,7 +969,7 @@ index 9df079d8af..91da287ef2 100644
      public CraftWorld getWorld() {
          return this.world;
      }
-@@ -144,6 +146,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -128,6 +130,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
      protected World(WorldData worlddata, DimensionManager dimensionmanager, BiFunction<World, WorldProvider, IChunkProvider> bifunction, GameProfilerFiller gameprofilerfiller, boolean flag, org.bukkit.generator.ChunkGenerator gen, org.bukkit.World.Environment env) {
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig( worlddata.getName() ); // Spigot
          this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(worlddata.getName(), this.spigotConfig); // Paper
@@ -1073,10 +1073,10 @@ index 5bdcdcf9e8..ca92913bee 100644
  
  
 diff --git a/src/main/resources/log4j2.xml b/src/main/resources/log4j2.xml
-index 869bff4af8..138349891e 100644
+index a9bb987652..1e1a876390 100644
 --- a/src/main/resources/log4j2.xml
 +++ b/src/main/resources/log4j2.xml
-@@ -12,7 +12,7 @@
+@@ -9,7 +9,7 @@
                  <LoggerNamePatternSelector defaultPattern="%highlightError{[%d{HH:mm:ss} %level]: [%logger] %minecraftFormatting{%msg}%n%xEx}">
                      <!-- Log root, Minecraft, Mojang and Bukkit loggers without prefix -->
                      <!-- Disable prefix for various plugins that bypass the plugin logger -->
@@ -1085,7 +1085,7 @@ index 869bff4af8..138349891e 100644
                                    pattern="%highlightError{[%d{HH:mm:ss} %level]: %minecraftFormatting{%msg}%n%xEx}" />
                  </LoggerNamePatternSelector>
              </PatternLayout>
-@@ -22,7 +22,7 @@
+@@ -19,7 +19,7 @@
                  <LoggerNamePatternSelector defaultPattern="[%d{HH:mm:ss}] [%t/%level]: [%logger] %minecraftFormatting{%msg}{strip}%n">
                      <!-- Log root, Minecraft, Mojang and Bukkit loggers without prefix -->
                      <!-- Disable prefix for various plugins that bypass the plugin logger -->

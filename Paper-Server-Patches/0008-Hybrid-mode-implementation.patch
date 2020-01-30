@@ -1,4 +1,4 @@
-From 19055014eab7b719fa5cc3f76702a780474ce8c3 Mon Sep 17 00:00:00 2001
+From 3ce2d4f1b3e061dc8e92973d00cbea37bcb347ca Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -1157,7 +1157,7 @@ index 0000000000..585eb3f27a
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/EntityHuman.java b/src/main/java/net/minecraft/server/EntityHuman.java
-index 2edb99b635..e8290063f3 100644
+index 584166f225..9f4f54c637 100644
 --- a/src/main/java/net/minecraft/server/EntityHuman.java
 +++ b/src/main/java/net/minecraft/server/EntityHuman.java
 @@ -17,9 +17,12 @@ import javax.annotation.Nullable;
@@ -1255,7 +1255,7 @@ index 6184cced73..4da0b8e1b4 100644
  
          return (MobEffect) this.effects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index d09afc8890..970bc23d40 100644
+index 15230a834c..4a913bbdfc 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -25,6 +25,8 @@ import org.bukkit.craftbukkit.CraftWorld;
@@ -1267,7 +1267,7 @@ index d09afc8890..970bc23d40 100644
  import org.bukkit.event.inventory.InventoryType;
  import org.bukkit.event.player.PlayerChangedMainHandEvent;
  import org.bukkit.event.player.PlayerChangedWorldEvent;
-@@ -483,7 +485,12 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -487,7 +489,12 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
  
              if (this.expTotal != this.lastSentExp) {
                  this.lastSentExp = this.expTotal;
@@ -1280,7 +1280,7 @@ index d09afc8890..970bc23d40 100644
              }
  
              if (this.ticksLived % 20 == 0) {
-@@ -1954,4 +1961,14 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -1958,4 +1965,14 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
          return (CraftPlayer) super.getBukkitEntity();
      }
      // CraftBukkit end
@@ -1921,10 +1921,10 @@ index 8e5c56919d..c2e5dc940d 100644
          return event;
      }
 diff --git a/src/main/resources/log4j2.xml b/src/main/resources/log4j2.xml
-index 138349891e..9a95f78bf7 100644
+index 1e1a876390..b08d559774 100644
 --- a/src/main/resources/log4j2.xml
 +++ b/src/main/resources/log4j2.xml
-@@ -12,8 +12,10 @@
+@@ -9,8 +9,10 @@
                  <LoggerNamePatternSelector defaultPattern="%highlightError{[%d{HH:mm:ss} %level]: [%logger] %minecraftFormatting{%msg}%n%xEx}">
                      <!-- Log root, Minecraft, Mojang and Bukkit loggers without prefix -->
                      <!-- Disable prefix for various plugins that bypass the plugin logger -->
@@ -1936,7 +1936,7 @@ index 138349891e..9a95f78bf7 100644
                  </LoggerNamePatternSelector>
              </PatternLayout>
          </TerminalConsole>
-@@ -22,8 +24,10 @@
+@@ -19,8 +21,10 @@
                  <LoggerNamePatternSelector defaultPattern="[%d{HH:mm:ss}] [%t/%level]: [%logger] %minecraftFormatting{%msg}{strip}%n">
                      <!-- Log root, Minecraft, Mojang and Bukkit loggers without prefix -->
                      <!-- Disable prefix for various plugins that bypass the plugin logger -->
