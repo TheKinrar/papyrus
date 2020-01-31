@@ -1,0 +1,36 @@
+From 080eb830b1f2ba5c62f5f3074d68b237a60386f7 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Fri, 31 Jan 2020 18:24:26 +0000
+Subject: [PATCH] Add ETA to world upgrade message
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index c7501b4057..95d5d868e6 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -285,6 +285,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+             MinecraftServer.LOGGER.info("Forcing world upgrade! {}", s); // CraftBukkit
+             WorldData worlddata = this.getConvertable().b(s); // CraftBukkit
+ 
++            long startTime = System.currentTimeMillis();
++
+             if (worlddata != null) {
+                 WorldUpgrader worldupgrader = new WorldUpgrader(s, this.getConvertable(), worlddata, this.eraseCache); // CraftBukkit
+                 IChatBaseComponent ichatbasecomponent = null;
+@@ -301,8 +303,12 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+ 
+                     if (i > 0) {
+                         int j = worldupgrader.e() + worldupgrader.f();
++                        long elapsed = System.currentTimeMillis() - startTime;
+ 
+-                        MinecraftServer.LOGGER.info("{}% completed ({} / {} chunks)...", MathHelper.d((float) j / (float) i * 100.0F), j, i);
++                        MinecraftServer.LOGGER.info("{}: {}% completed ({} / {} chunks), {} remaining",
++                                s, MathHelper.d((float) j / (float) i * 100.0F), j, i,
++                                org.apache.commons.lang3.time.DurationFormatUtils
++                                        .formatDurationHMS((long) (((double) elapsed / j) * (i - j))));
+                     }
+ 
+                     if (this.isStopped()) {
+-- 
+2.24.1
+
