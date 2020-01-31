@@ -1,4 +1,4 @@
-From 648400aee2c48cfd61341ca087864bfb06420e0b Mon Sep 17 00:00:00 2001
+From 3a340d4930bca174b65d392badc2b98668c8c6fc Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 15 Nov 2019 00:12:51 +0000
 Subject: [PATCH] Add API for compatibility with legacy selectors in command

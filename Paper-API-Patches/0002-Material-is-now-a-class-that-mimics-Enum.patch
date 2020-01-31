@@ -1,4 +1,4 @@
-From 9b926837aa374d2f77ff6003d4496fbdb9598f62 Mon Sep 17 00:00:00 2001
+From 3711a76ce062c3e4ac5da17febcd7984b134c539 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 12:02:30 +0100
 Subject: [PATCH] Material is now a class that mimics Enum

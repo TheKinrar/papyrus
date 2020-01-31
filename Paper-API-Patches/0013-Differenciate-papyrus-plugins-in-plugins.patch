@@ -1,4 +1,4 @@
-From 9b2194f0784a8d7797f34ad12ca601b95565fd69 Mon Sep 17 00:00:00 2001
+From fb471cdefc2b854b8f1391d58e15cc0582de76eb Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 15 Jan 2020 07:27:06 +0000
 Subject: [PATCH] Differenciate papyrus plugins in /plugins

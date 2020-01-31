@@ -1,4 +1,4 @@
-From fdcb8d2637af4fa017007e71039a6b6276e33813 Mon Sep 17 00:00:00 2001
+From be1cd7915f2a71f003869f60177793d59c2e24a8 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
@@ -57,7 +57,7 @@ index 0000000000..f5ed0c82ac
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/PlayerInteractManager.java b/src/main/java/net/minecraft/server/PlayerInteractManager.java
-index 8f7b08a6d1..6beae39188 100644
+index ce4340a476..93f6be20e5 100644
 --- a/src/main/java/net/minecraft/server/PlayerInteractManager.java
 +++ b/src/main/java/net/minecraft/server/PlayerInteractManager.java
 @@ -342,7 +342,7 @@ public class PlayerInteractManager {

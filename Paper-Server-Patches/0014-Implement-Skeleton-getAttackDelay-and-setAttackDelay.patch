@@ -1,4 +1,4 @@
-From 3639df7d055f4f1df6ae0063d1a5abd42a5fd3a6 Mon Sep 17 00:00:00 2001
+From 86ef2b7045f8de3dea7b9e4f01864b4abefdb897 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 29 Dec 2019 22:09:11 +0000
 Subject: [PATCH] Implement Skeleton#getAttackDelay and setAttackDelay
