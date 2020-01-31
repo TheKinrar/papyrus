@@ -1,11 +1,11 @@
-From 8e00e1bf42da1a5be126bd47115a08dfb4200acf Mon Sep 17 00:00:00 2001
+From 7ff4db4248a2d7ac6c32f1b178cb01ae25f786d1 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 31 Jan 2020 18:24:26 +0000
 Subject: [PATCH] Add ETA to world upgrade message
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c7501b4057..64586a206b 100644
+index c7501b4057..309beb6595 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -285,6 +285,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
@@ -17,20 +17,43 @@ index c7501b4057..64586a206b 100644
              if (worlddata != null) {
                  WorldUpgrader worldupgrader = new WorldUpgrader(s, this.getConvertable(), worlddata, this.eraseCache); // CraftBukkit
                  IChatBaseComponent ichatbasecomponent = null;
-@@ -301,8 +303,12 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -301,8 +303,14 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
  
                      if (i > 0) {
                          int j = worldupgrader.e() + worldupgrader.f();
-+                        long elapsed = System.currentTimeMillis() - startTime;
- 
+-
 -                        MinecraftServer.LOGGER.info("{}% completed ({} / {} chunks)...", MathHelper.d((float) j / (float) i * 100.0F), j, i);
-+                        MinecraftServer.LOGGER.info("{}: {}% completed ({} / {} chunks), {} remaining",
++                        long elapsed = System.currentTimeMillis() - startTime;
++                        ChunkCoordIntPair chunk = worldupgrader.currentChunk;
++
++                        MinecraftServer.LOGGER.info("{}: {}% completed ({} / {} chunks), {} remaining, current: {}",
 +                                s, MathHelper.d((float) j / (float) i * 100.0F), j, i,
 +                                org.apache.commons.lang3.time.DurationFormatUtils
-+                                        .formatDurationHMS((long) (((double) elapsed / (j > 0 ? j : 1)) * (i - j))));
++                                        .formatDurationHMS((long) (((double) elapsed / (j > 0 ? j : 1)) * (i - j))),
++                                chunk == null ? "N/A" : chunk.toString() + " in " + "[" + chunk.getRegionX() + ", " + chunk.getRegionZ() + "]");
                      }
  
                      if (this.isStopped()) {
+diff --git a/src/main/java/net/minecraft/server/WorldUpgrader.java b/src/main/java/net/minecraft/server/WorldUpgrader.java
+index 3030c347ef..d664320006 100644
+--- a/src/main/java/net/minecraft/server/WorldUpgrader.java
++++ b/src/main/java/net/minecraft/server/WorldUpgrader.java
+@@ -39,6 +39,7 @@ public class WorldUpgrader {
+     private volatile IChatBaseComponent o = new ChatMessage("optimizeWorld.stage.counting", new Object[0]);
+     private static final Pattern p = Pattern.compile("^r\\.(-?[0-9]+)\\.(-?[0-9]+)\\.mca$");
+     private final WorldPersistentData q;
++    public ChunkCoordIntPair currentChunk = null;
+ 
+     public WorldUpgrader(String s, Convertable convertable, WorldData worlddata, boolean flag) {
+         this.c = worlddata.getName();
+@@ -116,6 +117,7 @@ public class WorldUpgrader {
+                     if (listiterator.hasNext()) {
+                         ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair) listiterator.next();
+                         boolean flag1 = false;
++                        currentChunk = chunkcoordintpair;
+ 
+                         try {
+                             NBTTagCompound nbttagcompound = ichunkloader.read(chunkcoordintpair);
 -- 
 2.24.1
 
