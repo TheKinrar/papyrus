@@ -1,4 +1,4 @@
-From fb66b219caa58541a200385cf7341b2f5b2f3de3 Mon Sep 17 00:00:00 2001
+From 8ebee0eb0d6ba1d81c08fa6b29bbb8c110a12361 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Thu, 21 Nov 2019 11:59:46 +0000
 Subject: [PATCH] Implement Block#getCenter
@@ -21,5 +21,5 @@ index 267baba34b..99e9c4dc11 100644
      public Location getLocation(Location loc) {
          if (loc != null) {
 -- 
-2.24.1
+2.25.0
 

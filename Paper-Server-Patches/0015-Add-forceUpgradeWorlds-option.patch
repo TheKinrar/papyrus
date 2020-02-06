@@ -1,4 +1,4 @@
-From aff10eb69a7c68aa095232aa210333638abf1136 Mon Sep 17 00:00:00 2001
+From 31158bd11ada5f5b4ac5b6635e06b2b968b31574 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 6 Jan 2020 00:11:45 +0000
 Subject: [PATCH] Add forceUpgradeWorlds option
@@ -81,5 +81,5 @@ index d3c729efb9..59d41434d4 100644
  
                  acceptsAll(asList("noconsole"), "Disables the console");
 -- 
-2.24.1
+2.25.0
 

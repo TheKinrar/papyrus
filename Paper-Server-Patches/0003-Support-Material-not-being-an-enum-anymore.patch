@@ -1,4 +1,4 @@
-From b6d7119dc982c42aefcdacc549303f5e979d6224 Mon Sep 17 00:00:00 2001
+From d0ab44a4cb826d802a793a18e7caf048ff8b9761 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore
@@ -2455,5 +2455,5 @@ index 7580eb290d..85d93aec15 100644
              return buffer.delete(0, Integer.MAX_VALUE).append(from.getClass().getName()).append(' ').append(from.name()).append(" to ").append(to.name()).toString();
          }
 -- 
-2.24.1
+2.25.0
 

@@ -1,4 +1,4 @@
-From 4aef5d85d1d936594b60a4f397ff3cd3c492d119 Mon Sep 17 00:00:00 2001
+From d0b0e4a97cd6c47c59a10bcb9321eef3e214c507 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 15 Jan 2020 02:38:47 +0000
 Subject: [PATCH] Add papyrus option to PluginDescriptionFile
@@ -77,5 +77,5 @@ index c271074e4..fa9c52ade 100644
              Class<?> jarClass;
              try {
 -- 
-2.24.1
+2.25.0
 

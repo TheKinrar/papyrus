@@ -1,4 +1,4 @@
-From 22b266dc79ac364dcc636407b25695757ebaff6d Mon Sep 17 00:00:00 2001
+From 3fc9690bfd6b6d719d7a471ec5776740b304410a Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
@@ -237,5 +237,5 @@ index d5f8bde3b..e4d7b9379 100644
           * When all effects are removed due to a bucket of milk.
           */
 -- 
-2.24.1
+2.25.0
 

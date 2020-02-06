@@ -1,4 +1,4 @@
-From ef39a93cae104d479d9100cccb2d00e62ca932a8 Mon Sep 17 00:00:00 2001
+From 33ea18745273545f39d5b2720bfb4c49ded2ca77 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
@@ -661,5 +661,5 @@ index 8d93ad6b45..41668607de 100644
              Bukkit.getLogger().log(Level.SEVERE, "Fatal error trying to convert " + pdf.getFullName() + ":" + path, ex);
          }
 -- 
-2.24.1
+2.25.0
 

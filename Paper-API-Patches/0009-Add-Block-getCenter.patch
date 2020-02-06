@@ -1,4 +1,4 @@
-From 91e3cead1a498b42cd0db7240bc01a784c1422df Mon Sep 17 00:00:00 2001
+From aa041156565f44668c5b6518d96701d23963c33f Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Thu, 21 Nov 2019 11:58:39 +0000
 Subject: [PATCH] Add Block#getCenter
@@ -23,5 +23,5 @@ index a14a75834..3e0f08a98 100644
       * Stores the location of the block in the provided Location object.
       * <p>
 -- 
-2.24.1
+2.25.0
 

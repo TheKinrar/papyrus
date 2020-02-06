@@ -1,4 +1,4 @@
-From 3a0ebb8fc07e38d318a11bd87077713751e4d9cb Mon Sep 17 00:00:00 2001
+From 090acd75ea421d0dce1cc6ca95101e70efb15cc9 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 27 Oct 2019 02:19:43 +0000
 Subject: [PATCH] Add PluginDescriptionFile getter to PluginClassLoader
@@ -18,5 +18,5 @@ index 3a02dbe9d..c271074e4 100644
      private final Map<String, Class<?>> classes = new ConcurrentHashMap<String, Class<?>>();
      private final PluginDescriptionFile description;
 -- 
-2.24.1
+2.25.0
 

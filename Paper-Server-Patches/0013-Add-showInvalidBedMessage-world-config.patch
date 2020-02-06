@@ -1,4 +1,4 @@
-From f9dae49321054ae6e2fd161c5ef18bcd5cbc83bf Mon Sep 17 00:00:00 2001
+From b0e40dbee1168c06a1b169be4cd3b8fd93e52f6b Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 13 Dec 2019 18:26:58 +0000
 Subject: [PATCH] Add showInvalidBedMessage world config
@@ -35,5 +35,5 @@ index dfd96f1553..2e21144847 100644
              }
  
 -- 
-2.24.1
+2.25.0
 

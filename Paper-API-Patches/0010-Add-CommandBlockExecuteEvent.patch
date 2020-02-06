@@ -1,4 +1,4 @@
-From 0c1681d8952e61f806d6afc6ea79c2b3dd405d02 Mon Sep 17 00:00:00 2001
+From d52d1dfd5031c5f16c7ec94f2277fad105daea40 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 3 Dec 2019 17:35:08 +0000
 Subject: [PATCH] Add CommandBlockExecuteEvent
@@ -93,5 +93,5 @@ index 000000000..98e68dbdf
 +
 +}
 -- 
-2.24.1
+2.25.0
 

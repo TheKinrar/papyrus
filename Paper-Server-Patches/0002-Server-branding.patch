@@ -1,4 +1,4 @@
-From a844a37e4ca6c340e34770c7f6829053355cefc5 Mon Sep 17 00:00:00 2001
+From 9ab3aefcb56cff3a5faaadefb452c8cb1004569b Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 11:26:33 +0100
 Subject: [PATCH] Server branding
@@ -1095,5 +1095,5 @@ index a9bb987652..1e1a876390 100644
                  </LoggerNamePatternSelector>
              </PatternLayout>
 -- 
-2.24.1
+2.25.0
 

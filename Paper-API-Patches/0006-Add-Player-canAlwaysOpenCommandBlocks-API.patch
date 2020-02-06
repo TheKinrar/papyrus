@@ -1,4 +1,4 @@
-From c0b64eb429d4bd527bb4537a15e09294a399f60f Mon Sep 17 00:00:00 2001
+From 278cdab7c52748bdce536e796e638c4722032616 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:31:14 +0000
 Subject: [PATCH] Add Player canAlwaysOpenCommandBlocks API
@@ -33,5 +33,5 @@ index 877ea4f32..098ca3eb8 100644
      public class Spigot extends Entity.Spigot {
  
 -- 
-2.24.1
+2.25.0
 

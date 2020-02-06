@@ -1,4 +1,4 @@
-From 66c322ca5aa38c91a0e7da25c15f796c3f6bc004 Mon Sep 17 00:00:00 2001
+From c0b1ca41caa07a183de4d27c27ac54d9c677a693 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 23 Nov 2019 02:29:24 +0000
 Subject: [PATCH] Case-insensitive command matching for command blocks
@@ -18,5 +18,5 @@ index 37b1a7947c..401459fa0f 100644
          String cmd = args[0];
          if (cmd.startsWith("minecraft:")) cmd = cmd.substring("minecraft:".length());
 -- 
-2.24.1
+2.25.0
 
