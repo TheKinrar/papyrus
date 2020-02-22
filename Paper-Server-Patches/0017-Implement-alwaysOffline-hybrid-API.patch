@@ -1,0 +1,104 @@
+From 9cc2fbe53c4a22a3b320487da5c4471bc305c753 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Sat, 22 Feb 2020 20:18:07 +0000
+Subject: [PATCH] Implement alwaysOffline hybrid API
+
+
+diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
+index 0b652d405..a4687e41f 100644
+--- a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
++++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridEngine.java
+@@ -54,6 +54,12 @@ public class CraftHybridEngine implements HybridEngine {
+     private final Map<UUID, String> authAddresses = new HashMap<>();
+     private final Map<UUID, Long> authExpiration = new HashMap<>();
+ 
++    /**
++     * Persistent.
++     * IDs of players that will always be assumed offline
++     */
++    private final Set<UUID> alwaysOffline = new HashSet<>();
++
+     /**
+      * Maps hybrid IDs to online IDs
+      */
+@@ -151,6 +157,11 @@ public class CraftHybridEngine implements HybridEngine {
+             NBTTagCompound mapping = (NBTTagCompound) base;
+             authOnlineIds.put(mapping.getUUID("Key"), mapping.getUUID("Value"));
+         }
++
++        alwaysOffline.clear();
++        for(NBTBase base : root.getList("AlwaysOffline", 10)) {
++            alwaysOffline.add(((NBTTagCompound) base).getUUID("id"));
++        }
+     }
+ 
+     private void save() {
+@@ -211,6 +222,15 @@ public class CraftHybridEngine implements HybridEngine {
+         }).collect(Collectors.toList()));
+         root.set("OnlineIds", nbtOnlineIds);
+ 
++
++        NBTTagList nbtAlwaysOffline = new NBTTagList();
++        nbtAlwaysOffline.addAll(alwaysOffline.stream().map(entry -> {
++            NBTTagCompound nbt = new NBTTagCompound();
++            nbt.setUUID("id", entry);
++            return nbt;
++        }).collect(Collectors.toList()));
++        root.set("AlwaysOffline", nbtAlwaysOffline);
++
+         try {
+             NBTCompressedStreamTools.writeNBT(root, new DataOutputStream(new FileOutputStream(file)));
+         } catch (IOException e) {
+@@ -361,6 +381,17 @@ public class CraftHybridEngine implements HybridEngine {
+         return invalidSessionWorkarounds.contains(id);
+     }
+ 
++    public void setAlwaysOffline(UUID id, boolean v) {
++        if(v)
++            alwaysOffline.add(id);
++        else
++            alwaysOffline.remove(id);
++    }
++
++    public boolean getAlwaysOffline(UUID id) {
++        return alwaysOffline.contains(id);
++    }
++
+     @Override
+     public UUID getIdForOfflinePlayer(String name) {
+         return getIdForOfflinePlayer(new GameProfile(null, name));
+diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
+index 585eb3f27..48c04c0d9 100644
+--- a/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
++++ b/src/main/java/fr/thekinrar/papyrus/hybrid/CraftHybridProfile.java
+@@ -186,4 +186,14 @@ public class CraftHybridProfile implements HybridProfile {
+     public void stayLoggedIn(long millis) {
+         engine.setAuthExpiration(id, player.getAddress().getAddress().getHostAddress(), System.currentTimeMillis() + millis);
+     }
++
++    @Override
++    public boolean isAlwaysOffline() {
++        return engine.getAlwaysOffline(id);
++    }
++
++    @Override
++    public void setAlwaysOffline(boolean alwaysOffline) {
++        engine.setAlwaysOffline(id, alwaysOffline);
++    }
+ }
+diff --git a/src/main/java/net/minecraft/server/LoginListener.java b/src/main/java/net/minecraft/server/LoginListener.java
+index 0b5f685fa..555b0213d 100644
+--- a/src/main/java/net/minecraft/server/LoginListener.java
++++ b/src/main/java/net/minecraft/server/LoginListener.java
+@@ -212,6 +212,8 @@ public class LoginListener implements PacketLoginInListener {
+             } else if(hybridEngine.hasInvalidSession(networkManager.getSocketAddress(), getGameProfile().getName())) {
+                 hybridEngine.getLogger().info("Forcing offline mode for player " + getGameProfile().getName() + " (invalid session)");
+                 invalidSession = true;
++            } else if(hybridEngine.getAlwaysOffline(hybridEngine.getIdForOfflinePlayer(getGameProfile()))) {
++                hybridEngine.getLogger().info("Forcing offline mode for player " + getGameProfile().getName() + " (always offline)");
+             } else {
+                 encryption = true;
+             }
+-- 
+2.25.1
+
