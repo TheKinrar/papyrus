@@ -18,5 +18,5 @@ index 3a02dbe9d..c271074e4 100644
      private final Map<String, Class<?>> classes = new ConcurrentHashMap<String, Class<?>>();
      private final PluginDescriptionFile description;
 -- 
-2.25.0
+2.25.1
 
