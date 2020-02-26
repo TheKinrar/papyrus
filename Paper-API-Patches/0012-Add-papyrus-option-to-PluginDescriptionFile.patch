@@ -1,11 +1,11 @@
-From d0b0e4a97cd6c47c59a10bcb9321eef3e214c507 Mon Sep 17 00:00:00 2001
+From d529d9fa353ec395ccb7f1e2f869a6e6648ec5cb Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 15 Jan 2020 02:38:47 +0000
 Subject: [PATCH] Add papyrus option to PluginDescriptionFile
 
 
 diff --git a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
-index cb31a6d5a..c37cfb108 100644
+index cb31a6d5..c37cfb10 100644
 --- a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
 +++ b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
 @@ -235,6 +235,7 @@ public final class PluginDescriptionFile {
@@ -52,7 +52,7 @@ index cb31a6d5a..c37cfb108 100644
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index c271074e4..fa9c52ade 100644
+index c271074e..fa9c52ad 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -18,7 +18,9 @@ import java.util.jar.JarEntry;

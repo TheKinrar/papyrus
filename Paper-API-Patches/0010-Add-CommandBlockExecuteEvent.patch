@@ -1,4 +1,4 @@
-From d52d1dfd5031c5f16c7ec94f2277fad105daea40 Mon Sep 17 00:00:00 2001
+From a63ce794b38edb35334319c55b1c1cd9f3473676 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 3 Dec 2019 17:35:08 +0000
 Subject: [PATCH] Add CommandBlockExecuteEvent
@@ -6,7 +6,7 @@ Subject: [PATCH] Add CommandBlockExecuteEvent
 
 diff --git a/src/main/java/org/bukkit/event/block/CommandBlockExecuteEvent.java b/src/main/java/org/bukkit/event/block/CommandBlockExecuteEvent.java
 new file mode 100644
-index 000000000..98e68dbdf
+index 00000000..98e68dbd
 --- /dev/null
 +++ b/src/main/java/org/bukkit/event/block/CommandBlockExecuteEvent.java
 @@ -0,0 +1,82 @@

@@ -1,11 +1,11 @@
-From b0e40dbee1168c06a1b169be4cd3b8fd93e52f6b Mon Sep 17 00:00:00 2001
+From 0c5ceb18578cddbf7d90c082697da10df2af8e15 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 13 Dec 2019 18:26:58 +0000
 Subject: [PATCH] Add showInvalidBedMessage world config
 
 
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
-index 52274c1bb3..4cdcd51049 100644
+index 52274c1bb..4cdcd5104 100644
 --- a/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
 @@ -59,4 +59,10 @@ public class PapyrusWorldConfig {
@@ -20,7 +20,7 @@ index 52274c1bb3..4cdcd51049 100644
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index dfd96f1553..2e21144847 100644
+index dfd96f155..2e2114484 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -677,7 +677,10 @@ public abstract class PlayerList {
