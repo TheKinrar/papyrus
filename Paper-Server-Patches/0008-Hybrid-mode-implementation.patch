@@ -1,4 +1,4 @@
-From ab9699e8f44350a9046ebe2a0a4e1dea8b2b8978 Mon Sep 17 00:00:00 2001
+From add4adb64f4e6f1642e10b03205428591c1d7822 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -1811,29 +1811,29 @@ index 2fd69c0f9..119602875 100644
 +    }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index 277eb54e7..813b83819 100644
+index 8ffa3cb05..50d8330ba 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-@@ -383,13 +383,17 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+@@ -384,7 +384,17 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
  
      @Override
      public boolean addPotionEffect(PotionEffect effect, boolean force) {
+-        getHandle().addEffect(new MobEffect(MobEffectList.fromId(effect.getType().getId()), effect.getDuration(), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles()), EntityPotionEffectEvent.Cause.PLUGIN);
 +        return addPotionEffect(effect, force, EntityPotionEffectEvent.Cause.PLUGIN);
 +    }
 +
 +    public boolean addPotionEffect(PotionEffect effect, boolean force, EntityPotionEffectEvent.Cause cause) {
-         if (hasPotionEffect(effect.getType())) {
-             if (!force) {
-                 return false;
-             }
-             removePotionEffect(effect.getType());
-         }
--        getHandle().addEffect(new MobEffect(MobEffectList.fromId(effect.getType().getId()), effect.getDuration(), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles()), EntityPotionEffectEvent.Cause.PLUGIN);
++        if (hasPotionEffect(effect.getType())) {
++            if (!force) {
++                return false;
++            }
++            removePotionEffect(effect.getType());
++        }
 +        getHandle().addEffect(new MobEffect(MobEffectList.fromId(effect.getType().getId()), effect.getDuration(), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles()), cause);
          return true;
      }
  
-@@ -418,6 +422,10 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+@@ -413,6 +423,10 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
          getHandle().removeEffect(MobEffectList.fromId(type.getId()), EntityPotionEffectEvent.Cause.PLUGIN);
      }
  
