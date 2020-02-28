@@ -1,0 +1,57 @@
+From f8f464b0341fb35d57c6fa2e88683bb47a816fde Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Fri, 28 Feb 2020 21:49:02 +0000
+Subject: [PATCH] Add online mapping API to HybridEngine
+
+
+diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java
+index 3d049581..52debb94 100644
+--- a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java
++++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java
+@@ -14,6 +14,9 @@ public interface HybridEngine {
+     @NotNull
+     UUID getIdForOnlinePlayer(@NotNull String name, @NotNull UUID id);
+ 
++    @Nullable
++    UUID getOnlineId(@NotNull UUID id);
++
+     /**
+      * Gets the forced offline mapping for the specified username, if any.
+      * @param name Offline username to get the mapping for
+@@ -29,6 +32,11 @@ public interface HybridEngine {
+      */
+     void setOfflineMapping(@NotNull String name, @Nullable UUID id);
+ 
++    @Nullable
++    UUID getOnlineMapping(@NotNull UUID id);
++
++    void setOnlineMapping(@NotNull UUID from, @Nullable UUID to);
++
+     void registerPasswordProvider(@NotNull HybridPasswordProvider provider);
+ 
+     void importKnownNames(@NotNull Map<String, String> knownNames);
+diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java
+index b6a12950..31c8e82b 100644
+--- a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java
++++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java
+@@ -1,6 +1,9 @@
+ package fr.thekinrar.papyrus.hybrid;
+ 
+ import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++
++import java.util.UUID;
+ 
+ public interface HybridProfile {
+ 
+@@ -16,4 +19,7 @@ public interface HybridProfile {
+ 
+     boolean isAlwaysOffline();
+     void setAlwaysOffline(boolean alwaysOffline);
++
++    boolean isOnline();
++    @Nullable UUID getOnlineId();
+ }
+-- 
+2.25.1
+
