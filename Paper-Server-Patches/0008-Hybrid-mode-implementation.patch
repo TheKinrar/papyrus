@@ -1,4 +1,4 @@
-From add4adb64f4e6f1642e10b03205428591c1d7822 Mon Sep 17 00:00:00 2001
+From c59e34bd2a47d7e52cceba0e8aa6b7fdd13c734c Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -1255,10 +1255,10 @@ index ad474500e..8b9e216e2 100644
  
          return (MobEffect) this.effects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 15230a834..4a913bbdf 100644
+index e7bfbc330..542661001 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
-@@ -25,6 +25,8 @@ import org.bukkit.craftbukkit.CraftWorld;
+@@ -26,6 +26,8 @@ import org.bukkit.craftbukkit.CraftWorld;
  import org.bukkit.craftbukkit.entity.CraftPlayer;
  import org.bukkit.craftbukkit.event.CraftEventFactory;
  import org.bukkit.craftbukkit.inventory.CraftItemStack;
@@ -1267,7 +1267,7 @@ index 15230a834..4a913bbdf 100644
  import org.bukkit.event.inventory.InventoryType;
  import org.bukkit.event.player.PlayerChangedMainHandEvent;
  import org.bukkit.event.player.PlayerChangedWorldEvent;
-@@ -487,7 +489,12 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -489,7 +491,12 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
  
              if (this.expTotal != this.lastSentExp) {
                  this.lastSentExp = this.expTotal;
@@ -1280,7 +1280,7 @@ index 15230a834..4a913bbdf 100644
              }
  
              if (this.ticksLived % 20 == 0) {
-@@ -1958,4 +1965,14 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -1960,4 +1967,14 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
          return (CraftPlayer) super.getBukkitEntity();
      }
      // CraftBukkit end
