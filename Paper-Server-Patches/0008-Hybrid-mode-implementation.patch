@@ -1,4 +1,4 @@
-From c59e34bd2a47d7e52cceba0e8aa6b7fdd13c734c Mon Sep 17 00:00:00 2001
+From 35b11437b8316da02e2553bcb2b6eddbd734fb8f Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -1497,7 +1497,7 @@ index 96a785af2..715707316 100644
                  }
                  // Paper end
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 478fe387b..d1af6ecbb 100644
+index 8345f0897..07a919df5 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -7,6 +7,7 @@ import com.google.common.primitives.Floats;
@@ -1522,7 +1522,7 @@ index 478fe387b..d1af6ecbb 100644
                              if (!this.player.H() && (!this.player.getWorldServer().getGameRules().getBoolean(GameRules.DISABLE_ELYTRA_MOVEMENT_CHECK) || !this.player.isGliding())) {
                                  float f2 = this.player.isGliding() ? 300.0F : 100.0F;
  
-@@ -1293,6 +1301,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1297,6 +1305,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
  
          switch (packetplayinblockdig_enumplayerdigtype) {
              case SWAP_HELD_ITEMS:
@@ -1531,7 +1531,7 @@ index 478fe387b..d1af6ecbb 100644
                  if (!this.player.isSpectator()) {
                      ItemStack itemstack = this.player.b(EnumHand.OFF_HAND);
  
-@@ -1319,6 +1329,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1323,6 +1333,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
  
                  return;
              case DROP_ITEM:
@@ -1540,7 +1540,7 @@ index 478fe387b..d1af6ecbb 100644
                  if (!this.player.isSpectator()) {
                      // limit how quickly items can be dropped
                      // If the ticks aren't the same then the count starts from 0 and we update the lastDropTick.
-@@ -1340,12 +1352,16 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1344,12 +1356,16 @@ public class PlayerConnection implements PacketListenerPlayIn {
  
                  return;
              case DROP_ALL_ITEMS:
@@ -1557,7 +1557,7 @@ index 478fe387b..d1af6ecbb 100644
                  this.player.clearActiveItem();
                  return;
              case START_DESTROY_BLOCK:
-@@ -1661,6 +1677,12 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1665,6 +1681,12 @@ public class PlayerConnection implements PacketListenerPlayIn {
                  }
              }
  
@@ -1570,7 +1570,7 @@ index 478fe387b..d1af6ecbb 100644
              // CraftBukkit start
              if (isSync) {
                  try {
-@@ -1844,7 +1866,12 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1848,7 +1870,12 @@ public class PlayerConnection implements PacketListenerPlayIn {
          MinecraftTimings.playerCommandTimer.startTiming(); // Paper
          // CraftBukkit start - whole method
          if ( org.spigotmc.SpigotConfig.logCommands ) // Spigot
@@ -1893,7 +1893,7 @@ index ffe629ac5..30d88ceeb 100644
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 8e5c56919..c2e5dc940 100644
+index d43de646f..ff2c902b7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -11,6 +11,8 @@ import java.util.EnumMap;
@@ -1905,7 +1905,7 @@ index 8e5c56919..c2e5dc940 100644
  import net.minecraft.server.BlockPosition;
  import net.minecraft.server.BlockPropertyInstrument;
  import net.minecraft.server.ChatMessage;
-@@ -455,7 +457,13 @@ public class CraftEventFactory {
+@@ -460,7 +462,13 @@ public class CraftEventFactory {
          if (cancelledBlock) {
              event.setUseInteractedBlock(Event.Result.DENY);
          }
