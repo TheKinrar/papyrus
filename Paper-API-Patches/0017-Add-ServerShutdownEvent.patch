@@ -1,0 +1,38 @@
+From c24ddcff39da92b1f2b2125e235dccfb0f71a9c9 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Sat, 7 Mar 2020 02:56:54 +0000
+Subject: [PATCH] Add ServerShutdownEvent
+
+
+diff --git a/src/main/java/org/bukkit/event/server/ServerShutdownEvent.java b/src/main/java/org/bukkit/event/server/ServerShutdownEvent.java
+new file mode 100644
+index 00000000..5c686640
+--- /dev/null
++++ b/src/main/java/org/bukkit/event/server/ServerShutdownEvent.java
+@@ -0,0 +1,23 @@
++package org.bukkit.event.server;
++
++import org.bukkit.event.HandlerList;
++import org.jetbrains.annotations.NotNull;
++
++/**
++ * This event is called when the server is about to shutdown.
++ */
++public class ServerShutdownEvent extends ServerEvent {
++
++    private static final HandlerList handlers = new HandlerList();
++
++    @NotNull
++    @Override
++    public HandlerList getHandlers() {
++        return handlers;
++    }
++
++    @NotNull
++    public static HandlerList getHandlerList() {
++        return handlers;
++    }
++}
+-- 
+2.25.1
+

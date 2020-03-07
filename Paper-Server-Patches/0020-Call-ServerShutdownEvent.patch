@@ -1,0 +1,29 @@
+From 9470985603146e67fca9086bd860f3bb1d006681 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Sat, 7 Mar 2020 02:58:15 +0000
+Subject: [PATCH] Call ServerShutdownEvent
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index a60295d4b..e47293edf 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -159,6 +159,7 @@ import org.bukkit.event.inventory.InventoryType;
+ import org.bukkit.event.player.PlayerChatTabCompleteEvent;
+ import org.bukkit.event.server.BroadcastMessageEvent;
+ import org.bukkit.event.server.ServerLoadEvent;
++import org.bukkit.event.server.ServerShutdownEvent;
+ import org.bukkit.event.server.TabCompleteEvent;
+ import org.bukkit.event.world.WorldInitEvent;
+ import org.bukkit.event.world.WorldLoadEvent;
+@@ -1372,6 +1373,7 @@ public final class CraftServer implements Server {
+ 
+     @Override
+     public void shutdown() {
++        getPluginManager().callEvent(new ServerShutdownEvent());
+         console.safeShutdown(false);
+     }
+ 
+-- 
+2.25.1
+
