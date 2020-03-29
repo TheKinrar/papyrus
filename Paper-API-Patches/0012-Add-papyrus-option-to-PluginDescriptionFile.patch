@@ -1,14 +1,14 @@
-From d529d9fa353ec395ccb7f1e2f869a6e6648ec5cb Mon Sep 17 00:00:00 2001
+From 1bd6bc131604cd34799aaddf599ba608f195bfd4 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 15 Jan 2020 02:38:47 +0000
 Subject: [PATCH] Add papyrus option to PluginDescriptionFile
 
 
 diff --git a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
-index cb31a6d5..c37cfb10 100644
+index 70d508190..f68eaa50f 100644
 --- a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
 +++ b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
-@@ -235,6 +235,7 @@ public final class PluginDescriptionFile {
+@@ -241,6 +241,7 @@ public final class PluginDescriptionFile {
      private PermissionDefault defaultPerm = PermissionDefault.OP;
      private Set<PluginAwareness> awareness = ImmutableSet.of();
      private String apiVersion = null;
@@ -16,7 +16,7 @@ index cb31a6d5..c37cfb10 100644
  
      public PluginDescriptionFile(@NotNull final InputStream stream) throws InvalidDescriptionException {
          loadMap(asMap(YAML.get().load(stream)));
-@@ -890,6 +891,10 @@ public final class PluginDescriptionFile {
+@@ -927,6 +928,10 @@ public final class PluginDescriptionFile {
          return apiVersion;
      }
  
@@ -27,7 +27,7 @@ index cb31a6d5..c37cfb10 100644
      /**
       * @return unused
       * @deprecated unused
-@@ -1053,6 +1058,14 @@ public final class PluginDescriptionFile {
+@@ -1092,6 +1097,14 @@ public final class PluginDescriptionFile {
          if (map.get("prefix") != null) {
              prefix = map.get("prefix").toString();
          }
@@ -42,7 +42,7 @@ index cb31a6d5..c37cfb10 100644
      }
  
      @NotNull
-@@ -1119,6 +1132,8 @@ public final class PluginDescriptionFile {
+@@ -1161,6 +1174,8 @@ public final class PluginDescriptionFile {
              map.put("prefix", prefix);
          }
  
@@ -52,7 +52,7 @@ index cb31a6d5..c37cfb10 100644
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index c271074e..fa9c52ad 100644
+index c271074e4..fa9c52ade 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -18,7 +18,9 @@ import java.util.jar.JarEntry;
@@ -77,5 +77,5 @@ index c271074e..fa9c52ad 100644
              Class<?> jarClass;
              try {
 -- 
-2.25.1
+2.26.0
 

@@ -1,4 +1,4 @@
-From 7f3266a57a2462969675e8ae258d97fd696e2d86 Mon Sep 17 00:00:00 2001
+From f74b99759af93ae44c40582b93347280716f6f2a Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
@@ -6,7 +6,7 @@ Subject: [PATCH] Hybrid mode API
 
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java
 new file mode 100644
-index 00000000..3d049581
+index 000000000..3d0495812
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridEngine.java
 @@ -0,0 +1,36 @@
@@ -48,7 +48,7 @@ index 00000000..3d049581
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPasswordProvider.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPasswordProvider.java
 new file mode 100644
-index 00000000..c23af6b5
+index 000000000..c23af6b53
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPasswordProvider.java
 @@ -0,0 +1,10 @@
@@ -64,7 +64,7 @@ index 00000000..c23af6b5
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java
 new file mode 100644
-index 00000000..68a93884
+index 000000000..68a938843
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridProfile.java
 @@ -0,0 +1,16 @@
@@ -85,7 +85,7 @@ index 00000000..68a93884
 +    void stayLoggedIn(long millis);
 +}
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 9ed0e4d5..4d782db8 100644
+index 52c7de0b7..b1f04fb4a 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -14,6 +14,7 @@ import java.util.UUID;
@@ -96,7 +96,7 @@ index 9ed0e4d5..4d782db8 100644
  import org.bukkit.Warning.WarningState;
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
-@@ -1620,6 +1621,22 @@ public final class Bukkit {
+@@ -1664,6 +1665,22 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -120,7 +120,7 @@ index 9ed0e4d5..4d782db8 100644
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 7a6fdaa6..e8d74d5d 100644
+index 215cdae19..6f534801f 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -14,6 +14,7 @@ import java.util.UUID;
@@ -131,7 +131,7 @@ index 7a6fdaa6..e8d74d5d 100644
  import org.bukkit.Warning.WarningState;
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
-@@ -1417,4 +1418,16 @@ public interface Server extends PluginMessageRecipient {
+@@ -1457,4 +1458,16 @@ public interface Server extends PluginMessageRecipient {
       */
      int getCurrentTick();
      // Paper end
@@ -149,7 +149,7 @@ index 7a6fdaa6..e8d74d5d 100644
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/command/Command.java b/src/main/java/org/bukkit/command/Command.java
-index 0b0d1bd7..cd271118 100644
+index 0b0d1bd7c..cd2711185 100644
 --- a/src/main/java/org/bukkit/command/Command.java
 +++ b/src/main/java/org/bukkit/command/Command.java
 @@ -35,6 +35,7 @@ public abstract class Command {
@@ -176,7 +176,7 @@ index 0b0d1bd7..cd271118 100644
      public String toString() {
          return getClass().getName() + '(' + name + ')';
 diff --git a/src/main/java/org/bukkit/command/SimpleCommandMap.java b/src/main/java/org/bukkit/command/SimpleCommandMap.java
-index 460fda05..54d3b25d 100644
+index 460fda05a..54d3b25df 100644
 --- a/src/main/java/org/bukkit/command/SimpleCommandMap.java
 +++ b/src/main/java/org/bukkit/command/SimpleCommandMap.java
 @@ -156,7 +156,7 @@ public class SimpleCommandMap implements CommandMap {
@@ -200,7 +200,7 @@ index 460fda05..54d3b25d 100644
      public synchronized void clearCommands() {
          for (Map.Entry<String, Command> entry : knownCommands.entrySet()) {
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 098ca3eb..38c033d6 100644
+index 098ca3eb8..38c033d69 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
@@ -222,7 +222,7 @@ index 098ca3eb..38c033d6 100644
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java b/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
-index 16b5fd27..86f1a6b2 100644
+index 16b5fd279..86f1a6b2f 100644
 --- a/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
 +++ b/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
 @@ -209,6 +209,10 @@ public class EntityPotionEffectEvent extends EntityEvent implements Cancellable
@@ -237,5 +237,5 @@ index 16b5fd27..86f1a6b2 100644
           * When all effects are removed due to a bucket of milk.
           */
 -- 
-2.25.1
+2.26.0
 

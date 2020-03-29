@@ -1,4 +1,4 @@
-From 1d2daa3f64c7fcac8f003d2c51828cdc03af39c3 Mon Sep 17 00:00:00 2001
+From d28cc70488c0e9adb5f8f252d44499606cf00be0 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 11:26:33 +0100
 Subject: [PATCH] Server branding
@@ -957,10 +957,10 @@ index c9deaffc4..364c09a66 100644
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index baad98517..dfef00f2b 100644
+index 5117dafbc..492beef64 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
-@@ -105,6 +105,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -107,6 +107,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
      final java.lang.Object stuctureLock = new Object();
      // Paper end
  
@@ -969,7 +969,7 @@ index baad98517..dfef00f2b 100644
      public CraftWorld getWorld() {
          return this.world;
      }
-@@ -128,6 +130,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -130,6 +132,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
      protected World(WorldData worlddata, DimensionManager dimensionmanager, BiFunction<World, WorldProvider, IChunkProvider> bifunction, GameProfilerFiller gameprofilerfiller, boolean flag, org.bukkit.generator.ChunkGenerator gen, org.bukkit.World.Environment env) {
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig( worlddata.getName() ); // Spigot
          this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(worlddata.getName(), this.spigotConfig); // Paper
@@ -978,7 +978,7 @@ index baad98517..dfef00f2b 100644
          this.generator = gen;
          this.world = new CraftWorld((WorldServer) this, gen, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index b7dfda265..e4426cf13 100644
+index b9a398bc5..2ac8d74f7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -203,7 +203,7 @@ import javax.annotation.Nullable; // Paper
@@ -990,7 +990,7 @@ index b7dfda265..e4426cf13 100644
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
-@@ -796,6 +796,7 @@ public final class CraftServer implements Server {
+@@ -806,6 +806,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
@@ -999,7 +999,7 @@ index b7dfda265..e4426cf13 100644
              world.worldData.setDifficulty(config.difficulty);
              world.setSpawnFlags(config.spawnMonsters, config.spawnAnimals);
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 374e0450a..30f95c12d 100644
+index cb60310e6..977873214 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -138,6 +138,14 @@ public class Main {
@@ -1095,5 +1095,5 @@ index a9bb98765..1e1a87639 100644
                  </LoggerNamePatternSelector>
              </PatternLayout>
 -- 
-2.25.1
+2.26.0
 

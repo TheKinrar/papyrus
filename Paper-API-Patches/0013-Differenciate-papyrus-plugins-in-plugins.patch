@@ -1,19 +1,21 @@
-From be0a2a067a7b8cfd9dfc128477ac6a094d1946c7 Mon Sep 17 00:00:00 2001
+From 6484c857cfb49b9f4ea3ba30a01b49cb949bac71 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 15 Jan 2020 07:27:06 +0000
 Subject: [PATCH] Differenciate papyrus plugins in /plugins
 
 
 diff --git a/src/main/java/org/bukkit/command/defaults/PluginsCommand.java b/src/main/java/org/bukkit/command/defaults/PluginsCommand.java
-index 6cfd9f3c..46df48f2 100644
+index 3dcecf3a5..c3f339b31 100644
 --- a/src/main/java/org/bukkit/command/defaults/PluginsCommand.java
 +++ b/src/main/java/org/bukkit/command/defaults/PluginsCommand.java
-@@ -43,11 +43,19 @@ public class PluginsCommand extends BukkitCommand {
-         for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
-             // Paper start - Add an asterisk to legacy plugins (so admins are aware)
-             String pluginName = plugin.getDescription().getName();
-+
+@@ -58,14 +58,20 @@ public class PluginsCommand extends BukkitCommand {
+             }
+ 
+ 
+-            pluginList.append(plugin.isEnabled() ? ChatColor.GREEN : ChatColor.RED);
+-            // Paper start - Add an asterisk to legacy plugins (so admins are aware)
 +            ChatColor color = ChatColor.GREEN;
+             String pluginName = plugin.getDescription().getName();
 +            if(!plugin.getDescription().isPapyrus()) {
 +                pluginName += ".";
 +                color = ChatColor.YELLOW;
@@ -23,12 +25,13 @@ index 6cfd9f3c..46df48f2 100644
                  pluginName += "*";
 +                color = ChatColor.DARK_GRAY;
              }
- 
--            plugins.put(pluginName, plugin.isEnabled() ? ChatColor.GREEN : ChatColor.RED);
-+            plugins.put(pluginName, plugin.isEnabled() ? color : ChatColor.RED);
-             // Paper end
++
++            pluginList.append(plugin.isEnabled() ? color : ChatColor.RED);
+             pluginList.append(pluginName);
+-            // Paper end
          }
  
+         return "(" + plugins.size() + "): " + pluginList.toString();
 -- 
-2.25.1
+2.26.0
 
