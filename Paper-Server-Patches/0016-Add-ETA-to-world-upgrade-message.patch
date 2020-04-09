@@ -1,4 +1,4 @@
-From d89128ee45edbcd8f272016bab132abe4acebe68 Mon Sep 17 00:00:00 2001
+From 5131332e41a6dd3065a5d1143e297e362914e373 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 31 Jan 2020 18:24:26 +0000
 Subject: [PATCH] Add ETA to world upgrade message
@@ -55,5 +55,5 @@ index 3030c347e..d66432000 100644
                          try {
                              NBTTagCompound nbttagcompound = ichunkloader.read(chunkcoordintpair);
 -- 
-2.25.1
+2.26.0
 

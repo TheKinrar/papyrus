@@ -1,4 +1,4 @@
-From fdeb142b68ce321d02483963af838bcfb21612ef Mon Sep 17 00:00:00 2001
+From 8d54b308a304707a52f9677bb4069978c7046b51 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 7 Mar 2020 02:58:15 +0000
 Subject: [PATCH] Call ServerShutdownEvent
@@ -26,5 +26,5 @@ index 254e4eaf5..7cc5c41f1 100644
          this.isRestarting = isRestarting;
          if (flag) {
 -- 
-2.25.1
+2.26.0
 

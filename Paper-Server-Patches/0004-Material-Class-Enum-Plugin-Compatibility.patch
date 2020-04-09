@@ -1,4 +1,4 @@
-From 17f96947514f7095e528b6b9c4560b506c95c467 Mon Sep 17 00:00:00 2001
+From 6a68ed15b9ba031a63bc00b78cf809415892bdcb Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
@@ -633,7 +633,7 @@ index 000000000..707268ea3
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
-index 0a4b5328e..9602092bd 100644
+index 79c9489c0..1604525b4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 @@ -14,6 +14,8 @@ import java.util.jar.JarEntry;
@@ -661,5 +661,5 @@ index 770375ed4..51cce7f6e 100644
              Bukkit.getLogger().log(Level.SEVERE, "Fatal error trying to convert " + pdf.getFullName() + ":" + path, ex);
          }
 -- 
-2.25.1
+2.26.0
 

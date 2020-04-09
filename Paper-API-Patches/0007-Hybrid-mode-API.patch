@@ -1,4 +1,4 @@
-From f74b99759af93ae44c40582b93347280716f6f2a Mon Sep 17 00:00:00 2001
+From 969652a1cc6b93b1355eb7bf4cc150faa126e680 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
@@ -200,7 +200,7 @@ index 460fda05a..54d3b25df 100644
      public synchronized void clearCommands() {
          for (Map.Entry<String, Command> entry : knownCommands.entrySet()) {
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 098ca3eb8..38c033d69 100644
+index ee1939d07..3f8a83f2c 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
@@ -211,7 +211,7 @@ index 098ca3eb8..38c033d69 100644
  import org.bukkit.BanEntry; // Paper
  import org.bukkit.BanList; // Paper
  import org.bukkit.Bukkit; // Paper
-@@ -1984,6 +1985,9 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -1740,6 +1741,9 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * @param canAlwaysOpenCommandBlocks whether this player can always open command blocks
       */
      void setCanAlwaysOpenCommandBlocks(boolean canAlwaysOpenCommandBlocks);

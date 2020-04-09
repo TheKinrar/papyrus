@@ -1,4 +1,4 @@
-From 3d46c737c1154b41585bea8727b12c77487c5207 Mon Sep 17 00:00:00 2001
+From 4ed620b8dc2748df2ed513e4c66ab18eb86d6ff3 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
@@ -133,5 +133,5 @@ index 60f62f19c..ffe629ac5 100644
      private final Player.Spigot spigot = new Player.Spigot()
      {
 -- 
-2.25.1
+2.26.0
 

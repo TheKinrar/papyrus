@@ -1,4 +1,4 @@
-From 06226e6a8f74c318f082c8ebb95817b95a75053e Mon Sep 17 00:00:00 2001
+From 3cb6830b3680831e7c965a27587fb41448d08135 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 03:44:21 +0100
 Subject: [PATCH] POM changes
@@ -76,5 +76,5 @@ index 674096cab..b9f5ac9bd 100644
  
          if (stream != null) {
 -- 
-2.25.1
+2.26.0
 

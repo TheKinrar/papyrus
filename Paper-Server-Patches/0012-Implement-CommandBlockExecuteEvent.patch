@@ -1,4 +1,4 @@
-From 9061b2a410824d94d2e8862796d5121974b13c35 Mon Sep 17 00:00:00 2001
+From b10f7b4ff8f7dc03584894d8a1bac3805413f7f4 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 3 Dec 2019 17:34:43 +0000
 Subject: [PATCH] Implement CommandBlockExecuteEvent
@@ -296,5 +296,5 @@ index ef2a496ed..8fd1c0583 100644
                          CrashReport crashreport = CrashReport.a(throwable, "Executing command block");
                          CrashReportSystemDetails crashreportsystemdetails = crashreport.a("Command to be executed");
 -- 
-2.25.1
+2.26.0
 

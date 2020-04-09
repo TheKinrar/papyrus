@@ -1,4 +1,4 @@
-From e1474165759e7b32e5a185b36615f94cf185862a Mon Sep 17 00:00:00 2001
+From a673f29b8f090cbeb8a9b4d66cd43638ab8f919b Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 6 Jan 2020 00:11:45 +0000
 Subject: [PATCH] Add forceUpgradeWorlds option
@@ -63,7 +63,7 @@ index 1b656f55b..8f079201d 100644
          /* CraftBukkit start - prevent abuse
          this.serverThread.start();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 30f95c12d..973e5c612 100644
+index 977873214..955761557 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -114,6 +114,13 @@ public class Main {
@@ -81,5 +81,5 @@ index 30f95c12d..973e5c612 100644
  
                  acceptsAll(asList("noconsole"), "Disables the console");
 -- 
-2.25.1
+2.26.0
 

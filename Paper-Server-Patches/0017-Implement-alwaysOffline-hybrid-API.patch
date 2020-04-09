@@ -1,4 +1,4 @@
-From 9cc2fbe53c4a22a3b320487da5c4471bc305c753 Mon Sep 17 00:00:00 2001
+From 20a29c868d037dbaca2b548c6cb94d420aaa3627 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 22 Feb 2020 20:18:07 +0000
 Subject: [PATCH] Implement alwaysOffline hybrid API
@@ -100,5 +100,5 @@ index 0b5f685fa..555b0213d 100644
                  encryption = true;
              }
 -- 
-2.25.1
+2.26.0
 

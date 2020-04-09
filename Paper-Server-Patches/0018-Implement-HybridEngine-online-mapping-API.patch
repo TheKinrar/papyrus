@@ -1,4 +1,4 @@
-From 375267b4823475754c4a9974786ff43c8804b3ed Mon Sep 17 00:00:00 2001
+From 3cd899fb4bc04bbed9efccf2182cee5accdb4cd0 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 28 Feb 2020 21:50:26 +0000
 Subject: [PATCH] Implement HybridEngine online mapping API
@@ -62,5 +62,5 @@ index 48c04c0d9..ba9b66cbf 100644
 +    }
  }
 -- 
-2.25.1
+2.26.0
 
