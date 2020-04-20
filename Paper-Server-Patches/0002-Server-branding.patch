@@ -1,11 +1,11 @@
-From d28cc70488c0e9adb5f8f252d44499606cf00be0 Mon Sep 17 00:00:00 2001
+From 71ae78a9b95181e88d8618bf676866ac91b752d6 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 11:26:33 +0100
 Subject: [PATCH] Server branding
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 1d7d1ffbf..5bb4912ce 100644
+index 6916ed30c..5879b9fc9 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -97,7 +97,7 @@ public class PaperConfig {
@@ -924,7 +924,7 @@ index 000000000..52274c1bb
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/DedicatedServer.java b/src/main/java/net/minecraft/server/DedicatedServer.java
-index 349a0ea21..8c04990d8 100644
+index 1ef7890da..5747d0f12 100644
 --- a/src/main/java/net/minecraft/server/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/DedicatedServer.java
 @@ -194,6 +194,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
@@ -944,10 +944,10 @@ index 349a0ea21..8c04990d8 100644
          this.setSpawnAnimals(dedicatedserverproperties.spawnAnimals);
          this.setSpawnNPCs(dedicatedserverproperties.spawnNpcs);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c9deaffc4..364c09a66 100644
+index 936434110..4af00360f 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1484,7 +1484,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1499,7 +1499,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      }
  
      public String getServerModName() {
@@ -957,7 +957,7 @@ index c9deaffc4..364c09a66 100644
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 5117dafbc..492beef64 100644
+index d554d4cf0..900b345f2 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -107,6 +107,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {

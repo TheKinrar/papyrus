@@ -1,14 +1,14 @@
-From 23b3e954cd6322bc7ae4ab76ea9fe67586496703 Mon Sep 17 00:00:00 2001
+From 3ef805cc09c08c0b178da4f625a4a790c5ade99d Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 1 Mar 2020 01:17:13 +0000
 Subject: [PATCH] More plugin-loading related APIs
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index b1f04fb4a..33db684e0 100644
+index 19362ee29..6fd613be2 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -296,6 +296,13 @@ public final class Bukkit {
+@@ -295,6 +295,13 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -23,10 +23,10 @@ index b1f04fb4a..33db684e0 100644
       * Gets the name of the update folder. The update folder is used to safely
       * update plugins at the right moment on a plugin load.
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 6f534801f..23accd8d7 100644
+index 551ea5dd7..f2b29faa3 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -247,6 +247,11 @@ public interface Server extends PluginMessageRecipient {
+@@ -246,6 +246,11 @@ public interface Server extends PluginMessageRecipient {
      }
      // Paper end
  
@@ -39,7 +39,7 @@ index 6f534801f..23accd8d7 100644
       * Gets the name of the update folder. The update folder is used to safely
       * update plugins at the right moment on a plugin load.
 diff --git a/src/main/java/org/bukkit/command/SimpleCommandMap.java b/src/main/java/org/bukkit/command/SimpleCommandMap.java
-index 9e8bfdcf4..70dc20794 100644
+index 92b66aba6..8ba0c70f1 100644
 --- a/src/main/java/org/bukkit/command/SimpleCommandMap.java
 +++ b/src/main/java/org/bukkit/command/SimpleCommandMap.java
 @@ -21,6 +21,7 @@ import org.bukkit.command.defaults.PluginsCommand;

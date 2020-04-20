@@ -1,4 +1,4 @@
-From 4ed620b8dc2748df2ed513e4c66ab18eb86d6ff3 Mon Sep 17 00:00:00 2001
+From c2e90270451e72be07b833a7d4bf048bceca351d Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
@@ -70,7 +70,7 @@ index ce4340a47..93f6be20e 100644
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 7b79ee4fe..588442ef8 100644
+index f37be4b76..ce486f609 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -759,6 +759,9 @@ public abstract class PlayerList {
@@ -84,7 +84,7 @@ index 7b79ee4fe..588442ef8 100644
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 60f62f19c..ffe629ac5 100644
+index 33cac5fcb..6fcfba198 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -44,6 +44,7 @@ import net.minecraft.server.EnumGamemode;
@@ -103,7 +103,7 @@ index 60f62f19c..ffe629ac5 100644
  import net.minecraft.server.TileEntitySign;
  import net.minecraft.server.Vec3D;
  import net.minecraft.server.WhiteListEntry;
-@@ -142,6 +144,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -141,6 +143,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime;
      // Paper end
@@ -111,7 +111,7 @@ index 60f62f19c..ffe629ac5 100644
  
      public CraftPlayer(CraftServer server, EntityPlayer entity) {
          super(server, entity);
-@@ -2006,6 +2009,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1971,6 +1974,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      }
      // Paper end
  

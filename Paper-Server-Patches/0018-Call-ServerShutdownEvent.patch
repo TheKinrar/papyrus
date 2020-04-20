@@ -1,11 +1,11 @@
-From 8d54b308a304707a52f9677bb4069978c7046b51 Mon Sep 17 00:00:00 2001
+From 0fd4a568f582c53509dfd594e05a9369ef5c81fd Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 7 Mar 2020 02:58:15 +0000
 Subject: [PATCH] Call ServerShutdownEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 254e4eaf5..7cc5c41f1 100644
+index 267d9e0dc..d7e3f311d 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -68,6 +68,7 @@ import org.bukkit.craftbukkit.Main;

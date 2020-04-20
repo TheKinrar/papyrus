@@ -1,11 +1,11 @@
-From a673f29b8f090cbeb8a9b4d66cd43638ab8f919b Mon Sep 17 00:00:00 2001
+From 94deff4e41d2bff80404cc437eae0aa1dcfa2715 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 6 Jan 2020 00:11:45 +0000
 Subject: [PATCH] Add forceUpgradeWorlds option
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 1b656f55b..8f079201d 100644
+index 7f99323b5..9763a5391 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -56,6 +56,7 @@ import joptsimple.NonOptionArgumentSpec;
@@ -40,7 +40,7 @@ index 1b656f55b..8f079201d 100644
          }
  
      }
-@@ -1414,6 +1418,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1433,6 +1437,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                  dedicatedserver.setEraseCache(true);
              }
  
@@ -51,7 +51,7 @@ index 1b656f55b..8f079201d 100644
              dedicatedserver.serverThread.start();
              // CraftBukkit end
          } catch (Exception exception) {
-@@ -1434,6 +1442,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1453,6 +1461,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.eraseCache = flag;
      }
  
@@ -81,5 +81,5 @@ index 977873214..955761557 100644
  
                  acceptsAll(asList("noconsole"), "Disables the console");
 -- 
-2.26.0
+2.26.1
 

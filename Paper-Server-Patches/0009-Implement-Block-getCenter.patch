@@ -1,14 +1,14 @@
-From 8398565a0cecd2617406c09f30bb68e30cc4a403 Mon Sep 17 00:00:00 2001
+From 0df0d8b198f6fb27612fd858680bc381f80def14 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Thu, 21 Nov 2019 11:59:46 +0000
 Subject: [PATCH] Implement Block#getCenter
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-index 267baba34..99e9c4dc1 100644
+index d9ab6bb9b..2aef0a85a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-@@ -88,6 +88,11 @@ public class CraftBlock implements Block {
+@@ -90,6 +90,11 @@ public class CraftBlock implements Block {
          return new Location(getWorld(), position.getX(), position.getY(), position.getZ());
      }
  

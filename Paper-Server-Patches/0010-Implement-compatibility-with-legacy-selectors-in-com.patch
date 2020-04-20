@@ -1,4 +1,4 @@
-From b6926aa5fecbdc03bf1c1dc4f124e0c4026a7e07 Mon Sep 17 00:00:00 2001
+From 1bbcf935496a92b50800ec6395a36826972cccfa Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 15 Nov 2019 00:15:24 +0000
 Subject: [PATCH] Implement compatibility with legacy selectors in command
@@ -6,30 +6,26 @@ Subject: [PATCH] Implement compatibility with legacy selectors in command
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
-index 119602875..1a2bc52c9 100644
+index e8902262e..81ef27d68 100644
 --- a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
 +++ b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
-@@ -1,18 +1,30 @@
+@@ -1,18 +1,142 @@
  package org.bukkit.craftbukkit.command;
  
--import java.util.Map;
--
- import fr.thekinrar.papyrus.hybrid.CraftHybridEngine;
--import org.bukkit.Server;
+ import org.bukkit.Server;
 +import org.bukkit.Location;
 +import org.bukkit.command.BlockCommandSender;
  import org.bukkit.command.Command;
- import org.bukkit.command.CommandSender;
  import org.bukkit.command.SimpleCommandMap;
 +import org.bukkit.craftbukkit.CraftServer;
- import org.bukkit.craftbukkit.entity.CraftPlayer;
++import org.bukkit.craftbukkit.entity.CraftPlayer;
  
 +import java.util.Comparator;
 +import java.util.HashMap;
-+import java.util.Map;
+ import java.util.Map;
 +import java.util.Random;
 +import java.util.stream.Stream;
-+
+ 
  public class CraftCommandMap extends SimpleCommandMap {
  
 -    public CraftCommandMap(Server server) {
@@ -44,9 +40,7 @@ index 119602875..1a2bc52c9 100644
      }
  
      public Map<String, Command> getKnownCommands() {
-@@ -33,4 +45,114 @@ public class CraftCommandMap extends SimpleCommandMap {
- 
-         return super.hybridExecute(command, sender, commandLabel, args);
+         return knownCommands;
      }
 +
 +    @Override

@@ -1,11 +1,11 @@
-From ca321a94cbf6f72cb05cbaad0ff41c2ff6af9f03 Mon Sep 17 00:00:00 2001
+From 09a2f4de33770a373f5b294bb490c7e817f21dd8 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index 7ca67a4aa..76298fd62 100644
+index 88a45e517..813d18d3f 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 @@ -589,7 +589,7 @@ public class PaperWorldConfig {
@@ -87,10 +87,10 @@ index 100ed8a8f..ae1582e01 100644
              default:
                  throw new IllegalArgumentException("Unknown DyeColor for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-index 78e84c3d6..267baba34 100644
+index a25d9d7aa..d9ab6bb9b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-@@ -325,154 +325,154 @@ public class CraftBlock implements Block {
+@@ -327,154 +327,154 @@ public class CraftBlock implements Block {
          // Paper end
          Material material = getType();
  

@@ -1,0 +1,85 @@
+From e3e9824611d34db7ff20745b5726770b451369d9 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Mon, 4 Nov 2019 19:42:56 +0000
+Subject: [PATCH] Hybrid mode API
+
+
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index 52c7de0b7..19362ee29 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -1664,6 +1664,17 @@ public final class Bukkit {
+     }
+     // Paper end
+ 
++    // Papyrus start
++    /**
++     * Gets whether the Server is in hybrid mode or not.
++     *
++     * @return true if the server is in hybrid mode, false otherwise
++     */
++    public static boolean getHybridMode() {
++        return server.getHybridMode();
++    }
++    // Papyrus end
++
+     @NotNull
+     public static Server.Spigot spigot() {
+         return server.spigot();
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index 215cdae19..551ea5dd7 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -1457,4 +1457,13 @@ public interface Server extends PluginMessageRecipient {
+      */
+     int getCurrentTick();
+     // Paper end
++
++    // Papyrus start
++    /**
++     * Gets whether the Server is in hybrid mode or not.
++     *
++     * @return true if the server is in hybrid mode, false otherwise
++     */
++    boolean getHybridMode();
++    // Papyrus end
+ }
+diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
+index ee1939d07..e678a8942 100644
+--- a/src/main/java/org/bukkit/entity/Player.java
++++ b/src/main/java/org/bukkit/entity/Player.java
+@@ -1740,6 +1740,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      * @param canAlwaysOpenCommandBlocks whether this player can always open command blocks
+      */
+     void setCanAlwaysOpenCommandBlocks(boolean canAlwaysOpenCommandBlocks);
++
++    /**
++     * Returns whether this player is authenticated with the server.
++     * That is, if the player either used /login to authenticate,
++     * registered for the first time using /register,
++     * was auto-logged in (online ID or auth timeout),
++     * or was force-authenticated with the API.
++     * @return whether this player is authenticated
++     */
++    boolean isAuthenticated();
+     // Papyrus end
+ 
+     // Spigot start
+diff --git a/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java b/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
+index 16b5fd279..86f1a6b2f 100644
+--- a/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
++++ b/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
+@@ -209,6 +209,10 @@ public class EntityPotionEffectEvent extends EntityEvent implements Cancellable
+          * When an illusion illager makes himself disappear.
+          */
+         ILLUSION,
++        /**
++         * When a user is requested to login or register. No event will be triggered for this cause.
++         */
++        HYBRID_AUTH,
+         /**
+          * When all effects are removed due to a bucket of milk.
+          */
+-- 
+2.26.0
+
