@@ -1,14 +1,14 @@
-From e3e9824611d34db7ff20745b5726770b451369d9 Mon Sep 17 00:00:00 2001
+From 797fccc21db6d0cada28148f399c965f88f9b24b Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 52c7de0b7..19362ee29 100644
+index b15720652..2677d7154 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -1664,6 +1664,17 @@ public final class Bukkit {
+@@ -1692,6 +1692,17 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -27,12 +27,12 @@ index 52c7de0b7..19362ee29 100644
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 215cdae19..551ea5dd7 100644
+index 7b768d4d8..7ab5f4de0 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1457,4 +1457,13 @@ public interface Server extends PluginMessageRecipient {
+@@ -1479,4 +1479,13 @@ public interface Server extends PluginMessageRecipient {
       */
-     int getCurrentTick();
+     boolean isStopping();
      // Paper end
 +
 +    // Papyrus start
@@ -45,10 +45,10 @@ index 215cdae19..551ea5dd7 100644
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index ee1939d07..e678a8942 100644
+index 9d774d971..f4dcd349f 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1740,6 +1740,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -1747,6 +1747,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * @param canAlwaysOpenCommandBlocks whether this player can always open command blocks
       */
      void setCanAlwaysOpenCommandBlocks(boolean canAlwaysOpenCommandBlocks);
@@ -81,5 +81,5 @@ index 16b5fd279..86f1a6b2f 100644
           * When all effects are removed due to a bucket of milk.
           */
 -- 
-2.26.0
+2.26.1
 

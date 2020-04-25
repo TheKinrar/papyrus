@@ -1,11 +1,11 @@
-From 94deff4e41d2bff80404cc437eae0aa1dcfa2715 Mon Sep 17 00:00:00 2001
+From e402c5ef339054f491f0193e4c064958783ec9fd Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 6 Jan 2020 00:11:45 +0000
 Subject: [PATCH] Add forceUpgradeWorlds option
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 7f99323b5..9763a5391 100644
+index cc40493cb..a4da872d2 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -56,6 +56,7 @@ import joptsimple.NonOptionArgumentSpec;
@@ -16,7 +16,7 @@ index 7f99323b5..9763a5391 100644
  import org.apache.commons.lang3.Validate;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
-@@ -154,6 +155,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -160,6 +161,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      private boolean as;
      private boolean forceUpgrade;
      private boolean eraseCache;
@@ -24,7 +24,7 @@ index 7f99323b5..9763a5391 100644
      private float av;
      public final Executor executorService;
      @Nullable
-@@ -279,6 +281,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -285,6 +287,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          }
  
          if (this.forceUpgrade) {
@@ -32,7 +32,7 @@ index 7f99323b5..9763a5391 100644
              MinecraftServer.LOGGER.info("Forcing world upgrade! {}", s); // CraftBukkit
              WorldData worlddata = this.getConvertable().b(s); // CraftBukkit
  
-@@ -313,6 +316,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -319,6 +322,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                      }
                  }
              }
@@ -40,7 +40,7 @@ index 7f99323b5..9763a5391 100644
          }
  
      }
-@@ -1433,6 +1437,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1466,6 +1470,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                  dedicatedserver.setEraseCache(true);
              }
  
@@ -51,7 +51,7 @@ index 7f99323b5..9763a5391 100644
              dedicatedserver.serverThread.start();
              // CraftBukkit end
          } catch (Exception exception) {
-@@ -1453,6 +1461,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1486,6 +1494,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.eraseCache = flag;
      }
  

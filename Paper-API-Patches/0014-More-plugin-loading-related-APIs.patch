@@ -1,11 +1,11 @@
-From 3ef805cc09c08c0b178da4f625a4a790c5ade99d Mon Sep 17 00:00:00 2001
+From 607314e6bc9c7d8bb9ef48e41792bf873e823221 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 1 Mar 2020 01:17:13 +0000
 Subject: [PATCH] More plugin-loading related APIs
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 19362ee29..6fd613be2 100644
+index 2677d7154..cf38d6abf 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -295,6 +295,13 @@ public final class Bukkit {
@@ -23,7 +23,7 @@ index 19362ee29..6fd613be2 100644
       * Gets the name of the update folder. The update folder is used to safely
       * update plugins at the right moment on a plugin load.
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 551ea5dd7..f2b29faa3 100644
+index 7ab5f4de0..f356fc6de 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -246,6 +246,11 @@ public interface Server extends PluginMessageRecipient {
@@ -114,7 +114,7 @@ index 86cc5025a..62d20b9d9 100644
       * Disables all the loaded plugins
       */
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 8355f9f0e..6965bca8b 100644
+index 4931bc86d..ec1df0845 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 @@ -365,6 +365,23 @@ public final class SimplePluginManager implements PluginManager {
@@ -164,10 +164,10 @@ index 8355f9f0e..6965bca8b 100644
          }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index 8ff228ced..edd424f33 100644
+index ba2c5c6ee..d65e759fa 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-@@ -65,9 +65,14 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -67,9 +67,14 @@ public final class JavaPluginLoader implements PluginLoader {
          server = instance;
      }
  
@@ -183,7 +183,7 @@ index 8ff228ced..edd424f33 100644
          Validate.notNull(file, "File cannot be null");
  
          if (!file.exists()) {
-@@ -81,7 +86,9 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -83,7 +88,9 @@ public final class JavaPluginLoader implements PluginLoader {
              throw new InvalidPluginException(ex);
          }
  
@@ -195,5 +195,5 @@ index 8ff228ced..edd424f33 100644
          @SuppressWarnings("deprecation")
          final File oldDataFolder = new File(parentFile, description.getRawName());
 -- 
-2.26.0
+2.26.1
 

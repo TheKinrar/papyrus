@@ -1,4 +1,4 @@
-From 3d85dcdfc7399cf1ca3dc7110e78b9c4aa24149c Mon Sep 17 00:00:00 2001
+From 894439bdfee0c9cebcbf3dcfd5b4ef36af57a859 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 25 Apr 2020 01:36:28 +0200
 Subject: [PATCH] SmartListener
@@ -383,7 +383,7 @@ index 000000000..98a46e290
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index edd424f33..95523ee5a 100644
+index d65e759fa..c5ee9019e 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 @@ -28,6 +28,7 @@ import org.bukkit.event.Event;
@@ -402,7 +402,7 @@ index edd424f33..95523ee5a 100644
  import org.bukkit.plugin.TimedRegisteredListener;
  import org.bukkit.plugin.UnknownDependencyException;
  import org.jetbrains.annotations.NotNull;
-@@ -310,6 +312,8 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -337,6 +339,8 @@ public final class JavaPluginLoader implements PluginLoader {
              EventExecutor executor = new co.aikar.timings.TimedEventExecutor(EventExecutor.create(method, eventClass), plugin, method, eventClass); // Paper // Paper (Yes.) - Use factory method `EventExecutor.create()`
              if (false) { // Spigot - RL handles useTimings check now
                  eventSet.add(new TimedRegisteredListener(listener, executor, eh.priority(), plugin, eh.ignoreCancelled()));

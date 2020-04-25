@@ -1,14 +1,14 @@
-From 71ae78a9b95181e88d8618bf676866ac91b752d6 Mon Sep 17 00:00:00 2001
+From 9daf4cf5084780812e22854287c6b40c26aa4c7b Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 11:26:33 +0100
 Subject: [PATCH] Server branding
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 6916ed30c..5879b9fc9 100644
+index 1c4cd3635..1a3a874e2 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-@@ -97,7 +97,7 @@ public class PaperConfig {
+@@ -98,7 +98,7 @@ public class PaperConfig {
          }
  
          if (!metricsStarted) {
@@ -924,7 +924,7 @@ index 000000000..52274c1bb
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/DedicatedServer.java b/src/main/java/net/minecraft/server/DedicatedServer.java
-index 1ef7890da..5747d0f12 100644
+index e62ca0543..5c13f1b7e 100644
 --- a/src/main/java/net/minecraft/server/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/DedicatedServer.java
 @@ -194,6 +194,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
@@ -944,10 +944,10 @@ index 1ef7890da..5747d0f12 100644
          this.setSpawnAnimals(dedicatedserverproperties.spawnAnimals);
          this.setSpawnNPCs(dedicatedserverproperties.spawnNpcs);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 936434110..4af00360f 100644
+index 1086d1caa..26d94ba33 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1499,7 +1499,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1532,7 +1532,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      }
  
      public String getServerModName() {
@@ -957,7 +957,7 @@ index 936434110..4af00360f 100644
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index d554d4cf0..900b345f2 100644
+index 1a3c7c148..b4bcbed29 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -107,6 +107,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -978,7 +978,7 @@ index d554d4cf0..900b345f2 100644
          this.generator = gen;
          this.world = new CraftWorld((WorldServer) this, gen, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index b9a398bc5..2ac8d74f7 100644
+index dcc44be61..464a9edba 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -203,7 +203,7 @@ import javax.annotation.Nullable; // Paper
@@ -1018,7 +1018,7 @@ index cb60310e6..977873214 100644
                  acceptsAll(asList("server-name"), "Name of the server")
                          .withRequiredArg()
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index 5bdcdcf9e..ca92913be 100644
+index fe4b8caf2..de052db3d 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
 @@ -25,7 +25,7 @@ public class WatchdogThread extends Thread
@@ -1030,7 +1030,7 @@ index 5bdcdcf9e..ca92913be 100644
          this.timeoutTime = timeoutTime;
          this.restart = restart;
          earlyWarningEvery = Math.min(PaperConfig.watchdogPrintEarlyWarningEvery, timeoutTime); // Paper
-@@ -77,14 +77,14 @@ public class WatchdogThread extends Thread
+@@ -79,14 +79,14 @@ public class WatchdogThread extends Thread
                  if (isLongTimeout) {
                  // Paper end
                  log.log( Level.SEVERE, "------------------------------" );
@@ -1048,7 +1048,7 @@ index 5bdcdcf9e..ca92913be 100644
                  //
                  if ( net.minecraft.server.World.lastPhysicsProblem != null )
                  {
-@@ -107,12 +107,12 @@ public class WatchdogThread extends Thread
+@@ -109,12 +109,12 @@ public class WatchdogThread extends Thread
                  // Paper end
                  } else
                  {
@@ -1061,9 +1061,9 @@ index 5bdcdcf9e..ca92913be 100644
 -                log.log( Level.SEVERE, "Server thread dump (Look for plugins here before reporting to Paper!):" ); // Paper
 +                log.log( Level.SEVERE, "Server thread dump (Look for plugins here before reporting to Papyrus!):" ); // Paper // Papyrus
                  ChunkTaskManager.dumpAllChunkLoadInfo(); // Paper
-                 dumpThread( ManagementFactory.getThreadMXBean().getThreadInfo( MinecraftServer.getServer().serverThread.getId(), Integer.MAX_VALUE ), log );
+                 dumpThread( ManagementFactory.getThreadMXBean().getThreadInfo( server.serverThread.getId(), Integer.MAX_VALUE ), log );
                  log.log( Level.SEVERE, "------------------------------" );
-@@ -127,7 +127,7 @@ public class WatchdogThread extends Thread
+@@ -129,7 +129,7 @@ public class WatchdogThread extends Thread
                      dumpThread( thread, log );
                  }
                  } else {
@@ -1095,5 +1095,5 @@ index a9bb98765..1e1a87639 100644
                  </LoggerNamePatternSelector>
              </PatternLayout>
 -- 
-2.26.0
+2.26.1
 
