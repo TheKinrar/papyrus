@@ -1,15 +1,15 @@
-From 6a68ed15b9ba031a63bc00b78cf809415892bdcb Mon Sep 17 00:00:00 2001
+From 07d252acf85e8c196a9b0770ddb4ea53b729c096 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
 
 
 diff --git a/pom.xml b/pom.xml
-index e24703c36..9e28e8911 100644
+index d949ef93a..c00649a51 100644
 --- a/pom.xml
 +++ b/pom.xml
-@@ -119,6 +119,13 @@
-             <version>1.3</version>
+@@ -129,6 +129,13 @@
+             <version>4.8.47</version>
              <scope>test</scope>
          </dependency>
 +        <!-- Papyrus - Compatibility -->
@@ -22,7 +22,7 @@ index e24703c36..9e28e8911 100644
      </dependencies>
  
      <repositories>
-@@ -254,6 +261,7 @@
+@@ -277,6 +284,7 @@
                                      <shadedPattern>org.bukkit.craftbukkit.v${minecraft_version}</shadedPattern>
                                      <excludes>
                                          <exclude>org.bukkit.craftbukkit.Main*</exclude>
@@ -633,7 +633,7 @@ index 000000000..707268ea3
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
-index 79c9489c0..1604525b4 100644
+index 4ae41fd25..212f9db10 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 @@ -14,6 +14,8 @@ import java.util.jar.JarEntry;
@@ -661,5 +661,5 @@ index 770375ed4..51cce7f6e 100644
              Bukkit.getLogger().log(Level.SEVERE, "Fatal error trying to convert " + pdf.getFullName() + ":" + path, ex);
          }
 -- 
-2.26.0
+2.26.1
 

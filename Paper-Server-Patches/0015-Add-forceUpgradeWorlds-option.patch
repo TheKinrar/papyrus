@@ -1,11 +1,11 @@
-From e402c5ef339054f491f0193e4c064958783ec9fd Mon Sep 17 00:00:00 2001
+From dc45d5c7f473d6f2cb73029d6e6f3d1928fd7880 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 6 Jan 2020 00:11:45 +0000
 Subject: [PATCH] Add forceUpgradeWorlds option
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index cc40493cb..a4da872d2 100644
+index 3bbf878b2..772f6288a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -56,6 +56,7 @@ import joptsimple.NonOptionArgumentSpec;
@@ -40,7 +40,7 @@ index cc40493cb..a4da872d2 100644
          }
  
      }
-@@ -1466,6 +1470,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1490,6 +1494,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                  dedicatedserver.setEraseCache(true);
              }
  
@@ -51,7 +51,7 @@ index cc40493cb..a4da872d2 100644
              dedicatedserver.serverThread.start();
              // CraftBukkit end
          } catch (Exception exception) {
-@@ -1486,6 +1494,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1510,6 +1518,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.eraseCache = flag;
      }
  
@@ -63,10 +63,10 @@ index cc40493cb..a4da872d2 100644
          /* CraftBukkit start - prevent abuse
          this.serverThread.start();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 977873214..955761557 100644
+index 2f76fc258..c680ab037 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -114,6 +114,13 @@ public class Main {
+@@ -115,6 +115,13 @@ public class Main {
                  acceptsAll(asList("eraseCache"), "Whether to force cache erase during world upgrade");
                  acceptsAll(asList("nogui"), "Disables the graphical console");
  

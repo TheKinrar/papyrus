@@ -1,4 +1,4 @@
-From 894439bdfee0c9cebcbf3dcfd5b4ef36af57a859 Mon Sep 17 00:00:00 2001
+From a8154e6b3b56560e2ead2aa42576c4566bebeee9 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 25 Apr 2020 01:36:28 +0200
 Subject: [PATCH] SmartListener
@@ -244,7 +244,7 @@ index 000000000..c34f775c0
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/event/player/PlayerEvent.java b/src/main/java/org/bukkit/event/player/PlayerEvent.java
-index 793b661b6..b46e7dd1d 100644
+index b7c8f2c31..45ed944fe 100644
 --- a/src/main/java/org/bukkit/event/player/PlayerEvent.java
 +++ b/src/main/java/org/bukkit/event/player/PlayerEvent.java
 @@ -2,22 +2,24 @@ package org.bukkit.event.player;
@@ -267,8 +267,9 @@ index 793b661b6..b46e7dd1d 100644
          player = who;
      }
  
-     PlayerEvent(@NotNull final Player who, boolean async) {
+-    public PlayerEvent(@NotNull final Player who, boolean async) { // Paper - wtf?
 -        super(async);
++    public PlayerEvent(@NotNull final Player who, boolean async) {
 +        super(who, async);
          player = who;
 -
@@ -276,10 +277,10 @@ index 793b661b6..b46e7dd1d 100644
  
      /**
 diff --git a/src/main/java/org/bukkit/event/player/PlayerShearEntityEvent.java b/src/main/java/org/bukkit/event/player/PlayerShearEntityEvent.java
-index 93429c533..f7d77bc47 100644
+index 04b3dce00..339faeaa8 100644
 --- a/src/main/java/org/bukkit/event/player/PlayerShearEntityEvent.java
 +++ b/src/main/java/org/bukkit/event/player/PlayerShearEntityEvent.java
-@@ -36,7 +36,7 @@ public class PlayerShearEntityEvent extends PlayerEvent implements Cancellable {
+@@ -47,7 +47,7 @@ public class PlayerShearEntityEvent extends PlayerEvent implements Cancellable {
       * @return the entity the player is shearing
       */
      @NotNull

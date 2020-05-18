@@ -1,14 +1,14 @@
-From 797fccc21db6d0cada28148f399c965f88f9b24b Mon Sep 17 00:00:00 2001
+From c9e16a7a03ffb1b199fa32e61f1658a34c9f5563 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index b15720652..2677d7154 100644
+index 1cb85fa3c..20cf728b9 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -1692,6 +1692,17 @@ public final class Bukkit {
+@@ -1714,6 +1714,17 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -27,12 +27,12 @@ index b15720652..2677d7154 100644
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 7b768d4d8..7ab5f4de0 100644
+index 2b71ad8d3..983bd93f7 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1479,4 +1479,13 @@ public interface Server extends PluginMessageRecipient {
-      */
-     boolean isStopping();
+@@ -1497,4 +1497,13 @@ public interface Server extends PluginMessageRecipient {
+     @NotNull
+     com.destroystokyo.paper.entity.ai.MobGoals getMobGoals();
      // Paper end
 +
 +    // Papyrus start

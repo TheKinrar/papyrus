@@ -1,4 +1,4 @@
-From 5c9638593509fed86569a0f7912bb7f9a635eb4c Mon Sep 17 00:00:00 2001
+From e0bbd5ec3805e09934f61db50e3ca33705f77de9 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 13 Dec 2019 18:26:58 +0000
 Subject: [PATCH] Add showInvalidBedMessage world config
@@ -20,10 +20,10 @@ index 52274c1bb..4cdcd5104 100644
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 0930d4aa5..9085e7077 100644
+index edfb53473..43bb4e71b 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -729,7 +729,10 @@ public abstract class PlayerList {
+@@ -735,7 +735,10 @@ public abstract class PlayerList {
                      location = new Location(cworld, vec3d.x, vec3d.y, vec3d.z);
                  } else {
                      entityplayer1.setRespawnPosition(null, true, false);

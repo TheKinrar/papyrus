@@ -1,14 +1,14 @@
-From 09a2f4de33770a373f5b294bb490c7e817f21dd8 Mon Sep 17 00:00:00 2001
+From b4cd80130e64caf9886bac3272e2aec95dc8d31e Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index 88a45e517..813d18d3f 100644
+index 5c8a946d5..66df14f3e 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-@@ -589,7 +589,7 @@ public class PaperWorldConfig {
+@@ -577,7 +577,7 @@ public class PaperWorldConfig {
  
          altItemDespawnRateEnabled = getBoolean(path + ".enabled", false);
  
@@ -17,7 +17,7 @@ index 88a45e517..813d18d3f 100644
          altItemDespawnRateMapDefault.put(Material.COBBLESTONE, 300);
          for (Material key : altItemDespawnRateMapDefault.keySet()) {
              config.addDefault("world-settings.default." + path + ".items." + key, altItemDespawnRateMapDefault.get(key));
-@@ -611,7 +611,7 @@ public class PaperWorldConfig {
+@@ -599,7 +599,7 @@ public class PaperWorldConfig {
              altItemDespawnRateEnabled = false;
          }
  
@@ -87,10 +87,10 @@ index 100ed8a8f..ae1582e01 100644
              default:
                  throw new IllegalArgumentException("Unknown DyeColor for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-index a25d9d7aa..d9ab6bb9b 100644
+index a5f981cd0..4d2a82e52 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-@@ -327,154 +327,154 @@ public class CraftBlock implements Block {
+@@ -324,154 +324,154 @@ public class CraftBlock implements Block {
          // Paper end
          Material material = getType();
  
@@ -365,7 +365,7 @@ index a25d9d7aa..d9ab6bb9b 100644
          default:
              TileEntity tileEntity = world.getTileEntity(position);
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftSkull.java b/src/main/java/org/bukkit/craftbukkit/block/CraftSkull.java
-index 2dd2f476f..c7f46082e 100644
+index ecc32c2fb..335ec750e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftSkull.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftSkull.java
 @@ -141,24 +141,24 @@ public class CraftSkull extends CraftBlockEntityState<TileEntitySkull> implement
@@ -407,10 +407,10 @@ index 2dd2f476f..c7f46082e 100644
              default:
                  throw new IllegalArgumentException("Unknown SkullType for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 1f5d15bb4..d43de646f 100644
+index ce8d7877a..4510b1452 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1300,14 +1300,14 @@ public class CraftEventFactory {
+@@ -1309,14 +1309,14 @@ public class CraftEventFactory {
          org.bukkit.World bukkitWorld = world.getWorld();
          Block igniter = bukkitWorld.getBlockAt(source.getX(), source.getY(), source.getZ());
          IgniteCause cause;
@@ -1227,7 +1227,7 @@ index 3723facca..e2f90d0e7 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBanner.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBanner.java
-index 7541e95b2..0ef59feb1 100644
+index 87a19622c..893588efa 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBanner.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBanner.java
 @@ -203,39 +203,39 @@ public class CraftMetaBanner extends CraftMetaItem implements BannerMeta {
@@ -1304,14 +1304,14 @@ index 7541e95b2..0ef59feb1 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBlockState.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBlockState.java
-index f1fbf0576..62f7e6724 100644
+index 7d47e2615..62f7e6724 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBlockState.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBlockState.java
 @@ -184,64 +184,64 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
  
      @Override
      boolean applicableTo(Material type) {
--        switch(type){
+-        switch (type) {
 -            case FURNACE:
 -            case CHEST:
 -            case TRAPPED_CHEST:
@@ -1430,7 +1430,7 @@ index f1fbf0576..62f7e6724 100644
                  return true;
          }
          return false;
-@@ -264,252 +264,252 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
+@@ -264,253 +264,253 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
      @Override
      public BlockState getBlockState() {
          if (blockEntityTag != null) {
@@ -1741,72 +1741,84 @@ index f1fbf0576..62f7e6724 100644
              }
              return new CraftEnchantingTable(material, (TileEntityEnchantTable) te);
 -        case ENDER_CHEST:
+-            if (te == null) {
 +        case "ENDER_CHEST":
-             if (te == null){
++            if (te == null){
                  te = new TileEntityEnderChest();
              }
              return new CraftEnderChest(material, (TileEntityEnderChest) te);
 -        case DAYLIGHT_DETECTOR:
+-            if (te == null) {
 +        case "DAYLIGHT_DETECTOR":
-             if (te == null){
++            if (te == null){
                  te = new TileEntityLightDetector();
              }
              return new CraftDaylightDetector(material, (TileEntityLightDetector) te);
 -        case COMPARATOR:
+-            if (te == null) {
 +        case "COMPARATOR":
-             if (te == null){
++            if (te == null){
                  te = new TileEntityComparator();
              }
              return new CraftComparator(material, (TileEntityComparator) te);
 -        case BARREL:
+-            if (te == null) {
 +        case "BARREL":
-             if (te == null){
++            if (te == null){
                  te = new TileEntityBarrel();
              }
              return new CraftBarrel(material, (TileEntityBarrel) te);
 -        case BELL:
+-            if (te == null) {
 +        case "BELL":
-             if (te == null){
++            if (te == null){
                  te = new TileEntityBell();
              }
              return new CraftBell(material, (TileEntityBell) te);
 -        case BLAST_FURNACE:
+-            if (te == null) {
 +        case "BLAST_FURNACE":
-             if (te == null){
++            if (te == null){
                  te = new TileEntityBlastFurnace();
              }
              return new CraftBlastFurnace(material, (TileEntityBlastFurnace) te);
 -        case CAMPFIRE:
+-            if (te == null) {
 +        case "CAMPFIRE":
-             if (te == null){
++            if (te == null){
                  te = new TileEntityCampfire();
              }
              return new CraftCampfire(material, (TileEntityCampfire) te);
 -        case JIGSAW:
+-            if (te == null) {
 +        case "JIGSAW":
-             if (te == null){
++            if (te == null){
                  te = new TileEntityJigsaw();
              }
              return new CraftJigsaw(material, (TileEntityJigsaw) te);
 -        case LECTERN:
+-            if (te == null) {
 +        case "LECTERN":
-             if (te == null){
++            if (te == null){
                  te = new TileEntityLectern();
              }
              return new CraftLectern(material, (TileEntityLectern) te);
 -        case SMOKER:
+-            if (te == null) {
 +        case "SMOKER":
-             if (te == null){
++            if (te == null){
                  te = new TileEntitySmoker();
              }
              return new CraftSmoker(material, (TileEntitySmoker) te);
 -        case BEE_NEST:
 -        case BEEHIVE:
+-            if (te == null) {
 +        case "BEE_NEST":
 +        case "BEEHIVE":
-             if (te == null){
++            if (te == null){
                  te = new TileEntityBeehive();
              }
+             return new CraftBeehive(material, (TileEntityBeehive) te);
 @@ -524,163 +524,163 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
          Validate.notNull(blockState, "blockState must not be null");
  
@@ -2075,10 +2087,10 @@ index f1fbf0576..62f7e6724 100644
              break;
          default:
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
-index 6ddb13358..f10ebd17c 100644
+index e3adcc0c7..3d745bbde 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
-@@ -160,9 +160,9 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
+@@ -159,9 +159,9 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
  
      @Override
      boolean applicableTo(Material type) {
@@ -2154,14 +2166,14 @@ index f5feea207..8cf1b9080 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaFirework.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaFirework.java
-index 7a1c4d619..2d6a5e945 100644
+index e57a0ebf3..e7d288757 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaFirework.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaFirework.java
 @@ -254,8 +254,8 @@ class CraftMetaFirework extends CraftMetaItem implements FireworkMeta {
  
      @Override
      boolean applicableTo(Material type) {
--        switch(type) {
+-        switch (type) {
 -            case FIREWORK_ROCKET:
 +        switch(type.name()) {
 +            case "FIREWORK_ROCKET":
@@ -2184,14 +2196,14 @@ index 8c86fe208..9464af1a0 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaLeatherArmor.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaLeatherArmor.java
-index e7b45310a..9cee7a9a5 100644
+index 01f6bef68..9cee7a9a5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaLeatherArmor.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaLeatherArmor.java
 @@ -66,12 +66,12 @@ class CraftMetaLeatherArmor extends CraftMetaItem implements LeatherArmorMeta {
  
      @Override
      boolean applicableTo(Material type) {
--        switch(type) {
+-        switch (type) {
 -            case LEATHER_HELMET:
 -            case LEATHER_HORSE_ARMOR:
 -            case LEATHER_CHESTPLATE:
@@ -2207,7 +2219,7 @@ index e7b45310a..9cee7a9a5 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java
-index 15bc3b356..2cdd1fcd7 100644
+index edfe1f773..ec9fc8848 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaMap.java
 @@ -119,8 +119,8 @@ class CraftMetaMap extends CraftMetaItem implements MapMeta {
@@ -2222,14 +2234,14 @@ index 15bc3b356..2cdd1fcd7 100644
              default:
                  return false;
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaPotion.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaPotion.java
-index 9fd4c2bc7..e312a3703 100644
+index f4374ac95..e312a3703 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaPotion.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaPotion.java
 @@ -147,11 +147,11 @@ class CraftMetaPotion extends CraftMetaItem implements PotionMeta {
  
      @Override
      boolean applicableTo(Material type) {
--        switch(type) {
+-        switch (type) {
 -            case POTION:
 -            case SPLASH_POTION:
 -            case LINGERING_POTION:
@@ -2448,7 +2460,7 @@ index c8dde75de..d46cb302b 100644
      }
  }
 diff --git a/src/test/java/org/bukkit/craftbukkit/inventory/FactoryItemMaterialTest.java b/src/test/java/org/bukkit/craftbukkit/inventory/FactoryItemMaterialTest.java
-index 7580eb290..85d93aec1 100644
+index c279579c2..9fb07e8b0 100644
 --- a/src/test/java/org/bukkit/craftbukkit/inventory/FactoryItemMaterialTest.java
 +++ b/src/test/java/org/bukkit/craftbukkit/inventory/FactoryItemMaterialTest.java
 @@ -34,7 +34,7 @@ public class FactoryItemMaterialTest extends AbstractTestingBase {
@@ -2461,5 +2473,5 @@ index 7580eb290..85d93aec1 100644
              return buffer.delete(0, Integer.MAX_VALUE).append(from.getClass().getName()).append(' ').append(from.name()).append(" to ").append(to.name()).toString();
          }
 -- 
-2.26.0
+2.26.1
 

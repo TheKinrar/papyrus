@@ -1,14 +1,14 @@
-From 607314e6bc9c7d8bb9ef48e41792bf873e823221 Mon Sep 17 00:00:00 2001
+From 3248e3d3c8141d17bb0490264017f3939a44ed4e Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 1 Mar 2020 01:17:13 +0000
 Subject: [PATCH] More plugin-loading related APIs
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 2677d7154..cf38d6abf 100644
+index 20cf728b9..bb8ba5d0f 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -295,6 +295,13 @@ public final class Bukkit {
+@@ -307,6 +307,13 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -23,10 +23,10 @@ index 2677d7154..cf38d6abf 100644
       * Gets the name of the update folder. The update folder is used to safely
       * update plugins at the right moment on a plugin load.
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 7ab5f4de0..f356fc6de 100644
+index 983bd93f7..c81ddac74 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -246,6 +246,11 @@ public interface Server extends PluginMessageRecipient {
+@@ -256,6 +256,11 @@ public interface Server extends PluginMessageRecipient {
      }
      // Paper end
  
