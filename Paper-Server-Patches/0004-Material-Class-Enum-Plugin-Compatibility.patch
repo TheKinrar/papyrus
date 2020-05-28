@@ -1,14 +1,14 @@
-From 07d252acf85e8c196a9b0770ddb4ea53b729c096 Mon Sep 17 00:00:00 2001
+From 87218254041daec9fa29152bb9276a87ec0e6a18 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
 
 
 diff --git a/pom.xml b/pom.xml
-index d949ef93a..c00649a51 100644
+index d83f303c2..c01bbda62 100644
 --- a/pom.xml
 +++ b/pom.xml
-@@ -129,6 +129,13 @@
+@@ -140,6 +140,13 @@
              <version>4.8.47</version>
              <scope>test</scope>
          </dependency>
@@ -22,7 +22,7 @@ index d949ef93a..c00649a51 100644
      </dependencies>
  
      <repositories>
-@@ -277,6 +284,7 @@
+@@ -296,6 +303,7 @@
                                      <shadedPattern>org.bukkit.craftbukkit.v${minecraft_version}</shadedPattern>
                                      <excludes>
                                          <exclude>org.bukkit.craftbukkit.Main*</exclude>
@@ -646,7 +646,7 @@ index 4ae41fd25..212f9db10 100644
  import joptsimple.OptionSet;
  import joptsimple.OptionSpec;
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 770375ed4..51cce7f6e 100644
+index b58f2ef5c..c9f266ed9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -291,6 +291,10 @@ public final class CraftMagicNumbers implements UnsafeValues {

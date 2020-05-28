@@ -1,11 +1,11 @@
-From 14de3718268ffa824b2e274b78a37390385e92e7 Mon Sep 17 00:00:00 2001
+From 27c964e2cd8b58a41d0ffd39c84a127d9eb16fad Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 5 Oct 2019 21:26:23 +0100
 Subject: [PATCH] Implement CommandBlockEditEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 38775d0ee..7c008b131 100644
+index b25b3b481..3785cbe03 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -1,5 +1,7 @@
@@ -133,7 +133,7 @@ index 38775d0ee..7c008b131 100644
 +            packetplayinsetcommandblock.d(),
 +
 +            this.minecraftServer.getEnableCommandBlock(),
-+            this.player.isCreativeAndOp()
++            this.player.isCreativeAndOp() || (this.player.isCreative() && this.player.getBukkitEntity().hasPermission("minecraft.commandblock"))
 +        );
 +
 +        Bukkit.getServer().getPluginManager().callEvent(event);
@@ -143,7 +143,7 @@ index 38775d0ee..7c008b131 100644
 +
 +        if (!event.getCommandBlocksEnabled()) {
              this.player.sendMessage(new ChatMessage("advMode.notEnabled", new Object[0]));
--        } else if (!this.player.isCreativeAndOp()) {
+-        } else if (!this.player.isCreativeAndOp() && !this.player.isCreative() && !this.player.getBukkitEntity().hasPermission("minecraft.commandblock")) { // Paper - command block permission
 +        } else if (!event.getPlayerCanEdit()) {
              this.player.sendMessage(new ChatMessage("advMode.notAllowed", new Object[0]));
          } else {

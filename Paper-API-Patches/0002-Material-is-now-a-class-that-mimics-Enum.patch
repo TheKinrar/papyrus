@@ -1,4 +1,4 @@
-From 1b41c79f03938bd57621e736b4b83b5d6ea83783 Mon Sep 17 00:00:00 2001
+From 74f5b823a4a37f1ed3a3df556fb4f85fea604c5e Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 12:02:30 +0100
 Subject: [PATCH] Material is now a class that mimics Enum
@@ -44,7 +44,7 @@ index c91ea2a06..a28c2eefa 100644
  
      @NotNull
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index b99734068..52c7de0b7 100644
+index a9c10228e..1cb85fa3c 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -13,6 +13,7 @@ import java.util.Set;
@@ -56,7 +56,7 @@ index b99734068..52c7de0b7 100644
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index 1f2dbd68c..63ac24e83 100644
+index b89fc2dc0..7ff27c64e 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
 @@ -1,10 +1,8 @@
@@ -13362,6 +13362,27 @@ index 1f2dbd68c..63ac24e83 100644
                  return 3600000.8F;
              default:
                  return 0;
+@@ -8007,14 +8106,14 @@ public enum Material implements Keyed {
+     @Nullable
+     public Material getCraftingRemainingItem() {
+         Validate.isTrue(isItem(), "The Material is not an item!");
+-        switch (this) {
++        switch (this.name()) {
+             // <editor-fold defaultstate="collapsed" desc="getCraftingRemainingItem">
+-            case WATER_BUCKET:
+-            case LAVA_BUCKET:
+-            case MILK_BUCKET:
++            case "WATER_BUCKET":
++            case "LAVA_BUCKET":
++            case "MILK_BUCKET":
+                 return BUCKET;
+-            case DRAGON_BREATH:
+-            case HONEY_BOTTLE:
++            case "DRAGON_BREATH":
++            case "HONEY_BOTTLE":
+                 return GLASS_BOTTLE;
+             default:
+                 return null;
 diff --git a/src/main/java/org/bukkit/MaterialJsonAdapter.java b/src/main/java/org/bukkit/MaterialJsonAdapter.java
 new file mode 100644
 index 000000000..bceed5e28
@@ -13437,7 +13458,7 @@ index 9d0d0d745..013bdf7db 100644
          @Override
          public T get(@NotNull NamespacedKey key) {
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 80f9abdca..215cdae19 100644
+index cc06492f4..2b71ad8d3 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -13,6 +13,7 @@ import java.util.Set;
@@ -13591,5 +13612,5 @@ index 5d51c9286..3048bd0d9 100644
                  break;
              default:
 -- 
-2.26.0
+2.26.1
 

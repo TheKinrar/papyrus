@@ -1,11 +1,11 @@
-From 5f31772fa223912aa04a70e05e7af40172b25048 Mon Sep 17 00:00:00 2001
+From 9b366070b806b4cb6791894830d74e74888d6d1a Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
 
 
 diff --git a/src/main/java/net/minecraft/server/BlockCommand.java b/src/main/java/net/minecraft/server/BlockCommand.java
-index d0f75c8f9..eb154a5ec 100644
+index 48cc48bd9..a2308e843 100644
 --- a/src/main/java/net/minecraft/server/BlockCommand.java
 +++ b/src/main/java/net/minecraft/server/BlockCommand.java
 @@ -4,6 +4,7 @@ import java.util.Random;
@@ -16,13 +16,15 @@ index d0f75c8f9..eb154a5ec 100644
  import org.bukkit.event.block.BlockRedstoneEvent; // CraftBukkit
  
  public class BlockCommand extends BlockTileEntity {
-@@ -110,7 +111,9 @@ public class BlockCommand extends BlockTileEntity {
+@@ -110,7 +111,11 @@ public class BlockCommand extends BlockTileEntity {
      public EnumInteractionResult interact(IBlockData iblockdata, World world, BlockPosition blockposition, EntityHuman entityhuman, EnumHand enumhand, MovingObjectPositionBlock movingobjectpositionblock) {
          TileEntity tileentity = world.getTileEntity(blockposition);
  
--        if (tileentity instanceof TileEntityCommand && entityhuman.isCreativeAndOp()) {
+-        if (tileentity instanceof TileEntityCommand && (entityhuman.isCreativeAndOp() || (entityhuman.isCreative() && entityhuman.getBukkitEntity().hasPermission("minecraft.commandblock")))) { // Paper - command block permission
 +        if (tileentity instanceof TileEntityCommand && (
-+                entityhuman.isCreativeAndOp() || ((CraftPlayer) entityhuman.getBukkitEntity()).canAlwaysOpenCommandBlocks()
++                entityhuman.isCreativeAndOp()
++                || ((CraftPlayer) entityhuman.getBukkitEntity()).canAlwaysOpenCommandBlocks()
++                || (entityhuman.isCreative() && entityhuman.getBukkitEntity().hasPermission("minecraft.commandblock"))
 +        )) {
              entityhuman.a((TileEntityCommand) tileentity);
              return EnumInteractionResult.SUCCESS;
@@ -57,20 +59,20 @@ index 000000000..f5ed0c82a
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/PlayerInteractManager.java b/src/main/java/net/minecraft/server/PlayerInteractManager.java
-index ce66090b8..03c50a212 100644
+index 6df843461..b517587d2 100644
 --- a/src/main/java/net/minecraft/server/PlayerInteractManager.java
 +++ b/src/main/java/net/minecraft/server/PlayerInteractManager.java
-@@ -344,7 +344,7 @@ public class PlayerInteractManager {
+@@ -350,7 +350,7 @@ public class PlayerInteractManager {
              TileEntity tileentity = this.world.getTileEntity(blockposition);
              Block block = iblockdata.getBlock();
  
--            if ((block instanceof BlockCommand || block instanceof BlockStructure || block instanceof BlockJigsaw) && !this.player.isCreativeAndOp()) {
-+            if ((block instanceof BlockCommand || block instanceof BlockStructure || block instanceof BlockJigsaw) && !this.player.isCreativeAndOp() && !this.player.getBukkitEntity().canAlwaysOpenCommandBlocks()) {
+-            if ((block instanceof BlockCommand || block instanceof BlockStructure || block instanceof BlockJigsaw) && !this.player.isCreativeAndOp() && !(block instanceof BlockCommand && (this.player.isCreative() && this.player.getBukkitEntity().hasPermission("minecraft.commandblock")))) { // Paper - command block permission
++            if ((block instanceof BlockCommand || block instanceof BlockStructure || block instanceof BlockJigsaw) && !this.player.isCreativeAndOp() && !(block instanceof BlockCommand && (this.player.getBukkitEntity().canAlwaysOpenCommandBlocks() || (this.player.isCreative() && this.player.getBukkitEntity().hasPermission("minecraft.commandblock"))))) { // Paper - command block permission
                  this.world.notify(blockposition, iblockdata, iblockdata, 3);
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 57037afed..40d381433 100644
+index ada082e67..197988530 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -832,6 +832,9 @@ public abstract class PlayerList {

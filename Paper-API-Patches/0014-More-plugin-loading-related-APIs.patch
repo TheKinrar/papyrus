@@ -1,4 +1,4 @@
-From 3248e3d3c8141d17bb0490264017f3939a44ed4e Mon Sep 17 00:00:00 2001
+From 3a39ee2ae986aee242e7e36b7a716074d3d970e4 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 1 Mar 2020 01:17:13 +0000
 Subject: [PATCH] More plugin-loading related APIs
@@ -164,10 +164,10 @@ index 4931bc86d..ec1df0845 100644
          }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index ba2c5c6ee..d65e759fa 100644
+index 528ceeb22..5d054d526 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-@@ -67,9 +67,14 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -68,9 +68,14 @@ public final class JavaPluginLoader implements PluginLoader {
          server = instance;
      }
  
@@ -183,7 +183,7 @@ index ba2c5c6ee..d65e759fa 100644
          Validate.notNull(file, "File cannot be null");
  
          if (!file.exists()) {
-@@ -83,7 +88,9 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -84,7 +89,9 @@ public final class JavaPluginLoader implements PluginLoader {
              throw new InvalidPluginException(ex);
          }
  

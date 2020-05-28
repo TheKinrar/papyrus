@@ -1,11 +1,11 @@
-From d46cf2285c00bc9c7ccf233b4dc4d3346733e33d Mon Sep 17 00:00:00 2001
+From b972e6fce486179cc258b87badf371156a4bf0b3 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 11:26:33 +0100
 Subject: [PATCH] Server branding
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 699727a79..084c29997 100644
+index f0284e81d..c6e8ba259 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -98,7 +98,7 @@ public class PaperConfig {
@@ -944,10 +944,10 @@ index b07c49f1b..fc5aef18b 100644
          this.setSpawnAnimals(dedicatedserverproperties.spawnAnimals);
          this.setSpawnNPCs(dedicatedserverproperties.spawnNpcs);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index a8bb89111..1808d5ca6 100644
+index 5b24de6d6..56bb0c05f 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1556,7 +1556,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1559,7 +1559,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      }
  
      public String getServerModName() {
@@ -957,7 +957,7 @@ index a8bb89111..1808d5ca6 100644
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 508a3ed1e..a9fa5b126 100644
+index 561b42472..372dd725b 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -113,6 +113,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -976,7 +976,7 @@ index 508a3ed1e..a9fa5b126 100644
 +        this.papyrusConfig = new fr.thekinrar.papyrus.PapyrusWorldConfig(worlddata.getName()); // Papyrus
          this.chunkPacketBlockController = this.paperConfig.antiXray ? new ChunkPacketBlockControllerAntiXray(this.paperConfig) : ChunkPacketBlockController.NO_OPERATION_INSTANCE; // Paper - Anti-Xray
          this.generator = gen;
-         this.world = new CraftWorld((WorldServer) this, gen, env);
+         dimensionmanager.world = (WorldServer) this; // Paper
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 index 894917c88..18cc01c06 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
@@ -999,7 +999,7 @@ index 894917c88..18cc01c06 100644
              world.worldData.setDifficulty(config.difficulty);
              world.setSpawnFlags(config.spawnMonsters, config.spawnAnimals);
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 93340e947..2f76fc258 100644
+index d6e5d014c..f52720a31 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -139,6 +139,14 @@ public class Main {
@@ -1018,10 +1018,10 @@ index 93340e947..2f76fc258 100644
                  acceptsAll(asList("server-name"), "Name of the server")
                          .withRequiredArg()
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index fe4b8caf2..de052db3d 100644
+index 513c1041c..4857d4c21 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
-@@ -25,7 +25,7 @@ public class WatchdogThread extends Thread
+@@ -26,7 +26,7 @@ public class WatchdogThread extends Thread
  
      private WatchdogThread(long timeoutTime, boolean restart)
      {
@@ -1030,7 +1030,7 @@ index fe4b8caf2..de052db3d 100644
          this.timeoutTime = timeoutTime;
          this.restart = restart;
          earlyWarningEvery = Math.min(PaperConfig.watchdogPrintEarlyWarningEvery, timeoutTime); // Paper
-@@ -79,14 +79,14 @@ public class WatchdogThread extends Thread
+@@ -80,14 +80,14 @@ public class WatchdogThread extends Thread
                  if (isLongTimeout) {
                  // Paper end
                  log.log( Level.SEVERE, "------------------------------" );
@@ -1048,7 +1048,7 @@ index fe4b8caf2..de052db3d 100644
                  //
                  if ( net.minecraft.server.World.lastPhysicsProblem != null )
                  {
-@@ -109,12 +109,12 @@ public class WatchdogThread extends Thread
+@@ -110,12 +110,12 @@ public class WatchdogThread extends Thread
                  // Paper end
                  } else
                  {
@@ -1063,7 +1063,7 @@ index fe4b8caf2..de052db3d 100644
                  ChunkTaskManager.dumpAllChunkLoadInfo(); // Paper
                  dumpThread( ManagementFactory.getThreadMXBean().getThreadInfo( server.serverThread.getId(), Integer.MAX_VALUE ), log );
                  log.log( Level.SEVERE, "------------------------------" );
-@@ -129,7 +129,7 @@ public class WatchdogThread extends Thread
+@@ -130,7 +130,7 @@ public class WatchdogThread extends Thread
                      dumpThread( thread, log );
                  }
                  } else {
@@ -1073,25 +1073,25 @@ index fe4b8caf2..de052db3d 100644
  
  
 diff --git a/src/main/resources/log4j2.xml b/src/main/resources/log4j2.xml
-index a9bb98765..1e1a87639 100644
+index 476f4a5cb..4fbf348cd 100644
 --- a/src/main/resources/log4j2.xml
 +++ b/src/main/resources/log4j2.xml
 @@ -9,7 +9,7 @@
-                 <LoggerNamePatternSelector defaultPattern="%highlightError{[%d{HH:mm:ss} %level]: [%logger] %minecraftFormatting{%msg}%n%xEx}">
+                 <LoggerNamePatternSelector defaultPattern="%highlightError{[%d{HH:mm:ss} %level]: [%logger] %minecraftFormatting{%msg}%n%xEx{full}}">
                      <!-- Log root, Minecraft, Mojang and Bukkit loggers without prefix -->
                      <!-- Disable prefix for various plugins that bypass the plugin logger -->
 -                    <PatternMatch key=",net.minecraft.,Minecraft,com.mojang.,com.sk89q.,ru.tehkode.,Minecraft.AWE"
 +                    <PatternMatch key=",net.minecraft.,Minecraft,com.mojang.,com.sk89q.,ru.tehkode.,Minecraft.AWE,fr.thekinrar.papyrus."
-                                   pattern="%highlightError{[%d{HH:mm:ss} %level]: %minecraftFormatting{%msg}%n%xEx}" />
+                                   pattern="%highlightError{[%d{HH:mm:ss} %level]: %minecraftFormatting{%msg}%n%xEx{full}}" />
                  </LoggerNamePatternSelector>
              </PatternLayout>
 @@ -19,7 +19,7 @@
-                 <LoggerNamePatternSelector defaultPattern="[%d{HH:mm:ss}] [%t/%level]: [%logger] %minecraftFormatting{%msg}{strip}%n">
+                 <LoggerNamePatternSelector defaultPattern="[%d{HH:mm:ss}] [%t/%level]: [%logger] %minecraftFormatting{%msg}{strip}%n%xEx{full}">
                      <!-- Log root, Minecraft, Mojang and Bukkit loggers without prefix -->
                      <!-- Disable prefix for various plugins that bypass the plugin logger -->
 -                    <PatternMatch key=",net.minecraft.,Minecraft,com.mojang.,com.sk89q.,ru.tehkode.,Minecraft.AWE"
 +                    <PatternMatch key=",net.minecraft.,Minecraft,com.mojang.,com.sk89q.,ru.tehkode.,Minecraft.AWE,fr.thekinrar.papyrus."
-                                   pattern="[%d{HH:mm:ss}] [%t/%level]: %minecraftFormatting{%msg}{strip}%n" />
+                                   pattern="[%d{HH:mm:ss}] [%t/%level]: %minecraftFormatting{%msg}{strip}%n%xEx{full}" />
                  </LoggerNamePatternSelector>
              </PatternLayout>
 -- 
