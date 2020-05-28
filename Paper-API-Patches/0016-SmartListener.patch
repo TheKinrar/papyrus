@@ -1,4 +1,4 @@
-From 343194d40d48c01f7b2f4d402757bb70024e27ec Mon Sep 17 00:00:00 2001
+From 00a257c14ca2a52ecc673e8685137d8f592d49b8 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 25 Apr 2020 01:36:28 +0200
 Subject: [PATCH] SmartListener
@@ -30,7 +30,7 @@ index 000000000..1c87f7ca9
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/event/entity/EntityEvent.java b/src/main/java/org/bukkit/event/entity/EntityEvent.java
-index e3a9e3293..ac6db01d0 100644
+index e3a9e3293..164c41b48 100644
 --- a/src/main/java/org/bukkit/event/entity/EntityEvent.java
 +++ b/src/main/java/org/bukkit/event/entity/EntityEvent.java
 @@ -3,15 +3,22 @@ package org.bukkit.event.entity;
@@ -48,7 +48,7 @@ index e3a9e3293..ac6db01d0 100644
      protected Entity entity;
  
      public EntityEvent(@NotNull final Entity what) {
-+        super(what.getLocation());
++        super(what != null ? what.getLocation() : null);
 +        entity = what;
 +    }
 +
