@@ -1,4 +1,4 @@
-From bb8962cc52af377f195546cb4247525b6d12c469 Mon Sep 17 00:00:00 2001
+From 23d8a6e3ae97175beca39ac083cb116c862a0b9c Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -264,7 +264,7 @@ index 3fc2360a1..ee780a76e 100644
  
          return (MobEffect) this.effects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index d60f659b3..9977a140c 100644
+index c88177b77..793f47e15 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -27,6 +27,8 @@ import org.bukkit.craftbukkit.CraftWorld;
@@ -276,7 +276,7 @@ index d60f659b3..9977a140c 100644
  import org.bukkit.event.inventory.InventoryType;
  import org.bukkit.event.player.PlayerChangedMainHandEvent;
  import org.bukkit.event.player.PlayerChangedWorldEvent;
-@@ -500,7 +502,12 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -509,7 +511,12 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
  
              if (this.expTotal != this.lastSentExp) {
                  this.lastSentExp = this.expTotal;
@@ -730,5 +730,5 @@ index 4510b1452..76e634697 100644
          return event;
      }
 -- 
-2.26.1
+2.26.2
 
