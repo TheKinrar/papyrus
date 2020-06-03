@@ -1,4 +1,4 @@
-From 00a257c14ca2a52ecc673e8685137d8f592d49b8 Mon Sep 17 00:00:00 2001
+From 9674e2fac2754c72566fe91176d61fe53fb69cd4 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 25 Apr 2020 01:36:28 +0200
 Subject: [PATCH] SmartListener
@@ -291,7 +291,7 @@ index 04b3dce00..339faeaa8 100644
  
 diff --git a/src/main/java/org/bukkit/event/world/LocalEvent.java b/src/main/java/org/bukkit/event/world/LocalEvent.java
 new file mode 100644
-index 000000000..a0064874e
+index 000000000..cf534fa96
 --- /dev/null
 +++ b/src/main/java/org/bukkit/event/world/LocalEvent.java
 @@ -0,0 +1,22 @@
@@ -304,7 +304,7 @@ index 000000000..a0064874e
 +    private final Location location;
 +
 +    public LocalEvent(@NotNull Location location) {
-+        super(location.getWorld());
++        super(location != null ? location.getWorld() : null);
 +        this.location = location;
 +    }
 +
@@ -470,5 +470,5 @@ index 1b7642dc1..bb482578f 100644
              throw new Error(t);
          }
 -- 
-2.26.1
+2.26.2
 
