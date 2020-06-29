@@ -1,11 +1,11 @@
-From 04c226bd00e34e328a67b37deeba9ec9a0e3bcd3 Mon Sep 17 00:00:00 2001
+From f7f60f84fc1fe6f97a2e8e0e522571465e9feea2 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 6 Jan 2020 00:11:45 +0000
 Subject: [PATCH] Add forceUpgradeWorlds option
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 1d0ad8ec8..c1049d09c 100644
+index e670cf6e09..3c84febdca 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -56,6 +56,7 @@ import joptsimple.NonOptionArgumentSpec;
@@ -40,18 +40,25 @@ index 1d0ad8ec8..c1049d09c 100644
          }
  
      }
-@@ -1493,6 +1497,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
-                 dedicatedserver.setEraseCache(true);
+@@ -1498,12 +1502,17 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+                 dedicatedserver.setForceUpgrade(true);
              }
  
 +            if (optionset.has("forceUpgradeWorlds")) {
 +                dedicatedserver.setForceUpgradeWorlds(((String) optionset.valueOf("forceUpgradeWorlds")).split(","));
 +            }
 +
+             if (optionset.has("eraseCache")) {
+                 dedicatedserver.setEraseCache(true);
+             }
+ 
+             Class.forName("net.minecraft.server.VillagerTrades");// Paper - load this sync so it won't fail later async
+             dedicatedserver.serverThread.setPriority(Thread.NORM_PRIORITY+2); // Paper - boost priority
++
              dedicatedserver.serverThread.start();
              // CraftBukkit end
          } catch (Exception exception) {
-@@ -1513,6 +1521,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1524,6 +1533,10 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.eraseCache = flag;
      }
  
@@ -63,7 +70,7 @@ index 1d0ad8ec8..c1049d09c 100644
          /* CraftBukkit start - prevent abuse
          this.serverThread.start();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index f52720a31..abeeec4d0 100644
+index 283165f0fa..59732de36f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -115,6 +115,13 @@ public class Main {
@@ -81,5 +88,5 @@ index f52720a31..abeeec4d0 100644
  
                  acceptsAll(asList("noconsole"), "Disables the console");
 -- 
-2.26.1
+2.26.2
 

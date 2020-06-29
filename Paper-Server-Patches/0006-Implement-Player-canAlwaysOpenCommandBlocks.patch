@@ -1,11 +1,11 @@
-From 9b366070b806b4cb6791894830d74e74888d6d1a Mon Sep 17 00:00:00 2001
+From 241fd060b050b59ceff84462a95ea5a01776665e Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
 
 
 diff --git a/src/main/java/net/minecraft/server/BlockCommand.java b/src/main/java/net/minecraft/server/BlockCommand.java
-index 48cc48bd9..a2308e843 100644
+index 48cc48bd99..a2308e843a 100644
 --- a/src/main/java/net/minecraft/server/BlockCommand.java
 +++ b/src/main/java/net/minecraft/server/BlockCommand.java
 @@ -4,6 +4,7 @@ import java.util.Random;
@@ -31,7 +31,7 @@ index 48cc48bd9..a2308e843 100644
          } else {
 diff --git a/src/main/java/net/minecraft/server/ItemRestricted.java b/src/main/java/net/minecraft/server/ItemRestricted.java
 new file mode 100644
-index 000000000..f5ed0c82a
+index 0000000000..f5ed0c82ac
 --- /dev/null
 +++ b/src/main/java/net/minecraft/server/ItemRestricted.java
 @@ -0,0 +1,23 @@
@@ -59,7 +59,7 @@ index 000000000..f5ed0c82a
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/PlayerInteractManager.java b/src/main/java/net/minecraft/server/PlayerInteractManager.java
-index 6df843461..b517587d2 100644
+index 6df8434612..b517587d20 100644
 --- a/src/main/java/net/minecraft/server/PlayerInteractManager.java
 +++ b/src/main/java/net/minecraft/server/PlayerInteractManager.java
 @@ -350,7 +350,7 @@ public class PlayerInteractManager {
@@ -72,10 +72,10 @@ index 6df843461..b517587d2 100644
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index ada082e67..197988530 100644
+index 5b634f2385..cc2271b624 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -832,6 +832,9 @@ public abstract class PlayerList {
+@@ -836,6 +836,9 @@ public abstract class PlayerList {
          GameProfile gameprofile = entityplayer.getProfile();
          int i = this.server.b(gameprofile);
  
@@ -86,10 +86,10 @@ index ada082e67..197988530 100644
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index dcbda5b35..aab1852bc 100644
+index 141003ca71..2fc14dc13e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -48,6 +48,7 @@ import net.minecraft.server.EnumGamemode;
+@@ -47,6 +47,7 @@ import net.minecraft.server.EnumGamemode;
  import net.minecraft.server.IChatBaseComponent;
  import net.minecraft.server.MapIcon;
  import net.minecraft.server.MinecraftKey;
@@ -97,7 +97,7 @@ index dcbda5b35..aab1852bc 100644
  import net.minecraft.server.NBTTagCompound;
  import net.minecraft.server.PacketDataSerializer;
  import net.minecraft.server.PacketPlayOutBlockChange;
-@@ -68,6 +69,7 @@ import net.minecraft.server.PacketPlayOutWorldEvent;
+@@ -67,6 +68,7 @@ import net.minecraft.server.PacketPlayOutWorldEvent;
  import net.minecraft.server.PacketPlayOutWorldParticles;
  import net.minecraft.server.PlayerChunkMap;
  import net.minecraft.server.PlayerConnection;
@@ -105,7 +105,7 @@ index dcbda5b35..aab1852bc 100644
  import net.minecraft.server.TileEntitySign;
  import net.minecraft.server.Vec3D;
  import net.minecraft.server.WhiteListEntry;
-@@ -145,6 +147,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -144,6 +146,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime;
      // Paper end
@@ -113,7 +113,7 @@ index dcbda5b35..aab1852bc 100644
  
      public CraftPlayer(CraftServer server, EntityPlayer entity) {
          super(server, entity);
-@@ -1993,6 +1996,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2000,6 +2003,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      }
      // Paper end
  
@@ -135,5 +135,5 @@ index dcbda5b35..aab1852bc 100644
      private final Player.Spigot spigot = new Player.Spigot()
      {
 -- 
-2.26.1
+2.26.2
 

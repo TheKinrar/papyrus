@@ -1,11 +1,11 @@
-From e0bbd5ec3805e09934f61db50e3ca33705f77de9 Mon Sep 17 00:00:00 2001
+From 2778172bae5b90f2ff5502bea85735b53995ecd4 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 13 Dec 2019 18:26:58 +0000
 Subject: [PATCH] Add showInvalidBedMessage world config
 
 
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
-index 52274c1bb..4cdcd5104 100644
+index 52274c1bb3..4cdcd51049 100644
 --- a/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
 @@ -59,4 +59,10 @@ public class PapyrusWorldConfig {
@@ -20,10 +20,10 @@ index 52274c1bb..4cdcd5104 100644
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index edfb53473..43bb4e71b 100644
+index fcd2fb15b2..c8835d2fa9 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -735,7 +735,10 @@ public abstract class PlayerList {
+@@ -738,7 +738,10 @@ public abstract class PlayerList {
                      location = new Location(cworld, vec3d.x, vec3d.y, vec3d.z);
                  } else {
                      entityplayer1.setRespawnPosition(null, true, false);
@@ -35,5 +35,5 @@ index edfb53473..43bb4e71b 100644
              }
  
 -- 
-2.26.1
+2.26.2
 
