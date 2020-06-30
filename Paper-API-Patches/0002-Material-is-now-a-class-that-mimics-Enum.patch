@@ -1,4 +1,4 @@
-From 4c721846230a30965657ab963936505a98dcf077 Mon Sep 17 00:00:00 2001
+From e51a85baa4839ab235487cea4ca2c8760500a111 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 12:02:30 +0100
 Subject: [PATCH] Material is now a class that mimics Enum
@@ -56,10 +56,10 @@ index 329e2dd1..b65e2cce 100644
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index 769c65e7..509b3ba7 100644
+index 769c65e7..624173eb 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
-@@ -1,10 +1,16 @@
+@@ -1,10 +1,17 @@
  package org.bukkit;
  
  import com.google.common.collect.Maps;
@@ -72,15 +72,17 @@ index 769c65e7..509b3ba7 100644
  import java.util.Map;
  import java.util.function.Consumer;
 +
++import com.google.gson.annotations.JsonAdapter;
 +import org.apache.commons.lang.ArrayUtils;
  import org.apache.commons.lang.Validate;
  import org.bukkit.block.data.Ageable;
  import org.bukkit.block.data.AnaloguePowerable;
-@@ -86,3464 +92,3489 @@ import org.jetbrains.annotations.Nullable;
+@@ -86,3464 +93,3490 @@ import org.jetbrains.annotations.Nullable;
   * An enum of all material IDs accepted by the official server and client
   */
  @SuppressWarnings({"DeprecatedIsStillUsed", "deprecation"}) // Paper
 -public enum Material implements Keyed {
++@JsonAdapter(MaterialJsonAdapter.class) // Papyrus
 +public class Material implements Keyed, Comparable<Material>, Serializable {
 +
 +    /*
@@ -5118,7 +5120,7 @@ index 769c65e7..509b3ba7 100644
          this.id = id;
          this.durability = (short) durability;
          this.maxStack = stack;
-@@ -3562,7 +3593,86 @@ public enum Material implements Keyed {
+@@ -3562,7 +3595,86 @@ public enum Material implements Keyed {
          } catch (SecurityException ex) {
              throw new AssertionError(ex);
          }
@@ -5205,7 +5207,7 @@ index 769c65e7..509b3ba7 100644
  
      // Paper start
  
-@@ -3570,10 +3680,10 @@ public enum Material implements Keyed {
+@@ -3570,10 +3682,10 @@ public enum Material implements Keyed {
       * @return If the type is either AIR, CAVE_AIR or VOID_AIR
       */
      public boolean isEmpty() {
@@ -5220,7 +5222,7 @@ index 769c65e7..509b3ba7 100644
                  return true;
          }
          return false;
-@@ -3709,772 +3819,772 @@ public enum Material implements Keyed {
+@@ -3709,772 +3821,772 @@ public enum Material implements Keyed {
       * @return true if this material is a block
       */
      public boolean isBlock() {
@@ -6758,7 +6760,7 @@ index 769c65e7..509b3ba7 100644
                  return true;
              default:
                  return 0 <= id && id < 256;
-@@ -4487,79 +4597,79 @@ public enum Material implements Keyed {
+@@ -4487,79 +4599,79 @@ public enum Material implements Keyed {
       * @return true if this Material is edible.
       */
      public boolean isEdible() {
@@ -6910,7 +6912,7 @@ index 769c65e7..509b3ba7 100644
                  return true;
              default:
                  return false;
-@@ -4661,22 +4771,22 @@ public enum Material implements Keyed {
+@@ -4661,22 +4773,22 @@ public enum Material implements Keyed {
       * @return True if this material represents a playable music disk.
       */
      public boolean isRecord() {
@@ -6948,7 +6950,7 @@ index 769c65e7..509b3ba7 100644
                  return true;
              default:
                  return id >= LEGACY_GOLD_RECORD.id && id <= LEGACY_RECORD_12.id;
-@@ -4692,795 +4802,795 @@ public enum Material implements Keyed {
+@@ -4692,795 +4804,795 @@ public enum Material implements Keyed {
          if (!isBlock() || id == 0) {
              return false;
          }
@@ -8532,7 +8534,7 @@ index 769c65e7..509b3ba7 100644
                  return true;
              default:
                  return false;
-@@ -5493,13 +5603,13 @@ public enum Material implements Keyed {
+@@ -5493,13 +5605,13 @@ public enum Material implements Keyed {
       * @return True if this material is an air block.
       */
      public boolean isAir() {
@@ -8552,7 +8554,7 @@ index 769c65e7..509b3ba7 100644
                  //</editor-fold>
                  return true;
              default:
-@@ -5519,185 +5629,185 @@ public enum Material implements Keyed {
+@@ -5519,185 +5631,185 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -8916,7 +8918,7 @@ index 769c65e7..509b3ba7 100644
                  return true;
              default:
                  return false;
-@@ -5713,272 +5823,272 @@ public enum Material implements Keyed {
+@@ -5713,272 +5825,272 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -9454,7 +9456,7 @@ index 769c65e7..509b3ba7 100644
                  return true;
              default:
                  return false;
-@@ -5994,175 +6104,175 @@ public enum Material implements Keyed {
+@@ -5994,175 +6106,175 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -9798,7 +9800,7 @@ index 769c65e7..509b3ba7 100644
                  return true;
              default:
                  return false;
-@@ -6175,251 +6285,251 @@ public enum Material implements Keyed {
+@@ -6175,251 +6287,251 @@ public enum Material implements Keyed {
       * @return true if this Material can be used as fuel.
       */
      public boolean isFuel() {
@@ -10294,7 +10296,7 @@ index 769c65e7..509b3ba7 100644
                  return true;
              default:
                  return false;
-@@ -6435,391 +6545,391 @@ public enum Material implements Keyed {
+@@ -6435,391 +6547,391 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -11070,7 +11072,7 @@ index 769c65e7..509b3ba7 100644
                  return true;
              default:
                  return false;
-@@ -6833,37 +6943,37 @@ public enum Material implements Keyed {
+@@ -6833,37 +6945,37 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -11138,7 +11140,7 @@ index 769c65e7..509b3ba7 100644
                  return true;
              default:
                  return false;
-@@ -6876,163 +6986,163 @@ public enum Material implements Keyed {
+@@ -6876,163 +6988,163 @@ public enum Material implements Keyed {
       * @return true if this material is an item
       */
      public boolean isItem() {
@@ -11458,7 +11460,7 @@ index 769c65e7..509b3ba7 100644
                  return false;
              default:
                  return true;
-@@ -7056,219 +7166,219 @@ public enum Material implements Keyed {
+@@ -7056,219 +7168,219 @@ public enum Material implements Keyed {
       * @return true if this material can be interacted with.
       */
      public boolean isInteractable() {
@@ -11890,7 +11892,7 @@ index 769c65e7..509b3ba7 100644
                  // </editor-fold>
                  return true;
              default:
-@@ -7287,651 +7397,651 @@ public enum Material implements Keyed {
+@@ -7287,651 +7399,651 @@ public enum Material implements Keyed {
       */
      public float getHardness() {
          Validate.isTrue(isBlock(), "The Material is not a block!");
@@ -13161,7 +13163,7 @@ index 769c65e7..509b3ba7 100644
                  return 100.0F;
              default:
                  return 0F;
-@@ -7951,659 +8061,659 @@ public enum Material implements Keyed {
+@@ -7951,659 +8063,659 @@ public enum Material implements Keyed {
       */
      public float getBlastResistance() {
          Validate.isTrue(isBlock(), "The Material is not a block!");
@@ -14444,7 +14446,7 @@ index 769c65e7..509b3ba7 100644
                  return 3600000.8F;
              default:
                  return 0;
-@@ -8622,18 +8732,827 @@ public enum Material implements Keyed {
+@@ -8622,18 +8734,827 @@ public enum Material implements Keyed {
      @Nullable
      public Material getCraftingRemainingItem() {
          Validate.isTrue(isItem(), "The Material is not an item!");
