@@ -1,4 +1,4 @@
-From 714f390ca055b2943bb1e69828b3bd11c71abee2 Mon Sep 17 00:00:00 2001
+From a23d2ef295a8d82d6dc1e2422a12fa5ce083a59b Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 5 Oct 2019 21:26:09 +0100
 Subject: [PATCH] Add CommandBlockEditEvent
@@ -6,7 +6,7 @@ Subject: [PATCH] Add CommandBlockEditEvent
 
 diff --git a/src/main/java/org/bukkit/event/block/CommandBlockEditEvent.java b/src/main/java/org/bukkit/event/block/CommandBlockEditEvent.java
 new file mode 100644
-index 000000000..8264fb5c1
+index 00000000..8264fb5c
 --- /dev/null
 +++ b/src/main/java/org/bukkit/event/block/CommandBlockEditEvent.java
 @@ -0,0 +1,270 @@
@@ -281,5 +281,5 @@ index 000000000..8264fb5c1
 +
 +}
 -- 
-2.26.0
+2.26.2
 

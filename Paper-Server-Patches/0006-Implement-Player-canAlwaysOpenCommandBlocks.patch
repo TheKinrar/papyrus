@@ -1,11 +1,11 @@
-From 241fd060b050b59ceff84462a95ea5a01776665e Mon Sep 17 00:00:00 2001
+From c7f21417d8588ab50c85efcddb867ce43a7f5cf5 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
 
 
 diff --git a/src/main/java/net/minecraft/server/BlockCommand.java b/src/main/java/net/minecraft/server/BlockCommand.java
-index 48cc48bd99..a2308e843a 100644
+index 6b353a99c..0f9aeddc3 100644
 --- a/src/main/java/net/minecraft/server/BlockCommand.java
 +++ b/src/main/java/net/minecraft/server/BlockCommand.java
 @@ -4,6 +4,7 @@ import java.util.Random;
@@ -16,7 +16,7 @@ index 48cc48bd99..a2308e843a 100644
  import org.bukkit.event.block.BlockRedstoneEvent; // CraftBukkit
  
  public class BlockCommand extends BlockTileEntity {
-@@ -110,7 +111,11 @@ public class BlockCommand extends BlockTileEntity {
+@@ -105,7 +106,11 @@ public class BlockCommand extends BlockTileEntity {
      public EnumInteractionResult interact(IBlockData iblockdata, World world, BlockPosition blockposition, EntityHuman entityhuman, EnumHand enumhand, MovingObjectPositionBlock movingobjectpositionblock) {
          TileEntity tileentity = world.getTileEntity(blockposition);
  
@@ -27,11 +27,11 @@ index 48cc48bd99..a2308e843a 100644
 +                || (entityhuman.isCreative() && entityhuman.getBukkitEntity().hasPermission("minecraft.commandblock"))
 +        )) {
              entityhuman.a((TileEntityCommand) tileentity);
-             return EnumInteractionResult.SUCCESS;
+             return EnumInteractionResult.a(world.isClientSide);
          } else {
 diff --git a/src/main/java/net/minecraft/server/ItemRestricted.java b/src/main/java/net/minecraft/server/ItemRestricted.java
 new file mode 100644
-index 0000000000..f5ed0c82ac
+index 000000000..f5ed0c82a
 --- /dev/null
 +++ b/src/main/java/net/minecraft/server/ItemRestricted.java
 @@ -0,0 +1,23 @@
@@ -59,10 +59,10 @@ index 0000000000..f5ed0c82ac
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/PlayerInteractManager.java b/src/main/java/net/minecraft/server/PlayerInteractManager.java
-index 6df8434612..b517587d20 100644
+index 6d192b274..72b65abe0 100644
 --- a/src/main/java/net/minecraft/server/PlayerInteractManager.java
 +++ b/src/main/java/net/minecraft/server/PlayerInteractManager.java
-@@ -350,7 +350,7 @@ public class PlayerInteractManager {
+@@ -353,7 +353,7 @@ public class PlayerInteractManager {
              TileEntity tileentity = this.world.getTileEntity(blockposition);
              Block block = iblockdata.getBlock();
  
@@ -72,10 +72,10 @@ index 6df8434612..b517587d20 100644
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 5b634f2385..cc2271b624 100644
+index 3c5ba8f2f..b1c8aaad6 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -836,6 +836,9 @@ public abstract class PlayerList {
+@@ -877,6 +877,9 @@ public abstract class PlayerList {
          GameProfile gameprofile = entityplayer.getProfile();
          int i = this.server.b(gameprofile);
  
@@ -86,26 +86,26 @@ index 5b634f2385..cc2271b624 100644
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 141003ca71..2fc14dc13e 100644
+index 97a24b4df..0ea6d49a8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -47,6 +47,7 @@ import net.minecraft.server.EnumGamemode;
- import net.minecraft.server.IChatBaseComponent;
+@@ -49,6 +49,7 @@ import net.minecraft.server.IChatBaseComponent;
+ import net.minecraft.server.MCUtil;
  import net.minecraft.server.MapIcon;
  import net.minecraft.server.MinecraftKey;
 +import net.minecraft.server.MinecraftServer;
  import net.minecraft.server.NBTTagCompound;
  import net.minecraft.server.PacketDataSerializer;
  import net.minecraft.server.PacketPlayOutBlockChange;
-@@ -67,6 +68,7 @@ import net.minecraft.server.PacketPlayOutWorldEvent;
+@@ -69,6 +70,7 @@ import net.minecraft.server.PacketPlayOutWorldEvent;
  import net.minecraft.server.PacketPlayOutWorldParticles;
  import net.minecraft.server.PlayerChunkMap;
  import net.minecraft.server.PlayerConnection;
 +import net.minecraft.server.PlayerList;
+ import net.minecraft.server.SystemUtils;
  import net.minecraft.server.TileEntitySign;
  import net.minecraft.server.Vec3D;
- import net.minecraft.server.WhiteListEntry;
-@@ -144,6 +146,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -148,6 +150,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime;
      // Paper end
@@ -113,7 +113,7 @@ index 141003ca71..2fc14dc13e 100644
  
      public CraftPlayer(CraftServer server, EntityPlayer entity) {
          super(server, entity);
-@@ -2000,6 +2003,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2045,6 +2048,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      }
      // Paper end
  

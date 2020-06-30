@@ -1,11 +1,11 @@
-From 27c964e2cd8b58a41d0ffd39c84a127d9eb16fad Mon Sep 17 00:00:00 2001
+From 635ca49dbdabc799faa5590c7d47f4b4ac37fbed Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 5 Oct 2019 21:26:23 +0100
 Subject: [PATCH] Implement CommandBlockEditEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index b25b3b481..3785cbe03 100644
+index 5765e0f04..5ad08cc65 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -1,5 +1,7 @@
@@ -16,16 +16,7 @@ index b25b3b481..3785cbe03 100644
  import com.google.common.primitives.Doubles;
  import com.google.common.primitives.Floats;
  import com.mojang.brigadier.ParseResults;
-@@ -9,20 +11,13 @@ import io.netty.util.concurrent.Future;
- import io.netty.util.concurrent.GenericFutureListener;
- import it.unimi.dsi.fastutil.ints.Int2ShortMap;
- import it.unimi.dsi.fastutil.ints.Int2ShortOpenHashMap;
--import java.util.Collections;
--import java.util.Iterator;
--import java.util.Optional;
--import java.util.Set;
--import javax.annotation.Nullable;
--import org.apache.commons.lang3.StringEscapeUtils;
+@@ -18,11 +20,10 @@ import org.apache.commons.lang3.StringEscapeUtils;
  import org.apache.commons.lang3.StringUtils;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
@@ -40,7 +31,7 @@ index b25b3b481..3785cbe03 100644
  import org.bukkit.craftbukkit.entity.CraftPlayer;
  import org.bukkit.craftbukkit.event.CraftEventFactory;
  import org.bukkit.craftbukkit.inventory.CraftItemStack;
-@@ -33,35 +28,25 @@ import org.bukkit.craftbukkit.util.Waitable;
+@@ -33,35 +34,25 @@ import org.bukkit.craftbukkit.util.Waitable;
  import org.bukkit.entity.Player;
  import org.bukkit.event.Event;
  import org.bukkit.event.block.Action;
@@ -89,7 +80,7 @@ index b25b3b481..3785cbe03 100644
  // CraftBukkit end
  
  public class PlayerConnection implements PacketListenerPlayIn {
-@@ -610,63 +595,117 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -611,63 +602,117 @@ public class PlayerConnection implements PacketListenerPlayIn {
      @Override
      public void a(PacketPlayInSetCommandBlock packetplayinsetcommandblock) {
          PlayerConnectionUtils.ensureMainThread(packetplayinsetcommandblock, this, this.player.getWorldServer());
@@ -142,10 +133,10 @@ index b25b3b481..3785cbe03 100644
 +            return;
 +
 +        if (!event.getCommandBlocksEnabled()) {
-             this.player.sendMessage(new ChatMessage("advMode.notEnabled", new Object[0]));
+             this.player.sendMessage(new ChatMessage("advMode.notEnabled"), SystemUtils.b);
 -        } else if (!this.player.isCreativeAndOp() && !this.player.isCreative() && !this.player.getBukkitEntity().hasPermission("minecraft.commandblock")) { // Paper - command block permission
 +        } else if (!event.getPlayerCanEdit()) {
-             this.player.sendMessage(new ChatMessage("advMode.notAllowed", new Object[0]));
+             this.player.sendMessage(new ChatMessage("advMode.notAllowed"), SystemUtils.b);
          } else {
 -            CommandBlockListenerAbstract commandblocklistenerabstract = null;
 -            TileEntityCommand tileentitycommand = null;
@@ -200,14 +191,14 @@ index b25b3b481..3785cbe03 100644
 -                commandblocklistenerabstract.setCommand(s);
 -                commandblocklistenerabstract.a(flag);
 -                if (!flag) {
--                    commandblocklistenerabstract.c((IChatBaseComponent) null);
+-                    commandblocklistenerabstract.b((IChatBaseComponent) null);
 -                }
 +            tileentity.r();
 +            this.player.world.setTileEntity(blockposition, tileentity);
 +            commandblocklistenerabstract.setCommand(event.getNewCommand());
 +            commandblocklistenerabstract.a(event.getNewStoresOutput());
 +            if (!event.getNewStoresOutput()) {
-+                commandblocklistenerabstract.c((IChatBaseComponent) null);
++                commandblocklistenerabstract.b((IChatBaseComponent) null);
 +            }
  
 -                tileentitycommand.b(packetplayinsetcommandblock.f());
@@ -221,11 +212,11 @@ index b25b3b481..3785cbe03 100644
  
 -                commandblocklistenerabstract.e();
 -                if (!UtilColor.b(s)) {
--                    this.player.sendMessage(new ChatMessage("advMode.setCommand.success", new Object[]{s}));
+-                    this.player.sendMessage(new ChatMessage("advMode.setCommand.success", new Object[]{s}), SystemUtils.b);
 -                }
 +            commandblocklistenerabstract.e();
 +            if (!UtilColor.b(event.getNewCommand())) {
-+                this.player.sendMessage(new ChatMessage("advMode.setCommand.success", event.getNewCommand()));
++                this.player.sendMessage(new ChatMessage("advMode.setCommand.success", event.getNewCommand()), SystemUtils.b);
              }
 +        }
 +    }
@@ -255,5 +246,5 @@ index b25b3b481..3785cbe03 100644
      }
  
 -- 
-2.26.1
+2.26.2
 

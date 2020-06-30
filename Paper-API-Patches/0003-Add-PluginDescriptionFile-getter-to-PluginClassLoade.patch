@@ -1,4 +1,4 @@
-From 92084244fddbf81b62861cbcb83bf0efa3affc5b Mon Sep 17 00:00:00 2001
+From d9fbef55c79ca36288868757fe57760cf102c88d Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 27 Oct 2019 02:19:43 +0000
 Subject: [PATCH] Add PluginDescriptionFile getter to PluginClassLoader
@@ -6,7 +6,7 @@ Subject: [PATCH] Add PluginDescriptionFile getter to PluginClassLoader
 Can be used to get plugin info before main class has been loaded
 
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 3a02dbe9..c271074e 100644
+index 62f7a681..208eea2b 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
@@ -18,5 +18,5 @@ index 3a02dbe9..c271074e 100644
      private final Map<String, Class<?>> classes = new ConcurrentHashMap<String, Class<?>>();
      private final PluginDescriptionFile description;
 -- 
-2.25.1
+2.26.2
 

@@ -31,7 +31,7 @@ function updateP() {
     update $1 $(getPaperRef $1)
 }
 
-update Paper origin/ver/1.15.2
+update Paper origin/ver/1.16
 updateP Bukkit
 updateP CraftBukkit
 updateP Spigot

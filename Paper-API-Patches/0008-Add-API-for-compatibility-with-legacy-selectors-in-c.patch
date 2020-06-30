@@ -1,4 +1,4 @@
-From c49fbad7558af591813820f2ff07d2eb735ea5ef Mon Sep 17 00:00:00 2001
+From 0949a6a8599de12fd11dd971841947a238cbdd42 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 15 Nov 2019 00:12:51 +0000
 Subject: [PATCH] Add API for compatibility with legacy selectors in command
@@ -6,7 +6,7 @@ Subject: [PATCH] Add API for compatibility with legacy selectors in command
 
 
 diff --git a/src/main/java/org/bukkit/command/SimpleCommandMap.java b/src/main/java/org/bukkit/command/SimpleCommandMap.java
-index 460fda05a..92b66aba6 100644
+index 460fda05..92b66aba 100644
 --- a/src/main/java/org/bukkit/command/SimpleCommandMap.java
 +++ b/src/main/java/org/bukkit/command/SimpleCommandMap.java
 @@ -156,7 +156,10 @@ public class SimpleCommandMap implements CommandMap {
@@ -36,5 +36,5 @@ index 460fda05a..92b66aba6 100644
      public synchronized void clearCommands() {
          for (Map.Entry<String, Command> entry : knownCommands.entrySet()) {
 -- 
-2.26.0
+2.26.2
 

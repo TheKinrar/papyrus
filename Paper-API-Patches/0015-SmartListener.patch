@@ -1,4 +1,4 @@
-From 9674e2fac2754c72566fe91176d61fe53fb69cd4 Mon Sep 17 00:00:00 2001
+From dc48be6dcba36b31f386f170c3e3d48ff56c31ed Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 25 Apr 2020 01:36:28 +0200
 Subject: [PATCH] SmartListener
@@ -6,7 +6,7 @@ Subject: [PATCH] SmartListener
 
 diff --git a/src/main/java/org/bukkit/event/SmartListener.java b/src/main/java/org/bukkit/event/SmartListener.java
 new file mode 100644
-index 000000000..1c87f7ca9
+index 00000000..1c87f7ca
 --- /dev/null
 +++ b/src/main/java/org/bukkit/event/SmartListener.java
 @@ -0,0 +1,19 @@
@@ -30,7 +30,7 @@ index 000000000..1c87f7ca9
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/event/entity/EntityEvent.java b/src/main/java/org/bukkit/event/entity/EntityEvent.java
-index e3a9e3293..164c41b48 100644
+index e3a9e329..164c41b4 100644
 --- a/src/main/java/org/bukkit/event/entity/EntityEvent.java
 +++ b/src/main/java/org/bukkit/event/entity/EntityEvent.java
 @@ -3,15 +3,22 @@ package org.bukkit.event.entity;
@@ -59,7 +59,7 @@ index e3a9e3293..164c41b48 100644
  
 diff --git a/src/main/java/org/bukkit/event/filters/EventFilter.java b/src/main/java/org/bukkit/event/filters/EventFilter.java
 new file mode 100644
-index 000000000..e4b7fbf9d
+index 00000000..e4b7fbf9
 --- /dev/null
 +++ b/src/main/java/org/bukkit/event/filters/EventFilter.java
 @@ -0,0 +1,103 @@
@@ -168,7 +168,7 @@ index 000000000..e4b7fbf9d
 +}
 diff --git a/src/main/java/org/bukkit/event/filters/PlayerFilter.java b/src/main/java/org/bukkit/event/filters/PlayerFilter.java
 new file mode 100644
-index 000000000..0738dd4cf
+index 00000000..0738dd4c
 --- /dev/null
 +++ b/src/main/java/org/bukkit/event/filters/PlayerFilter.java
 @@ -0,0 +1,32 @@
@@ -206,7 +206,7 @@ index 000000000..0738dd4cf
 +}
 diff --git a/src/main/java/org/bukkit/event/filters/WorldFilter.java b/src/main/java/org/bukkit/event/filters/WorldFilter.java
 new file mode 100644
-index 000000000..c34f775c0
+index 00000000..c34f775c
 --- /dev/null
 +++ b/src/main/java/org/bukkit/event/filters/WorldFilter.java
 @@ -0,0 +1,33 @@
@@ -244,7 +244,7 @@ index 000000000..c34f775c0
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/event/player/PlayerEvent.java b/src/main/java/org/bukkit/event/player/PlayerEvent.java
-index b7c8f2c31..45ed944fe 100644
+index b7c8f2c3..45ed944f 100644
 --- a/src/main/java/org/bukkit/event/player/PlayerEvent.java
 +++ b/src/main/java/org/bukkit/event/player/PlayerEvent.java
 @@ -2,22 +2,24 @@ package org.bukkit.event.player;
@@ -277,7 +277,7 @@ index b7c8f2c31..45ed944fe 100644
  
      /**
 diff --git a/src/main/java/org/bukkit/event/player/PlayerShearEntityEvent.java b/src/main/java/org/bukkit/event/player/PlayerShearEntityEvent.java
-index 04b3dce00..339faeaa8 100644
+index 04b3dce0..339faeaa 100644
 --- a/src/main/java/org/bukkit/event/player/PlayerShearEntityEvent.java
 +++ b/src/main/java/org/bukkit/event/player/PlayerShearEntityEvent.java
 @@ -47,7 +47,7 @@ public class PlayerShearEntityEvent extends PlayerEvent implements Cancellable {
@@ -291,7 +291,7 @@ index 04b3dce00..339faeaa8 100644
  
 diff --git a/src/main/java/org/bukkit/event/world/LocalEvent.java b/src/main/java/org/bukkit/event/world/LocalEvent.java
 new file mode 100644
-index 000000000..cf534fa96
+index 00000000..cf534fa9
 --- /dev/null
 +++ b/src/main/java/org/bukkit/event/world/LocalEvent.java
 @@ -0,0 +1,22 @@
@@ -318,7 +318,7 @@ index 000000000..cf534fa96
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/event/world/WorldEvent.java b/src/main/java/org/bukkit/event/world/WorldEvent.java
-index cffeff33f..3d5c0bf87 100644
+index cffeff33..3d5c0bf8 100644
 --- a/src/main/java/org/bukkit/event/world/WorldEvent.java
 +++ b/src/main/java/org/bukkit/event/world/WorldEvent.java
 @@ -14,6 +14,11 @@ public abstract class WorldEvent extends Event {
@@ -334,7 +334,7 @@ index cffeff33f..3d5c0bf87 100644
       * Gets the world primarily involved with this event
       *
 diff --git a/src/main/java/org/bukkit/plugin/RegisteredListener.java b/src/main/java/org/bukkit/plugin/RegisteredListener.java
-index 419aec56b..78f18b39c 100644
+index 419aec56..78f18b39 100644
 --- a/src/main/java/org/bukkit/plugin/RegisteredListener.java
 +++ b/src/main/java/org/bukkit/plugin/RegisteredListener.java
 @@ -67,6 +67,10 @@ public class RegisteredListener {
@@ -350,7 +350,7 @@ index 419aec56b..78f18b39c 100644
  
 diff --git a/src/main/java/org/bukkit/plugin/SmartRegisteredListener.java b/src/main/java/org/bukkit/plugin/SmartRegisteredListener.java
 new file mode 100644
-index 000000000..98a46e290
+index 00000000..98a46e29
 --- /dev/null
 +++ b/src/main/java/org/bukkit/plugin/SmartRegisteredListener.java
 @@ -0,0 +1,29 @@
@@ -384,7 +384,7 @@ index 000000000..98a46e290
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index 5d054d526..67e9bbbd3 100644
+index c3971761..73df5f3c 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 @@ -28,6 +28,7 @@ import org.bukkit.event.Event;
@@ -413,7 +413,7 @@ index 5d054d526..67e9bbbd3 100644
                  eventSet.add(new RegisteredListener(listener, executor, eh.priority(), plugin, eh.ignoreCancelled()));
              }
 diff --git a/src/test/java/org/bukkit/LocationTest.java b/src/test/java/org/bukkit/LocationTest.java
-index 887305c05..840c24bef 100644
+index 887305c0..840c24be 100644
 --- a/src/test/java/org/bukkit/LocationTest.java
 +++ b/src/test/java/org/bukkit/LocationTest.java
 @@ -189,7 +189,7 @@ public class LocationTest {
@@ -426,7 +426,7 @@ index 887305c05..840c24bef 100644
      }
  
 diff --git a/src/test/java/org/bukkit/plugin/TimedRegisteredListenerTest.java b/src/test/java/org/bukkit/plugin/TimedRegisteredListenerTest.java
-index 351fc4a9f..7726c184e 100644
+index 351fc4a9..7726c184 100644
 --- a/src/test/java/org/bukkit/plugin/TimedRegisteredListenerTest.java
 +++ b/src/test/java/org/bukkit/plugin/TimedRegisteredListenerTest.java
 @@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
@@ -449,7 +449,7 @@ index 351fc4a9f..7726c184e 100644
  
          TimedRegisteredListener trl = new TimedRegisteredListener(listener, executor, EventPriority.NORMAL, plugin, false);
 diff --git a/src/test/java/org/bukkit/plugin/messaging/TestPlayer.java b/src/test/java/org/bukkit/plugin/messaging/TestPlayer.java
-index 1b7642dc1..bb482578f 100644
+index 1b7642dc..bb482578 100644
 --- a/src/test/java/org/bukkit/plugin/messaging/TestPlayer.java
 +++ b/src/test/java/org/bukkit/plugin/messaging/TestPlayer.java
 @@ -5,6 +5,8 @@ import java.lang.reflect.InvocationHandler;

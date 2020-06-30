@@ -1,11 +1,11 @@
-From fe93c8b702daedac23c556aa81b08980dd540478 Mon Sep 17 00:00:00 2001
+From c063826a94522e6bbe55d862c0eafefe2f5c318a Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 29 Dec 2019 22:09:11 +0000
 Subject: [PATCH] Implement Skeleton#getAttackDelay and setAttackDelay
 
 
 diff --git a/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java b/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java
-index 3c95c0428..5655ea104 100644
+index 84f83d48a..6b2fe9120 100644
 --- a/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java
 +++ b/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java
 @@ -6,6 +6,7 @@ import javax.annotation.Nullable;
@@ -18,7 +18,7 @@ index 3c95c0428..5655ea104 100644
          @Override
 diff --git a/src/main/java/net/minecraft/server/PathfinderGoalBowShoot.java b/src/main/java/net/minecraft/server/PathfinderGoalBowShoot.java
 new file mode 100644
-index 000000000..37398e68b
+index 000000000..9b34ca463
 --- /dev/null
 +++ b/src/main/java/net/minecraft/server/PathfinderGoalBowShoot.java
 @@ -0,0 +1,129 @@
@@ -30,7 +30,7 @@ index 000000000..37398e68b
 +
 +    private final T a;
 +    private final double b;
-+    public int c; // Papyrus - make public
++    public int c;
 +    private final float d;
 +    private int e = -1;
 +    private int f;
@@ -43,7 +43,7 @@ index 000000000..37398e68b
 +        this.b = d0;
 +        this.c = i;
 +        this.d = f * f;
-+        this.a(EnumSet.of(Type.MOVE, Type.LOOK));
++        this.a(EnumSet.of(PathfinderGoal.Type.MOVE, PathfinderGoal.Type.LOOK));
 +    }
 +
 +    public void setDelay(int delay) { this.a(delay); } // Papyrus - OBFHELPER
@@ -68,16 +68,16 @@ index 000000000..37398e68b
 +    @Override
 +    public void c() {
 +        super.c();
-+        this.a.q(true);
++        this.a.setAggressive(true);
 +    }
 +
 +    @Override
 +    public void d() {
 +        super.d();
-+        this.a.q(false);
++        this.a.setAggressive(false);
 +        this.f = 0;
 +        this.e = -1;
-+        this.a.dH();
++        this.a.clearActiveItem();
 +    }
 +
 +    @Override
@@ -134,12 +134,12 @@ index 000000000..37398e68b
 +
 +            if (this.a.isHandRaised()) {
 +                if (!flag && this.f < -60) {
-+                    this.a.dH();
++                    this.a.clearActiveItem();
 +                } else if (flag) {
-+                    int i = this.a.dF();
++                    int i = this.a.dZ();
 +
 +                    if (i >= 20) {
-+                        this.a.dH();
++                        this.a.clearActiveItem();
 +                        ((IRangedEntity) this.a).a(entityliving, ItemBow.a(i));
 +                        this.e = this.c;
 +                    }
@@ -171,5 +171,5 @@ index 02df66ecf..d157909c7 100644
 +    }
  }
 -- 
-2.26.0
+2.26.2
 

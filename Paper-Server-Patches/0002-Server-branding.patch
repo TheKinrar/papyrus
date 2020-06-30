@@ -1,14 +1,14 @@
-From 6c61dd0034dae084ec9662420214c431c328b20e Mon Sep 17 00:00:00 2001
+From 41ad5d090b85621e851059b46fcd2ea264b6b07f Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 11:26:33 +0100
 Subject: [PATCH] Server branding
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 8444819f07..4321cc4bdf 100644
+index 3b0f3127b..2448c2329 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-@@ -98,7 +98,7 @@ public class PaperConfig {
+@@ -97,7 +97,7 @@ public class PaperConfig {
          }
  
          if (!metricsStarted) {
@@ -19,7 +19,7 @@ index 8444819f07..4321cc4bdf 100644
      }
 diff --git a/src/main/java/fr/thekinrar/papyrus/Metrics.java b/src/main/java/fr/thekinrar/papyrus/Metrics.java
 new file mode 100644
-index 0000000000..7c284c9b2f
+index 000000000..7c284c9b2
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/Metrics.java
 @@ -0,0 +1,633 @@
@@ -658,7 +658,7 @@ index 0000000000..7c284c9b2f
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 new file mode 100644
-index 0000000000..4168eafc0d
+index 000000000..4168eafc0
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 @@ -0,0 +1,193 @@
@@ -857,7 +857,7 @@ index 0000000000..4168eafc0d
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
 new file mode 100644
-index 0000000000..52274c1bb3
+index 000000000..52274c1bb
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
 @@ -0,0 +1,62 @@
@@ -924,10 +924,18 @@ index 0000000000..52274c1bb3
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/DedicatedServer.java b/src/main/java/net/minecraft/server/DedicatedServer.java
-index 32cd645abb..b9929f613f 100644
+index 8b2755a3b..9f73f07ff 100644
 --- a/src/main/java/net/minecraft/server/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/DedicatedServer.java
-@@ -194,6 +194,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
+@@ -7,6 +7,7 @@ import com.mojang.authlib.GameProfileRepository;
+ import com.mojang.authlib.minecraft.MinecraftSessionService;
+ import com.mojang.datafixers.DataFixer;
+ import java.io.BufferedReader;
++import java.io.File;
+ import java.io.IOException;
+ import java.io.InputStreamReader;
+ import java.net.InetAddress;
+@@ -170,6 +171,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
          com.destroystokyo.paper.PaperConfig.registerCommands();
          com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // load version history now
          // Paper end
@@ -941,13 +949,13 @@ index 32cd645abb..b9929f613f 100644
 +        fr.thekinrar.papyrus.PapyrusConfig.registerCommands();
 +        // Papyrus end
  
-         this.setSpawnAnimals(dedicatedserverproperties.spawnAnimals);
-         this.setSpawnNPCs(dedicatedserverproperties.spawnNpcs);
+         this.setPVP(dedicatedserverproperties.pvp);
+         this.setAllowFlight(dedicatedserverproperties.allowFlight);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 4ab6579032..2218443b3e 100644
+index d8d11ed96..b57c68b16 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1570,7 +1570,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1446,7 +1446,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      }
  
      public String getServerModName() {
@@ -957,31 +965,31 @@ index 4ab6579032..2218443b3e 100644
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 032b7acee8..b0b791e11a 100644
+index b598c4869..a942f1620 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
-@@ -113,6 +113,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
-     final java.lang.Object stuctureLock = new Object();
-     // Paper end
+@@ -102,6 +102,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+     public final Map<Explosion.CacheKey, Float> explosionDensityCache = new HashMap<>(); // Paper - Optimize explosions
+     public java.util.ArrayDeque<BlockRedstoneTorch.RedstoneUpdateInfo> redstoneUpdateInfos; // Paper - Move from Map in BlockRedstoneTorch to here
  
 +    public final fr.thekinrar.papyrus.PapyrusWorldConfig papyrusConfig; // Papyrus
 +
      public CraftWorld getWorld() {
          return this.world;
      }
-@@ -136,6 +138,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
-     protected World(WorldData worlddata, DimensionManager dimensionmanager, java.util.concurrent.Executor executor, BiFunction<World, WorldProvider, IChunkProvider> bifunction, GameProfilerFiller gameprofilerfiller, boolean flag, org.bukkit.generator.ChunkGenerator gen, org.bukkit.World.Environment env) { // Paper - executor
-         this.spigotConfig = new org.spigotmc.SpigotWorldConfig( worlddata.getName() ); // Spigot
-         this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(worlddata.getName(), this.spigotConfig); // Paper
-+        this.papyrusConfig = new fr.thekinrar.papyrus.PapyrusWorldConfig(worlddata.getName()); // Papyrus
+@@ -120,6 +122,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+     protected World(WorldDataMutable worlddatamutable, ResourceKey<World> resourcekey, ResourceKey<DimensionManager> resourcekey1, DimensionManager dimensionmanager, Supplier<GameProfilerFiller> supplier, boolean flag, boolean flag1, long i, org.bukkit.generator.ChunkGenerator gen, org.bukkit.World.Environment env, java.util.concurrent.Executor executor) {
+         this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((WorldDataServer) worlddatamutable).getName()); // Spigot
+         this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig((((WorldDataServer)worlddatamutable).getName()), this.spigotConfig); // Paper
++        this.papyrusConfig = new fr.thekinrar.papyrus.PapyrusWorldConfig(((WorldDataServer) worlddatamutable).getName()); // Papyrus
          this.chunkPacketBlockController = this.paperConfig.antiXray ? new ChunkPacketBlockControllerAntiXray(this.paperConfig, executor) : ChunkPacketBlockController.NO_OPERATION_INSTANCE; // Paper - Anti-Xray
          this.generator = gen;
-         if (dimensionmanager.world == null) dimensionmanager.world = (WorldServer) this; // Paper
+         this.world = new CraftWorld((WorldServer) this, gen, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 568aefdf69..caad88cf46 100644
+index 25e012678..33c03b520 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -205,7 +205,7 @@ import javax.annotation.Nullable; // Paper
+@@ -229,7 +229,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
@@ -990,16 +998,16 @@ index 568aefdf69..caad88cf46 100644
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
-@@ -815,6 +815,7 @@ public final class CraftServer implements Server {
+@@ -846,6 +846,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
 +        fr.thekinrar.papyrus.PapyrusConfig.init((File) console.options.valueOf("papyrus-settings")); // Papyrus
          for (WorldServer world : console.getWorlds()) {
-             world.worldData.setDifficulty(config.difficulty);
+             world.worldDataServer.setDifficulty(config.difficulty);
              world.setSpawnFlags(config.spawnMonsters, config.spawnAnimals);
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 2ea6f5b7da..283165f0fa 100644
+index 83151f3d7..cddce935a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -139,6 +139,14 @@ public class Main {
@@ -1018,7 +1026,7 @@ index 2ea6f5b7da..283165f0fa 100644
                  acceptsAll(asList("server-name"), "Name of the server")
                          .withRequiredArg()
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index 513c1041c3..4857d4c217 100644
+index 513c1041c..4857d4c21 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
 @@ -26,7 +26,7 @@ public class WatchdogThread extends Thread
@@ -1073,7 +1081,7 @@ index 513c1041c3..4857d4c217 100644
  
  
 diff --git a/src/main/resources/log4j2.xml b/src/main/resources/log4j2.xml
-index 8af159abd3..3267a3b9ef 100644
+index 8af159abd..3267a3b9e 100644
 --- a/src/main/resources/log4j2.xml
 +++ b/src/main/resources/log4j2.xml
 @@ -9,7 +9,7 @@
