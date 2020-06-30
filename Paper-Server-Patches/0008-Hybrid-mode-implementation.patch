@@ -1,4 +1,4 @@
-From 0411fad3b2104acba011f682dfbb564968dbaa7b Mon Sep 17 00:00:00 2001
+From 6d583e5d60e3f99f525fd120806cb390d39b8143 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -675,7 +675,7 @@ index 0ea6d49a8..ced065f03 100644
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 3ce9bad7b..9aeb35bc7 100644
+index 8b2cfb592..5b9dd6f35 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -12,6 +12,8 @@ import java.util.List;
@@ -687,7 +687,7 @@ index 3ce9bad7b..9aeb35bc7 100644
  import net.minecraft.server.BlockPosition;
  import net.minecraft.server.BlockPropertyInstrument;
  import net.minecraft.server.ChatMessage;
-@@ -118,7 +120,6 @@ import org.bukkit.entity.ThrownPotion;
+@@ -120,7 +122,6 @@ import org.bukkit.entity.ThrownPotion;
  import org.bukkit.entity.Vehicle;
  import org.bukkit.entity.Villager;
  import org.bukkit.entity.Villager.Profession;
@@ -695,7 +695,7 @@ index 3ce9bad7b..9aeb35bc7 100644
  import org.bukkit.event.Cancellable;
  import org.bukkit.event.Event;
  import org.bukkit.event.Event.Result;
-@@ -479,7 +480,12 @@ public class CraftEventFactory {
+@@ -482,7 +483,12 @@ public class CraftEventFactory {
          if (cancelledBlock) {
              event.setUseInteractedBlock(Event.Result.DENY);
          }

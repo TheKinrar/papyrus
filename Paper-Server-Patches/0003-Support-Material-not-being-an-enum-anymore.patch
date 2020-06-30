@@ -1,4 +1,4 @@
-From b39402c342d77a40e8aa3321a1fac2611686e24b Mon Sep 17 00:00:00 2001
+From 49afb238b1011b4efb0c74a42e3ed4d257277d0f Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore
@@ -417,10 +417,10 @@ index ecc32c2fb..335ec750e 100644
              default:
                  throw new IllegalArgumentException("Unknown SkullType for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index d4b77d70b..3ce9bad7b 100644
+index 521e20426..8b2cfb592 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1320,14 +1320,14 @@ public class CraftEventFactory {
+@@ -1323,14 +1323,14 @@ public class CraftEventFactory {
          org.bukkit.World bukkitWorld = world.getWorld();
          Block igniter = bukkitWorld.getBlockAt(source.getX(), source.getY(), source.getZ());
          IgniteCause cause;
