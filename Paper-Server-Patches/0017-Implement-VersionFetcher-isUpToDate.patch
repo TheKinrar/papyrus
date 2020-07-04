@@ -1,0 +1,54 @@
+From c0cd232ec76e23e04be82220a353c90185c6d817 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Sat, 4 Jul 2020 22:00:43 +0200
+Subject: [PATCH] Implement VersionFetcher#isUpToDate
+
+
+diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
+index 49a38c660..84f67f79f 100644
+--- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
++++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
+@@ -31,6 +31,11 @@ public class PaperVersionFetcher implements VersionFetcher {
+         return history != null ? history + "\n" + updateMessage : updateMessage;
+     }
+ 
++    @Override
++    public boolean isUpToDate() {
++        return false;
++    }
++
+     private static @Nullable String getMinecraftVersion() {
+         if (mcVer == null) {
+             java.util.regex.Matcher matcher = VER_PATTERN.matcher(org.bukkit.Bukkit.getBukkitVersion());
+diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
+index f3014cef7..ce8c06557 100644
+--- a/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
++++ b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
+@@ -7,6 +7,7 @@ import com.google.common.io.Resources;
+ import com.google.gson.Gson;
+ import com.google.gson.JsonObject;
+ import com.google.gson.JsonSyntaxException;
++import org.bukkit.Bukkit;
+ 
+ import java.io.BufferedReader;
+ import java.io.IOException;
+@@ -30,6 +31,16 @@ public class PapyrusVersionFetcher implements VersionFetcher {
+         return history != null ? history + "\n" + updateMessage : updateMessage;
+     }
+ 
++    @Override
++    public boolean isUpToDate() {
++        String[] parts = Bukkit.getVersion().substring("git-Papyrus-".length()).split("[-\\s]");
++        try {
++            return fetchDistanceFromSiteApi(Integer.parseInt(parts[0]), getMinecraftVersion()) == 0;
++        } catch (NumberFormatException ignored) {
++            return false;
++        }
++    }
++
+     private static String getMinecraftVersion() {
+         if (mcVer == null) {
+             java.util.regex.Matcher matcher = VER_PATTERN.matcher(org.bukkit.Bukkit.getBukkitVersion());
+-- 
+2.27.0
+
