@@ -1,4 +1,4 @@
-From e2924febca77c7bf4af8a3b933835566522ca8df Mon Sep 17 00:00:00 2001
+From d7dbda81b48a311e5be18614041c2f6b162c3192 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
@@ -633,7 +633,7 @@ index 000000000..707268ea3
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
-index 6ef2baa62..5553798a7 100644
+index e944a0f94..3f9ba040a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 @@ -14,6 +14,8 @@ import java.util.jar.JarEntry;
@@ -646,10 +646,10 @@ index 6ef2baa62..5553798a7 100644
  import joptsimple.OptionSet;
  import joptsimple.OptionSpec;
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 257f46003..8ab6e926b 100644
+index 90c1067ca..5ba3879d4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -302,6 +302,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -311,6 +311,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
      public byte[] processClass(PluginDescriptionFile pdf, String path, byte[] clazz) {
          try {
              clazz = Commodore.convert(clazz, !isLegacy(pdf));
@@ -661,5 +661,5 @@ index 257f46003..8ab6e926b 100644
              Bukkit.getLogger().log(Level.SEVERE, "Fatal error trying to convert " + pdf.getFullName() + ":" + path, ex);
          }
 -- 
-2.26.2
+2.27.0
 

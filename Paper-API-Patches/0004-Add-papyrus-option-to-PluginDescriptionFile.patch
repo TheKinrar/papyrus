@@ -1,14 +1,14 @@
-From 7940e9f4f9c5290d9aa26abeb26b0924c16a4e09 Mon Sep 17 00:00:00 2001
+From ea64a1d4ef88abd2770b5c28daed6de78e5af111 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 15 Jan 2020 02:38:47 +0000
 Subject: [PATCH] Add papyrus option to PluginDescriptionFile
 
 
 diff --git a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
-index 70d50819..f68eaa50 100644
+index f78a7df6..9933dcf5 100644
 --- a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
 +++ b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
-@@ -241,6 +241,7 @@ public final class PluginDescriptionFile {
+@@ -247,6 +247,7 @@ public final class PluginDescriptionFile {
      private PermissionDefault defaultPerm = PermissionDefault.OP;
      private Set<PluginAwareness> awareness = ImmutableSet.of();
      private String apiVersion = null;
@@ -16,7 +16,7 @@ index 70d50819..f68eaa50 100644
  
      public PluginDescriptionFile(@NotNull final InputStream stream) throws InvalidDescriptionException {
          loadMap(asMap(YAML.get().load(stream)));
-@@ -927,6 +928,10 @@ public final class PluginDescriptionFile {
+@@ -957,6 +958,10 @@ public final class PluginDescriptionFile {
          return apiVersion;
      }
  
@@ -27,7 +27,7 @@ index 70d50819..f68eaa50 100644
      /**
       * @return unused
       * @deprecated unused
-@@ -1092,6 +1097,14 @@ public final class PluginDescriptionFile {
+@@ -1136,6 +1141,14 @@ public final class PluginDescriptionFile {
          if (map.get("prefix") != null) {
              prefix = map.get("prefix").toString();
          }
@@ -42,7 +42,7 @@ index 70d50819..f68eaa50 100644
      }
  
      @NotNull
-@@ -1161,6 +1174,8 @@ public final class PluginDescriptionFile {
+@@ -1209,6 +1222,8 @@ public final class PluginDescriptionFile {
              map.put("prefix", prefix);
          }
  
@@ -77,5 +77,5 @@ index 208eea2b..f20e320b 100644
              Class<?> jarClass;
              try {
 -- 
-2.26.2
+2.27.0
 

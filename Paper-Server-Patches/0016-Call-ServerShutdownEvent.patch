@@ -1,11 +1,11 @@
-From a38896070f7cbea86105afb15eb32224993fa4d4 Mon Sep 17 00:00:00 2001
+From ee53cc7cec80cedb06d3c4fc6f0f895bca0a91fc Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 7 Mar 2020 02:58:15 +0000
 Subject: [PATCH] Call ServerShutdownEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 1df715dc6..9c0100c27 100644
+index 2e57f0545..7453b1f8a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -69,6 +69,7 @@ import org.bukkit.craftbukkit.Main;
@@ -16,7 +16,7 @@ index 1df715dc6..9c0100c27 100644
  import org.spigotmc.SlackActivityAccountant; // Spigot
  
  public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTask> implements IMojangStatistics, ICommandListener, AutoCloseable {
-@@ -863,6 +864,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -864,6 +865,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.safeShutdown(flag, false);
      }
      public void safeShutdown(boolean flag, boolean isRestarting) {
@@ -26,5 +26,5 @@ index 1df715dc6..9c0100c27 100644
          this.isRestarting = isRestarting;
          if (flag) {
 -- 
-2.26.2
+2.27.0
 

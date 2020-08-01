@@ -1,14 +1,14 @@
-From 82d8284804e59f33672583d976abb9aab30b64e4 Mon Sep 17 00:00:00 2001
+From 631aa858c5f74e9b5ad38cc1d35bde889e4846ce Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index b65e2cce..028e98ea 100644
+index 3f2f99b3..12dfb966 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -1746,6 +1746,17 @@ public final class Bukkit {
+@@ -1773,6 +1773,17 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -27,10 +27,10 @@ index b65e2cce..028e98ea 100644
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index fde68331..7a17e2a3 100644
+index 35b74c1d..b27e40dd 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1525,4 +1525,13 @@ public interface Server extends PluginMessageRecipient {
+@@ -1548,4 +1548,13 @@ public interface Server extends PluginMessageRecipient {
      @NotNull
      com.destroystokyo.paper.entity.ai.MobGoals getMobGoals();
      // Paper end
@@ -45,10 +45,10 @@ index fde68331..7a17e2a3 100644
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index fb18078b..ad6d4def 100644
+index 55af277a..8c33297d 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1787,6 +1787,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -1794,6 +1794,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * @param canAlwaysOpenCommandBlocks whether this player can always open command blocks
       */
      void setCanAlwaysOpenCommandBlocks(boolean canAlwaysOpenCommandBlocks);
@@ -81,5 +81,5 @@ index 16b5fd27..86f1a6b2 100644
           * When all effects are removed due to a bucket of milk.
           */
 -- 
-2.26.2
+2.27.0
 
