@@ -1,4 +1,4 @@
-From 9674e2fac2754c72566fe91176d61fe53fb69cd4 Mon Sep 17 00:00:00 2001
+From fba4906d76b535a76f55212377cb2f8a36df8fb9 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 25 Apr 2020 01:36:28 +0200
 Subject: [PATCH] SmartListener
@@ -384,7 +384,7 @@ index 000000000..98a46e290
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index 5d054d526..67e9bbbd3 100644
+index c3971761d..73df5f3cc 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 @@ -28,6 +28,7 @@ import org.bukkit.event.Event;
@@ -470,5 +470,5 @@ index 1b7642dc1..bb482578f 100644
              throw new Error(t);
          }
 -- 
-2.26.2
+2.27.0
 

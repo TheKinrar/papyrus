@@ -1,11 +1,11 @@
-From d924dfd0828b77c16f2bf1fe7ba1ccf44611900c Mon Sep 17 00:00:00 2001
+From 5cb6b744bf1075c93e1f3236234249a76a0b0fa3 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 03:44:21 +0100
 Subject: [PATCH] POM changes
 
 
 diff --git a/pom.xml b/pom.xml
-index e4c63bb76..d83f303c2 100644
+index e4c63bb76c..d83f303c25 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -1,11 +1,11 @@
@@ -63,7 +63,7 @@ index e4c63bb76..d83f303c2 100644
                  </configuration>
                  <executions>
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
-index 674096cab..b9f5ac9bd 100644
+index 674096cab1..b9f5ac9bd0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 @@ -11,7 +11,7 @@ public final class Versioning {
@@ -76,5 +76,5 @@ index 674096cab..b9f5ac9bd 100644
  
          if (stream != null) {
 -- 
-2.26.1
+2.27.0
 

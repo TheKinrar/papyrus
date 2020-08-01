@@ -1,4 +1,4 @@
-From 6484c857cfb49b9f4ea3ba30a01b49cb949bac71 Mon Sep 17 00:00:00 2001
+From 81ef62ea6aa99f195fa696cd595873d1a4c49f43 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 15 Jan 2020 07:27:06 +0000
 Subject: [PATCH] Differenciate papyrus plugins in /plugins
@@ -33,5 +33,5 @@ index 3dcecf3a5..c3f339b31 100644
  
          return "(" + plugins.size() + "): " + pluginList.toString();
 -- 
-2.26.0
+2.27.0
 

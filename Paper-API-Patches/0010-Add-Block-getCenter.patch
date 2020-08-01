@@ -1,11 +1,11 @@
-From 0936c1c7ae2ac5034566fa4230d99e6208f2def8 Mon Sep 17 00:00:00 2001
+From 76dd798d46b62d625b0d906cf50fa98f9c602003 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Thu, 21 Nov 2019 11:58:39 +0000
 Subject: [PATCH] Add Block#getCenter
 
 
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index 19a3b2a1f..d3ed22992 100644
+index 999f2a362..6250aa15a 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
 @@ -228,6 +228,13 @@ public interface Block extends Metadatable {
@@ -23,5 +23,5 @@ index 19a3b2a1f..d3ed22992 100644
       * Stores the location of the block in the provided Location object.
       * <p>
 -- 
-2.26.0
+2.27.0
 

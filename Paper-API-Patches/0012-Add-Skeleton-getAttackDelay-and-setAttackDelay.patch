@@ -1,4 +1,4 @@
-From 24b596a7a7c2853189c74ef7f1594c83e75a6842 Mon Sep 17 00:00:00 2001
+From fc9f71901bf5af7416be0ae75ede71e04ade2379 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 29 Dec 2019 22:06:28 +0000
 Subject: [PATCH] Add Skeleton#getAttackDelay and setAttackDelay
@@ -20,5 +20,5 @@ index 1c367f78e..f48a20925 100644
       * @deprecated classes are different types
       */
 -- 
-2.26.0
+2.27.0
 

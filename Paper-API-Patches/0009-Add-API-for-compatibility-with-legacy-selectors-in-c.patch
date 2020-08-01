@@ -1,4 +1,4 @@
-From c49fbad7558af591813820f2ff07d2eb735ea5ef Mon Sep 17 00:00:00 2001
+From d71991c2a0cda0e189b4382d541972826b526a59 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 15 Nov 2019 00:12:51 +0000
 Subject: [PATCH] Add API for compatibility with legacy selectors in command
@@ -36,5 +36,5 @@ index 460fda05a..92b66aba6 100644
      public synchronized void clearCommands() {
          for (Map.Entry<String, Command> entry : knownCommands.entrySet()) {
 -- 
-2.26.0
+2.27.0
 

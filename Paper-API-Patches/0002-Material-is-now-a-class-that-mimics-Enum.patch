@@ -1,4 +1,4 @@
-From 74f5b823a4a37f1ed3a3df556fb4f85fea604c5e Mon Sep 17 00:00:00 2001
+From e53206d806879677904e7c1371b69c2a9a7de434 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 12:02:30 +0100
 Subject: [PATCH] Material is now a class that mimics Enum
@@ -13612,5 +13612,5 @@ index 5d51c9286..3048bd0d9 100644
                  break;
              default:
 -- 
-2.26.1
+2.27.0
 

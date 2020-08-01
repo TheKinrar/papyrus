@@ -1,11 +1,11 @@
-From 5d56981830cd9d170cf9cc5670e229ca956a19c5 Mon Sep 17 00:00:00 2001
+From d0614e87d08940b886517809684485e45c523e26 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 03:39:15 +0100
 Subject: [PATCH] POM changes
 
 
 diff --git a/pom.xml b/pom.xml
-index 2cb97140..d3932a98 100644
+index 20c473f52..594c13404 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -3,18 +3,18 @@
@@ -34,5 +34,5 @@ index 2cb97140..d3932a98 100644
  
      <properties>
 -- 
-2.25.1
+2.27.0
 

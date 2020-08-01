@@ -1,4 +1,4 @@
-From 3a39ee2ae986aee242e7e36b7a716074d3d970e4 Mon Sep 17 00:00:00 2001
+From 0093428af98a7562f4292eb8e3090db41e0c35e9 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 1 Mar 2020 01:17:13 +0000
 Subject: [PATCH] More plugin-loading related APIs
@@ -114,7 +114,7 @@ index 86cc5025a..62d20b9d9 100644
       * Disables all the loaded plugins
       */
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 4931bc86d..ec1df0845 100644
+index 26685f59b..1cd21099c 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 @@ -365,6 +365,23 @@ public final class SimplePluginManager implements PluginManager {
@@ -164,7 +164,7 @@ index 4931bc86d..ec1df0845 100644
          }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index 528ceeb22..5d054d526 100644
+index 384edf989..c3971761d 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 @@ -68,9 +68,14 @@ public final class JavaPluginLoader implements PluginLoader {
@@ -195,5 +195,5 @@ index 528ceeb22..5d054d526 100644
          @SuppressWarnings("deprecation")
          final File oldDataFolder = new File(parentFile, description.getRawName());
 -- 
-2.26.1
+2.27.0
 
