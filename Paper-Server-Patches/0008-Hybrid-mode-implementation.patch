@@ -1,4 +1,4 @@
-From a54b80dd0e591546028f4349c086edd667957a91 Mon Sep 17 00:00:00 2001
+From da0781fbd4c3321ee78eac60d3e5328a8ab8dafa Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -152,7 +152,7 @@ index 000000000..a46fefcd9
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/EntityHuman.java b/src/main/java/net/minecraft/server/EntityHuman.java
-index 2cada09ce..2a26d050c 100644
+index e411f6280..3b8c0977c 100644
 --- a/src/main/java/net/minecraft/server/EntityHuman.java
 +++ b/src/main/java/net/minecraft/server/EntityHuman.java
 @@ -17,10 +17,14 @@ import java.util.function.Predicate;
@@ -209,7 +209,7 @@ index 2cada09ce..2a26d050c 100644
          float f = this.inventory.a(iblockdata);
  
 diff --git a/src/main/java/net/minecraft/server/EntityLiving.java b/src/main/java/net/minecraft/server/EntityLiving.java
-index b5c595a4b..a8071911c 100644
+index 1a61bc7c8..0eddcda20 100644
 --- a/src/main/java/net/minecraft/server/EntityLiving.java
 +++ b/src/main/java/net/minecraft/server/EntityLiving.java
 @@ -920,9 +920,11 @@ public abstract class EntityLiving extends Entity {
@@ -252,7 +252,7 @@ index b5c595a4b..a8071911c 100644
  
          return (MobEffect) this.effects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 4550e3449..387341b96 100644
+index c72cfd2bd..f9b17ff16 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -28,6 +28,8 @@ import org.bukkit.craftbukkit.CraftWorld;
@@ -264,7 +264,7 @@ index 4550e3449..387341b96 100644
  import org.bukkit.event.inventory.InventoryType;
  import org.bukkit.event.player.PlayerChangedMainHandEvent;
  import org.bukkit.event.player.PlayerChangedWorldEvent;
-@@ -561,7 +563,12 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -562,7 +564,12 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
  
              if (this.expTotal != this.lastSentExp) {
                  this.lastSentExp = this.expTotal;
@@ -278,10 +278,10 @@ index 4550e3449..387341b96 100644
  
              if (this.ticksLived % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index b7946fa0f..2e57f0545 100644
+index 1f528e3fa..475e87b83 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1300,6 +1300,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1306,6 +1306,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.methodProfiler.exitEnter("levels");
          Iterator iterator = this.getWorlds().iterator();
  
@@ -301,7 +301,7 @@ index b7946fa0f..2e57f0545 100644
          // Run tasks that are waiting on processing
          MinecraftTimings.processQueueTimer.startTiming(); // Spigot
 diff --git a/src/main/java/net/minecraft/server/NetworkManager.java b/src/main/java/net/minecraft/server/NetworkManager.java
-index d5cc2af83..68468b115 100644
+index eb28c4df8..3d4c97758 100644
 --- a/src/main/java/net/minecraft/server/NetworkManager.java
 +++ b/src/main/java/net/minecraft/server/NetworkManager.java
 @@ -26,6 +26,7 @@ import org.apache.logging.log4j.LogManager;
@@ -313,7 +313,7 @@ index d5cc2af83..68468b115 100644
  public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
  
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index e39ccf519..fb155ed45 100644
+index b6fac7f77..f5dc5df2d 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -45,6 +45,8 @@ import org.bukkit.inventory.InventoryView;
@@ -325,7 +325,7 @@ index e39ccf519..fb155ed45 100644
  import java.util.Collections;
  import java.util.Iterator;
  import java.util.Optional;
-@@ -1092,6 +1094,13 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1091,6 +1093,13 @@ public class PlayerConnection implements PacketListenerPlayIn {
                              }
                              // Paper end
  
@@ -339,7 +339,7 @@ index e39ccf519..fb155ed45 100644
                              if (!this.player.H() && (!this.player.getWorldServer().getGameRules().getBoolean(GameRules.DISABLE_ELYTRA_MOVEMENT_CHECK) || !this.player.isGliding())) {
                                  float f2 = this.player.isGliding() ? 300.0F : 100.0F;
  
-@@ -1367,6 +1376,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1365,6 +1374,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
  
          switch (packetplayinblockdig_enumplayerdigtype) {
              case SWAP_ITEM_WITH_OFFHAND:
@@ -348,7 +348,7 @@ index e39ccf519..fb155ed45 100644
                  if (!this.player.isSpectator()) {
                      ItemStack itemstack = this.player.b(EnumHand.OFF_HAND);
  
-@@ -1394,6 +1405,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1392,6 +1403,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
  
                  return;
              case DROP_ITEM:
@@ -357,7 +357,7 @@ index e39ccf519..fb155ed45 100644
                  if (!this.player.isSpectator()) {
                      // limit how quickly items can be dropped
                      // If the ticks aren't the same then the count starts from 0 and we update the lastDropTick.
-@@ -1415,12 +1428,16 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1413,12 +1426,16 @@ public class PlayerConnection implements PacketListenerPlayIn {
  
                  return;
              case DROP_ALL_ITEMS:
@@ -374,7 +374,7 @@ index e39ccf519..fb155ed45 100644
                  this.player.releaseActiveItem();
                  return;
              case START_DESTROY_BLOCK:
-@@ -1761,6 +1778,11 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1759,6 +1776,11 @@ public class PlayerConnection implements PacketListenerPlayIn {
                  }
              }
  
@@ -386,7 +386,7 @@ index e39ccf519..fb155ed45 100644
              // CraftBukkit start
              if (isSync) {
                  try {
-@@ -2783,6 +2805,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -2781,6 +2803,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
      // CraftBukkit start
      private static final MinecraftKey CUSTOM_REGISTER = new MinecraftKey("register");
      private static final MinecraftKey CUSTOM_UNREGISTER = new MinecraftKey("unregister");
@@ -394,7 +394,7 @@ index e39ccf519..fb155ed45 100644
  
      @Override
      public void a(PacketPlayInCustomPayload packetplayincustompayload) {
-@@ -2807,6 +2830,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -2805,6 +2828,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
                  PlayerConnection.LOGGER.error("Couldn\'t unregister custom payload", ex);
                  this.disconnect("Invalid payload UNREGISTER!");
              }
@@ -414,7 +414,7 @@ index e39ccf519..fb155ed45 100644
              try {
                  byte[] data = new byte[packetplayincustompayload.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 49413a6d5..26a0d6c40 100644
+index 21feb6d27..fecb78337 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
@@ -470,7 +470,7 @@ index 49413a6d5..26a0d6c40 100644
          this.d(entityplayer);
          entityplayer.getStatisticManager().c();
          entityplayer.B().a(entityplayer);
-@@ -1176,17 +1180,32 @@ public abstract class PlayerList {
+@@ -1188,17 +1192,32 @@ public abstract class PlayerList {
      }
  
      public void updateClient(EntityPlayer entityplayer) {
@@ -626,7 +626,7 @@ index 3777aba5f..bba20b959 100644
      public Collection<PotionEffect> getActivePotionEffects() {
          List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index e50976471..11a01cfcb 100644
+index 078614b2b..b38805735 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -10,6 +10,7 @@ import com.google.common.base.Preconditions;
@@ -675,7 +675,7 @@ index e50976471..11a01cfcb 100644
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 82f4a924a..641dfc83c 100644
+index db19b03ed..5a44fc1a8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -12,6 +12,8 @@ import java.util.List;
@@ -710,5 +710,5 @@ index 82f4a924a..641dfc83c 100644
          return event;
      }
 -- 
-2.27.0
+2.28.0
 

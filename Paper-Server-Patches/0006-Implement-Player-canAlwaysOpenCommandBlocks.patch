@@ -1,4 +1,4 @@
-From a786294794af0ee6e30b0995d9ee9630d4aace7f Mon Sep 17 00:00:00 2001
+From 008433188bdf60babc23662c79f89506eb31da46 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
@@ -72,10 +72,10 @@ index 6d192b274..72b65abe0 100644
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 9382e8f79..49413a6d5 100644
+index 38d83bb31..21feb6d27 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -898,6 +898,9 @@ public abstract class PlayerList {
+@@ -899,6 +899,9 @@ public abstract class PlayerList {
          GameProfile gameprofile = entityplayer.getProfile();
          int i = this.server.b(gameprofile);
  
@@ -86,7 +86,7 @@ index 9382e8f79..49413a6d5 100644
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 72cd52fd7..e50976471 100644
+index adf918fd7..078614b2b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -49,6 +49,7 @@ import net.minecraft.server.IChatBaseComponent;
@@ -135,5 +135,5 @@ index 72cd52fd7..e50976471 100644
      private final Player.Spigot spigot = new Player.Spigot()
      {
 -- 
-2.27.0
+2.28.0
 
