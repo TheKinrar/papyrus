@@ -1,11 +1,11 @@
-From 6c61dd0034dae084ec9662420214c431c328b20e Mon Sep 17 00:00:00 2001
+From fe41d3b58057e7255d57a98e2427eadd54fad62a Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 11:26:33 +0100
 Subject: [PATCH] Server branding
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 8444819f07..4321cc4bdf 100644
+index 5d4783e357..f8ff9d8fcf 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -98,7 +98,7 @@ public class PaperConfig {
@@ -944,10 +944,10 @@ index 32cd645abb..b9929f613f 100644
          this.setSpawnAnimals(dedicatedserverproperties.spawnAnimals);
          this.setSpawnNPCs(dedicatedserverproperties.spawnNpcs);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 4ab6579032..2218443b3e 100644
+index 5c71efe494..756ccf4110 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1570,7 +1570,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1571,7 +1571,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      }
  
      public String getServerModName() {
@@ -957,7 +957,7 @@ index 4ab6579032..2218443b3e 100644
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 032b7acee8..b0b791e11a 100644
+index 6bca576724..981d56fdb2 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -113,6 +113,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -1095,5 +1095,5 @@ index 8af159abd3..3267a3b9ef 100644
                  </LoggerNamePatternSelector>
              </PatternLayout>
 -- 
-2.27.0
+2.28.0
 
