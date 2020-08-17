@@ -1,4 +1,4 @@
-From b6eba6d00bfeb47eef9c38863224285b5322beda Mon Sep 17 00:00:00 2001
+From 37536bf1da686faaec688a1bacffbfc00327d147 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 12:02:30 +0100
 Subject: [PATCH] Material is now a class that mimics Enum
@@ -6,7 +6,7 @@ Subject: [PATCH] Material is now a class that mimics Enum
 This will be used to enable new Material to be created at runtime
 
 diff --git a/src/main/java/co/aikar/timings/TimingHistory.java b/src/main/java/co/aikar/timings/TimingHistory.java
-index 203cda0f..c6e453f8 100644
+index 203cda0f9..c6e453f87 100644
 --- a/src/main/java/co/aikar/timings/TimingHistory.java
 +++ b/src/main/java/co/aikar/timings/TimingHistory.java
 @@ -40,9 +40,11 @@ import co.aikar.util.MRUMapCache;
@@ -31,7 +31,7 @@ index 203cda0f..c6e453f8 100644
  
          static class RegionId {
 diff --git a/src/main/java/com/destroystokyo/paper/MaterialSetTag.java b/src/main/java/com/destroystokyo/paper/MaterialSetTag.java
-index c91ea2a0..a28c2eef 100644
+index c91ea2a06..a28c2eefa 100644
 --- a/src/main/java/com/destroystokyo/paper/MaterialSetTag.java
 +++ b/src/main/java/com/destroystokyo/paper/MaterialSetTag.java
 @@ -61,7 +61,7 @@ public class MaterialSetTag implements Tag<Material> {
@@ -44,7 +44,7 @@ index c91ea2a0..a28c2eef 100644
  
      @NotNull
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 62cc1c74..3f2f99b3 100644
+index 62cc1c74c..3f2f99b3a 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -13,6 +13,7 @@ import java.util.Set;
@@ -56,7 +56,7 @@ index 62cc1c74..3f2f99b3 100644
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index 3a8438fb..30d73496 100644
+index e203c5bfc..7839182cb 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
 @@ -1,10 +1,17 @@
@@ -77,7 +77,7 @@ index 3a8438fb..30d73496 100644
  import org.apache.commons.lang.Validate;
  import org.bukkit.block.data.Ageable;
  import org.bukkit.block.data.AnaloguePowerable;
-@@ -86,3464 +93,3490 @@ import org.jetbrains.annotations.Nullable;
+@@ -87,3465 +94,3491 @@ import org.jetbrains.annotations.Nullable;
   * An enum of all material IDs accepted by the official server and client
   */
  @SuppressWarnings({"DeprecatedIsStillUsed", "deprecation"}) // Paper
@@ -1008,10 +1008,10 @@ index 3a8438fb..30d73496 100644
 -    IRON_BARS(9378, Fence.class),
 +    public static final Material IRON_BARS = new Material("IRON_BARS", 9378, Fence.class);
      /**
-      * BlockData: {@link Waterlogged}
+      * BlockData: {@link Chain}
       */
--    CHAIN(28265, Waterlogged.class),
-+    public static final Material CHAIN = new Material("CHAIN", 28265, Waterlogged.class);
+-    CHAIN(28265, Chain.class),
++    public static final Material CHAIN = new Material("CHAIN", 28265, Chain.class);
      /**
       * BlockData: {@link Fence}
       */
@@ -2240,9 +2240,6 @@ index 3a8438fb..30d73496 100644
 -    JIGSAW(17398, Jigsaw.class),
 -    TURTLE_HELMET(30120, 1, 275),
 -    SCUTE(11914),
--    IRON_SHOVEL(30045, 1, 250),
--    IRON_PICKAXE(8842, 1, 250),
--    IRON_AXE(15894, 1, 250),
 -    FLINT_AND_STEEL(28620, 1, 64),
 -    APPLE(7720),
 -    BOW(8745, 1, 384),
@@ -2254,46 +2251,46 @@ index 3a8438fb..30d73496 100644
 -    GOLD_INGOT(28927),
 -    NETHERITE_INGOT(32457),
 -    NETHERITE_SCRAP(29331),
--    IRON_SWORD(10904, 1, 250),
 -    WOODEN_SWORD(7175, 1, 59),
 -    WOODEN_SHOVEL(28432, 1, 59),
 -    WOODEN_PICKAXE(12792, 1, 59),
 -    WOODEN_AXE(6292, 1, 59),
+-    WOODEN_HOE(16043, 1, 59),
 -    STONE_SWORD(25084, 1, 131),
 -    STONE_SHOVEL(9520, 1, 131),
 -    STONE_PICKAXE(14611, 1, 131),
 -    STONE_AXE(6338, 1, 131),
--    DIAMOND_SWORD(27707, 1, 1561),
--    DIAMOND_SHOVEL(25415, 1, 1561),
--    DIAMOND_PICKAXE(24291, 1, 1561),
--    DIAMOND_AXE(27277, 1, 1561),
--    STICK(9773),
--    BOWL(32661),
--    MUSHROOM_STEW(16336, 1),
+-    STONE_HOE(22855, 1, 131),
 -    GOLDEN_SWORD(10505, 1, 32),
 -    GOLDEN_SHOVEL(15597, 1, 32),
 -    GOLDEN_PICKAXE(25898, 1, 32),
 -    GOLDEN_AXE(4878, 1, 32),
+-    GOLDEN_HOE(19337, 1, 32),
+-    IRON_SWORD(10904, 1, 250),
+-    IRON_SHOVEL(30045, 1, 250),
+-    IRON_PICKAXE(8842, 1, 250),
+-    IRON_AXE(15894, 1, 250),
+-    IRON_HOE(11339, 1, 250),
+-    DIAMOND_SWORD(27707, 1, 1561),
+-    DIAMOND_SHOVEL(25415, 1, 1561),
+-    DIAMOND_PICKAXE(24291, 1, 1561),
+-    DIAMOND_AXE(27277, 1, 1561),
+-    DIAMOND_HOE(24050, 1, 1561),
 -    NETHERITE_SWORD(23871, 1, 2031),
 -    NETHERITE_SHOVEL(29728, 1, 2031),
 -    NETHERITE_PICKAXE(9930, 1, 2031),
 -    NETHERITE_AXE(29533, 1, 2031),
+-    NETHERITE_HOE(27385, 1, 2031),
+-    STICK(9773),
+-    BOWL(32661),
+-    MUSHROOM_STEW(16336, 1),
 -    STRING(12806),
 -    FEATHER(30548),
 -    GUNPOWDER(29974),
--    WOODEN_HOE(16043, 1, 59),
--    STONE_HOE(22855, 1, 131),
--    IRON_HOE(11339, 1, 250),
--    DIAMOND_HOE(24050, 1, 1561),
--    GOLDEN_HOE(19337, 1, 32),
--    NETHERITE_HOE(27385, 1, 2031),
 -    WHEAT_SEEDS(28742),
 +    public static final Material JIGSAW = new Material("JIGSAW", 17398, Jigsaw.class);
 +    public static final Material TURTLE_HELMET = new Material("TURTLE_HELMET", 30120, 1, 275);
 +    public static final Material SCUTE = new Material("SCUTE", 11914);
-+    public static final Material IRON_SHOVEL = new Material("IRON_SHOVEL", 30045, 1, 250);
-+    public static final Material IRON_PICKAXE = new Material("IRON_PICKAXE", 8842, 1, 250);
-+    public static final Material IRON_AXE = new Material("IRON_AXE", 15894, 1, 250);
 +    public static final Material FLINT_AND_STEEL = new Material("FLINT_AND_STEEL", 28620, 1, 64);
 +    public static final Material APPLE = new Material("APPLE", 7720);
 +    public static final Material BOW = new Material("BOW", 8745, 1, 384);
@@ -2305,39 +2302,42 @@ index 3a8438fb..30d73496 100644
 +    public static final Material GOLD_INGOT = new Material("GOLD_INGOT", 28927);
 +    public static final Material NETHERITE_INGOT = new Material("NETHERITE_INGOT", 32457);
 +    public static final Material NETHERITE_SCRAP = new Material("NETHERITE_SCRAP", 29331);
-+    public static final Material IRON_SWORD = new Material("IRON_SWORD", 10904, 1, 250);
 +    public static final Material WOODEN_SWORD = new Material("WOODEN_SWORD", 7175, 1, 59);
 +    public static final Material WOODEN_SHOVEL = new Material("WOODEN_SHOVEL", 28432, 1, 59);
 +    public static final Material WOODEN_PICKAXE = new Material("WOODEN_PICKAXE", 12792, 1, 59);
 +    public static final Material WOODEN_AXE = new Material("WOODEN_AXE", 6292, 1, 59);
++    public static final Material WOODEN_HOE = new Material("WOODEN_HOE", 16043, 1, 59);
 +    public static final Material STONE_SWORD = new Material("STONE_SWORD", 25084, 1, 131);
 +    public static final Material STONE_SHOVEL = new Material("STONE_SHOVEL", 9520, 1, 131);
 +    public static final Material STONE_PICKAXE = new Material("STONE_PICKAXE", 14611, 1, 131);
 +    public static final Material STONE_AXE = new Material("STONE_AXE", 6338, 1, 131);
-+    public static final Material DIAMOND_SWORD = new Material("DIAMOND_SWORD", 27707, 1, 1561);
-+    public static final Material DIAMOND_SHOVEL = new Material("DIAMOND_SHOVEL", 25415, 1, 1561);
-+    public static final Material DIAMOND_PICKAXE = new Material("DIAMOND_PICKAXE", 24291, 1, 1561);
-+    public static final Material DIAMOND_AXE = new Material("DIAMOND_AXE", 27277, 1, 1561);
-+    public static final Material STICK = new Material("STICK", 9773);
-+    public static final Material BOWL = new Material("BOWL", 32661);
-+    public static final Material MUSHROOM_STEW = new Material("MUSHROOM_STEW", 16336, 1);
++    public static final Material STONE_HOE = new Material("STONE_HOE", 22855, 1, 131);
 +    public static final Material GOLDEN_SWORD = new Material("GOLDEN_SWORD", 10505, 1, 32);
 +    public static final Material GOLDEN_SHOVEL = new Material("GOLDEN_SHOVEL", 15597, 1, 32);
 +    public static final Material GOLDEN_PICKAXE = new Material("GOLDEN_PICKAXE", 25898, 1, 32);
 +    public static final Material GOLDEN_AXE = new Material("GOLDEN_AXE", 4878, 1, 32);
++    public static final Material GOLDEN_HOE = new Material("GOLDEN_HOE", 19337, 1, 32);
++    public static final Material IRON_SWORD = new Material("IRON_SWORD", 10904, 1, 250);
++    public static final Material IRON_SHOVEL = new Material("IRON_SHOVEL", 30045, 1, 250);
++    public static final Material IRON_PICKAXE = new Material("IRON_PICKAXE", 8842, 1, 250);
++    public static final Material IRON_AXE = new Material("IRON_AXE", 15894, 1, 250);
++    public static final Material IRON_HOE = new Material("IRON_HOE", 11339, 1, 250);
++    public static final Material DIAMOND_SWORD = new Material("DIAMOND_SWORD", 27707, 1, 1561);
++    public static final Material DIAMOND_SHOVEL = new Material("DIAMOND_SHOVEL", 25415, 1, 1561);
++    public static final Material DIAMOND_PICKAXE = new Material("DIAMOND_PICKAXE", 24291, 1, 1561);
++    public static final Material DIAMOND_AXE = new Material("DIAMOND_AXE", 27277, 1, 1561);
++    public static final Material DIAMOND_HOE = new Material("DIAMOND_HOE", 24050, 1, 1561);
 +    public static final Material NETHERITE_SWORD = new Material("NETHERITE_SWORD", 23871, 1, 2031);
 +    public static final Material NETHERITE_SHOVEL = new Material("NETHERITE_SHOVEL", 29728, 1, 2031);
 +    public static final Material NETHERITE_PICKAXE = new Material("NETHERITE_PICKAXE", 9930, 1, 2031);
 +    public static final Material NETHERITE_AXE = new Material("NETHERITE_AXE", 29533, 1, 2031);
++    public static final Material NETHERITE_HOE = new Material("NETHERITE_HOE", 27385, 1, 2031);
++    public static final Material STICK = new Material("STICK", 9773);
++    public static final Material BOWL = new Material("BOWL", 32661);
++    public static final Material MUSHROOM_STEW = new Material("MUSHROOM_STEW", 16336, 1);
 +    public static final Material STRING = new Material("STRING", 12806);
 +    public static final Material FEATHER = new Material("FEATHER", 30548);
 +    public static final Material GUNPOWDER = new Material("GUNPOWDER", 29974);
-+    public static final Material WOODEN_HOE = new Material("WOODEN_HOE", 16043, 1, 59);
-+    public static final Material STONE_HOE = new Material("STONE_HOE", 22855, 1, 131);
-+    public static final Material IRON_HOE = new Material("IRON_HOE", 11339, 1, 250);
-+    public static final Material DIAMOND_HOE = new Material("DIAMOND_HOE", 24050, 1, 1561);
-+    public static final Material GOLDEN_HOE = new Material("GOLDEN_HOE", 19337, 1, 32);
-+    public static final Material NETHERITE_HOE = new Material("NETHERITE_HOE", 27385, 1, 2031);
 +    public static final Material WHEAT_SEEDS = new Material("WHEAT_SEEDS", 28742);
      /**
       * BlockData: {@link Ageable}
@@ -2479,25 +2479,25 @@ index 3a8438fb..30d73496 100644
 -    COOKED_COD(9681),
 -    COOKED_SALMON(5615),
 -    INK_SAC(7184),
--    RED_DYE(5728),
--    GREEN_DYE(23215),
 -    COCOA_BEANS(30186),
 -    LAPIS_LAZULI(11075),
--    PURPLE_DYE(6347),
--    CYAN_DYE(8043),
--    LIGHT_GRAY_DYE(27643),
--    GRAY_DYE(9184),
--    PINK_DYE(31151),
--    LIME_DYE(6147),
--    YELLOW_DYE(5952),
--    LIGHT_BLUE_DYE(28738),
--    MAGENTA_DYE(11788),
+-    WHITE_DYE(10758),
 -    ORANGE_DYE(13866),
--    BONE_MEAL(32458),
+-    MAGENTA_DYE(11788),
+-    LIGHT_BLUE_DYE(28738),
+-    YELLOW_DYE(5952),
+-    LIME_DYE(6147),
+-    PINK_DYE(31151),
+-    GRAY_DYE(9184),
+-    LIGHT_GRAY_DYE(27643),
+-    CYAN_DYE(8043),
+-    PURPLE_DYE(6347),
 -    BLUE_DYE(11588),
 -    BROWN_DYE(7648),
+-    GREEN_DYE(23215),
+-    RED_DYE(5728),
 -    BLACK_DYE(6202),
--    WHITE_DYE(10758),
+-    BONE_MEAL(32458),
 -    BONE(5686),
 -    SUGAR(30638),
 +    public static final Material WARPED_SIGN = new Material("WARPED_SIGN", 10407, 16, Sign.class);
@@ -2535,25 +2535,25 @@ index 3a8438fb..30d73496 100644
 +    public static final Material COOKED_COD = new Material("COOKED_COD", 9681);
 +    public static final Material COOKED_SALMON = new Material("COOKED_SALMON", 5615);
 +    public static final Material INK_SAC = new Material("INK_SAC", 7184);
-+    public static final Material RED_DYE = new Material("RED_DYE", 5728);
-+    public static final Material GREEN_DYE = new Material("GREEN_DYE", 23215);
 +    public static final Material COCOA_BEANS = new Material("COCOA_BEANS", 30186);
 +    public static final Material LAPIS_LAZULI = new Material("LAPIS_LAZULI", 11075);
-+    public static final Material PURPLE_DYE = new Material("PURPLE_DYE", 6347);
-+    public static final Material CYAN_DYE = new Material("CYAN_DYE", 8043);
-+    public static final Material LIGHT_GRAY_DYE = new Material("LIGHT_GRAY_DYE", 27643);
-+    public static final Material GRAY_DYE = new Material("GRAY_DYE", 9184);
-+    public static final Material PINK_DYE = new Material("PINK_DYE", 31151);
-+    public static final Material LIME_DYE = new Material("LIME_DYE", 6147);
-+    public static final Material YELLOW_DYE = new Material("YELLOW_DYE", 5952);
-+    public static final Material LIGHT_BLUE_DYE = new Material("LIGHT_BLUE_DYE", 28738);
-+    public static final Material MAGENTA_DYE = new Material("MAGENTA_DYE", 11788);
++    public static final Material WHITE_DYE = new Material("WHITE_DYE", 10758);
 +    public static final Material ORANGE_DYE = new Material("ORANGE_DYE", 13866);
-+    public static final Material BONE_MEAL = new Material("BONE_MEAL", 32458);
++    public static final Material MAGENTA_DYE = new Material("MAGENTA_DYE", 11788);
++    public static final Material LIGHT_BLUE_DYE = new Material("LIGHT_BLUE_DYE", 28738);
++    public static final Material YELLOW_DYE = new Material("YELLOW_DYE", 5952);
++    public static final Material LIME_DYE = new Material("LIME_DYE", 6147);
++    public static final Material PINK_DYE = new Material("PINK_DYE", 31151);
++    public static final Material GRAY_DYE = new Material("GRAY_DYE", 9184);
++    public static final Material LIGHT_GRAY_DYE = new Material("LIGHT_GRAY_DYE", 27643);
++    public static final Material CYAN_DYE = new Material("CYAN_DYE", 8043);
++    public static final Material PURPLE_DYE = new Material("PURPLE_DYE", 6347);
 +    public static final Material BLUE_DYE = new Material("BLUE_DYE", 11588);
 +    public static final Material BROWN_DYE = new Material("BROWN_DYE", 7648);
++    public static final Material GREEN_DYE = new Material("GREEN_DYE", 23215);
++    public static final Material RED_DYE = new Material("RED_DYE", 5728);
 +    public static final Material BLACK_DYE = new Material("BLACK_DYE", 6202);
-+    public static final Material WHITE_DYE = new Material("WHITE_DYE", 10758);
++    public static final Material BONE_MEAL = new Material("BONE_MEAL", 32458);
 +    public static final Material BONE = new Material("BONE", 5686);
 +    public static final Material SUGAR = new Material("SUGAR", 30638);
      /**
@@ -2733,6 +2733,7 @@ index 3a8438fb..30d73496 100644
 -    PHANTOM_SPAWN_EGG(24648),
 -    PIG_SPAWN_EGG(22584),
 -    PIGLIN_SPAWN_EGG(16193),
+-    PIGLIN_BRUTE_SPAWN_EGG(30230),
 -    PILLAGER_SPAWN_EGG(28659),
 -    POLAR_BEAR_SPAWN_EGG(17015),
 -    PUFFERFISH_SPAWN_EGG(24570),
@@ -2812,6 +2813,7 @@ index 3a8438fb..30d73496 100644
 +    public static final Material PHANTOM_SPAWN_EGG = new Material("PHANTOM_SPAWN_EGG", 24648);
 +    public static final Material PIG_SPAWN_EGG = new Material("PIG_SPAWN_EGG", 22584);
 +    public static final Material PIGLIN_SPAWN_EGG = new Material("PIGLIN_SPAWN_EGG", 16193);
++    public static final Material PIGLIN_BRUTE_SPAWN_EGG = new Material("PIGLIN_BRUTE_SPAWN_EGG", 30230);
 +    public static final Material PILLAGER_SPAWN_EGG = new Material("PILLAGER_SPAWN_EGG", 28659);
 +    public static final Material POLAR_BEAR_SPAWN_EGG = new Material("POLAR_BEAR_SPAWN_EGG", 17015);
 +    public static final Material PUFFERFISH_SPAWN_EGG = new Material("PUFFERFISH_SPAWN_EGG", 24570);
@@ -5121,7 +5123,7 @@ index 3a8438fb..30d73496 100644
          this.id = id;
          this.durability = (short) durability;
          this.maxStack = stack;
-@@ -3562,7 +3595,86 @@ public enum Material implements Keyed {
+@@ -3564,18 +3597,97 @@ public enum Material implements Keyed {
          } catch (SecurityException ex) {
              throw new AssertionError(ex);
          }
@@ -5174,8 +5176,8 @@ index 3a8438fb..30d73496 100644
 +            ALL_ARRAY = (Material[]) ArrayUtils.addAll(modernValues(), legacyValues());
 +
 +        return ALL_ARRAY;
-+    }
-+
+     }
+ 
 +    @NotNull
 +    public static Material[] legacyValues() {
 +        if(LEGACY_ARRAY == null)
@@ -5203,12 +5205,12 @@ index 3a8438fb..30d73496 100644
 +    @Override
 +    public int hashCode() {
 +        return id;
-     }
++    }
 +    // Papyrus end
- 
++
      // Paper start
  
-@@ -3570,10 +3682,10 @@ public enum Material implements Keyed {
+     /**
       * @return If the type is either AIR, CAVE_AIR or VOID_AIR
       */
      public boolean isEmpty() {
@@ -5223,7 +5225,7 @@ index 3a8438fb..30d73496 100644
                  return true;
          }
          return false;
-@@ -3709,772 +3821,772 @@ public enum Material implements Keyed {
+@@ -3711,772 +3823,772 @@ public enum Material implements Keyed {
       * @return true if this material is a block
       */
      public boolean isBlock() {
@@ -6761,7 +6763,7 @@ index 3a8438fb..30d73496 100644
                  return true;
              default:
                  return 0 <= id && id < 256;
-@@ -4487,79 +4599,79 @@ public enum Material implements Keyed {
+@@ -4489,79 +4601,79 @@ public enum Material implements Keyed {
       * @return true if this Material is edible.
       */
      public boolean isEdible() {
@@ -6913,7 +6915,7 @@ index 3a8438fb..30d73496 100644
                  return true;
              default:
                  return false;
-@@ -4661,22 +4773,22 @@ public enum Material implements Keyed {
+@@ -4663,22 +4775,22 @@ public enum Material implements Keyed {
       * @return True if this material represents a playable music disk.
       */
      public boolean isRecord() {
@@ -6951,7 +6953,7 @@ index 3a8438fb..30d73496 100644
                  return true;
              default:
                  return id >= LEGACY_GOLD_RECORD.id && id <= LEGACY_RECORD_12.id;
-@@ -4692,795 +4804,795 @@ public enum Material implements Keyed {
+@@ -4694,795 +4806,795 @@ public enum Material implements Keyed {
          if (!isBlock() || id == 0) {
              return false;
          }
@@ -8535,7 +8537,7 @@ index 3a8438fb..30d73496 100644
                  return true;
              default:
                  return false;
-@@ -5493,13 +5605,13 @@ public enum Material implements Keyed {
+@@ -5495,13 +5607,13 @@ public enum Material implements Keyed {
       * @return True if this material is an air block.
       */
      public boolean isAir() {
@@ -8555,7 +8557,7 @@ index 3a8438fb..30d73496 100644
                  //</editor-fold>
                  return true;
              default:
-@@ -5519,185 +5631,185 @@ public enum Material implements Keyed {
+@@ -5521,185 +5633,185 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -8919,7 +8921,7 @@ index 3a8438fb..30d73496 100644
                  return true;
              default:
                  return false;
-@@ -5713,272 +5825,272 @@ public enum Material implements Keyed {
+@@ -5715,268 +5827,268 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -8979,7 +8981,6 @@ index 3a8438fb..30d73496 100644
 -            case CHEST:
 -            case COMPOSTER:
 -            case CRAFTING_TABLE:
--            case CRIMSON_ROOTS:
 -            case CYAN_BANNER:
 -            case CYAN_BED:
 -            case CYAN_CARPET:
@@ -9052,7 +9053,6 @@ index 3a8438fb..30d73496 100644
 -            case MAGENTA_WALL_BANNER:
 -            case MAGENTA_WOOL:
 -            case MUSHROOM_STEM:
--            case NETHER_SPROUTS:
 -            case NOTE_BLOCK:
 -            case OAK_DOOR:
 -            case OAK_FENCE:
@@ -9122,7 +9122,6 @@ index 3a8438fb..30d73496 100644
 -            case TNT:
 -            case TRAPPED_CHEST:
 -            case VINE:
--            case WARPED_ROOTS:
 -            case WHITE_BANNER:
 -            case WHITE_BED:
 -            case WHITE_CARPET:
@@ -9133,63 +9132,6 @@ index 3a8438fb..30d73496 100644
 -            case YELLOW_CARPET:
 -            case YELLOW_WALL_BANNER:
 -            case YELLOW_WOOL:
--            // ----- Legacy Separator -----
--            case LEGACY_WOOD:
--            case LEGACY_LOG:
--            case LEGACY_LEAVES:
--            case LEGACY_NOTE_BLOCK:
--            case LEGACY_BED_BLOCK:
--            case LEGACY_LONG_GRASS:
--            case LEGACY_DEAD_BUSH:
--            case LEGACY_WOOL:
--            case LEGACY_TNT:
--            case LEGACY_BOOKSHELF:
--            case LEGACY_WOOD_STAIRS:
--            case LEGACY_CHEST:
--            case LEGACY_WORKBENCH:
--            case LEGACY_SIGN_POST:
--            case LEGACY_WOODEN_DOOR:
--            case LEGACY_WALL_SIGN:
--            case LEGACY_WOOD_PLATE:
--            case LEGACY_JUKEBOX:
--            case LEGACY_FENCE:
--            case LEGACY_TRAP_DOOR:
--            case LEGACY_HUGE_MUSHROOM_1:
--            case LEGACY_HUGE_MUSHROOM_2:
--            case LEGACY_VINE:
--            case LEGACY_FENCE_GATE:
--            case LEGACY_WOOD_DOUBLE_STEP:
--            case LEGACY_WOOD_STEP:
--            case LEGACY_SPRUCE_WOOD_STAIRS:
--            case LEGACY_BIRCH_WOOD_STAIRS:
--            case LEGACY_JUNGLE_WOOD_STAIRS:
--            case LEGACY_TRAPPED_CHEST:
--            case LEGACY_DAYLIGHT_DETECTOR:
--            case LEGACY_CARPET:
--            case LEGACY_LEAVES_2:
--            case LEGACY_LOG_2:
--            case LEGACY_ACACIA_STAIRS:
--            case LEGACY_DARK_OAK_STAIRS:
--            case LEGACY_DOUBLE_PLANT:
--            case LEGACY_SPRUCE_FENCE_GATE:
--            case LEGACY_BIRCH_FENCE_GATE:
--            case LEGACY_JUNGLE_FENCE_GATE:
--            case LEGACY_DARK_OAK_FENCE_GATE:
--            case LEGACY_ACACIA_FENCE_GATE:
--            case LEGACY_SPRUCE_FENCE:
--            case LEGACY_BIRCH_FENCE:
--            case LEGACY_JUNGLE_FENCE:
--            case LEGACY_DARK_OAK_FENCE:
--            case LEGACY_ACACIA_FENCE:
--            case LEGACY_STANDING_BANNER:
--            case LEGACY_WALL_BANNER:
--            case LEGACY_DAYLIGHT_DETECTOR_INVERTED:
--            case LEGACY_SPRUCE_DOOR:
--            case LEGACY_BIRCH_DOOR:
--            case LEGACY_JUNGLE_DOOR:
--            case LEGACY_ACACIA_DOOR:
--            case LEGACY_DARK_OAK_DOOR:
--            //</editor-fold>
 +            case "ACACIA_DOOR":
 +            case "ACACIA_FENCE":
 +            case "ACACIA_FENCE_GATE":
@@ -9243,7 +9185,6 @@ index 3a8438fb..30d73496 100644
 +            case "CHEST":
 +            case "COMPOSTER":
 +            case "CRAFTING_TABLE":
-+            case "CRIMSON_ROOTS":
 +            case "CYAN_BANNER":
 +            case "CYAN_BED":
 +            case "CYAN_CARPET":
@@ -9316,7 +9257,6 @@ index 3a8438fb..30d73496 100644
 +            case "MAGENTA_WALL_BANNER":
 +            case "MAGENTA_WOOL":
 +            case "MUSHROOM_STEM":
-+            case "NETHER_SPROUTS":
 +            case "NOTE_BLOCK":
 +            case "OAK_DOOR":
 +            case "OAK_FENCE":
@@ -9386,7 +9326,6 @@ index 3a8438fb..30d73496 100644
 +            case "TNT":
 +            case "TRAPPED_CHEST":
 +            case "VINE":
-+            case "WARPED_ROOTS":
 +            case "WHITE_BANNER":
 +            case "WHITE_BED":
 +            case "WHITE_CARPET":
@@ -9397,7 +9336,62 @@ index 3a8438fb..30d73496 100644
 +            case "YELLOW_CARPET":
 +            case "YELLOW_WALL_BANNER":
 +            case "YELLOW_WOOL":
-+                // ----- Legacy Separator -----
+             // ----- Legacy Separator -----
+-            case LEGACY_WOOD:
+-            case LEGACY_LOG:
+-            case LEGACY_LEAVES:
+-            case LEGACY_NOTE_BLOCK:
+-            case LEGACY_BED_BLOCK:
+-            case LEGACY_LONG_GRASS:
+-            case LEGACY_DEAD_BUSH:
+-            case LEGACY_WOOL:
+-            case LEGACY_TNT:
+-            case LEGACY_BOOKSHELF:
+-            case LEGACY_WOOD_STAIRS:
+-            case LEGACY_CHEST:
+-            case LEGACY_WORKBENCH:
+-            case LEGACY_SIGN_POST:
+-            case LEGACY_WOODEN_DOOR:
+-            case LEGACY_WALL_SIGN:
+-            case LEGACY_WOOD_PLATE:
+-            case LEGACY_JUKEBOX:
+-            case LEGACY_FENCE:
+-            case LEGACY_TRAP_DOOR:
+-            case LEGACY_HUGE_MUSHROOM_1:
+-            case LEGACY_HUGE_MUSHROOM_2:
+-            case LEGACY_VINE:
+-            case LEGACY_FENCE_GATE:
+-            case LEGACY_WOOD_DOUBLE_STEP:
+-            case LEGACY_WOOD_STEP:
+-            case LEGACY_SPRUCE_WOOD_STAIRS:
+-            case LEGACY_BIRCH_WOOD_STAIRS:
+-            case LEGACY_JUNGLE_WOOD_STAIRS:
+-            case LEGACY_TRAPPED_CHEST:
+-            case LEGACY_DAYLIGHT_DETECTOR:
+-            case LEGACY_CARPET:
+-            case LEGACY_LEAVES_2:
+-            case LEGACY_LOG_2:
+-            case LEGACY_ACACIA_STAIRS:
+-            case LEGACY_DARK_OAK_STAIRS:
+-            case LEGACY_DOUBLE_PLANT:
+-            case LEGACY_SPRUCE_FENCE_GATE:
+-            case LEGACY_BIRCH_FENCE_GATE:
+-            case LEGACY_JUNGLE_FENCE_GATE:
+-            case LEGACY_DARK_OAK_FENCE_GATE:
+-            case LEGACY_ACACIA_FENCE_GATE:
+-            case LEGACY_SPRUCE_FENCE:
+-            case LEGACY_BIRCH_FENCE:
+-            case LEGACY_JUNGLE_FENCE:
+-            case LEGACY_DARK_OAK_FENCE:
+-            case LEGACY_ACACIA_FENCE:
+-            case LEGACY_STANDING_BANNER:
+-            case LEGACY_WALL_BANNER:
+-            case LEGACY_DAYLIGHT_DETECTOR_INVERTED:
+-            case LEGACY_SPRUCE_DOOR:
+-            case LEGACY_BIRCH_DOOR:
+-            case LEGACY_JUNGLE_DOOR:
+-            case LEGACY_ACACIA_DOOR:
+-            case LEGACY_DARK_OAK_DOOR:
 +            case "LEGACY_WOOD":
 +            case "LEGACY_LOG":
 +            case "LEGACY_LEAVES":
@@ -9453,11 +9447,10 @@ index 3a8438fb..30d73496 100644
 +            case "LEGACY_JUNGLE_DOOR":
 +            case "LEGACY_ACACIA_DOOR":
 +            case "LEGACY_DARK_OAK_DOOR":
-+                //</editor-fold>
+             //</editor-fold>
                  return true;
              default:
-                 return false;
-@@ -5994,175 +6106,175 @@ public enum Material implements Keyed {
+@@ -5993,175 +6105,175 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -9801,7 +9794,7 @@ index 3a8438fb..30d73496 100644
                  return true;
              default:
                  return false;
-@@ -6175,251 +6287,251 @@ public enum Material implements Keyed {
+@@ -6174,251 +6286,251 @@ public enum Material implements Keyed {
       * @return true if this Material can be used as fuel.
       */
      public boolean isFuel() {
@@ -10297,7 +10290,7 @@ index 3a8438fb..30d73496 100644
                  return true;
              default:
                  return false;
-@@ -6435,391 +6547,391 @@ public enum Material implements Keyed {
+@@ -6434,391 +6546,391 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -11073,7 +11066,7 @@ index 3a8438fb..30d73496 100644
                  return true;
              default:
                  return false;
-@@ -6833,37 +6945,37 @@ public enum Material implements Keyed {
+@@ -6832,37 +6944,37 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -11141,7 +11134,7 @@ index 3a8438fb..30d73496 100644
                  return true;
              default:
                  return false;
-@@ -6876,163 +6988,163 @@ public enum Material implements Keyed {
+@@ -6875,163 +6987,163 @@ public enum Material implements Keyed {
       * @return true if this material is an item
       */
      public boolean isItem() {
@@ -11461,7 +11454,7 @@ index 3a8438fb..30d73496 100644
                  return false;
              default:
                  return true;
-@@ -7056,219 +7168,219 @@ public enum Material implements Keyed {
+@@ -7055,219 +7167,219 @@ public enum Material implements Keyed {
       * @return true if this material can be interacted with.
       */
      public boolean isInteractable() {
@@ -11893,7 +11886,7 @@ index 3a8438fb..30d73496 100644
                  // </editor-fold>
                  return true;
              default:
-@@ -7287,651 +7399,651 @@ public enum Material implements Keyed {
+@@ -7286,651 +7398,651 @@ public enum Material implements Keyed {
       */
      public float getHardness() {
          Validate.isTrue(isBlock(), "The Material is not a block!");
@@ -13164,7 +13157,7 @@ index 3a8438fb..30d73496 100644
                  return 100.0F;
              default:
                  return 0F;
-@@ -7951,659 +8063,659 @@ public enum Material implements Keyed {
+@@ -7950,659 +8062,659 @@ public enum Material implements Keyed {
       */
      public float getBlastResistance() {
          Validate.isTrue(isBlock(), "The Material is not a block!");
@@ -14447,7 +14440,7 @@ index 3a8438fb..30d73496 100644
                  return 3600000.8F;
              default:
                  return 0;
-@@ -8622,18 +8734,827 @@ public enum Material implements Keyed {
+@@ -8621,18 +8733,827 @@ public enum Material implements Keyed {
      @Nullable
      public Material getCraftingRemainingItem() {
          Validate.isTrue(isItem(), "The Material is not an item!");
@@ -15283,7 +15276,7 @@ index 3a8438fb..30d73496 100644
  }
 diff --git a/src/main/java/org/bukkit/MaterialJsonAdapter.java b/src/main/java/org/bukkit/MaterialJsonAdapter.java
 new file mode 100644
-index 00000000..bceed5e2
+index 000000000..bceed5e28
 --- /dev/null
 +++ b/src/main/java/org/bukkit/MaterialJsonAdapter.java
 @@ -0,0 +1,22 @@
@@ -15310,7 +15303,7 @@ index 00000000..bceed5e2
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/Registry.java b/src/main/java/org/bukkit/Registry.java
-index 91544ade..b5567213 100644
+index 91544ade4..b5567213e 100644
 --- a/src/main/java/org/bukkit/Registry.java
 +++ b/src/main/java/org/bukkit/Registry.java
 @@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
@@ -15356,7 +15349,7 @@ index 91544ade..b5567213 100644
          @Override
          public T get(@NotNull NamespacedKey key) {
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 6e01bf2d..35b74c1d 100644
+index 6e01bf2d5..35b74c1d1 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -13,6 +13,7 @@ import java.util.Set;
@@ -15368,7 +15361,7 @@ index 6e01bf2d..35b74c1d 100644
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
 diff --git a/src/main/java/org/bukkit/material/Crops.java b/src/main/java/org/bukkit/material/Crops.java
-index 4cf3de5f..31c5571a 100644
+index 4cf3de5fb..31c5571aa 100644
 --- a/src/main/java/org/bukkit/material/Crops.java
 +++ b/src/main/java/org/bukkit/material/Crops.java
 @@ -76,14 +76,14 @@ public class Crops extends MaterialData {
@@ -15415,7 +15408,7 @@ index 4cf3de5f..31c5571a 100644
                  setData((byte) ((getData() & 0xC) | (state.getData() >> 1)));
                  break;
 diff --git a/src/main/java/org/bukkit/material/Wood.java b/src/main/java/org/bukkit/material/Wood.java
-index 5d51c928..3048bd0d 100644
+index 5d51c9286..3048bd0d9 100644
 --- a/src/main/java/org/bukkit/material/Wood.java
 +++ b/src/main/java/org/bukkit/material/Wood.java
 @@ -71,18 +71,18 @@ public class Wood extends MaterialData {
@@ -15510,5 +15503,5 @@ index 5d51c928..3048bd0d 100644
                  break;
              default:
 -- 
-2.27.0
+2.28.0
 

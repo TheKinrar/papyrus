@@ -1,14 +1,14 @@
-From 21fcb88bb31e995eb081a25f549cc23aa622902f Mon Sep 17 00:00:00 2001
+From 2a69e85b710ef0d9f7efd0ad447fe9ba67ce17d0 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index e471e7649..090595089 100644
+index d5a1ade21..e05075d18 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-@@ -527,7 +527,7 @@ public class PaperWorldConfig {
+@@ -516,7 +516,7 @@ public class PaperWorldConfig {
  
          altItemDespawnRateEnabled = getBoolean(path + ".enabled", false);
  
@@ -17,7 +17,7 @@ index e471e7649..090595089 100644
          altItemDespawnRateMapDefault.put(Material.COBBLESTONE, 300);
          for (Material key : altItemDespawnRateMapDefault.keySet()) {
              config.addDefault("world-settings.default." + path + ".items." + key, altItemDespawnRateMapDefault.get(key));
-@@ -549,7 +549,7 @@ public class PaperWorldConfig {
+@@ -538,7 +538,7 @@ public class PaperWorldConfig {
              altItemDespawnRateEnabled = false;
          }
  
@@ -87,30 +87,30 @@ index 100ed8a8f..ae1582e01 100644
              default:
                  throw new IllegalArgumentException("Unknown DyeColor for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-index 9b0e868f0..22742f547 100644
+index 733f2430d..904b31481 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-@@ -324,159 +324,159 @@ public class CraftBlock implements Block {
+@@ -328,159 +328,159 @@ public class CraftBlock implements Block {
          // Paper end
          Material material = getType();
  
 -        switch (material) {
--        case ACACIA_SIGN:
--        case ACACIA_WALL_SIGN:
--        case BIRCH_SIGN:
--        case BIRCH_WALL_SIGN:
--        case CRIMSON_SIGN:
--        case CRIMSON_WALL_SIGN:
--        case DARK_OAK_SIGN:
--        case DARK_OAK_WALL_SIGN:
--        case JUNGLE_SIGN:
--        case JUNGLE_WALL_SIGN:
--        case OAK_SIGN:
--        case OAK_WALL_SIGN:
--        case SPRUCE_SIGN:
--        case SPRUCE_WALL_SIGN:
--        case WARPED_SIGN:
--        case WARPED_WALL_SIGN:
+-            case ACACIA_SIGN:
+-            case ACACIA_WALL_SIGN:
+-            case BIRCH_SIGN:
+-            case BIRCH_WALL_SIGN:
+-            case CRIMSON_SIGN:
+-            case CRIMSON_WALL_SIGN:
+-            case DARK_OAK_SIGN:
+-            case DARK_OAK_WALL_SIGN:
+-            case JUNGLE_SIGN:
+-            case JUNGLE_WALL_SIGN:
+-            case OAK_SIGN:
+-            case OAK_WALL_SIGN:
+-            case SPRUCE_SIGN:
+-            case SPRUCE_WALL_SIGN:
+-            case WARPED_SIGN:
+-            case WARPED_WALL_SIGN:
 +        switch (material.name()) {
 +        case "ACACIA_SIGN":
 +        case "ACACIA_WALL_SIGN":
@@ -128,48 +128,48 @@ index 9b0e868f0..22742f547 100644
 +        case "SPRUCE_WALL_SIGN":
 +        case "WARPED_SIGN":
 +        case "WARPED_WALL_SIGN":
-             return new CraftSign(this);
--        case CHEST:
--        case TRAPPED_CHEST:
+                 return new CraftSign(this);
+-            case CHEST:
+-            case TRAPPED_CHEST:
 +        case "CHEST":
 +        case "TRAPPED_CHEST":
-             return new CraftChest(this);
--        case FURNACE:
+                 return new CraftChest(this);
+-            case FURNACE:
 +        case "FURNACE":
-             return new CraftFurnaceFurnace(this);
--        case DISPENSER:
+                 return new CraftFurnaceFurnace(this);
+-            case DISPENSER:
 +        case "DISPENSER":
-             return new CraftDispenser(this);
--        case DROPPER:
+                 return new CraftDispenser(this);
+-            case DROPPER:
 +        case "DROPPER":
-             return new CraftDropper(this);
--        case END_GATEWAY:
+                 return new CraftDropper(this);
+-            case END_GATEWAY:
 +        case "END_GATEWAY":
-             return new CraftEndGateway(this);
--        case HOPPER:
+                 return new CraftEndGateway(this);
+-            case HOPPER:
 +        case "HOPPER":
-             return new CraftHopper(this);
--        case SPAWNER:
+                 return new CraftHopper(this);
+-            case SPAWNER:
 +        case "SPAWNER":
-             return new CraftCreatureSpawner(this);
--        case JUKEBOX:
+                 return new CraftCreatureSpawner(this);
+-            case JUKEBOX:
 +        case "JUKEBOX":
-             return new CraftJukebox(this);
--        case BREWING_STAND:
+                 return new CraftJukebox(this);
+-            case BREWING_STAND:
 +        case "BREWING_STAND":
-             return new CraftBrewingStand(this);
--        case CREEPER_HEAD:
--        case CREEPER_WALL_HEAD:
--        case DRAGON_HEAD:
--        case DRAGON_WALL_HEAD:
--        case PLAYER_HEAD:
--        case PLAYER_WALL_HEAD:
--        case SKELETON_SKULL:
--        case SKELETON_WALL_SKULL:
--        case WITHER_SKELETON_SKULL:
--        case WITHER_SKELETON_WALL_SKULL:
--        case ZOMBIE_HEAD:
--        case ZOMBIE_WALL_HEAD:
+                 return new CraftBrewingStand(this);
+-            case CREEPER_HEAD:
+-            case CREEPER_WALL_HEAD:
+-            case DRAGON_HEAD:
+-            case DRAGON_WALL_HEAD:
+-            case PLAYER_HEAD:
+-            case PLAYER_WALL_HEAD:
+-            case SKELETON_SKULL:
+-            case SKELETON_WALL_SKULL:
+-            case WITHER_SKELETON_SKULL:
+-            case WITHER_SKELETON_WALL_SKULL:
+-            case ZOMBIE_HEAD:
+-            case ZOMBIE_WALL_HEAD:
 +        case "CREEPER_HEAD":
 +        case "CREEPER_WALL_HEAD":
 +        case "DRAGON_HEAD":
@@ -182,49 +182,49 @@ index 9b0e868f0..22742f547 100644
 +        case "WITHER_SKELETON_WALL_SKULL":
 +        case "ZOMBIE_HEAD":
 +        case "ZOMBIE_WALL_HEAD":
-             return new CraftSkull(this);
--        case COMMAND_BLOCK:
--        case CHAIN_COMMAND_BLOCK:
--        case REPEATING_COMMAND_BLOCK:
+                 return new CraftSkull(this);
+-            case COMMAND_BLOCK:
+-            case CHAIN_COMMAND_BLOCK:
+-            case REPEATING_COMMAND_BLOCK:
 +        case "COMMAND_BLOCK":
 +        case "CHAIN_COMMAND_BLOCK":
 +        case "REPEATING_COMMAND_BLOCK":
-             return new CraftCommandBlock(this);
--        case BEACON:
+                 return new CraftCommandBlock(this);
+-            case BEACON:
 +        case "BEACON":
-             return new CraftBeacon(this);
--        case BLACK_BANNER:
--        case BLACK_WALL_BANNER:
--        case BLUE_BANNER:
--        case BLUE_WALL_BANNER:
--        case BROWN_BANNER:
--        case BROWN_WALL_BANNER:
--        case CYAN_BANNER:
--        case CYAN_WALL_BANNER:
--        case GRAY_BANNER:
--        case GRAY_WALL_BANNER:
--        case GREEN_BANNER:
--        case GREEN_WALL_BANNER:
--        case LIGHT_BLUE_BANNER:
--        case LIGHT_BLUE_WALL_BANNER:
--        case LIGHT_GRAY_BANNER:
--        case LIGHT_GRAY_WALL_BANNER:
--        case LIME_BANNER:
--        case LIME_WALL_BANNER:
--        case MAGENTA_BANNER:
--        case MAGENTA_WALL_BANNER:
--        case ORANGE_BANNER:
--        case ORANGE_WALL_BANNER:
--        case PINK_BANNER:
--        case PINK_WALL_BANNER:
--        case PURPLE_BANNER:
--        case PURPLE_WALL_BANNER:
--        case RED_BANNER:
--        case RED_WALL_BANNER:
--        case WHITE_BANNER:
--        case WHITE_WALL_BANNER:
--        case YELLOW_BANNER:
--        case YELLOW_WALL_BANNER:
+                 return new CraftBeacon(this);
+-            case BLACK_BANNER:
+-            case BLACK_WALL_BANNER:
+-            case BLUE_BANNER:
+-            case BLUE_WALL_BANNER:
+-            case BROWN_BANNER:
+-            case BROWN_WALL_BANNER:
+-            case CYAN_BANNER:
+-            case CYAN_WALL_BANNER:
+-            case GRAY_BANNER:
+-            case GRAY_WALL_BANNER:
+-            case GREEN_BANNER:
+-            case GREEN_WALL_BANNER:
+-            case LIGHT_BLUE_BANNER:
+-            case LIGHT_BLUE_WALL_BANNER:
+-            case LIGHT_GRAY_BANNER:
+-            case LIGHT_GRAY_WALL_BANNER:
+-            case LIME_BANNER:
+-            case LIME_WALL_BANNER:
+-            case MAGENTA_BANNER:
+-            case MAGENTA_WALL_BANNER:
+-            case ORANGE_BANNER:
+-            case ORANGE_WALL_BANNER:
+-            case PINK_BANNER:
+-            case PINK_WALL_BANNER:
+-            case PURPLE_BANNER:
+-            case PURPLE_WALL_BANNER:
+-            case RED_BANNER:
+-            case RED_WALL_BANNER:
+-            case WHITE_BANNER:
+-            case WHITE_WALL_BANNER:
+-            case YELLOW_BANNER:
+-            case YELLOW_WALL_BANNER:
 +        case "BLACK_BANNER":
 +        case "BLACK_WALL_BANNER":
 +        case "BLUE_BANNER":
@@ -257,27 +257,27 @@ index 9b0e868f0..22742f547 100644
 +        case "WHITE_WALL_BANNER":
 +        case "YELLOW_BANNER":
 +        case "YELLOW_WALL_BANNER":
-             return new CraftBanner(this);
--        case STRUCTURE_BLOCK:
+                 return new CraftBanner(this);
+-            case STRUCTURE_BLOCK:
 +        case "STRUCTURE_BLOCK":
-             return new CraftStructureBlock(this);
--        case SHULKER_BOX:
--        case WHITE_SHULKER_BOX:
--        case ORANGE_SHULKER_BOX:
--        case MAGENTA_SHULKER_BOX:
--        case LIGHT_BLUE_SHULKER_BOX:
--        case YELLOW_SHULKER_BOX:
--        case LIME_SHULKER_BOX:
--        case PINK_SHULKER_BOX:
--        case GRAY_SHULKER_BOX:
--        case LIGHT_GRAY_SHULKER_BOX:
--        case CYAN_SHULKER_BOX:
--        case PURPLE_SHULKER_BOX:
--        case BLUE_SHULKER_BOX:
--        case BROWN_SHULKER_BOX:
--        case GREEN_SHULKER_BOX:
--        case RED_SHULKER_BOX:
--        case BLACK_SHULKER_BOX:
+                 return new CraftStructureBlock(this);
+-            case SHULKER_BOX:
+-            case WHITE_SHULKER_BOX:
+-            case ORANGE_SHULKER_BOX:
+-            case MAGENTA_SHULKER_BOX:
+-            case LIGHT_BLUE_SHULKER_BOX:
+-            case YELLOW_SHULKER_BOX:
+-            case LIME_SHULKER_BOX:
+-            case PINK_SHULKER_BOX:
+-            case GRAY_SHULKER_BOX:
+-            case LIGHT_GRAY_SHULKER_BOX:
+-            case CYAN_SHULKER_BOX:
+-            case PURPLE_SHULKER_BOX:
+-            case BLUE_SHULKER_BOX:
+-            case BROWN_SHULKER_BOX:
+-            case GREEN_SHULKER_BOX:
+-            case RED_SHULKER_BOX:
+-            case BLACK_SHULKER_BOX:
 +        case "SHULKER_BOX":
 +        case "WHITE_SHULKER_BOX":
 +        case "ORANGE_SHULKER_BOX":
@@ -295,35 +295,35 @@ index 9b0e868f0..22742f547 100644
 +        case "GREEN_SHULKER_BOX":
 +        case "RED_SHULKER_BOX":
 +        case "BLACK_SHULKER_BOX":
-             return new CraftShulkerBox(this);
--        case ENCHANTING_TABLE:
+                 return new CraftShulkerBox(this);
+-            case ENCHANTING_TABLE:
 +        case "ENCHANTING_TABLE":
-             return new CraftEnchantingTable(this);
--        case ENDER_CHEST:
+                 return new CraftEnchantingTable(this);
+-            case ENDER_CHEST:
 +        case "ENDER_CHEST":
-             return new CraftEnderChest(this);
--        case DAYLIGHT_DETECTOR:
+                 return new CraftEnderChest(this);
+-            case DAYLIGHT_DETECTOR:
 +        case "DAYLIGHT_DETECTOR":
-             return new CraftDaylightDetector(this);
--        case COMPARATOR:
+                 return new CraftDaylightDetector(this);
+-            case COMPARATOR:
 +        case "COMPARATOR":
-             return new CraftComparator(this);
--        case BLACK_BED:
--        case BLUE_BED:
--        case BROWN_BED:
--        case CYAN_BED:
--        case GRAY_BED:
--        case GREEN_BED:
--        case LIGHT_BLUE_BED:
--        case LIGHT_GRAY_BED:
--        case LIME_BED:
--        case MAGENTA_BED:
--        case ORANGE_BED:
--        case PINK_BED:
--        case PURPLE_BED:
--        case RED_BED:
--        case WHITE_BED:
--        case YELLOW_BED:
+                 return new CraftComparator(this);
+-            case BLACK_BED:
+-            case BLUE_BED:
+-            case BROWN_BED:
+-            case CYAN_BED:
+-            case GRAY_BED:
+-            case GREEN_BED:
+-            case LIGHT_BLUE_BED:
+-            case LIGHT_GRAY_BED:
+-            case LIME_BED:
+-            case MAGENTA_BED:
+-            case ORANGE_BED:
+-            case PINK_BED:
+-            case PURPLE_BED:
+-            case RED_BED:
+-            case WHITE_BED:
+-            case YELLOW_BED:
 +        case "BLACK_BED":
 +        case "BLUE_BED":
 +        case "BROWN_BED":
@@ -340,40 +340,40 @@ index 9b0e868f0..22742f547 100644
 +        case "RED_BED":
 +        case "WHITE_BED":
 +        case "YELLOW_BED":
-             return new CraftBed(this);
--        case CONDUIT:
+                 return new CraftBed(this);
+-            case CONDUIT:
 +        case "CONDUIT":
-             return new CraftConduit(this);
--        case BARREL:
+                 return new CraftConduit(this);
+-            case BARREL:
 +        case "BARREL":
-             return new CraftBarrel(this);
--        case BELL:
+                 return new CraftBarrel(this);
+-            case BELL:
 +        case "BELL":
-             return new CraftBell(this);
--        case BLAST_FURNACE:
+                 return new CraftBell(this);
+-            case BLAST_FURNACE:
 +        case "BLAST_FURNACE":
-             return new CraftBlastFurnace(this);
--        case CAMPFIRE:
--        case SOUL_CAMPFIRE:
+                 return new CraftBlastFurnace(this);
+-            case CAMPFIRE:
+-            case SOUL_CAMPFIRE:
 +        case "CAMPFIRE":
 +        case "SOUL_CAMPFIRE":
-             return new CraftCampfire(this);
--        case JIGSAW:
+                 return new CraftCampfire(this);
+-            case JIGSAW:
 +        case "JIGSAW":
-             return new CraftJigsaw(this);
--        case LECTERN:
+                 return new CraftJigsaw(this);
+-            case LECTERN:
 +        case "LECTERN":
-             return new CraftLectern(this);
--        case SMOKER:
+                 return new CraftLectern(this);
+-            case SMOKER:
 +        case "SMOKER":
-             return new CraftSmoker(this);
--        case BEEHIVE:
--        case BEE_NEST:
+                 return new CraftSmoker(this);
+-            case BEEHIVE:
+-            case BEE_NEST:
 +        case "BEEHIVE":
 +        case "BEE_NEST":
-             return new CraftBeehive(this);
-         default:
-             TileEntity tileEntity = world.getTileEntity(position);
+                 return new CraftBeehive(this);
+             default:
+                 TileEntity tileEntity = world.getTileEntity(position);
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftSkull.java b/src/main/java/org/bukkit/craftbukkit/block/CraftSkull.java
 index ecc32c2fb..335ec750e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftSkull.java
@@ -417,10 +417,10 @@ index ecc32c2fb..335ec750e 100644
              default:
                  throw new IllegalArgumentException("Unknown SkullType for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index ddb58c1d5..82f4a924a 100644
+index 68e3d2978..98f933347 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1336,14 +1336,14 @@ public class CraftEventFactory {
+@@ -1340,14 +1340,14 @@ public class CraftEventFactory {
          org.bukkit.World bukkitWorld = world.getWorld();
          Block igniter = bukkitWorld.getBlockAt(source.getX(), source.getY(), source.getZ());
          IgniteCause cause;
@@ -2607,5 +2607,5 @@ index c279579c2..9fb07e8b0 100644
              return buffer.delete(0, Integer.MAX_VALUE).append(from.getClass().getName()).append(' ').append(from.name()).append(" to ").append(to.name()).toString();
          }
 -- 
-2.27.0
+2.28.0
 

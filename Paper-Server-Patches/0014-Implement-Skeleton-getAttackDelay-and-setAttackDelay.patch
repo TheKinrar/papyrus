@@ -1,11 +1,11 @@
-From c063826a94522e6bbe55d862c0eafefe2f5c318a Mon Sep 17 00:00:00 2001
+From 7dbd6c845703988eb03fe7cfc470d07ae44fa927 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 29 Dec 2019 22:09:11 +0000
 Subject: [PATCH] Implement Skeleton#getAttackDelay and setAttackDelay
 
 
 diff --git a/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java b/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java
-index 84f83d48a..6b2fe9120 100644
+index 1f7b50b55..08daa6dfd 100644
 --- a/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java
 +++ b/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java
 @@ -6,6 +6,7 @@ import javax.annotation.Nullable;
@@ -18,7 +18,7 @@ index 84f83d48a..6b2fe9120 100644
          @Override
 diff --git a/src/main/java/net/minecraft/server/PathfinderGoalBowShoot.java b/src/main/java/net/minecraft/server/PathfinderGoalBowShoot.java
 new file mode 100644
-index 000000000..9b34ca463
+index 000000000..e7da98b12
 --- /dev/null
 +++ b/src/main/java/net/minecraft/server/PathfinderGoalBowShoot.java
 @@ -0,0 +1,129 @@
@@ -85,7 +85,7 @@ index 000000000..9b34ca463
 +        EntityLiving entityliving = this.a.getGoalTarget();
 +
 +        if (entityliving != null) {
-+            double d0 = this.a.g(entityliving.locX(), entityliving.locY(), entityliving.locZ());
++            double d0 = this.a.h(entityliving.locX(), entityliving.locY(), entityliving.locZ());
 +            boolean flag = this.a.getEntitySenses().a(entityliving);
 +            boolean flag1 = this.f > 0;
 +
@@ -171,5 +171,5 @@ index 02df66ecf..d157909c7 100644
 +    }
  }
 -- 
-2.26.2
+2.28.0
 

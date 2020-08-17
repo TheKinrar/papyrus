@@ -1,11 +1,11 @@
-From 9a6e38be0ccdba6f588e08ee03160c02b30bce76 Mon Sep 17 00:00:00 2001
+From 65177b495792630f1e0e7afbf46834f7dd57141d Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 5 Oct 2019 21:26:23 +0100
 Subject: [PATCH] Implement CommandBlockEditEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 6259ff4a5..b6fac7f77 100644
+index bc613281d..765ce386f 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -1,5 +1,7 @@
@@ -80,7 +80,7 @@ index 6259ff4a5..b6fac7f77 100644
  // CraftBukkit end
  
  public class PlayerConnection implements PacketListenerPlayIn {
-@@ -610,63 +601,117 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -604,63 +595,117 @@ public class PlayerConnection implements PacketListenerPlayIn {
      @Override
      public void a(PacketPlayInSetCommandBlock packetplayinsetcommandblock) {
          PlayerConnectionUtils.ensureMainThread(packetplayinsetcommandblock, this, this.player.getWorldServer());

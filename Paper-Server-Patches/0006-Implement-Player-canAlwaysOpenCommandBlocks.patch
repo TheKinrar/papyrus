@@ -1,4 +1,4 @@
-From 008433188bdf60babc23662c79f89506eb31da46 Mon Sep 17 00:00:00 2001
+From 25fbb4f0f4d5b70a2d6f904ed7214653fb574bb5 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
@@ -72,10 +72,10 @@ index 6d192b274..72b65abe0 100644
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 38d83bb31..21feb6d27 100644
+index f9eb17cb6..36532e444 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -899,6 +899,9 @@ public abstract class PlayerList {
+@@ -911,6 +911,9 @@ public abstract class PlayerList {
          GameProfile gameprofile = entityplayer.getProfile();
          int i = this.server.b(gameprofile);
  
@@ -86,18 +86,18 @@ index 38d83bb31..21feb6d27 100644
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index adf918fd7..078614b2b 100644
+index 0088701e2..ada55db00 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -49,6 +49,7 @@ import net.minecraft.server.IChatBaseComponent;
- import net.minecraft.server.MCUtil;
+@@ -46,6 +46,7 @@ import net.minecraft.server.GenericAttributes;
+ import net.minecraft.server.IChatBaseComponent;
  import net.minecraft.server.MapIcon;
  import net.minecraft.server.MinecraftKey;
 +import net.minecraft.server.MinecraftServer;
  import net.minecraft.server.NBTTagCompound;
  import net.minecraft.server.PacketDataSerializer;
  import net.minecraft.server.PacketPlayOutBlockChange;
-@@ -69,6 +70,7 @@ import net.minecraft.server.PacketPlayOutWorldEvent;
+@@ -66,6 +67,7 @@ import net.minecraft.server.PacketPlayOutWorldEvent;
  import net.minecraft.server.PacketPlayOutWorldParticles;
  import net.minecraft.server.PlayerChunkMap;
  import net.minecraft.server.PlayerConnection;
@@ -105,7 +105,7 @@ index adf918fd7..078614b2b 100644
  import net.minecraft.server.SystemUtils;
  import net.minecraft.server.TileEntitySign;
  import net.minecraft.server.Vec3D;
-@@ -150,6 +152,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -147,6 +149,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime;
      // Paper end
@@ -113,7 +113,7 @@ index adf918fd7..078614b2b 100644
  
      public CraftPlayer(CraftServer server, EntityPlayer entity) {
          super(server, entity);
-@@ -2072,6 +2075,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2069,6 +2072,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      }
      // Paper end
  
