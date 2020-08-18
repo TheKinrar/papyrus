@@ -1,4 +1,4 @@
-From 25fbb4f0f4d5b70a2d6f904ed7214653fb574bb5 Mon Sep 17 00:00:00 2001
+From 9b82e7275c0cfde572b8905c4141c6b263905d10 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
@@ -86,7 +86,7 @@ index f9eb17cb6..36532e444 100644
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 0088701e2..ada55db00 100644
+index 2ac4630de..f5b01ac33 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -46,6 +46,7 @@ import net.minecraft.server.GenericAttributes;
@@ -113,7 +113,7 @@ index 0088701e2..ada55db00 100644
  
      public CraftPlayer(CraftServer server, EntityPlayer entity) {
          super(server, entity);
-@@ -2069,6 +2072,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2065,6 +2068,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      }
      // Paper end
  
