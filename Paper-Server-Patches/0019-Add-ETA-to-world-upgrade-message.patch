@@ -1,0 +1,59 @@
+From a33e556231672aebe9791f00e9c3a37a3ff44b79 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Tue, 18 Aug 2020 02:41:09 +0200
+Subject: [PATCH] Add ETA to world upgrade message
+
+
+diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
+index 18521e2df..798425390 100644
+--- a/src/main/java/net/minecraft/server/Main.java
++++ b/src/main/java/net/minecraft/server/Main.java
+@@ -238,6 +238,8 @@ public class Main {
+         WorldUpgrader worldupgrader = new WorldUpgrader(convertable_conversionsession, datafixer, immutableset, flag);
+         IChatBaseComponent ichatbasecomponent = null;
+ 
++        long startTime = System.currentTimeMillis();
++
+         while (!worldupgrader.b()) {
+             IChatBaseComponent ichatbasecomponent1 = worldupgrader.h();
+ 
+@@ -251,7 +253,15 @@ public class Main {
+             if (i > 0) {
+                 int j = worldupgrader.f() + worldupgrader.g();
+ 
+-                Main.LOGGER.info("{}% completed ({} / {} chunks)...", MathHelper.d((float) j / (float) i * 100.0F), j, i);
++                long elapsed = System.currentTimeMillis() - startTime;
++                ChunkCoordIntPair chunk = worldupgrader.currentChunk;
++
++                MinecraftServer.LOGGER.info("{}: {}% completed ({} / {} chunks), {} remaining, current: {}",
++                        convertable_conversionsession.getLevelName(),
++                        MathHelper.d((float) j / (float) i * 100.0F), j, i,
++                        org.apache.commons.lang3.time.DurationFormatUtils
++                                .formatDurationHMS((long) (((double) elapsed / (j > 0 ? j : 1)) * (i - j))),
++                        chunk == null ? "N/A" : chunk.toString() + " in " + "[" + chunk.getRegionX() + ", " + chunk.getRegionZ() + "]");
+             }
+ 
+             if (!booleansupplier.getAsBoolean()) {
+diff --git a/src/main/java/net/minecraft/server/WorldUpgrader.java b/src/main/java/net/minecraft/server/WorldUpgrader.java
+index 5ccdc0b87..861094454 100644
+--- a/src/main/java/net/minecraft/server/WorldUpgrader.java
++++ b/src/main/java/net/minecraft/server/WorldUpgrader.java
+@@ -40,6 +40,7 @@ public class WorldUpgrader {
+     private volatile IChatBaseComponent o = new ChatMessage("optimizeWorld.stage.counting");
+     private static final Pattern p = Pattern.compile("^r\\.(-?[0-9]+)\\.(-?[0-9]+)\\.mca$");
+     private final WorldPersistentData q;
++    public ChunkCoordIntPair currentChunk = null;
+ 
+     public WorldUpgrader(Convertable.ConversionSession convertable_conversionsession, DataFixer datafixer, ImmutableSet<ResourceKey<DimensionManager>> immutableset, boolean flag) { // CraftBukkit
+         this.c = immutableset;
+@@ -114,6 +115,7 @@ public class WorldUpgrader {
+                     if (listiterator.hasNext()) {
+                         ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair) listiterator.next();
+                         boolean flag1 = false;
++                        currentChunk = chunkcoordintpair;
+ 
+                         try {
+                             NBTTagCompound nbttagcompound = ichunkloader.read(chunkcoordintpair);
+-- 
+2.28.0
+

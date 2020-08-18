@@ -1,0 +1,102 @@
+From 59866ae8f0c12d9cff6e0ebad11f836640927c40 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Tue, 18 Aug 2020 02:32:00 +0200
+Subject: [PATCH] Add forceUpgradeWorlds option
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index a4b7cbe14..b4ed8602e 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -56,6 +56,8 @@ import java.util.function.Function;
+ import java.util.stream.Stream;
+ import javax.annotation.Nullable;
+ import javax.imageio.ImageIO;
++
++import org.apache.commons.lang3.ArrayUtils;
+ import org.apache.commons.lang3.Validate;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+@@ -172,6 +174,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+ 
+     public volatile Thread shutdownThread; // Paper
+ 
++    public String[] forceUpgradeWorlds = null; // Papyrus
++
+     public static <S extends MinecraftServer> S a(Function<Thread, S> function) {
+         AtomicReference<S> atomicreference = new AtomicReference();
+         Thread thread = new Thread(() -> {
+@@ -253,6 +257,12 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+         */
+         // Paper end
+         Runtime.getRuntime().addShutdownHook(new org.bukkit.craftbukkit.util.ServerShutdownThread(this));
++
++        // Papyrus start
++        if(options.has("forceUpgradeWorlds")) {
++            forceUpgradeWorlds = ((String) options.valueOf("forceUpgradeWorlds")).split(",");
++        }
++        // Papyrus end
+     }
+     // CraftBukkit end
+ 
+@@ -391,11 +401,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+             }
+             worlddata.checkName(name); // CraftBukkit - Migration did not rewrite the level.dat; This forces 1.8 to take the last loaded world as respawn (in this case the end)
+             if (options.has("forceUpgrade")) {
++                if(forceUpgradeWorlds == null || ArrayUtils.contains(this.forceUpgradeWorlds, s)) { // Papyrus
+                 net.minecraft.server.Main.convertWorld(worldSession, DataConverterRegistry.a(), options.has("eraseCache"), () -> {
+                     return true;
+                 }, worlddata.getGeneratorSettings().d().d().stream().map((entry) -> {
+                     return ResourceKey.a(IRegistry.K, ((ResourceKey) entry.getKey()).a());
+                 }).collect(ImmutableSet.toImmutableSet()));
++                }
+             }
+ 
+             IWorldDataServer iworlddataserver = worlddata;
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index dadceb9ef..ddf9f4400 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -107,6 +107,7 @@ import net.minecraft.server.WorldNBTStorage;
+ import net.minecraft.server.WorldServer;
+ import net.minecraft.server.WorldSettings;
+ import org.apache.commons.lang.Validate;
++import org.apache.commons.lang3.ArrayUtils;
+ import org.apache.commons.lang3.StringUtils;
+ import org.bukkit.BanList;
+ import org.bukkit.Bukkit;
+@@ -1128,11 +1129,13 @@ public final class CraftServer implements Server {
+         worlddata.a(console.getServerModName(), console.getModded().isPresent());
+ 
+         if (console.options.has("forceUpgrade")) {
++            if(console.forceUpgradeWorlds == null || ArrayUtils.contains(console.forceUpgradeWorlds, name)) { // Papyrus
+             net.minecraft.server.Main.convertWorld(worldSession, DataConverterRegistry.a(), console.options.has("eraseCache"), () -> {
+                 return true;
+             }, worlddata.getGeneratorSettings().d().d().stream().map((entry) -> {
+                 return ResourceKey.a(IRegistry.K, ((ResourceKey) entry.getKey()).a());
+             }).collect(ImmutableSet.toImmutableSet()));
++            }
+         }
+ 
+         long j = BiomeManager.a(creator.seed());
+diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
+index aa62b2968..36392f7a5 100644
+--- a/src/main/java/org/bukkit/craftbukkit/Main.java
++++ b/src/main/java/org/bukkit/craftbukkit/Main.java
+@@ -115,6 +115,13 @@ public class Main {
+                 acceptsAll(asList("eraseCache"), "Whether to force cache erase during world upgrade");
+                 acceptsAll(asList("nogui"), "Disables the graphical console");
+ 
++                // Papyrus start
++                acceptsAll(asList("forceUpgradeWorlds"), "Worlds to force upgrade")
++                        .withOptionalArg()
++                        .ofType(String.class)
++                        .describedAs("Comma-separated list of world names");
++                // Papyrus end
++
+                 acceptsAll(asList("nojline"), "Disables jline and emulates the vanilla console");
+ 
+                 acceptsAll(asList("noconsole"), "Disables the console");
+-- 
+2.28.0
+
