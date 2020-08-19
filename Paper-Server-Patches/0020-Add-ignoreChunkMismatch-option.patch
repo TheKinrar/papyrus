@@ -1,0 +1,56 @@
+From 42b0fc625378dff286ff5315b87d5c345bb992ba Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Wed, 19 Aug 2020 06:06:57 +0200
+Subject: [PATCH] Add ignoreChunkMismatch option
+
+
+diff --git a/src/main/java/net/minecraft/server/IChunkLoader.java b/src/main/java/net/minecraft/server/IChunkLoader.java
+index 582a5695b..dce25ea10 100644
+--- a/src/main/java/net/minecraft/server/IChunkLoader.java
++++ b/src/main/java/net/minecraft/server/IChunkLoader.java
+@@ -109,8 +109,14 @@ public class IChunkLoader implements AutoCloseable {
+         // Paper start
+         if (!chunkcoordintpair.equals(ChunkRegionLoader.getChunkCoordinate(nbttagcompound))) {
+             String world = (this instanceof PlayerChunkMap) ? ((PlayerChunkMap)this).world.getWorld().getName() : null;
+-            throw new IllegalArgumentException("Chunk coordinate and serialized data do not have matching coordinates, trying to serialize coordinate " + chunkcoordintpair.toString()
+-                + " but compound says coordinate is " + ChunkRegionLoader.getChunkCoordinate(nbttagcompound).toString() + (world == null ? " for an unknown world" : (" for world: " + world)));
++            IllegalArgumentException e = new IllegalArgumentException("Chunk coordinate and serialized data do not have matching coordinates, trying to serialize coordinate " + chunkcoordintpair.toString()
++                    + " but compound says coordinate is " + ChunkRegionLoader.getChunkCoordinate(nbttagcompound).toString() + (world == null ? " for an unknown world" : (" for world: " + world)));
++
++            if(!MinecraftServer.getServer().options.has("ignoreChunkMismatch")) {
++                throw e;
++            } else {
++                WorldUpgrader.LOGGER.error("Error upgrading world - ignored", e);
++            }
+         }
+         // Paper end
+         this.regionFileCache.write(chunkcoordintpair, nbttagcompound);
+diff --git a/src/main/java/net/minecraft/server/WorldUpgrader.java b/src/main/java/net/minecraft/server/WorldUpgrader.java
+index 861094454..a2513544b 100644
+--- a/src/main/java/net/minecraft/server/WorldUpgrader.java
++++ b/src/main/java/net/minecraft/server/WorldUpgrader.java
+@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
+ 
+ public class WorldUpgrader {
+ 
+-    private static final Logger LOGGER = LogManager.getLogger();
++    public static final Logger LOGGER = LogManager.getLogger(); // Papyrus - make public
+     private static final ThreadFactory b = (new ThreadFactoryBuilder()).setDaemon(true).build();
+     private final ImmutableSet<ResourceKey<DimensionManager>> c; // CraftBukkit
+     private final boolean d;
+diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
+index 36392f7a5..4dbe94829 100644
+--- a/src/main/java/org/bukkit/craftbukkit/Main.java
++++ b/src/main/java/org/bukkit/craftbukkit/Main.java
+@@ -120,6 +120,8 @@ public class Main {
+                         .withOptionalArg()
+                         .ofType(String.class)
+                         .describedAs("Comma-separated list of world names");
++
++                acceptsAll(asList("ignoreChunkMismatch"), "Whether to ignore chunk coordinates mismatches while upgrading a world");
+                 // Papyrus end
+ 
+                 acceptsAll(asList("nojline"), "Disables jline and emulates the vanilla console");
+-- 
+2.28.0
+
