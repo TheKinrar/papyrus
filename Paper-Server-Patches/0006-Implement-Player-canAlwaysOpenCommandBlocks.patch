@@ -1,4 +1,4 @@
-From 9b82e7275c0cfde572b8905c4141c6b263905d10 Mon Sep 17 00:00:00 2001
+From 046bb2719e50975a422d7c84588b8ef8bc2a3cc2 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
@@ -72,10 +72,10 @@ index 6d192b274..72b65abe0 100644
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index f9eb17cb6..36532e444 100644
+index 787e80c50..0f04b5cc2 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -911,6 +911,9 @@ public abstract class PlayerList {
+@@ -910,6 +910,9 @@ public abstract class PlayerList {
          GameProfile gameprofile = entityplayer.getProfile();
          int i = this.server.b(gameprofile);
  
@@ -86,7 +86,7 @@ index f9eb17cb6..36532e444 100644
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 2ac4630de..f5b01ac33 100644
+index 715d2c5e8..6103c1982 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -46,6 +46,7 @@ import net.minecraft.server.GenericAttributes;

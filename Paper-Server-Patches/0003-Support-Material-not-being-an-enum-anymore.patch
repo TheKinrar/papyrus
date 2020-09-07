@@ -1,11 +1,11 @@
-From 2a69e85b710ef0d9f7efd0ad447fe9ba67ce17d0 Mon Sep 17 00:00:00 2001
+From 9edb6f9aba44130c71dd9a024a3e4494422ba4ad Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index d5a1ade21..e05075d18 100644
+index fbfea9e98..c6d1725c4 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 @@ -516,7 +516,7 @@ public class PaperWorldConfig {
@@ -87,10 +87,10 @@ index 100ed8a8f..ae1582e01 100644
              default:
                  throw new IllegalArgumentException("Unknown DyeColor for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-index 733f2430d..904b31481 100644
+index 3584d20c7..bd1c30e6f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-@@ -328,159 +328,159 @@ public class CraftBlock implements Block {
+@@ -332,159 +332,159 @@ public class CraftBlock implements Block {
          // Paper end
          Material material = getType();
  
@@ -417,10 +417,10 @@ index ecc32c2fb..335ec750e 100644
              default:
                  throw new IllegalArgumentException("Unknown SkullType for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 68e3d2978..98f933347 100644
+index 8d5b08cbe..d042bb2a7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1340,14 +1340,14 @@ public class CraftEventFactory {
+@@ -1339,14 +1339,14 @@ public class CraftEventFactory {
          org.bukkit.World bukkitWorld = world.getWorld();
          Block igniter = bukkitWorld.getBlockAt(source.getX(), source.getY(), source.getZ());
          IgniteCause cause;
@@ -440,7 +440,7 @@ index 68e3d2978..98f933347 100644
                  cause = IgniteCause.SPREAD;
          }
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
-index 1c3e6e0c9..5a7b429b8 100644
+index af84813c7..78fd9942a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemFactory.java
 @@ -50,222 +50,222 @@ public final class CraftItemFactory implements ItemFactory {

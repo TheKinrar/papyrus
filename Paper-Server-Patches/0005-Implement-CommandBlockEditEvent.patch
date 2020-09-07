@@ -1,11 +1,11 @@
-From 65177b495792630f1e0e7afbf46834f7dd57141d Mon Sep 17 00:00:00 2001
+From fe51ecfd56b1856f39c8bba4cb8c72f8c76bdc32 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 5 Oct 2019 21:26:23 +0100
 Subject: [PATCH] Implement CommandBlockEditEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index bc613281d..765ce386f 100644
+index b067f3b70..f24c090ef 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -1,5 +1,7 @@
@@ -16,7 +16,7 @@ index bc613281d..765ce386f 100644
  import com.google.common.primitives.Doubles;
  import com.google.common.primitives.Floats;
  import com.mojang.brigadier.ParseResults;
-@@ -18,11 +20,10 @@ import org.apache.commons.lang3.StringEscapeUtils;
+@@ -19,11 +21,10 @@ import org.apache.commons.lang3.StringEscapeUtils;
  import org.apache.commons.lang3.StringUtils;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
@@ -31,18 +31,17 @@ index bc613281d..765ce386f 100644
  import org.bukkit.craftbukkit.entity.CraftPlayer;
  import org.bukkit.craftbukkit.event.CraftEventFactory;
  import org.bukkit.craftbukkit.inventory.CraftItemStack;
-@@ -33,35 +34,25 @@ import org.bukkit.craftbukkit.util.Waitable;
+@@ -34,6 +35,7 @@ import org.bukkit.craftbukkit.util.Waitable;
  import org.bukkit.entity.Player;
  import org.bukkit.event.Event;
  import org.bukkit.event.block.Action;
 +import org.bukkit.event.block.CommandBlockEditEvent;
  import org.bukkit.event.block.SignChangeEvent;
--import org.bukkit.event.inventory.ClickType;
--import org.bukkit.event.inventory.CraftItemEvent;
--import org.bukkit.event.inventory.InventoryAction;
--import org.bukkit.event.inventory.InventoryClickEvent;
--import org.bukkit.event.inventory.InventoryCreativeEvent;
-+import org.bukkit.event.inventory.*;
+ import org.bukkit.event.inventory.ClickType;
+ import org.bukkit.event.inventory.CraftItemEvent;
+@@ -42,28 +44,21 @@ import org.bukkit.event.inventory.InventoryClickEvent;
+ import org.bukkit.event.inventory.InventoryCloseEvent; // Paper
+ import org.bukkit.event.inventory.InventoryCreativeEvent;
  import org.bukkit.event.inventory.InventoryType.SlotType;
 -import org.bukkit.event.player.AsyncPlayerChatEvent;
 -import org.bukkit.event.player.PlayerAnimationEvent;
@@ -80,7 +79,7 @@ index bc613281d..765ce386f 100644
  // CraftBukkit end
  
  public class PlayerConnection implements PacketListenerPlayIn {
-@@ -604,63 +595,117 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -608,63 +603,117 @@ public class PlayerConnection implements PacketListenerPlayIn {
      @Override
      public void a(PacketPlayInSetCommandBlock packetplayinsetcommandblock) {
          PlayerConnectionUtils.ensureMainThread(packetplayinsetcommandblock, this, this.player.getWorldServer());

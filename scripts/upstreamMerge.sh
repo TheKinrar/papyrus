@@ -31,14 +31,14 @@ function updateP() {
     update $1 $(getPaperRef $1)
 }
 
-update Paper origin/progress/1.16.2
+update Paper origin/master
 updateP Bukkit
 updateP CraftBukkit
 updateP Spigot
 
 if [[ "$2" = "all" || "$2" = "a" ]] ; then
-	updateP BuildData origin/master
-	updateP Paperclip origin/master
+	updateP BuildData
+	updateP Paperclip
 fi
 if [ "$updated" == "1" ]; then
     echo "Rebuilding patches without filtering to improve apply ability"
