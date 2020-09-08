@@ -1,0 +1,196 @@
+From 82010e52b86810fd634398c36eeb4a3139904295 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Wed, 9 Sep 2020 00:05:06 +0200
+Subject: [PATCH] Implement canSeePlayerEntities API
+
+
+diff --git a/src/main/java/net/minecraft/server/IProjectile.java b/src/main/java/net/minecraft/server/IProjectile.java
+index 9f5ce64a6..cb319b694 100644
+--- a/src/main/java/net/minecraft/server/IProjectile.java
++++ b/src/main/java/net/minecraft/server/IProjectile.java
+@@ -144,7 +144,7 @@ public abstract class IProjectile extends Entity {
+             if (entity1 instanceof EntityPlayer && entity instanceof EntityPlayer) {
+                 org.bukkit.entity.Player collided = (org.bukkit.entity.Player) entity.getBukkitEntity();
+                 org.bukkit.entity.Player shooter = (org.bukkit.entity.Player) entity1.getBukkitEntity();
+-                if (!shooter.canSee(collided)) return false;
++                if (!shooter.canSeePlayerEntity(collided)) return false;
+             }
+             return entity1 == null || this.d || !entity1.isSameVehicle(entity);
+             // Paper end
+diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
+index fcd3388d8..2e9696a41 100644
+--- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
++++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
+@@ -2420,7 +2420,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+                     // CraftBukkit start - respect vanish API
+                     if (this.tracker instanceof EntityPlayer) {
+                         Player player = ((EntityPlayer) this.tracker).getBukkitEntity();
+-                        if (!entityplayer.getBukkitEntity().canSee(player)) {
++                        if (!entityplayer.getBukkitEntity().canSeePlayerEntity(player)) {
+                             flag1 = false;
+                         }
+                     }
+diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
+index acac68d9b..a79bb6d0d 100644
+--- a/src/main/java/net/minecraft/server/World.java
++++ b/src/main/java/net/minecraft/server/World.java
+@@ -218,7 +218,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+             Entity entity = entities.get(i);
+ 
+             if (checkCanSee && source instanceof EntityPlayer && entity instanceof EntityPlayer
+-                && !((EntityPlayer) source).getBukkitEntity().canSee(((EntityPlayer) entity).getBukkitEntity())) {
++                && !((EntityPlayer) source).getBukkitEntity().canSeePlayerEntity(((EntityPlayer) entity).getBukkitEntity())) {
+                 continue;
+             }
+ 
+diff --git a/src/main/java/net/minecraft/server/WorldMap.java b/src/main/java/net/minecraft/server/WorldMap.java
+index 225353e07..77346d70c 100644
+--- a/src/main/java/net/minecraft/server/WorldMap.java
++++ b/src/main/java/net/minecraft/server/WorldMap.java
+@@ -440,7 +440,7 @@ public class WorldMap extends PersistentBase {
+             WorldMap.this.decorations.forEach((name, mapIcon) -> {
+                 // If this cursor is for a player check visibility with vanish system
+                 org.bukkit.entity.Player other = org.bukkit.Bukkit.getPlayerExact(name); // Spigot
+-                if (other == null || player.canSee(other)) {
++                if (other == null || player.canSeePlayerEntity(other)) {
+                     icons.add(mapIcon);
+                 }
+             });
+diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
+index efe10b7f5..c8806146e 100644
+--- a/src/main/java/net/minecraft/server/WorldServer.java
++++ b/src/main/java/net/minecraft/server/WorldServer.java
+@@ -1504,7 +1504,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+                 double d2 = (double) blockposition.getZ() - entityplayer.locZ();
+ 
+                 // CraftBukkit start
+-                if (entityhuman != null && entityhuman instanceof EntityPlayer && !entityplayer.getBukkitEntity().canSee(((EntityPlayer) entityhuman).getBukkitEntity())) {
++                if (entityhuman != null && entityhuman instanceof EntityPlayer && !entityplayer.getBukkitEntity().canSeePlayerEntity(((EntityPlayer) entityhuman).getBukkitEntity())) {
+                     continue;
+                 }
+                 // CraftBukkit end
+@@ -1665,7 +1665,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+ 
+         for (EntityHuman entityhuman : receivers) { // Paper - Particle API Expansion
+             EntityPlayer entityplayer = (EntityPlayer) entityhuman; // Paper - Particle API Expansion
+-            if (sender != null && !entityplayer.getBukkitEntity().canSee(sender.getBukkitEntity())) continue; // CraftBukkit
++            if (sender != null && !entityplayer.getBukkitEntity().canSeePlayerEntity(sender.getBukkitEntity())) continue; // CraftBukkit
+ 
+             if (this.a(entityplayer, force, d0, d1, d2, packetplayoutworldparticles)) { // CraftBukkit
+                 ++j;
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+index e41ceaec0..fd47b4f83 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+@@ -139,6 +139,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+     private final ConversationTracker conversationTracker = new ConversationTracker();
+     private final Set<String> channels = new HashSet<String>();
+     private final Map<UUID, Set<WeakReference<Plugin>>> hiddenPlayers = new HashMap<>();
++    private final Set<WeakReference<Plugin>> hideAllPlugins = new HashSet<>();
+     private static final WeakHashMap<Plugin, WeakReference<Plugin>> pluginWeakReferences = new WeakHashMap<>();
+     private int hash = 0;
+     private double health = 20;
+@@ -1312,9 +1313,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+ 
+         getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, other));
+ 
+-        PlayerChunkMap.EntityTracker entry = tracker.trackedEntities.get(other.getId());
+-        if (entry != null && !entry.trackedPlayers.contains(getHandle())) {
+-            entry.updatePlayer(getHandle());
++        if(canSeePlayerEntities()) {
++            PlayerChunkMap.EntityTracker entry = tracker.trackedEntities.get(other.getId());
++            if (entry != null && !entry.trackedPlayers.contains(getHandle())) {
++                entry.updatePlayer(getHandle());
++            }
+         }
+     }
+     // Paper start
+@@ -1371,6 +1374,59 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         return !hiddenPlayers.containsKey(player.getUniqueId());
+     }
+ 
++    @Override
++    public void hidePlayerEntities(Plugin plugin) {
++        Validate.notNull(plugin, "Plugin cannot be null");
++        Validate.isTrue(plugin.isEnabled(), "Plugin attempted to hide player entities while disabled");
++        if (getHandle().playerConnection == null) return;
++
++        if(!hideAllPlugins.isEmpty()) {
++            // Some plugins are already hiding player entities. Just mark that this
++            // plugin wants it too and end.
++            hideAllPlugins.add(getPluginWeakReference(plugin));
++            return;
++        }
++        hideAllPlugins.add(getPluginWeakReference(plugin));
++
++        PlayerChunkMap tracker = getHandle().getWorldServer().getChunkProvider().playerChunkMap;
++        for(EntityPlayer other : getHandle().getWorldServer().getPlayers()) {
++            PlayerChunkMap.EntityTracker entry = tracker.trackedEntities.get(other.getId());
++            if(entry != null) {
++                entry.clear(getHandle());
++            }
++        }
++    }
++
++    @Override
++    public void showPlayerEntities(Plugin plugin) {
++        Validate.notNull(plugin, "Plugin cannot be null");
++        if (getHandle().playerConnection == null) return;
++
++        if(hideAllPlugins.isEmpty()) return; // Player entities aren't hidden
++        hideAllPlugins.remove(getPluginWeakReference(plugin));
++        if(!hideAllPlugins.isEmpty()) return; // Some other plugins still want the player entities hidden
++
++        PlayerChunkMap tracker = getHandle().getWorldServer().getChunkProvider().playerChunkMap;
++        for(EntityPlayer other : getHandle().getWorldServer().getPlayers()) {
++            if(!hiddenPlayers.containsKey(other.getUniqueID())) { // Other might still be hidden using hidePlayer
++                PlayerChunkMap.EntityTracker entry = tracker.trackedEntities.get(other.getId());
++                if (entry != null && !entry.trackedPlayers.contains(getHandle())) {
++                    entry.updatePlayer(getHandle());
++                }
++            }
++        }
++    }
++
++    @Override
++    public boolean canSeePlayerEntities() {
++        return hideAllPlugins.isEmpty();
++    }
++
++    @Override
++    public boolean canSeePlayerEntity(Player player) {
++        return canSeePlayerEntities() && canSee(player);
++    }
++
+     @Override
+     public Map<String, Object> serialize() {
+         Map<String, Object> result = new LinkedHashMap<String, Object>();
+diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+index b62f2e839..a8489d825 100644
+--- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
++++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+@@ -1276,7 +1276,7 @@ public class CraftEventFactory {
+         com.destroystokyo.paper.event.entity.ProjectileCollideEvent event = new com.destroystokyo.paper.event.entity.ProjectileCollideEvent(projectile, collided);
+ 
+         if (projectile.getShooter() instanceof Player && collided instanceof Player) {
+-            if (!((Player) projectile.getShooter()).canSee((Player) collided)) {
++            if (!((Player) projectile.getShooter()).canSeePlayerEntity((Player) collided)) {
+                 event.setCancelled(true);
+                 return event;
+             }
+diff --git a/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java b/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java
+index 93b39092c..2583ac939 100644
+--- a/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java
++++ b/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java
+@@ -37,7 +37,7 @@ public class CraftMapRenderer extends MapRenderer {
+         for (Object key : worldMap.decorations.keySet()) {
+             // If this cursor is for a player check visibility with vanish system
+             Player other = Bukkit.getPlayerExact((String) key);
+-            if (other != null && !player.canSee(other)) {
++            if (other != null && !player.canSeePlayerEntity(other)) {
+                 continue;
+             }
+ 
+-- 
+2.28.0
+
