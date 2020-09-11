@@ -1,11 +1,11 @@
-From 4e834e38d6e140b8f46530db06ddbe87d11f7a11 Mon Sep 17 00:00:00 2001
+From b53cfd73dbd6d79def2edca8b86805203769ce6f Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 03:39:15 +0100
 Subject: [PATCH] POM changes
 
 
 diff --git a/pom.xml b/pom.xml
-index 29dafd4b9..909eb8a19 100644
+index 29dafd4b9..d23f29633 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -3,18 +3,18 @@
@@ -21,10 +21,9 @@ index 29dafd4b9..909eb8a19 100644
  
 -    <groupId>com.destroystokyo.paper</groupId>
 -    <artifactId>paper-api</artifactId>
--    <version>1.16.3-R0.1-SNAPSHOT</version>
 +    <groupId>fr.thekinrar.papyrus</groupId>
 +    <artifactId>papyrus-api</artifactId>
-+    <version>1.16.3-R0.1-SNAPSHOT</version
+     <version>1.16.3-R0.1-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 -    <name>Paper-API</name>
