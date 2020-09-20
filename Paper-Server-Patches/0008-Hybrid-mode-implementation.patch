@@ -1,11 +1,11 @@
-From 4cbc3265ca1ad542c02a83cb0c9f56e955fc61d4 Mon Sep 17 00:00:00 2001
+From 6b2e6b42795e8cf59b2cdf8920552299eedf626d Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
 
 
 diff --git a/src/main/java/co/aikar/timings/MinecraftTimings.java b/src/main/java/co/aikar/timings/MinecraftTimings.java
-index dd0722397..a5a166b38 100644
+index 884b59d478..de6e1ab8cb 100644
 --- a/src/main/java/co/aikar/timings/MinecraftTimings.java
 +++ b/src/main/java/co/aikar/timings/MinecraftTimings.java
 @@ -43,6 +43,8 @@ public final class MinecraftTimings {
@@ -18,7 +18,7 @@ index dd0722397..a5a166b38 100644
  
      private MinecraftTimings() {}
 diff --git a/src/main/java/fr/thekinrar/papyrus/Metrics.java b/src/main/java/fr/thekinrar/papyrus/Metrics.java
-index 7c284c9b2..ff7346e59 100644
+index 7c284c9b2f..ff7346e595 100644
 --- a/src/main/java/fr/thekinrar/papyrus/Metrics.java
 +++ b/src/main/java/fr/thekinrar/papyrus/Metrics.java
 @@ -593,7 +593,7 @@ public class Metrics {
@@ -31,7 +31,7 @@ index 7c284c9b2..ff7346e59 100644
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
-index 4168eafc0..90d8a45b3 100644
+index 4168eafc0d..90d8a45b39 100644
 --- a/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusConfig.java
 @@ -1,34 +1,24 @@
@@ -82,7 +82,7 @@ index 4168eafc0..90d8a45b3 100644
  }
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java b/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java
 new file mode 100644
-index 000000000..8d1cd1c5c
+index 0000000000..8d1cd1c5c1
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusPermissions.java
 @@ -0,0 +1,13 @@
@@ -101,7 +101,7 @@ index 000000000..8d1cd1c5c
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPlayer.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPlayer.java
 new file mode 100644
-index 000000000..a46fefcd9
+index 0000000000..a46fefcd95
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPlayer.java
 @@ -0,0 +1,46 @@
@@ -152,7 +152,7 @@ index 000000000..a46fefcd9
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/EntityHuman.java b/src/main/java/net/minecraft/server/EntityHuman.java
-index ce4ebc96c..727b915b6 100644
+index ce4ebc96c0..727b915b61 100644
 --- a/src/main/java/net/minecraft/server/EntityHuman.java
 +++ b/src/main/java/net/minecraft/server/EntityHuman.java
 @@ -17,10 +17,14 @@ import java.util.function.Predicate;
@@ -209,7 +209,7 @@ index ce4ebc96c..727b915b6 100644
          float f = this.inventory.a(iblockdata);
  
 diff --git a/src/main/java/net/minecraft/server/EntityLiving.java b/src/main/java/net/minecraft/server/EntityLiving.java
-index c622fb704..a661bd343 100644
+index 76185f042d..82473cc10a 100644
 --- a/src/main/java/net/minecraft/server/EntityLiving.java
 +++ b/src/main/java/net/minecraft/server/EntityLiving.java
 @@ -921,9 +921,11 @@ public abstract class EntityLiving extends Entity {
@@ -252,7 +252,7 @@ index c622fb704..a661bd343 100644
  
          return (MobEffect) this.effects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 8b1e866b3..708238b8e 100644
+index 11fa231caa..5ea4c22978 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -29,6 +29,8 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -278,7 +278,7 @@ index 8b1e866b3..708238b8e 100644
  
              if (this.ticksLived % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 7405b0578..781c788d0 100644
+index 985e069414..f2d1f36cf4 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1304,6 +1304,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
@@ -301,7 +301,7 @@ index 7405b0578..781c788d0 100644
          // Run tasks that are waiting on processing
          MinecraftTimings.processQueueTimer.startTiming(); // Spigot
 diff --git a/src/main/java/net/minecraft/server/NetworkManager.java b/src/main/java/net/minecraft/server/NetworkManager.java
-index c9b36e604..2e3d8b59b 100644
+index c9b36e6040..2e3d8b59bf 100644
 --- a/src/main/java/net/minecraft/server/NetworkManager.java
 +++ b/src/main/java/net/minecraft/server/NetworkManager.java
 @@ -26,6 +26,7 @@ import org.apache.logging.log4j.LogManager;
@@ -313,7 +313,7 @@ index c9b36e604..2e3d8b59b 100644
  public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
  
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index f24c090ef..bd8221532 100644
+index af657efac6..6b07f6a1cd 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -51,6 +51,8 @@ import org.bukkit.inventory.InventoryView;
@@ -414,7 +414,7 @@ index f24c090ef..bd8221532 100644
              try {
                  byte[] data = new byte[packetplayincustompayload.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 0f04b5cc2..9b3bfe9f5 100644
+index 0f04b5cc20..9b3bfe9f51 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
@@ -506,7 +506,7 @@ index 0f04b5cc2..9b3bfe9f5 100644
      public int getPlayerCount() {
          return this.players.size();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index e8a4f685e..eb5687aa4 100644
+index 804badb9a9..972cecf05c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1,5 +1,6 @@
@@ -525,7 +525,7 @@ index e8a4f685e..eb5687aa4 100644
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufOutputStream;
  import io.netty.buffer.Unpooled;
-@@ -220,6 +223,7 @@ import org.bukkit.potion.PotionEffectType;
+@@ -222,6 +225,7 @@ import org.bukkit.potion.PotionEffectType;
  import org.bukkit.scheduler.BukkitWorker;
  import org.bukkit.util.StringUtil;
  import org.bukkit.util.permissions.DefaultPermissions;
@@ -533,7 +533,7 @@ index e8a4f685e..eb5687aa4 100644
  import org.yaml.snakeyaml.Yaml;
  import org.yaml.snakeyaml.constructor.SafeConstructor;
  import org.yaml.snakeyaml.error.MarkedYAMLException;
-@@ -423,6 +427,7 @@ public final class CraftServer implements Server {
+@@ -425,6 +429,7 @@ public final class CraftServer implements Server {
              commandMap.registerServerAliases();
              DefaultPermissions.registerCorePermissions();
              CraftDefaultPermissions.registerCorePermissions();
@@ -541,7 +541,7 @@ index e8a4f685e..eb5687aa4 100644
              if (!com.destroystokyo.paper.PaperConfig.loadPermsBeforePlugins) loadCustomPermissions(); // Paper
              helpMap.initializeCommands();
              syncCommands();
-@@ -907,6 +912,7 @@ public final class CraftServer implements Server {
+@@ -909,6 +914,7 @@ public final class CraftServer implements Server {
          reloadData();
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
@@ -549,7 +549,7 @@ index e8a4f685e..eb5687aa4 100644
          overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
          ignoreVanillaPermissions = commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2377,4 +2383,24 @@ public final class CraftServer implements Server {
+@@ -2388,4 +2394,24 @@ public final class CraftServer implements Server {
          return mobGoals;
      }
      // Paper end
@@ -575,7 +575,7 @@ index e8a4f685e..eb5687aa4 100644
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
-index 2fd69c0f9..e8902262e 100644
+index 2fd69c0f91..e8902262eb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
 +++ b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
 @@ -1,10 +1,11 @@
@@ -592,7 +592,7 @@ index 2fd69c0f9..e8902262e 100644
  
      public CraftCommandMap(Server server) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index 22705cda3..1a82f98b7 100644
+index 9e9bdf9bc2..1c248da99e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 @@ -410,7 +410,17 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
@@ -626,7 +626,7 @@ index 22705cda3..1a82f98b7 100644
      public Collection<PotionEffect> getActivePotionEffects() {
          List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 6103c1982..e41ceaec0 100644
+index 6103c1982c..e41ceaec08 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
@@ -675,7 +675,7 @@ index 6103c1982..e41ceaec0 100644
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index d042bb2a7..b62f2e839 100644
+index d042bb2a74..b62f2e8390 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -12,6 +12,8 @@ import java.util.List;

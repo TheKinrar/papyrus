@@ -1,14 +1,14 @@
-From ba8144e45d97f5812ad5aba5449fc0c2144eb297 Mon Sep 17 00:00:00 2001
+From f9ad29ccc7e9525d332bd5109e5189c445e87e0c Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 1 Mar 2020 01:18:01 +0000
 Subject: [PATCH] More plugin-loading related APIs
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index eb5687aa4..d394e55b7 100644
+index 972cecf05c..e0caa5c3ca 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -682,6 +682,11 @@ public final class CraftServer implements Server {
+@@ -684,6 +684,11 @@ public final class CraftServer implements Server {
      }
      // End Temporary calls
  

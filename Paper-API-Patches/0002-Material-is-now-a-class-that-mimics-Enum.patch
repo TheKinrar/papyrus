@@ -1,4 +1,4 @@
-From 1b012ccd381d88aaf3dfd98c104e8e9d28484a53 Mon Sep 17 00:00:00 2001
+From 46bd306306525f59812f1c197b47bcee755732c1 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 12:02:30 +0100
 Subject: [PATCH] Material is now a class that mimics Enum
@@ -15330,7 +15330,7 @@ index 000000000..bceed5e28
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/Registry.java b/src/main/java/org/bukkit/Registry.java
-index 91544ade4..b5567213e 100644
+index d3f346413..d943a3aa2 100644
 --- a/src/main/java/org/bukkit/Registry.java
 +++ b/src/main/java/org/bukkit/Registry.java
 @@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
@@ -15341,7 +15341,7 @@ index 91544ade4..b5567213e 100644
  import java.util.function.Predicate;
  import org.bukkit.advancement.Advancement;
  import org.bukkit.attribute.Attribute;
-@@ -168,7 +169,7 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
+@@ -174,7 +175,7 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
      @Nullable
      T get(@NotNull NamespacedKey key);
  
@@ -15350,7 +15350,7 @@ index 91544ade4..b5567213e 100644
  
          private final Map<NamespacedKey, T> map;
  
-@@ -179,7 +180,7 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
+@@ -185,7 +186,7 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
          protected SimpleRegistry(@NotNull Class<T> type, @NotNull Predicate<T> predicate) {
              ImmutableMap.Builder<NamespacedKey, T> builder = ImmutableMap.builder();
  
@@ -15359,7 +15359,7 @@ index 91544ade4..b5567213e 100644
                  if (predicate.test(entry)) {
                      builder.put(entry.getKey(), entry);
                  }
-@@ -188,6 +189,15 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
+@@ -194,6 +195,15 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
              map = builder.build();
          }
  
