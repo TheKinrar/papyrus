@@ -1,4 +1,4 @@
-From ba18cfe851962c2f44a887d4b2494308b75a699f Mon Sep 17 00:00:00 2001
+From 1b012ccd381d88aaf3dfd98c104e8e9d28484a53 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 12:02:30 +0100
 Subject: [PATCH] Material is now a class that mimics Enum
@@ -56,7 +56,7 @@ index bfe842364..bd7919c01 100644
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index 4ba991b79..6d91a4490 100644
+index 4ba991b79..3a4a506d9 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
 @@ -1,10 +1,17 @@
@@ -5160,8 +5160,8 @@ index 4ba991b79..6d91a4490 100644
 +
 +    public final int ordinal() {
 +        return ArrayUtils.indexOf(values(), this);
-+    }
-+
+     }
+ 
 +    public final int legacyOrdinal() {
 +        return ArrayUtils.indexOf(legacyValues(), this);
 +    }
@@ -5176,8 +5176,8 @@ index 4ba991b79..6d91a4490 100644
 +            ALL_ARRAY = (Material[]) ArrayUtils.addAll(modernValues(), legacyValues());
 +
 +        return ALL_ARRAY;
-     }
- 
++    }
++
 +    @NotNull
 +    public static Material[] legacyValues() {
 +        if(LEGACY_ARRAY == null)
@@ -14440,7 +14440,7 @@ index 4ba991b79..6d91a4490 100644
                  return 3600000.8F;
              default:
                  return 0;
-@@ -8631,18 +8743,827 @@ public enum Material implements Keyed {
+@@ -8631,18 +8743,854 @@ public enum Material implements Keyed {
      @Nullable
      public Material getCraftingRemainingItem() {
          Validate.isTrue(isItem(), "The Material is not an item!");
@@ -15266,6 +15266,33 @@ index 4ba991b79..6d91a4490 100644
 +            case "LINGERING_POTION":
 +            case "POTION":
 +            case "SPLASH_POTION":
++                // </editor-fold>
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    public boolean isFlower() {
++        switch(this.name()) {
++            // <editor-fold defaultstate="collapsed" desc="isFlower">
++            case "DANDELION":
++            case "POPPY":
++            case "BLUE_ORCHID":
++            case "ALLIUM":
++            case "AZURE_BLUET":
++            case "RED_TULIP":
++            case "ORANGE_TULIP":
++            case "WHITE_TULIP":
++            case "PINK_TULIP":
++            case "OXEYE_DAISY":
++            case "CORNFLOWER":
++            case "LILY_OF_THE_VALLEY":
++            case "WITHER_ROSE":
++            case "SUNFLOWER":
++            case "LILAC":
++            case "ROSE_BUSH":
++            case "PEONY":
 +                // </editor-fold>
 +                return true;
 +            default:
