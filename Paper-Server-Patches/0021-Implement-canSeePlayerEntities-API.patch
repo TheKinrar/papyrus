@@ -1,4 +1,4 @@
-From e08337c4a3ed1468c5426fd033f299f76f248f1f Mon Sep 17 00:00:00 2001
+From 113139b44d2a47ea84d66e2737676db40d2682c0 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Sep 2020 00:05:06 +0200
 Subject: [PATCH] Implement canSeePlayerEntities API
@@ -18,10 +18,10 @@ index 9f5ce64a60..cb319b6944 100644
              return entity1 == null || this.d || !entity1.isSameVehicle(entity);
              // Paper end
 diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-index 5d3322f9f0..87e0f64694 100644
+index fcd3388d88..2e9696a41a 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-@@ -2440,7 +2440,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+@@ -2420,7 +2420,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
                      // CraftBukkit start - respect vanish API
                      if (this.tracker instanceof EntityPlayer) {
                          Player player = ((EntityPlayer) this.tracker).getBukkitEntity();
