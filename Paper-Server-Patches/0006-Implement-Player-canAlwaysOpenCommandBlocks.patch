@@ -1,11 +1,11 @@
-From 046bb2719e50975a422d7c84588b8ef8bc2a3cc2 Mon Sep 17 00:00:00 2001
+From 87a48f15dcaa2e4b731b564d46e52f278be63027 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
 
 
 diff --git a/src/main/java/net/minecraft/server/BlockCommand.java b/src/main/java/net/minecraft/server/BlockCommand.java
-index 6b353a99c..0f9aeddc3 100644
+index 6b353a99c0..0f9aeddc35 100644
 --- a/src/main/java/net/minecraft/server/BlockCommand.java
 +++ b/src/main/java/net/minecraft/server/BlockCommand.java
 @@ -4,6 +4,7 @@ import java.util.Random;
@@ -31,7 +31,7 @@ index 6b353a99c..0f9aeddc3 100644
          } else {
 diff --git a/src/main/java/net/minecraft/server/ItemRestricted.java b/src/main/java/net/minecraft/server/ItemRestricted.java
 new file mode 100644
-index 000000000..f5ed0c82a
+index 0000000000..f5ed0c82ac
 --- /dev/null
 +++ b/src/main/java/net/minecraft/server/ItemRestricted.java
 @@ -0,0 +1,23 @@
@@ -59,7 +59,7 @@ index 000000000..f5ed0c82a
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/PlayerInteractManager.java b/src/main/java/net/minecraft/server/PlayerInteractManager.java
-index 6d192b274..72b65abe0 100644
+index ac3bee9dfb..8aac24cc11 100644
 --- a/src/main/java/net/minecraft/server/PlayerInteractManager.java
 +++ b/src/main/java/net/minecraft/server/PlayerInteractManager.java
 @@ -353,7 +353,7 @@ public class PlayerInteractManager {
@@ -72,10 +72,10 @@ index 6d192b274..72b65abe0 100644
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 787e80c50..0f04b5cc2 100644
+index 38f26e25cb..94331e402a 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -910,6 +910,9 @@ public abstract class PlayerList {
+@@ -913,6 +913,9 @@ public abstract class PlayerList {
          GameProfile gameprofile = entityplayer.getProfile();
          int i = this.server.b(gameprofile);
  
@@ -86,7 +86,7 @@ index 787e80c50..0f04b5cc2 100644
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 715d2c5e8..6103c1982 100644
+index 7e91e95941..92b2528645 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -46,6 +46,7 @@ import net.minecraft.server.GenericAttributes;

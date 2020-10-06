@@ -1,4 +1,4 @@
-From 6b2e6b42795e8cf59b2cdf8920552299eedf626d Mon Sep 17 00:00:00 2001
+From 296e5694bad9c50c542afb8e9e7ed82a35f20dd2 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -252,7 +252,7 @@ index 76185f042d..82473cc10a 100644
  
          return (MobEffect) this.effects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 11fa231caa..5ea4c22978 100644
+index 8e1655a975..1e8fc375c5 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -29,6 +29,8 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -414,7 +414,7 @@ index af657efac6..6b07f6a1cd 100644
              try {
                  byte[] data = new byte[packetplayincustompayload.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 0f04b5cc20..9b3bfe9f51 100644
+index 94331e402a..59f2db4cf2 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
@@ -470,7 +470,7 @@ index 0f04b5cc20..9b3bfe9f51 100644
          this.d(entityplayer);
          entityplayer.getStatisticManager().c();
          entityplayer.getRecipeBook().a(entityplayer);
-@@ -1199,17 +1203,32 @@ public abstract class PlayerList {
+@@ -1202,17 +1206,32 @@ public abstract class PlayerList {
      }
  
      public void updateClient(EntityPlayer entityplayer) {
@@ -626,7 +626,7 @@ index 9e9bdf9bc2..1c248da99e 100644
      public Collection<PotionEffect> getActivePotionEffects() {
          List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 6103c1982c..e41ceaec08 100644
+index 92b2528645..64cb4a80b2 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
@@ -675,7 +675,7 @@ index 6103c1982c..e41ceaec08 100644
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index d042bb2a74..b62f2e8390 100644
+index 65954baebe..44324ddb0b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -12,6 +12,8 @@ import java.util.List;
