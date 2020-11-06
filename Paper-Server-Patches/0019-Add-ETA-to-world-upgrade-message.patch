@@ -1,14 +1,14 @@
-From a33e556231672aebe9791f00e9c3a37a3ff44b79 Mon Sep 17 00:00:00 2001
+From 0ce3c1b22126c9a25456f0bc0a05dd98937af073 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 18 Aug 2020 02:41:09 +0200
 Subject: [PATCH] Add ETA to world upgrade message
 
 
 diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
-index 18521e2df..798425390 100644
+index ae48df4b9b..b0aab8ceaf 100644
 --- a/src/main/java/net/minecraft/server/Main.java
 +++ b/src/main/java/net/minecraft/server/Main.java
-@@ -238,6 +238,8 @@ public class Main {
+@@ -237,6 +237,8 @@ public class Main {
          WorldUpgrader worldupgrader = new WorldUpgrader(convertable_conversionsession, datafixer, immutableset, flag);
          IChatBaseComponent ichatbasecomponent = null;
  
@@ -17,7 +17,7 @@ index 18521e2df..798425390 100644
          while (!worldupgrader.b()) {
              IChatBaseComponent ichatbasecomponent1 = worldupgrader.h();
  
-@@ -251,7 +253,15 @@ public class Main {
+@@ -250,7 +252,15 @@ public class Main {
              if (i > 0) {
                  int j = worldupgrader.f() + worldupgrader.g();
  
@@ -35,7 +35,7 @@ index 18521e2df..798425390 100644
  
              if (!booleansupplier.getAsBoolean()) {
 diff --git a/src/main/java/net/minecraft/server/WorldUpgrader.java b/src/main/java/net/minecraft/server/WorldUpgrader.java
-index 5ccdc0b87..861094454 100644
+index 5ccdc0b87b..8610944542 100644
 --- a/src/main/java/net/minecraft/server/WorldUpgrader.java
 +++ b/src/main/java/net/minecraft/server/WorldUpgrader.java
 @@ -40,6 +40,7 @@ public class WorldUpgrader {

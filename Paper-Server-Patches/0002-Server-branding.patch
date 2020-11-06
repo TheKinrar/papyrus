@@ -1,11 +1,11 @@
-From b96f3e9731ba5801d5191ad96eefb29fcd826100 Mon Sep 17 00:00:00 2001
+From c722007faa14fe90b3c1382931612a35a1cdf907 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 11:26:33 +0100
 Subject: [PATCH] Server branding
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index f65d354503..52101e07c0 100644
+index 053da51194..4cc3289b2a 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -97,7 +97,7 @@ public class PaperConfig {
@@ -924,7 +924,7 @@ index 0000000000..52274c1bb3
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/DedicatedServer.java b/src/main/java/net/minecraft/server/DedicatedServer.java
-index f55dc28f3e..dcabc28809 100644
+index 5504facd2e..2d1eef9924 100644
 --- a/src/main/java/net/minecraft/server/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/DedicatedServer.java
 @@ -7,6 +7,7 @@ import com.mojang.authlib.GameProfileRepository;
@@ -935,7 +935,7 @@ index f55dc28f3e..dcabc28809 100644
  import java.io.IOException;
  import java.io.InputStreamReader;
  import java.net.InetAddress;
-@@ -166,6 +167,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
+@@ -169,6 +170,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
          com.destroystokyo.paper.PaperConfig.registerCommands();
          com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // load version history now
          // Paper end
@@ -952,7 +952,7 @@ index f55dc28f3e..dcabc28809 100644
          this.setPVP(dedicatedserverproperties.pvp);
          this.setAllowFlight(dedicatedserverproperties.allowFlight);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 883c17f00b..985e069414 100644
+index 9c4ea5265e..775f7d6811 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1451,7 +1451,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
@@ -965,7 +965,7 @@ index 883c17f00b..985e069414 100644
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index eec338649e..22f3a47234 100644
+index d64d94b8c3..15ceb1eb21 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -102,6 +102,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -986,7 +986,7 @@ index eec338649e..22f3a47234 100644
          this.generator = gen;
          this.world = new CraftWorld((WorldServer) this, gen, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index d8d29d1455..804badb9a9 100644
+index 4e1b4d7cde..b1b4c53bcf 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -232,7 +232,7 @@ import javax.annotation.Nullable; // Paper

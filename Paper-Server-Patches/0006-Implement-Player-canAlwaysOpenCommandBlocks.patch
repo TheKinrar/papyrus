@@ -1,4 +1,4 @@
-From 87a48f15dcaa2e4b731b564d46e52f278be63027 Mon Sep 17 00:00:00 2001
+From 6a7867fc20ac1d9b501e486c1034f28d3e5786b5 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
@@ -59,7 +59,7 @@ index 0000000000..f5ed0c82ac
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/PlayerInteractManager.java b/src/main/java/net/minecraft/server/PlayerInteractManager.java
-index ac3bee9dfb..8aac24cc11 100644
+index 485b609bb5..a33cd6e2af 100644
 --- a/src/main/java/net/minecraft/server/PlayerInteractManager.java
 +++ b/src/main/java/net/minecraft/server/PlayerInteractManager.java
 @@ -353,7 +353,7 @@ public class PlayerInteractManager {
@@ -86,7 +86,7 @@ index 38f26e25cb..94331e402a 100644
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 7e91e95941..92b2528645 100644
+index f4f4e29f56..05101d7f78 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -46,6 +46,7 @@ import net.minecraft.server.GenericAttributes;
@@ -113,7 +113,7 @@ index 7e91e95941..92b2528645 100644
  
      public CraftPlayer(CraftServer server, EntityPlayer entity) {
          super(server, entity);
-@@ -2065,6 +2068,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2102,6 +2105,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      }
      // Paper end
  
