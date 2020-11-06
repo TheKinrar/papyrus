@@ -1,0 +1,242 @@
+From cd9297bcdb9ee24f718e4b6363537b872831f492 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Fri, 6 Nov 2020 20:09:13 +0100
+Subject: [PATCH] FML2 protocol support
+
+
+diff --git a/src/main/java/net/minecraft/server/HandshakeListener.java b/src/main/java/net/minecraft/server/HandshakeListener.java
+index 5dde738b74..6902996806 100644
+--- a/src/main/java/net/minecraft/server/HandshakeListener.java
++++ b/src/main/java/net/minecraft/server/HandshakeListener.java
+@@ -136,6 +136,7 @@ public class HandshakeListener implements PacketHandshakingInListener {
+         // Paper start - NetworkClient implementation
+         this.getNetworkManager().protocolVersion = packethandshakinginsetprotocol.getProtocolVersion();
+         this.getNetworkManager().virtualHost = com.destroystokyo.paper.network.PaperNetworkClient.prepareVirtualHost(packethandshakinginsetprotocol.hostname, packethandshakinginsetprotocol.port);
++        this.getNetworkManager().forge = packethandshakinginsetprotocol.hostname.endsWith("\0FML2\0");
+         // Paper end
+     }
+ 
+diff --git a/src/main/java/net/minecraft/server/LoginListener.java b/src/main/java/net/minecraft/server/LoginListener.java
+index 57a3a8d094..86f1f8dcc1 100644
+--- a/src/main/java/net/minecraft/server/LoginListener.java
++++ b/src/main/java/net/minecraft/server/LoginListener.java
+@@ -9,12 +9,17 @@ import java.net.InetAddress;
+ import java.net.InetSocketAddress;
+ import java.net.SocketAddress;
+ import java.security.PrivateKey;
++import java.text.MessageFormat;
++import java.util.ArrayList;
+ import java.util.Arrays;
++import java.util.List;
+ import java.util.Random;
+ import java.util.UUID;
+ import java.util.concurrent.atomic.AtomicInteger;
+ import javax.annotation.Nullable;
+ import javax.crypto.SecretKey;
++
++import io.netty.buffer.ByteBuf;
+ import org.apache.commons.lang3.Validate;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+@@ -43,6 +48,7 @@ public class LoginListener implements PacketLoginInListener {
+     private EntityPlayer l;
+     public String hostname = ""; // CraftBukkit - add field
+     private int velocityLoginMessageId = -1; // Paper - Velocity support
++    private boolean forgeSent;
+ 
+     public LoginListener(MinecraftServer minecraftserver, NetworkManager networkmanager) {
+         this.g = LoginListener.EnumProtocolState.HELLO;
+@@ -59,7 +65,32 @@ public class LoginListener implements PacketLoginInListener {
+             return;
+         }
+         // Paper end
+-        if (this.g == LoginListener.EnumProtocolState.READY_TO_ACCEPT) {
++        if(this.g == EnumProtocolState.NEGOTIATING) {
++            if(networkManager.forge) {
++                if(!forgeSent) {
++                    forgeSent = true;
++
++                    LOGGER.info("{} is a FML2 client, initiating handshake", this.getGameProfile()::getName);
++
++                    PacketDataSerializer packet = new PacketDataSerializer(Unpooled.buffer());
++                    packet.writeVarInt(0x01);
++                    packet.writeVarInt(2);
++                    packet.writeString("minecraft");
++                    packet.writeString("forge");
++                    packet.writeVarInt(0);
++                    packet.writeVarInt(0);
++
++                    PacketDataSerializer handshake = new PacketDataSerializer(Unpooled.buffer());
++                    handshake.a(new MinecraftKey("fml", "handshake"));
++                    handshake.writeVarInt(packet.readableBytes());
++                    handshake.writeBytes(packet);
++
++                    this.networkManager.sendPacket(new PacketLoginOutCustomPayload(424242, new MinecraftKey("fml", "loginwrapper"), handshake));
++                }
++            } else {
++                this.g = EnumProtocolState.READY_TO_ACCEPT;
++            }
++        } else if (this.g == LoginListener.EnumProtocolState.READY_TO_ACCEPT) {
+             // Paper start - prevent logins to be processed even though disconnect was called
+             if (networkManager.isConnected()) {
+                 this.c();
+@@ -128,6 +159,9 @@ public class LoginListener implements PacketLoginInListener {
+         {
+             for ( com.mojang.authlib.properties.Property property : networkManager.spoofedProfile )
+             {
++                if("forge".equals(property.getName()) && "true".equals(property.getValue())) {
++                    networkManager.forge = true;
++                }
+                 this.i.getProperties().put( property.getName(), property );
+             }
+         }
+@@ -183,6 +217,7 @@ public class LoginListener implements PacketLoginInListener {
+     public void a(PacketLoginInStart packetlogininstart) {
+         Validate.validState(this.g == LoginListener.EnumProtocolState.HELLO, "Unexpected hello packet", new Object[0]);
+         this.i = packetlogininstart.b();
++
+         if (this.server.getOnlineMode() && !this.networkManager.isLocal()) {
+             this.g = LoginListener.EnumProtocolState.KEY;
+             this.networkManager.sendPacket(new PacketLoginOutEncryptionBegin("", this.server.getKeyPair().getPublic(), this.e));
+@@ -212,7 +247,6 @@ public class LoginListener implements PacketLoginInListener {
+             // Paper end
+             // Spigot end
+         }
+-
+     }
+ 
+     @Override
+@@ -245,7 +279,7 @@ public class LoginListener implements PacketLoginInListener {
+                         } else if (LoginListener.this.server.isEmbeddedServer()) {
+                             LoginListener.LOGGER.warn("Failed to verify username but will let them in anyway!");
+                             LoginListener.this.i = LoginListener.this.a(gameprofile);
+-                            LoginListener.this.g = LoginListener.EnumProtocolState.READY_TO_ACCEPT;
++                            LoginListener.this.g = EnumProtocolState.NEGOTIATING;
+                         } else {
+                             LoginListener.this.disconnect(new ChatMessage("multiplayer.disconnect.unverified_username"));
+                             LoginListener.LOGGER.error("Username '{}' tried to join with an invalid session", gameprofile.getName());
+@@ -254,7 +288,7 @@ public class LoginListener implements PacketLoginInListener {
+                         if (LoginListener.this.server.isEmbeddedServer()) {
+                             LoginListener.LOGGER.warn("Authentication servers are down but will let them in anyway!");
+                             LoginListener.this.i = LoginListener.this.a(gameprofile);
+-                            LoginListener.this.g = LoginListener.EnumProtocolState.READY_TO_ACCEPT;
++                            LoginListener.this.g = LoginListener.EnumProtocolState.NEGOTIATING;
+                         } else {
+                             // Paper start
+                             if (com.destroystokyo.paper.PaperConfig.authenticationServersDownKickMessage != null) {
+@@ -334,12 +368,32 @@ public class LoginListener implements PacketLoginInListener {
+                             }
+                             // CraftBukkit end
+                             LoginListener.LOGGER.info("UUID of player {} is {}", LoginListener.this.i.getName(), LoginListener.this.i.getId());
+-                            LoginListener.this.g = LoginListener.EnumProtocolState.READY_TO_ACCEPT;
++                            LoginListener.this.g = LoginListener.EnumProtocolState.NEGOTIATING;
+                 }
+         }
+     // Spigot end
+ 
+     public void a(PacketLoginInCustomPayload packetloginincustompayload) {
++        if(this.g == EnumProtocolState.NEGOTIATING && packetloginincustompayload.getId() == 424242) {
++            PacketDataSerializer buf = packetloginincustompayload.getBuf();
++
++            MinecraftKey channel = buf.p();
++            int length = buf.readVarInt();
++            int pid = buf.readVarInt();
++            Validate.validState(channel.equals(new MinecraftKey("fml:handshake")), "invalid FML2 handshake channel: %s", channel);
++            Validate.validState(pid == 2, "invalid FML2 handshake packet id: %d", pid);
++
++            int count = buf.readVarInt();
++            List<String> mods = new ArrayList<>(count);
++            for(int i = 0; i < count; ++i) {
++                mods.add(buf.readString());
++            }
++            LoginListener.LOGGER.info("Player {} has Forge mods {}", getGameProfile().getName(), mods);
++
++            this.g = EnumProtocolState.READY_TO_ACCEPT;
++            return;
++        }
++
+         // Paper start - Velocity support
+         if (com.destroystokyo.paper.PaperConfig.velocitySupport && packetloginincustompayload.getId() == this.velocityLoginMessageId) {
+             PacketDataSerializer buf = packetloginincustompayload.getBuf();
+diff --git a/src/main/java/net/minecraft/server/NetworkManager.java b/src/main/java/net/minecraft/server/NetworkManager.java
+index 2e3d8b59bf..bc03228b33 100644
+--- a/src/main/java/net/minecraft/server/NetworkManager.java
++++ b/src/main/java/net/minecraft/server/NetworkManager.java
+@@ -65,6 +65,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
+     // Paper start - NetworkClient implementation
+     public int protocolVersion;
+     public java.net.InetSocketAddress virtualHost;
++    public boolean forge = false;
+     private static boolean enableExplicitFlush = Boolean.getBoolean("paper.explicit-flush");
+     // Optimize network
+     boolean isPending = true;
+diff --git a/src/main/java/net/minecraft/server/PacketDataSerializer.java b/src/main/java/net/minecraft/server/PacketDataSerializer.java
+index f43193c109..4762f9d39f 100644
+--- a/src/main/java/net/minecraft/server/PacketDataSerializer.java
++++ b/src/main/java/net/minecraft/server/PacketDataSerializer.java
+@@ -210,6 +210,7 @@ public class PacketDataSerializer extends ByteBuf {
+         return new UUID(this.readLong(), this.readLong());
+     }
+ 
++    public PacketDataSerializer writeVarInt(int i) { return d(i); } // Papyrus - OBFHELPER
+     public PacketDataSerializer d(int i) {
+         while ((i & -128) != 0) {
+             this.writeByte(i & 127 | 128);
+@@ -333,6 +334,7 @@ public class PacketDataSerializer extends ByteBuf {
+         }
+     }
+ 
++    public String readString() { return readUTF(32767); }
+     public String readUTF(int maxLength) { return this.e(maxLength); } // Paper - OBFHELPER
+     public String e(int i) {
+         int j = this.i();
+@@ -353,6 +355,7 @@ public class PacketDataSerializer extends ByteBuf {
+         }
+     }
+ 
++    public PacketDataSerializer writeString(String s) { return a(s); } // Papyrus - OBFHELPER
+     public PacketDataSerializer a(String s) {
+         return this.a(s, 32767);
+     }
+diff --git a/src/main/java/net/minecraft/server/ServerPing.java b/src/main/java/net/minecraft/server/ServerPing.java
+index ea52e89bd9..cfd6166dcc 100644
+--- a/src/main/java/net/minecraft/server/ServerPing.java
++++ b/src/main/java/net/minecraft/server/ServerPing.java
+@@ -9,6 +9,8 @@ import com.google.gson.JsonParseException;
+ import com.google.gson.JsonSerializationContext;
+ import com.google.gson.JsonSerializer;
+ import com.mojang.authlib.GameProfile;
++import org.bukkit.Bukkit;
++
+ import java.lang.reflect.Type;
+ import java.util.UUID;
+ 
+@@ -100,6 +102,25 @@ public class ServerPing {
+                 jsonobject.addProperty("favicon", serverping.d());
+             }
+ 
++            JsonObject forge = new JsonObject();
++            forge.addProperty("modId", "forge");
++            forge.addProperty("modmarker", "ANY");
++
++            JsonObject mc = new JsonObject();
++            mc.addProperty("modId", "minecraft");
++            mc.addProperty("modmarker", Bukkit.getMinecraftVersion());
++
++            JsonArray forgeMods = new JsonArray();
++            forgeMods.add(mc);
++            forgeMods.add(forge);
++
++            JsonObject forgeData = new JsonObject();
++            forgeData.add("channels", new JsonArray());
++            forgeData.add("mods", forgeMods);
++            forgeData.addProperty("fmlNetworkVersion", 2);
++
++            jsonobject.add("forgeData", forgeData);
++
+             return jsonobject;
+         }
+     }
+-- 
+2.28.0
+
