@@ -1,11 +1,11 @@
-From 894f5bc76f6690813ca0a9333aefb99eeb14dea8 Mon Sep 17 00:00:00 2001
+From 66ca386ec80585a17ae3dc858868955d64f4ddae Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 5 Oct 2019 21:26:23 +0100
 Subject: [PATCH] Implement CommandBlockEditEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 563ae7355f..6276f885b5 100644
+index 0aac84e980..744fc666be 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -1,5 +1,7 @@
@@ -39,7 +39,7 @@ index 563ae7355f..6276f885b5 100644
  import org.bukkit.event.block.SignChangeEvent;
  import org.bukkit.event.inventory.ClickType;
  import org.bukkit.event.inventory.CraftItemEvent;
-@@ -48,28 +50,21 @@ import org.bukkit.event.inventory.InventoryClickEvent;
+@@ -48,27 +50,19 @@ import org.bukkit.event.inventory.InventoryClickEvent;
  import org.bukkit.event.inventory.InventoryCloseEvent; // Paper
  import org.bukkit.event.inventory.InventoryCreativeEvent;
  import org.bukkit.event.inventory.InventoryType.SlotType;
@@ -63,9 +63,8 @@ index 563ae7355f..6276f885b5 100644
  import org.bukkit.inventory.EquipmentSlot;
  import org.bukkit.inventory.InventoryView;
  import org.bukkit.util.NumberConversions;
--import com.destroystokyo.paper.event.player.IllegalPacketEvent; // Paper
--import com.destroystokyo.paper.event.player.PlayerJumpEvent; // Paper
 -import co.aikar.timings.MinecraftTimings; // Paper
+-// CraftBukkit end
 +
 +import javax.annotation.Nullable;
 +import java.util.Collections;
@@ -74,12 +73,10 @@ index 563ae7355f..6276f885b5 100644
 +import java.util.Set;
 +import java.util.concurrent.ExecutionException;
 +import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
-+
-+// CraftBukkit start
- // CraftBukkit end
  
  public class PlayerConnection implements PacketListenerPlayIn {
-@@ -656,63 +651,117 @@ public class PlayerConnection implements PacketListenerPlayIn {
+ 
+@@ -655,63 +649,117 @@ public class PlayerConnection implements PacketListenerPlayIn {
      @Override
      public void a(PacketPlayInSetCommandBlock packetplayinsetcommandblock) {
          PlayerConnectionUtils.ensureMainThread(packetplayinsetcommandblock, this, this.player.getWorldServer());
@@ -219,7 +216,7 @@ index 563ae7355f..6276f885b5 100644
              }
 +        }
 +    }
- 
++
 +    private CommandBlockEditEvent.Type commandBlockTypeFromNMS(TileEntityCommand.Type nms) {
 +        switch(nms) {
 +            case SEQUENCE:
@@ -231,7 +228,7 @@ index 563ae7355f..6276f885b5 100644
 +                return CommandBlockEditEvent.Type.IMPULSE;
 +        }
 +    }
-+
+ 
 +    private TileEntityCommand.Type commandBlockTypeToNMS(CommandBlockEditEvent.Type nms) {
 +        switch(nms) {
 +            case CHAIN:
@@ -245,5 +242,5 @@ index 563ae7355f..6276f885b5 100644
      }
  
 -- 
-2.28.0
+2.29.2
 

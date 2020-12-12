@@ -1,19 +1,23 @@
-From eb7cf1cbc085579b3da43f596c4a83803283b3e6 Mon Sep 17 00:00:00 2001
+From a1c73ebbe63b40930abaf924cfa2330d073abea3 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 15 Jan 2020 07:27:06 +0000
 Subject: [PATCH] Differenciate papyrus plugins in /plugins
 
 
 diff --git a/src/main/java/org/bukkit/command/defaults/PluginsCommand.java b/src/main/java/org/bukkit/command/defaults/PluginsCommand.java
-index fd74512a2..7a438ea96 100644
+index 1aa58c59e..4a8805fc0 100644
 --- a/src/main/java/org/bukkit/command/defaults/PluginsCommand.java
 +++ b/src/main/java/org/bukkit/command/defaults/PluginsCommand.java
-@@ -58,14 +58,20 @@ public class PluginsCommand extends BukkitCommand {
-             }
+@@ -53,12 +53,23 @@ public class PluginsCommand extends BukkitCommand {
  
+             Plugin plugin = entry.getValue();
  
 -            pluginList.append(plugin.isEnabled() ? ChatColor.GREEN : ChatColor.RED);
 -            // Paper start - Add an asterisk to legacy plugins (so admins are aware)
++            if (plugin.getDescription().getProvides().size() > 0) {
++                pluginList.append("(").append(String.join(", ", plugin.getDescription().getProvides())).append(")"); // Paper - Remove unnecessary space
++            }
++
 +            ChatColor color = ChatColor.GREEN;
              String pluginName = plugin.getDescription().getName();
 +            if(!plugin.getDescription().isPapyrus()) {
@@ -28,10 +32,8 @@ index fd74512a2..7a438ea96 100644
 +
 +            pluginList.append(plugin.isEnabled() ? color : ChatColor.RED);
              pluginList.append(pluginName);
--            // Paper end
-         }
+             // Paper end
  
-         return "(" + plugins.size() + "): " + pluginList.toString();
 -- 
-2.28.0
+2.29.2
 

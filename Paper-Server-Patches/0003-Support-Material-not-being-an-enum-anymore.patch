@@ -1,14 +1,14 @@
-From 7a9b95639d16a6bdd8c60fdd14fedbd444a4528b Mon Sep 17 00:00:00 2001
+From 3507587a949195aa0918d25af367fc7a7e58f1d0 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index 26287b3e40..c10d1354c1 100644
+index ae5ed3bd0b..d6bab3c332 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-@@ -518,7 +518,7 @@ public class PaperWorldConfig {
+@@ -525,7 +525,7 @@ public class PaperWorldConfig {
  
          altItemDespawnRateEnabled = getBoolean(path + ".enabled", false);
  
@@ -17,7 +17,7 @@ index 26287b3e40..c10d1354c1 100644
          altItemDespawnRateMapDefault.put(Material.COBBLESTONE, 300);
          for (Material key : altItemDespawnRateMapDefault.keySet()) {
              config.addDefault("world-settings.default." + path + ".items." + key, altItemDespawnRateMapDefault.get(key));
-@@ -540,7 +540,7 @@ public class PaperWorldConfig {
+@@ -547,7 +547,7 @@ public class PaperWorldConfig {
              altItemDespawnRateEnabled = false;
          }
  
@@ -87,7 +87,7 @@ index 100ed8a8fe..ae1582e017 100644
              default:
                  throw new IllegalArgumentException("Unknown DyeColor for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-index 3baf7b75c6..3716f590f5 100644
+index 6fde449aca..5a83942bb2 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 @@ -332,159 +332,159 @@ public class CraftBlock implements Block {
@@ -417,7 +417,7 @@ index ecc32c2fb1..335ec750ed 100644
              default:
                  throw new IllegalArgumentException("Unknown SkullType for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 90d8631ddd..e2bc5de0d6 100644
+index 71306b6ee6..1f4beec2fb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -1339,14 +1339,14 @@ public class CraftEventFactory {
@@ -2607,5 +2607,5 @@ index c279579c2b..9fb07e8b0f 100644
              return buffer.delete(0, Integer.MAX_VALUE).append(from.getClass().getName()).append(' ').append(from.name()).append(" to ").append(to.name()).toString();
          }
 -- 
-2.28.0
+2.29.2
 

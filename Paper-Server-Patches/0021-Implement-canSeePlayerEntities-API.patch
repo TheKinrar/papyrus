@@ -1,4 +1,4 @@
-From 621a4bf06f8022a4d2edc3d1f784b56f46ec5e8b Mon Sep 17 00:00:00 2001
+From 6ce3238d57ea11daceb83f596961e30374155e65 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Sep 2020 00:05:06 +0200
 Subject: [PATCH] Implement canSeePlayerEntities API
@@ -31,7 +31,7 @@ index 6c399bcea0..5f655f3f7f 100644
                          }
                      }
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 15ceb1eb21..997223de0e 100644
+index c8fe7d65db..7a26350629 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -218,7 +218,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -57,10 +57,10 @@ index 7ca4d279b9..54365db886 100644
                  }
              });
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index b196810316..7d9bf33acc 100644
+index 5b0b6edfa7..6221ebe3e9 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
-@@ -1536,7 +1536,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1534,7 +1534,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
                  double d2 = (double) blockposition.getZ() - entityplayer.locZ();
  
                  // CraftBukkit start
@@ -69,7 +69,7 @@ index b196810316..7d9bf33acc 100644
                      continue;
                  }
                  // CraftBukkit end
-@@ -1697,7 +1697,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1695,7 +1695,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
  
          for (EntityHuman entityhuman : receivers) { // Paper - Particle API Expansion
              EntityPlayer entityplayer = (EntityPlayer) entityhuman; // Paper - Particle API Expansion
@@ -79,7 +79,7 @@ index b196810316..7d9bf33acc 100644
              if (this.a(entityplayer, force, d0, d1, d2, packetplayoutworldparticles)) { // CraftBukkit
                  ++j;
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 93ec2f2f5f..c0440f75ac 100644
+index 5df6a7b385..ada42c53cd 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -139,6 +139,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
@@ -166,7 +166,7 @@ index 93ec2f2f5f..c0440f75ac 100644
      public Map<String, Object> serialize() {
          Map<String, Object> result = new LinkedHashMap<String, Object>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 7f90e5eba7..4b9cb646f7 100644
+index d2d600885f..b751deaf13 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -1276,7 +1276,7 @@ public class CraftEventFactory {
@@ -192,5 +192,5 @@ index 93b39092c6..2583ac939d 100644
              }
  
 -- 
-2.28.0
+2.29.2
 

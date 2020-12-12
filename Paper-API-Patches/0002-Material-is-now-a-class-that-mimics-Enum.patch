@@ -1,4 +1,4 @@
-From 46bd306306525f59812f1c197b47bcee755732c1 Mon Sep 17 00:00:00 2001
+From ba1a8e007f00de084966429bbd5e26f0d48fb6db Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 12:02:30 +0100
 Subject: [PATCH] Material is now a class that mimics Enum
@@ -44,7 +44,7 @@ index c91ea2a06..a28c2eefa 100644
  
      @NotNull
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index bfe842364..bd7919c01 100644
+index 464b2161f..a5aab4b2d 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -13,6 +13,7 @@ import java.util.Set;
@@ -15330,7 +15330,7 @@ index 000000000..bceed5e28
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/Registry.java b/src/main/java/org/bukkit/Registry.java
-index d3f346413..d943a3aa2 100644
+index 0fd586d60..0c4fdc1bd 100644
 --- a/src/main/java/org/bukkit/Registry.java
 +++ b/src/main/java/org/bukkit/Registry.java
 @@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
@@ -15341,7 +15341,7 @@ index d3f346413..d943a3aa2 100644
  import java.util.function.Predicate;
  import org.bukkit.advancement.Advancement;
  import org.bukkit.attribute.Attribute;
-@@ -174,7 +175,7 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
+@@ -180,7 +181,7 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
      @Nullable
      T get(@NotNull NamespacedKey key);
  
@@ -15350,7 +15350,7 @@ index d3f346413..d943a3aa2 100644
  
          private final Map<NamespacedKey, T> map;
  
-@@ -185,7 +186,7 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
+@@ -191,7 +192,7 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
          protected SimpleRegistry(@NotNull Class<T> type, @NotNull Predicate<T> predicate) {
              ImmutableMap.Builder<NamespacedKey, T> builder = ImmutableMap.builder();
  
@@ -15359,7 +15359,7 @@ index d3f346413..d943a3aa2 100644
                  if (predicate.test(entry)) {
                      builder.put(entry.getKey(), entry);
                  }
-@@ -194,6 +195,15 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
+@@ -200,6 +201,15 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
              map = builder.build();
          }
  
@@ -15376,7 +15376,7 @@ index d3f346413..d943a3aa2 100644
          @Override
          public T get(@NotNull NamespacedKey key) {
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 7c0a78890..5a273987a 100644
+index 3e6331807..789ad12bf 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -13,6 +13,7 @@ import java.util.Set;
@@ -15530,5 +15530,5 @@ index 5d51c9286..3048bd0d9 100644
                  break;
              default:
 -- 
-2.28.0
+2.29.2
 

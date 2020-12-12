@@ -1,11 +1,11 @@
-From 5236bc39cb77e8e20f799bb61f60f4dca465b98d Mon Sep 17 00:00:00 2001
+From 8d500c8a15b4f7b201aaabb10d84e254c4e6a41c Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
 
 
 diff --git a/pom.xml b/pom.xml
-index 745282bb5c..e2de0235f3 100644
+index 0968bad14a..b250b91d54 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -141,6 +141,13 @@
@@ -633,7 +633,7 @@ index 0000000000..707268ea3d
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
-index fbaf078b15..ece3762f1d 100644
+index 1d78086cb9..89b06f60d0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 @@ -14,6 +14,8 @@ import java.util.jar.JarEntry;
@@ -646,10 +646,10 @@ index fbaf078b15..ece3762f1d 100644
  import joptsimple.OptionSet;
  import joptsimple.OptionSpec;
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 0b2bc20d10..cb72a4e017 100644
+index 0f7f1503d0..c59fcfdc8c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -332,6 +332,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -338,6 +338,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
      public byte[] processClass(PluginDescriptionFile pdf, String path, byte[] clazz) {
          try {
              clazz = Commodore.convert(clazz, !isLegacy(pdf));
@@ -661,5 +661,5 @@ index 0b2bc20d10..cb72a4e017 100644
              Bukkit.getLogger().log(Level.SEVERE, "Fatal error trying to convert " + pdf.getFullName() + ":" + path, ex);
          }
 -- 
-2.28.0
+2.29.2
 
