@@ -1,4 +1,4 @@
-From ba1a8e007f00de084966429bbd5e26f0d48fb6db Mon Sep 17 00:00:00 2001
+From 7438eac40ac67dc811db44afccf9d8272c16cd8c Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 12:02:30 +0100
 Subject: [PATCH] Material is now a class that mimics Enum
@@ -30,21 +30,8 @@ index 203cda0f9..c6e453f87 100644
          ));
  
          static class RegionId {
-diff --git a/src/main/java/com/destroystokyo/paper/MaterialSetTag.java b/src/main/java/com/destroystokyo/paper/MaterialSetTag.java
-index c91ea2a06..a28c2eefa 100644
---- a/src/main/java/com/destroystokyo/paper/MaterialSetTag.java
-+++ b/src/main/java/com/destroystokyo/paper/MaterialSetTag.java
-@@ -61,7 +61,7 @@ public class MaterialSetTag implements Tag<Material> {
- 
-     public MaterialSetTag(@Nullable NamespacedKey key, @NotNull Collection<Material> materials) {
-         this.key = key != null ? key : NamespacedKey.randomKey();
--        this.materials = Sets.newEnumSet(materials, Material.class);
-+        this.materials = Sets.newHashSet(materials);
-     }
- 
-     @NotNull
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 464b2161f..a5aab4b2d 100644
+index fecd7b14d..15628376a 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -13,6 +13,7 @@ import java.util.Set;
@@ -15376,7 +15363,7 @@ index 0fd586d60..0c4fdc1bd 100644
          @Override
          public T get(@NotNull NamespacedKey key) {
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 3e6331807..789ad12bf 100644
+index 8e01e1bbb..19e66f9d3 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -13,6 +13,7 @@ import java.util.Set;
@@ -15530,5 +15517,5 @@ index 5d51c9286..3048bd0d9 100644
                  break;
              default:
 -- 
-2.29.2
+2.30.0
 

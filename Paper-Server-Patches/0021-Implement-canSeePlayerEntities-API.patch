@@ -1,4 +1,4 @@
-From 6ce3238d57ea11daceb83f596961e30374155e65 Mon Sep 17 00:00:00 2001
+From cafdb55b57f17cffb4dcadd1e79df4a6a9ce73dc Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Sep 2020 00:05:06 +0200
 Subject: [PATCH] Implement canSeePlayerEntities API
@@ -18,7 +18,7 @@ index 9f5ce64a60..cb319b6944 100644
              return entity1 == null || this.d || !entity1.isSameVehicle(entity);
              // Paper end
 diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-index 6c399bcea0..5f655f3f7f 100644
+index 49008cdec7..2ab2a25e78 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
 @@ -2420,7 +2420,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
@@ -31,7 +31,7 @@ index 6c399bcea0..5f655f3f7f 100644
                          }
                      }
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index c8fe7d65db..7a26350629 100644
+index 508a790839..c5d119b2da 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -218,7 +218,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -57,7 +57,7 @@ index 7ca4d279b9..54365db886 100644
                  }
              });
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index 5b0b6edfa7..6221ebe3e9 100644
+index 9c50357bb5..b9bc4fcbe5 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
 @@ -1534,7 +1534,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
@@ -166,10 +166,10 @@ index 5df6a7b385..ada42c53cd 100644
      public Map<String, Object> serialize() {
          Map<String, Object> result = new LinkedHashMap<String, Object>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index d2d600885f..b751deaf13 100644
+index 6667dca8e8..50a592a209 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1276,7 +1276,7 @@ public class CraftEventFactory {
+@@ -1284,7 +1284,7 @@ public class CraftEventFactory {
          com.destroystokyo.paper.event.entity.ProjectileCollideEvent event = new com.destroystokyo.paper.event.entity.ProjectileCollideEvent(projectile, collided);
  
          if (projectile.getShooter() instanceof Player && collided instanceof Player) {
@@ -192,5 +192,5 @@ index 93b39092c6..2583ac939d 100644
              }
  
 -- 
-2.29.2
+2.30.0
 

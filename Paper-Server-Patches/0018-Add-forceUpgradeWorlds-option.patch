@@ -1,14 +1,14 @@
-From e97fd0b0e2e49ce58e09c555944543a1d007dfe8 Mon Sep 17 00:00:00 2001
+From 24fa881711dbafd3a29b5c469c4617d2e9161d65 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 18 Aug 2020 02:32:00 +0200
 Subject: [PATCH] Add forceUpgradeWorlds option
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 1c3de8ebfb..494a86c101 100644
+index 75d903bf9c..a420784ca8 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -56,6 +56,8 @@ import java.util.function.Function;
+@@ -53,6 +53,8 @@ import java.util.function.Function;
  import java.util.stream.Stream;
  import javax.annotation.Nullable;
  import javax.imageio.ImageIO;
@@ -17,7 +17,7 @@ index 1c3de8ebfb..494a86c101 100644
  import org.apache.commons.lang3.Validate;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
-@@ -173,6 +175,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -168,6 +170,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
  
      public volatile Thread shutdownThread; // Paper
  
@@ -26,7 +26,7 @@ index 1c3de8ebfb..494a86c101 100644
      public static <S extends MinecraftServer> S a(Function<Thread, S> function) {
          AtomicReference<S> atomicreference = new AtomicReference();
          Thread thread = new Thread(() -> {
-@@ -254,6 +258,12 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -249,6 +253,12 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          */
          // Paper end
          Runtime.getRuntime().addShutdownHook(new org.bukkit.craftbukkit.util.ServerShutdownThread(this));
@@ -39,7 +39,7 @@ index 1c3de8ebfb..494a86c101 100644
      }
      // CraftBukkit end
  
-@@ -392,11 +402,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -387,11 +397,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
              }
              worlddata.checkName(name); // CraftBukkit - Migration did not rewrite the level.dat; This forces 1.8 to take the last loaded world as respawn (in this case the end)
              if (options.has("forceUpgrade")) {
@@ -54,7 +54,7 @@ index 1c3de8ebfb..494a86c101 100644
  
              IWorldDataServer iworlddataserver = worlddata;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 659d266a91..72e8e9d047 100644
+index e54f73e123..9c05d71f59 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -108,6 +108,7 @@ import net.minecraft.server.WorldNBTStorage;
@@ -65,7 +65,7 @@ index 659d266a91..72e8e9d047 100644
  import org.apache.commons.lang3.StringUtils;
  import org.bukkit.BanList;
  import org.bukkit.Bukkit;
-@@ -1135,11 +1136,13 @@ public final class CraftServer implements Server {
+@@ -1140,11 +1141,13 @@ public final class CraftServer implements Server {
          worlddata.a(console.getServerModName(), console.getModded().isPresent());
  
          if (console.options.has("forceUpgrade")) {
@@ -98,5 +98,5 @@ index 5b9131f300..923b6ba45c 100644
  
                  acceptsAll(asList("noconsole"), "Disables the console");
 -- 
-2.29.2
+2.30.0
 

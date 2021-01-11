@@ -1,14 +1,14 @@
-From 9b7bf5bcf8c9e50a9e493eaca2f6521709c1cece Mon Sep 17 00:00:00 2001
+From be522b6f1b803204daaa38b286484de88d773d7a Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:31:14 +0000
 Subject: [PATCH] Add Player canAlwaysOpenCommandBlocks API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index a23c08c48..fd0e539d2 100644
+index ea5257cc9..b2ff703ae 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1793,6 +1793,23 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -1795,6 +1795,23 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      Firework boostElytra(@NotNull ItemStack firework);
      // Paper end
  
@@ -33,5 +33,5 @@ index a23c08c48..fd0e539d2 100644
      public class Spigot extends Entity.Spigot {
  
 -- 
-2.28.0
+2.30.0
 

@@ -1,11 +1,11 @@
-From b921764cc601cd2ac2dd6f8f6e74155a8a0f85e9 Mon Sep 17 00:00:00 2001
+From 09452983766e36368c626cf2c946419d868db9ee Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 11:26:33 +0100
 Subject: [PATCH] Server branding
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 6ab0a51b42..d61672f945 100644
+index 673c40d952..7860637a11 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -97,7 +97,7 @@ public class PaperConfig {
@@ -952,10 +952,10 @@ index 5504facd2e..2d1eef9924 100644
          this.setPVP(dedicatedserverproperties.pvp);
          this.setAllowFlight(dedicatedserverproperties.allowFlight);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 172fc9ef9c..edba89e568 100644
+index a7cd98a7cd..e8c55624b6 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1449,7 +1449,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1444,7 +1444,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      }
  
      public String getServerModName() {
@@ -965,7 +965,7 @@ index 172fc9ef9c..edba89e568 100644
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 9ed21f434c..c8fe7d65db 100644
+index 17fdfb11e8..508a790839 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -102,6 +102,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -986,7 +986,7 @@ index 9ed21f434c..c8fe7d65db 100644
          this.generator = gen;
          this.world = new CraftWorld((WorldServer) this, gen, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 0aa1da6cc1..33fc1849ae 100644
+index dc7de2b59e..aed2623509 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -232,7 +232,7 @@ import javax.annotation.Nullable; // Paper
@@ -998,7 +998,7 @@ index 0aa1da6cc1..33fc1849ae 100644
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
-@@ -856,6 +856,7 @@ public final class CraftServer implements Server {
+@@ -861,6 +861,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
@@ -1103,5 +1103,5 @@ index 8af159abd3..3267a3b9ef 100644
                  </LoggerNamePatternSelector>
              </PatternLayout>
 -- 
-2.29.2
+2.30.0
 
