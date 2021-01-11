@@ -1,11 +1,11 @@
-From f3f557d8520ef06cc96b70a34992ead6e75477ab Mon Sep 17 00:00:00 2001
+From 0d59bfd6bd1e76a4ae0d30972c5f591f42ebdba6 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 7 Mar 2020 02:58:15 +0000
 Subject: [PATCH] Call ServerShutdownEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index cfbd3d510c..75d903bf9c 100644
+index cfbd3d510c..6b856a1589 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -65,6 +65,7 @@ import org.bukkit.event.server.ServerLoadEvent;
@@ -20,7 +20,7 @@ index cfbd3d510c..75d903bf9c 100644
          this.safeShutdown(flag, false);
      }
      public void safeShutdown(boolean flag, boolean isRestarting) {
-+        Bukkit.getPluginManager().callEvent(new ServerShutdownEvent());
++        org.bukkit.Bukkit.getPluginManager().callEvent(new ServerShutdownEvent());
 +
          this.isRunning = false;
          this.isRestarting = isRestarting;
