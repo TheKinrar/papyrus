@@ -1,4 +1,4 @@
-From 6a7867fc20ac1d9b501e486c1034f28d3e5786b5 Mon Sep 17 00:00:00 2001
+From 276c5ef2f57393ddf2aa2db3785bcf1fc47410dc Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
@@ -59,7 +59,7 @@ index 0000000000..f5ed0c82ac
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/PlayerInteractManager.java b/src/main/java/net/minecraft/server/PlayerInteractManager.java
-index 485b609bb5..a33cd6e2af 100644
+index 114e986e51..7d84234dcc 100644
 --- a/src/main/java/net/minecraft/server/PlayerInteractManager.java
 +++ b/src/main/java/net/minecraft/server/PlayerInteractManager.java
 @@ -353,7 +353,7 @@ public class PlayerInteractManager {
@@ -72,10 +72,10 @@ index 485b609bb5..a33cd6e2af 100644
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 38f26e25cb..94331e402a 100644
+index 4bc9b3b08b..a30459e042 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -913,6 +913,9 @@ public abstract class PlayerList {
+@@ -922,6 +922,9 @@ public abstract class PlayerList {
          GameProfile gameprofile = entityplayer.getProfile();
          int i = this.server.b(gameprofile);
  
@@ -86,7 +86,7 @@ index 38f26e25cb..94331e402a 100644
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index f4f4e29f56..05101d7f78 100644
+index 58caa3240b..d8cd0b4853 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -46,6 +46,7 @@ import net.minecraft.server.GenericAttributes;
@@ -135,5 +135,5 @@ index f4f4e29f56..05101d7f78 100644
      private final Player.Spigot spigot = new Player.Spigot()
      {
 -- 
-2.28.0
+2.30.0
 

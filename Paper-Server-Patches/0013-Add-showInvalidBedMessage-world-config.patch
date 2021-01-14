@@ -1,4 +1,4 @@
-From 7342d270fca1dd2e935fec3345161f8f412511c9 Mon Sep 17 00:00:00 2001
+From a004fe1e06aa5741191b650b4d4d4bbbcaea9a83 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 13 Dec 2019 18:26:58 +0000
 Subject: [PATCH] Add showInvalidBedMessage world config
@@ -20,10 +20,10 @@ index 52274c1bb3..4cdcd51049 100644
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 2fa44b155a..35c2e4b697 100644
+index 52c3c3caae..0d5ace9f45 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -810,7 +810,9 @@ public abstract class PlayerList {
+@@ -819,7 +819,9 @@ public abstract class PlayerList {
                      isBedSpawn = true;
                      location = new Location(worldserver1.getWorld(), vec3d.x, vec3d.y, vec3d.z, f1, 0.0F);
                  } else if (blockposition != null) {
@@ -35,5 +35,5 @@ index 2fa44b155a..35c2e4b697 100644
              }
  
 -- 
-2.29.2
+2.30.0
 

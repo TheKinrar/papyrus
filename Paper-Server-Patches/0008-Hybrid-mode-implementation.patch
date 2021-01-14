@@ -1,4 +1,4 @@
-From 6b89cb99ddc2119cd06d12b0ec300994d17b7e18 Mon Sep 17 00:00:00 2001
+From bc0c35c70516b3a73986e9c0ceffcd44590b20a9 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -278,10 +278,10 @@ index 7240b885d9..d725972d9f 100644
  
              if (this.ticksLived % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index e8c55624b6..cfbd3d510c 100644
+index b53ef3b8fa..e4e954cf04 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1297,6 +1297,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1301,6 +1301,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.methodProfiler.exitEnter("levels");
          Iterator iterator = this.getWorlds().iterator();
  
@@ -414,7 +414,7 @@ index 59092b7e52..ce66312726 100644
              try {
                  byte[] data = new byte[packetplayincustompayload.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index fbf1352cf2..2fa44b155a 100644
+index a30459e042..52c3c3caae 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
@@ -470,7 +470,7 @@ index fbf1352cf2..2fa44b155a 100644
          this.d(entityplayer);
          entityplayer.getStatisticManager().c();
          entityplayer.getRecipeBook().a(entityplayer);
-@@ -1202,17 +1206,32 @@ public abstract class PlayerList {
+@@ -1211,17 +1215,32 @@ public abstract class PlayerList {
      }
  
      public void updateClient(EntityPlayer entityplayer) {

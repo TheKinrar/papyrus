@@ -1,4 +1,4 @@
-From 09452983766e36368c626cf2c946419d868db9ee Mon Sep 17 00:00:00 2001
+From 0c7b57f6b69fc2e26070b5814e0ee256728bb4e7 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 11:26:33 +0100
 Subject: [PATCH] Server branding
@@ -952,10 +952,10 @@ index 5504facd2e..2d1eef9924 100644
          this.setPVP(dedicatedserverproperties.pvp);
          this.setAllowFlight(dedicatedserverproperties.allowFlight);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index a7cd98a7cd..e8c55624b6 100644
+index c3fb69b18b..b53ef3b8fa 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1444,7 +1444,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1448,7 +1448,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      }
  
      public String getServerModName() {
@@ -965,7 +965,7 @@ index a7cd98a7cd..e8c55624b6 100644
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 17fdfb11e8..508a790839 100644
+index 02303f00e2..1015ee35a5 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -102,6 +102,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -1026,7 +1026,7 @@ index 010f702ea4..5b9131f300 100644
                  acceptsAll(asList("server-name"), "Name of the server")
                          .withRequiredArg()
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index 513c1041c3..4857d4c217 100644
+index ae8903ee1d..3778465cd6 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
 @@ -26,7 +26,7 @@ public class WatchdogThread extends Thread
@@ -1038,7 +1038,7 @@ index 513c1041c3..4857d4c217 100644
          this.timeoutTime = timeoutTime;
          this.restart = restart;
          earlyWarningEvery = Math.min(PaperConfig.watchdogPrintEarlyWarningEvery, timeoutTime); // Paper
-@@ -80,14 +80,14 @@ public class WatchdogThread extends Thread
+@@ -84,14 +84,14 @@ public class WatchdogThread extends Thread
                  if (isLongTimeout) {
                  // Paper end
                  log.log( Level.SEVERE, "------------------------------" );
@@ -1056,7 +1056,7 @@ index 513c1041c3..4857d4c217 100644
                  //
                  if ( net.minecraft.server.World.lastPhysicsProblem != null )
                  {
-@@ -110,12 +110,12 @@ public class WatchdogThread extends Thread
+@@ -114,12 +114,12 @@ public class WatchdogThread extends Thread
                  // Paper end
                  } else
                  {
@@ -1071,7 +1071,7 @@ index 513c1041c3..4857d4c217 100644
                  ChunkTaskManager.dumpAllChunkLoadInfo(); // Paper
                  dumpThread( ManagementFactory.getThreadMXBean().getThreadInfo( server.serverThread.getId(), Integer.MAX_VALUE ), log );
                  log.log( Level.SEVERE, "------------------------------" );
-@@ -130,7 +130,7 @@ public class WatchdogThread extends Thread
+@@ -134,7 +134,7 @@ public class WatchdogThread extends Thread
                      dumpThread( thread, log );
                  }
                  } else {
