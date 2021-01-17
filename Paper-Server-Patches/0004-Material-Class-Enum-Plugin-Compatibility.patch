@@ -1,11 +1,11 @@
-From 8d500c8a15b4f7b201aaabb10d84e254c4e6a41c Mon Sep 17 00:00:00 2001
+From 208c258dd87458b25b13b5d319c703992e42093c Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
 
 
 diff --git a/pom.xml b/pom.xml
-index 0968bad14a..b250b91d54 100644
+index 6b7005155f..44c0bf2105 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -141,6 +141,13 @@
@@ -212,10 +212,10 @@ index 0000000000..9d46fe510b
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumSet.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumSet.java
 new file mode 100644
-index 0000000000..e7ebe8d9f6
+index 0000000000..ef67807955
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumSet.java
-@@ -0,0 +1,250 @@
+@@ -0,0 +1,256 @@
 +package fr.thekinrar.papyrus.compat;
 +
 +import com.google.common.collect.Iterators;
@@ -330,6 +330,12 @@ index 0000000000..e7ebe8d9f6
 +    }
 +
 +    public static <E> CompatEnumSet<E> of(Object e) {
++        CompatEnumSet<E> result = noneOf(declaringClass(e.getClass()));
++        result.add((E) e);
++        return result;
++    }
++
++    public static <E> CompatEnumSet<E> of(Enum e) {
 +        CompatEnumSet<E> result = noneOf(declaringClass(e.getClass()));
 +        result.add((E) e);
 +        return result;
@@ -511,10 +517,10 @@ index 0000000000..50c5799cca
 +@interface Compatibility {}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java b/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java
 new file mode 100644
-index 0000000000..707268ea3d
+index 0000000000..77e1a84b8c
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java
-@@ -0,0 +1,117 @@
+@@ -0,0 +1,139 @@
 +package fr.thekinrar.papyrus.compat;
 +
 +import javassist.CannotCompileException;
@@ -560,6 +566,28 @@ index 0000000000..707268ea3d
 +
 +            if(cc.getClassInitializer() != null)
 +                cc.getClassInitializer().instrument(editor);
++
++            Arrays.stream(cc.getDeclaredConstructors()).forEach(method -> {
++                String descriptor = method.getMethodInfo().getDescriptor();
++
++                if(descriptor.contains("Ljava/util/EnumSet;") || descriptor.contains("Ljava/util/EnumMap;")) {
++                    method.getMethodInfo().setDescriptor(descriptor
++                        .replace("Ljava/util/EnumSet;", "Lfr/thekinrar/papyrus/compat/CompatEnumSet;")
++                        .replace("Ljava/util/EnumMap;", "Lfr/thekinrar/papyrus/compat/CompatEnumMap;"));
++
++                    try {
++                        method.getMethodInfo().rebuildStackMap(cp);
++                    } catch (BadBytecode badBytecode) {
++                        throw new RuntimeException(badBytecode);
++                    }
++                }
++
++                try {
++                    method.instrument(editor);
++                } catch (CannotCompileException e) {
++                    throw new RuntimeException(e);
++                }
++            });
 +
 +            Arrays.stream(cc.getDeclaredMethods()).forEach(method -> {
 +                String descriptor = method.getMethodInfo().getDescriptor();
@@ -661,5 +689,5 @@ index 0f7f1503d0..c59fcfdc8c 100644
              Bukkit.getLogger().log(Level.SEVERE, "Fatal error trying to convert " + pdf.getFullName() + ":" + path, ex);
          }
 -- 
-2.29.2
+2.30.0
 
