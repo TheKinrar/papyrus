@@ -1,4 +1,4 @@
-From 3afaed063c62766b20d5d7cd1a6b3b666015ac48 Mon Sep 17 00:00:00 2001
+From a504fd7647b9c22ba2a7579f8f936a7926496e9e Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 15 Jan 2020 02:38:47 +0000
 Subject: [PATCH] Add papyrus option to PluginDescriptionFile
@@ -52,7 +52,7 @@ index f78a7df6e..9933dcf5c 100644
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 6f99f08cb..ed916bd99 100644
+index 6f99f08cb..1cc67ca4e 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -18,7 +18,9 @@ import java.util.jar.JarEntry;
@@ -65,17 +65,6 @@ index 6f99f08cb..ed916bd99 100644
  import org.bukkit.plugin.InvalidPluginException;
  import org.bukkit.plugin.PluginDescriptionFile;
  import org.bukkit.plugin.SimplePluginManager;
-@@ -74,6 +76,10 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
- 
-         this.logger = com.destroystokyo.paper.utils.PaperPluginLogger.getLogger(description); // Paper - Register logger early
- 
-+        if(!description.isPapyrus()) {
-+            Bukkit.getLogger().log(Level.INFO, "Applying Papyrus compatibility layer to " + description.getFullName());
-+        }
-+
-         try {
-             Class<?> jarClass;
-             try {
 -- 
-2.29.2
+2.30.0
 
