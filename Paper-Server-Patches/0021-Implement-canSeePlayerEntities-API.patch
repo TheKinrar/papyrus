@@ -1,11 +1,11 @@
-From cafdb55b57f17cffb4dcadd1e79df4a6a9ce73dc Mon Sep 17 00:00:00 2001
+From 3ac722e211093b46d94a901be691bf2aa3c8d682 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Sep 2020 00:05:06 +0200
 Subject: [PATCH] Implement canSeePlayerEntities API
 
 
 diff --git a/src/main/java/net/minecraft/server/IProjectile.java b/src/main/java/net/minecraft/server/IProjectile.java
-index 9f5ce64a60..cb319b6944 100644
+index bbc089b41f..9026a033ae 100644
 --- a/src/main/java/net/minecraft/server/IProjectile.java
 +++ b/src/main/java/net/minecraft/server/IProjectile.java
 @@ -144,7 +144,7 @@ public abstract class IProjectile extends Entity {
@@ -31,7 +31,7 @@ index 49008cdec7..2ab2a25e78 100644
                          }
                      }
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 508a790839..c5d119b2da 100644
+index 1015ee35a5..fdd0f26621 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -218,7 +218,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -57,7 +57,7 @@ index 7ca4d279b9..54365db886 100644
                  }
              });
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index 9c50357bb5..b9bc4fcbe5 100644
+index fbe7f43f6c..2ab370fdd5 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
 @@ -1534,7 +1534,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
@@ -79,7 +79,7 @@ index 9c50357bb5..b9bc4fcbe5 100644
              if (this.a(entityplayer, force, d0, d1, d2, packetplayoutworldparticles)) { // CraftBukkit
                  ++j;
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 5df6a7b385..ada42c53cd 100644
+index 8930262fc0..7bfcafe68e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -139,6 +139,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
@@ -166,10 +166,10 @@ index 5df6a7b385..ada42c53cd 100644
      public Map<String, Object> serialize() {
          Map<String, Object> result = new LinkedHashMap<String, Object>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 6667dca8e8..50a592a209 100644
+index 4b5bd53802..99e064f20b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1284,7 +1284,7 @@ public class CraftEventFactory {
+@@ -1285,7 +1285,7 @@ public class CraftEventFactory {
          com.destroystokyo.paper.event.entity.ProjectileCollideEvent event = new com.destroystokyo.paper.event.entity.ProjectileCollideEvent(projectile, collided);
  
          if (projectile.getShooter() instanceof Player && collided instanceof Player) {

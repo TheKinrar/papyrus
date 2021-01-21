@@ -1,15 +1,15 @@
-From be522b6f1b803204daaa38b286484de88d773d7a Mon Sep 17 00:00:00 2001
+From 130d3577eaf3e65da1a0913618d4f3c18875f16d Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:31:14 +0000
 Subject: [PATCH] Add Player canAlwaysOpenCommandBlocks API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index ea5257cc9..b2ff703ae 100644
+index cb6464c89..f8fa317ce 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1795,6 +1795,23 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
-     Firework boostElytra(@NotNull ItemStack firework);
+@@ -1806,6 +1806,23 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+     void sendOpLevel(byte level);
      // Paper end
  
 +    // Papyrus start

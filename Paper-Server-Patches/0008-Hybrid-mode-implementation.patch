@@ -1,4 +1,4 @@
-From bc0c35c70516b3a73986e9c0ceffcd44590b20a9 Mon Sep 17 00:00:00 2001
+From fddffcbae955321e9310e9ff4facd288d755ee86 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -152,7 +152,7 @@ index 0000000000..a46fefcd95
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/EntityHuman.java b/src/main/java/net/minecraft/server/EntityHuman.java
-index 3ef463e131..c314c82a52 100644
+index 9796b4e57d..2b31bf3c57 100644
 --- a/src/main/java/net/minecraft/server/EntityHuman.java
 +++ b/src/main/java/net/minecraft/server/EntityHuman.java
 @@ -17,10 +17,14 @@ import java.util.function.Predicate;
@@ -209,7 +209,7 @@ index 3ef463e131..c314c82a52 100644
          float f = this.inventory.a(iblockdata);
  
 diff --git a/src/main/java/net/minecraft/server/EntityLiving.java b/src/main/java/net/minecraft/server/EntityLiving.java
-index c8cdce899b..236eb58158 100644
+index d417878a15..c9869a4acb 100644
 --- a/src/main/java/net/minecraft/server/EntityLiving.java
 +++ b/src/main/java/net/minecraft/server/EntityLiving.java
 @@ -926,9 +926,11 @@ public abstract class EntityLiving extends Entity {
@@ -252,7 +252,7 @@ index c8cdce899b..236eb58158 100644
  
          return (MobEffect) this.effects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 7240b885d9..d725972d9f 100644
+index 04d505c7a1..60b925fd69 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -31,6 +31,8 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -278,7 +278,7 @@ index 7240b885d9..d725972d9f 100644
  
              if (this.ticksLived % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index b53ef3b8fa..e4e954cf04 100644
+index 7a313ab1bb..b081652022 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1301,6 +1301,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
@@ -414,7 +414,7 @@ index 59092b7e52..ce66312726 100644
              try {
                  byte[] data = new byte[packetplayincustompayload.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index a30459e042..52c3c3caae 100644
+index 5083ae3198..614f7853fe 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
@@ -470,7 +470,7 @@ index a30459e042..52c3c3caae 100644
          this.d(entityplayer);
          entityplayer.getStatisticManager().c();
          entityplayer.getRecipeBook().a(entityplayer);
-@@ -1211,17 +1215,32 @@ public abstract class PlayerList {
+@@ -1218,17 +1222,32 @@ public abstract class PlayerList {
      }
  
      public void updateClient(EntityPlayer entityplayer) {
@@ -506,7 +506,7 @@ index a30459e042..52c3c3caae 100644
      public int getPlayerCount() {
          return this.players.size();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index aed2623509..2ce83fde4a 100644
+index 4c8a42892a..7ee1935a4c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1,5 +1,6 @@
@@ -549,7 +549,7 @@ index aed2623509..2ce83fde4a 100644
          overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
          ignoreVanillaPermissions = commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2418,4 +2424,24 @@ public final class CraftServer implements Server {
+@@ -2423,4 +2429,24 @@ public final class CraftServer implements Server {
          return mobGoals;
      }
      // Paper end
@@ -626,7 +626,7 @@ index 16e69cfd49..42ba57a1e2 100644
      public Collection<PotionEffect> getActivePotionEffects() {
          List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index d8cd0b4853..5df6a7b385 100644
+index f46a730692..8930262fc0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
@@ -656,7 +656,7 @@ index d8cd0b4853..5df6a7b385 100644
      public GameProfile getProfile() {
          return getHandle().getProfile();
      }
-@@ -2117,6 +2123,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2124,6 +2130,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
          MinecraftServer.getServer().getPlayerList().d(getHandle());
      }
@@ -675,19 +675,20 @@ index d8cd0b4853..5df6a7b385 100644
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 37c75d7c3d..6667dca8e8 100644
+index 3c07b79e94..4b5bd53802 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -13,6 +13,8 @@ import java.util.List;
+@@ -13,7 +13,9 @@ import java.util.List;
  import java.util.Map;
  import java.util.stream.Collectors;
  import javax.annotation.Nullable;
 +
+ import io.papermc.paper.event.block.BlockPreDispenseEvent;
 +import fr.thekinrar.papyrus.hybrid.HybridPlayer;
  import net.minecraft.server.BlockPosition;
  import net.minecraft.server.BlockPropertyInstrument;
  import net.minecraft.server.Container;
-@@ -507,7 +509,12 @@ public class CraftEventFactory {
+@@ -508,7 +510,12 @@ public class CraftEventFactory {
          if (cancelledBlock) {
              event.setUseInteractedBlock(Event.Result.DENY);
          }

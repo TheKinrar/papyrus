@@ -1,4 +1,4 @@
-From 8ff026a930c5218d59205f49c1c1d0b7cad30c6e Mon Sep 17 00:00:00 2001
+From eec4d9fa27cf29c7fd57b3a96109c2917459274f Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
@@ -45,10 +45,10 @@ index 19e66f9d3..2ba125c61 100644
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index b2ff703ae..d803700fa 100644
+index f8fa317ce..ec23cc8c0 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1810,6 +1810,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -1821,6 +1821,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * @param canAlwaysOpenCommandBlocks whether this player can always open command blocks
       */
      void setCanAlwaysOpenCommandBlocks(boolean canAlwaysOpenCommandBlocks);
