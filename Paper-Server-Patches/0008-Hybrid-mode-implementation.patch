@@ -1,4 +1,4 @@
-From fddffcbae955321e9310e9ff4facd288d755ee86 Mon Sep 17 00:00:00 2001
+From d2dcf183b95db2fc6bb2188cbd7a956c4516a89f Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -152,7 +152,7 @@ index 0000000000..a46fefcd95
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/EntityHuman.java b/src/main/java/net/minecraft/server/EntityHuman.java
-index 9796b4e57d..2b31bf3c57 100644
+index 59b00c78f8..2561bb771e 100644
 --- a/src/main/java/net/minecraft/server/EntityHuman.java
 +++ b/src/main/java/net/minecraft/server/EntityHuman.java
 @@ -17,10 +17,14 @@ import java.util.function.Predicate;
@@ -169,8 +169,8 @@ index 9796b4e57d..2b31bf3c57 100644
 +import org.bukkit.event.Event;
  import org.bukkit.event.entity.CreatureSpawnEvent;
  import org.bukkit.event.entity.EntityCombustByEntityEvent;
- import org.bukkit.event.player.PlayerBedLeaveEvent;
-@@ -84,6 +88,10 @@ public abstract class EntityHuman extends EntityLiving {
+ import org.bukkit.event.player.PlayerDropItemEvent;
+@@ -82,6 +86,10 @@ public abstract class EntityHuman extends EntityLiving {
      }
      // CraftBukkit end
  
@@ -181,7 +181,7 @@ index 9796b4e57d..2b31bf3c57 100644
      public EntityHuman(World world, BlockPosition blockposition, float f, GameProfile gameprofile) {
          super(EntityTypes.PLAYER, world);
          this.bL = ItemStack.b;
-@@ -583,10 +591,7 @@ public abstract class EntityHuman extends EntityLiving {
+@@ -581,10 +589,7 @@ public abstract class EntityHuman extends EntityLiving {
              Player player = (Player) this.getBukkitEntity();
              Item drop = (Item) entityitem.getBukkitEntity();
  
@@ -193,7 +193,7 @@ index 9796b4e57d..2b31bf3c57 100644
                  org.bukkit.inventory.ItemStack cur = player.getInventory().getItemInHand();
                  if (flag1 && (cur == null || cur.getAmount() == 0)) {
                      // The complete stack was dropped
-@@ -613,6 +618,14 @@ public abstract class EntityHuman extends EntityLiving {
+@@ -611,6 +616,14 @@ public abstract class EntityHuman extends EntityLiving {
          }
      }
  
@@ -209,10 +209,10 @@ index 9796b4e57d..2b31bf3c57 100644
          float f = this.inventory.a(iblockdata);
  
 diff --git a/src/main/java/net/minecraft/server/EntityLiving.java b/src/main/java/net/minecraft/server/EntityLiving.java
-index d417878a15..c9869a4acb 100644
+index b7a362bd9c..6da5375ac3 100644
 --- a/src/main/java/net/minecraft/server/EntityLiving.java
 +++ b/src/main/java/net/minecraft/server/EntityLiving.java
-@@ -926,9 +926,11 @@ public abstract class EntityLiving extends Entity {
+@@ -927,9 +927,11 @@ public abstract class EntityLiving extends Entity {
                  override = new MobEffect(mobeffect1).b(mobeffect);
              }
  
@@ -227,7 +227,7 @@ index d417878a15..c9869a4acb 100644
              }
              // CraftBukkit end
  
-@@ -937,7 +939,7 @@ public abstract class EntityLiving extends Entity {
+@@ -938,7 +940,7 @@ public abstract class EntityLiving extends Entity {
                  this.a(mobeffect);
                  return true;
                  // CraftBukkit start
@@ -236,7 +236,7 @@ index d417878a15..c9869a4acb 100644
                  mobeffect1.b(mobeffect);
                  this.a(mobeffect1, true);
                  // CraftBukkit end
-@@ -982,9 +984,11 @@ public abstract class EntityLiving extends Entity {
+@@ -983,9 +985,11 @@ public abstract class EntityLiving extends Entity {
              return null;
          }
  
@@ -252,7 +252,7 @@ index d417878a15..c9869a4acb 100644
  
          return (MobEffect) this.effects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 04d505c7a1..60b925fd69 100644
+index a9a409eeba..feceae44b7 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -31,6 +31,8 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -262,9 +262,9 @@ index 04d505c7a1..60b925fd69 100644
 +import org.bukkit.event.Cancellable;
 +import org.bukkit.event.Event;
  import org.bukkit.event.inventory.InventoryType;
+ import org.bukkit.event.player.PlayerBedLeaveEvent;
  import org.bukkit.event.player.PlayerChangedMainHandEvent;
- import org.bukkit.event.player.PlayerChangedWorldEvent;
-@@ -572,7 +574,12 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -573,7 +575,12 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
  
              if (this.expTotal != this.lastSentExp) {
                  this.lastSentExp = this.expTotal;
@@ -278,10 +278,10 @@ index 04d505c7a1..60b925fd69 100644
  
              if (this.ticksLived % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 7a313ab1bb..b081652022 100644
+index 1261d14199..99f22fd639 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1301,6 +1301,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1302,6 +1302,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.methodProfiler.exitEnter("levels");
          Iterator iterator = this.getWorlds().iterator();
  
@@ -675,7 +675,7 @@ index f46a730692..8930262fc0 100644
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 3c07b79e94..4b5bd53802 100644
+index 06b5468461..08a2212e9b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -13,7 +13,9 @@ import java.util.List;
@@ -688,7 +688,7 @@ index 3c07b79e94..4b5bd53802 100644
  import net.minecraft.server.BlockPosition;
  import net.minecraft.server.BlockPropertyInstrument;
  import net.minecraft.server.Container;
-@@ -508,7 +510,12 @@ public class CraftEventFactory {
+@@ -525,7 +527,12 @@ public class CraftEventFactory {
          if (cancelledBlock) {
              event.setUseInteractedBlock(Event.Result.DENY);
          }

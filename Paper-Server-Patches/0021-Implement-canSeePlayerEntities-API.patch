@@ -1,4 +1,4 @@
-From 3ac722e211093b46d94a901be691bf2aa3c8d682 Mon Sep 17 00:00:00 2001
+From 1646f59a30e9a3cee56330c941a64040b31240a9 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Sep 2020 00:05:06 +0200
 Subject: [PATCH] Implement canSeePlayerEntities API
@@ -57,10 +57,10 @@ index 7ca4d279b9..54365db886 100644
                  }
              });
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index fbe7f43f6c..2ab370fdd5 100644
+index 2b94c195db..ba6430a451 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
-@@ -1534,7 +1534,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1535,7 +1535,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
                  double d2 = (double) blockposition.getZ() - entityplayer.locZ();
  
                  // CraftBukkit start
@@ -69,7 +69,7 @@ index fbe7f43f6c..2ab370fdd5 100644
                      continue;
                  }
                  // CraftBukkit end
-@@ -1695,7 +1695,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1698,7 +1698,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
  
          for (EntityHuman entityhuman : receivers) { // Paper - Particle API Expansion
              EntityPlayer entityplayer = (EntityPlayer) entityhuman; // Paper - Particle API Expansion
@@ -166,10 +166,10 @@ index 8930262fc0..7bfcafe68e 100644
      public Map<String, Object> serialize() {
          Map<String, Object> result = new LinkedHashMap<String, Object>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 4b5bd53802..99e064f20b 100644
+index 08a2212e9b..b7099cc078 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1285,7 +1285,7 @@ public class CraftEventFactory {
+@@ -1302,7 +1302,7 @@ public class CraftEventFactory {
          com.destroystokyo.paper.event.entity.ProjectileCollideEvent event = new com.destroystokyo.paper.event.entity.ProjectileCollideEvent(projectile, collided);
  
          if (projectile.getShooter() instanceof Player && collided instanceof Player) {

@@ -1,11 +1,11 @@
-From 731e09e00b6f42c0d77265d149c7fa1f440b6519 Mon Sep 17 00:00:00 2001
+From 1597c4fc33fa7e58bf2411100c3aa3dcb8bca69e Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 10:12:37 +0100
 Subject: [PATCH] Support Material not being an enum anymore
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index 4735dcba31..bd267ae10e 100644
+index 0776e68340..9446af3fbd 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 @@ -560,7 +560,7 @@ public class PaperWorldConfig {
@@ -417,10 +417,10 @@ index ecc32c2fb1..335ec750ed 100644
              default:
                  throw new IllegalArgumentException("Unknown SkullType for " + getType());
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 696ded96e6..3c07b79e94 100644
+index b66fb60ad3..06b5468461 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1347,14 +1347,14 @@ public class CraftEventFactory {
+@@ -1364,14 +1364,14 @@ public class CraftEventFactory {
          org.bukkit.World bukkitWorld = world.getWorld();
          Block igniter = bukkitWorld.getBlockAt(source.getX(), source.getY(), source.getZ());
          IgniteCause cause;
