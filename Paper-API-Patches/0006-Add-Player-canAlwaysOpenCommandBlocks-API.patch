@@ -1,15 +1,15 @@
-From 130d3577eaf3e65da1a0913618d4f3c18875f16d Mon Sep 17 00:00:00 2001
+From a147dfe479c71d127c91312f3fc59a851efbaca7 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:31:14 +0000
 Subject: [PATCH] Add Player canAlwaysOpenCommandBlocks API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index cb6464c89..f8fa317ce 100644
+index 2ea531ea..9473084f 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1806,6 +1806,23 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
-     void sendOpLevel(byte level);
+@@ -1936,6 +1936,23 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+     Set<Player> getTrackedPlayers();
      // Paper end
  
 +    // Papyrus start
@@ -33,5 +33,5 @@ index cb6464c89..f8fa317ce 100644
      public class Spigot extends Entity.Spigot {
  
 -- 
-2.30.0
+2.30.1
 

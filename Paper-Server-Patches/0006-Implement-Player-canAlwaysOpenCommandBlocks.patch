@@ -1,4 +1,4 @@
-From 1fcc6cdaef18e3d98b5664adc3ce249a2563ecf7 Mon Sep 17 00:00:00 2001
+From 34fe3bd7f9431e776891be19500266b318318edc Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
@@ -59,10 +59,10 @@ index 0000000000..f5ed0c82ac
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/PlayerInteractManager.java b/src/main/java/net/minecraft/server/PlayerInteractManager.java
-index 114e986e51..7d84234dcc 100644
+index d57784c5dd..e35ad39d06 100644
 --- a/src/main/java/net/minecraft/server/PlayerInteractManager.java
 +++ b/src/main/java/net/minecraft/server/PlayerInteractManager.java
-@@ -353,7 +353,7 @@ public class PlayerInteractManager {
+@@ -354,7 +354,7 @@ public class PlayerInteractManager {
              TileEntity tileentity = this.world.getTileEntity(blockposition);
              Block block = iblockdata.getBlock();
  
@@ -72,10 +72,10 @@ index 114e986e51..7d84234dcc 100644
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 1eb44877e7..5083ae3198 100644
+index 184a0d30f4..374c27d5ad 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -922,6 +922,9 @@ public abstract class PlayerList {
+@@ -921,6 +921,9 @@ public abstract class PlayerList {
          GameProfile gameprofile = entityplayer.getProfile();
          int i = this.server.b(gameprofile);
  
@@ -86,18 +86,18 @@ index 1eb44877e7..5083ae3198 100644
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 7c18b22c7b..f46a730692 100644
+index f965b071cd..707953e50f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -46,6 +46,7 @@ import net.minecraft.server.GenericAttributes;
+@@ -47,6 +47,7 @@ import net.minecraft.server.GenericAttributes;
  import net.minecraft.server.IChatBaseComponent;
  import net.minecraft.server.MapIcon;
  import net.minecraft.server.MinecraftKey;
 +import net.minecraft.server.MinecraftServer;
  import net.minecraft.server.NBTTagCompound;
  import net.minecraft.server.PacketDataSerializer;
- import net.minecraft.server.PacketPlayOutBlockChange;
-@@ -66,6 +67,7 @@ import net.minecraft.server.PacketPlayOutWorldEvent;
+ import net.minecraft.server.PacketPlayOutBlockBreakAnimation;
+@@ -68,6 +69,7 @@ import net.minecraft.server.PacketPlayOutWorldEvent;
  import net.minecraft.server.PacketPlayOutWorldParticles;
  import net.minecraft.server.PlayerChunkMap;
  import net.minecraft.server.PlayerConnection;
@@ -105,7 +105,7 @@ index 7c18b22c7b..f46a730692 100644
  import net.minecraft.server.SystemUtils;
  import net.minecraft.server.TileEntitySign;
  import net.minecraft.server.Vec3D;
-@@ -147,6 +149,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -148,6 +150,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime;
      // Paper end
@@ -113,7 +113,7 @@ index 7c18b22c7b..f46a730692 100644
  
      public CraftPlayer(CraftServer server, EntityPlayer entity) {
          super(server, entity);
-@@ -2109,6 +2112,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2313,6 +2316,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      }
      // Paper end
  
@@ -135,5 +135,5 @@ index 7c18b22c7b..f46a730692 100644
      private final Player.Spigot spigot = new Player.Spigot()
      {
 -- 
-2.30.0
+2.30.1
 

@@ -1,4 +1,4 @@
-From 7438eac40ac67dc811db44afccf9d8272c16cd8c Mon Sep 17 00:00:00 2001
+From a0b6daca2057ff8b89979479a3879336ac88e273 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 12:02:30 +0100
 Subject: [PATCH] Material is now a class that mimics Enum
@@ -6,7 +6,7 @@ Subject: [PATCH] Material is now a class that mimics Enum
 This will be used to enable new Material to be created at runtime
 
 diff --git a/src/main/java/co/aikar/timings/TimingHistory.java b/src/main/java/co/aikar/timings/TimingHistory.java
-index 203cda0f9..c6e453f87 100644
+index 203cda0f..c6e453f8 100644
 --- a/src/main/java/co/aikar/timings/TimingHistory.java
 +++ b/src/main/java/co/aikar/timings/TimingHistory.java
 @@ -40,9 +40,11 @@ import co.aikar.util.MRUMapCache;
@@ -31,7 +31,7 @@ index 203cda0f9..c6e453f87 100644
  
          static class RegionId {
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index fecd7b14d..15628376a 100644
+index 68101a32..8f6fe6ff 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -13,6 +13,7 @@ import java.util.Set;
@@ -43,7 +43,7 @@ index fecd7b14d..15628376a 100644
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index 4ba991b79..3a4a506d9 100644
+index 7b77c713..68eadffa 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
 @@ -1,10 +1,17 @@
@@ -64,7 +64,7 @@ index 4ba991b79..3a4a506d9 100644
  import org.apache.commons.lang.Validate;
  import org.bukkit.block.data.Ageable;
  import org.bukkit.block.data.AnaloguePowerable;
-@@ -87,3465 +94,3491 @@ import org.jetbrains.annotations.Nullable;
+@@ -87,3435 +94,3455 @@ import org.jetbrains.annotations.Nullable;
   * An enum of all material IDs accepted by the official server and client
   */
  @SuppressWarnings({"DeprecatedIsStillUsed", "deprecation"}) // Paper
@@ -672,15 +672,15 @@ index 4ba991b79..3a4a506d9 100644
       */
 -    TNT(7896, TNT.class),
 -    BOOKSHELF(10069),
-+    public static final Material TNT = new Material("TNT", 7896, TNT.class);
-+    public static final Material BOOKSHELF = new Material("BOOKSHELF", 10069);
-     /**
-      * BlockData: {@link MultipleFacing}
-      */
--    MOSSY_COBBLESTONE(21900, MultipleFacing.class),
+-    MOSSY_COBBLESTONE(21900),
 -    OBSIDIAN(32723),
 -    TORCH(6063),
-+    public static final Material MOSSY_COBBLESTONE = new Material("MOSSY_COBBLESTONE", 21900, MultipleFacing.class);
++    public static final Material TNT = new Material("TNT", 7896, TNT.class);
++    public static final Material BOOKSHELF = new Material("BOOKSHELF", 10069);
++    /**
++     * BlockData: {@link MultipleFacing}
++     */
++    public static final Material MOSSY_COBBLESTONE = new Material("MOSSY_COBBLESTONE", 21900);
 +    public static final Material OBSIDIAN = new Material("OBSIDIAN", 32723);
 +    public static final Material TORCH = new Material("TORCH", 6063);
      /**
@@ -5063,8 +5063,9 @@ index 4ba991b79..3a4a506d9 100644
      private final int maxStack;
      private final short durability;
      public final Class<?> data;
-     private final boolean legacy;
+@@ -3523,27 +3550,36 @@ public enum Material implements Keyed {
      private final NamespacedKey key;
+     private boolean isBlock; // Paper
  
 -    private Material(final int id) {
 -        this(id, 64);
@@ -5110,7 +5111,7 @@ index 4ba991b79..3a4a506d9 100644
          this.id = id;
          this.durability = (short) durability;
          this.maxStack = stack;
-@@ -3564,18 +3597,97 @@ public enum Material implements Keyed {
+@@ -3562,18 +3598,97 @@ public enum Material implements Keyed {
          } catch (SecurityException ex) {
              throw new AssertionError(ex);
          }
@@ -5143,12 +5144,12 @@ index 4ba991b79..3a4a506d9 100644
 +    @Override
 +    public int compareTo(@NotNull Material o) {
 +        return ordinal() - o.ordinal();
-+    }
-+
-+    public final int ordinal() {
-+        return ArrayUtils.indexOf(values(), this);
      }
  
++    public final int ordinal() {
++        return ArrayUtils.indexOf(values(), this);
++    }
++
 +    public final int legacyOrdinal() {
 +        return ArrayUtils.indexOf(legacyValues(), this);
 +    }
@@ -5212,12 +5213,20 @@ index 4ba991b79..3a4a506d9 100644
                  return true;
          }
          return false;
-@@ -3721,772 +3833,772 @@ public enum Material implements Keyed {
+@@ -3719,777 +3834,781 @@ public enum Material implements Keyed {
       * @return true if this material is a block
       */
      public boolean isBlock() {
--        switch (this) {
++<<<<<<< HEAD
+     // Paper start - cache isBlock
+         return this.isBlock;
+     }
+     private boolean isBlock0() {
+     // Paper end
+         switch (this) {
++=======
 +        switch (this.name()) {
++>>>>>>> Material is now a class that mimics Enum
              //<editor-fold defaultstate="collapsed" desc="isBlock">
 -            case ACACIA_BUTTON:
 -            case ACACIA_DOOR:
@@ -6750,7 +6759,7 @@ index 4ba991b79..3a4a506d9 100644
                  return true;
              default:
                  return 0 <= id && id < 256;
-@@ -4499,79 +4611,79 @@ public enum Material implements Keyed {
+@@ -4502,79 +4621,79 @@ public enum Material implements Keyed {
       * @return true if this Material is edible.
       */
      public boolean isEdible() {
@@ -6902,7 +6911,7 @@ index 4ba991b79..3a4a506d9 100644
                  return true;
              default:
                  return false;
-@@ -4673,22 +4785,22 @@ public enum Material implements Keyed {
+@@ -4677,22 +4796,22 @@ public enum Material implements Keyed {
       * @return True if this material represents a playable music disk.
       */
      public boolean isRecord() {
@@ -6940,7 +6949,7 @@ index 4ba991b79..3a4a506d9 100644
                  return true;
              default:
                  return id >= LEGACY_GOLD_RECORD.id && id <= LEGACY_RECORD_12.id;
-@@ -4704,795 +4816,795 @@ public enum Material implements Keyed {
+@@ -4708,795 +4827,795 @@ public enum Material implements Keyed {
          if (!isBlock() || id == 0) {
              return false;
          }
@@ -8524,7 +8533,7 @@ index 4ba991b79..3a4a506d9 100644
                  return true;
              default:
                  return false;
-@@ -5505,13 +5617,13 @@ public enum Material implements Keyed {
+@@ -5509,13 +5628,13 @@ public enum Material implements Keyed {
       * @return True if this material is an air block.
       */
      public boolean isAir() {
@@ -8544,7 +8553,7 @@ index 4ba991b79..3a4a506d9 100644
                  //</editor-fold>
                  return true;
              default:
-@@ -5531,185 +5643,185 @@ public enum Material implements Keyed {
+@@ -5535,185 +5654,185 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -8908,7 +8917,7 @@ index 4ba991b79..3a4a506d9 100644
                  return true;
              default:
                  return false;
-@@ -5725,268 +5837,268 @@ public enum Material implements Keyed {
+@@ -5729,268 +5848,268 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -9437,7 +9446,7 @@ index 4ba991b79..3a4a506d9 100644
              //</editor-fold>
                  return true;
              default:
-@@ -6003,175 +6115,175 @@ public enum Material implements Keyed {
+@@ -6007,175 +6126,175 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -9781,7 +9790,7 @@ index 4ba991b79..3a4a506d9 100644
                  return true;
              default:
                  return false;
-@@ -6184,251 +6296,251 @@ public enum Material implements Keyed {
+@@ -6188,251 +6307,251 @@ public enum Material implements Keyed {
       * @return true if this Material can be used as fuel.
       */
      public boolean isFuel() {
@@ -10277,7 +10286,7 @@ index 4ba991b79..3a4a506d9 100644
                  return true;
              default:
                  return false;
-@@ -6444,391 +6556,391 @@ public enum Material implements Keyed {
+@@ -6448,391 +6567,391 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -11053,7 +11062,7 @@ index 4ba991b79..3a4a506d9 100644
                  return true;
              default:
                  return false;
-@@ -6842,37 +6954,37 @@ public enum Material implements Keyed {
+@@ -6846,37 +6965,37 @@ public enum Material implements Keyed {
          if (!isBlock()) {
              return false;
          }
@@ -11121,7 +11130,7 @@ index 4ba991b79..3a4a506d9 100644
                  return true;
              default:
                  return false;
-@@ -6885,163 +6997,163 @@ public enum Material implements Keyed {
+@@ -6889,163 +7008,163 @@ public enum Material implements Keyed {
       * @return true if this material is an item
       */
      public boolean isItem() {
@@ -11441,7 +11450,7 @@ index 4ba991b79..3a4a506d9 100644
                  return false;
              default:
                  return true;
-@@ -7065,219 +7177,219 @@ public enum Material implements Keyed {
+@@ -7069,219 +7188,219 @@ public enum Material implements Keyed {
       * @return true if this material can be interacted with.
       */
      public boolean isInteractable() {
@@ -11873,7 +11882,7 @@ index 4ba991b79..3a4a506d9 100644
                  // </editor-fold>
                  return true;
              default:
-@@ -7296,651 +7408,651 @@ public enum Material implements Keyed {
+@@ -7300,651 +7419,651 @@ public enum Material implements Keyed {
       */
      public float getHardness() {
          Validate.isTrue(isBlock(), "The Material is not a block!");
@@ -13144,7 +13153,7 @@ index 4ba991b79..3a4a506d9 100644
                  return 100.0F;
              default:
                  return 0F;
-@@ -7960,659 +8072,659 @@ public enum Material implements Keyed {
+@@ -7964,659 +8083,659 @@ public enum Material implements Keyed {
       */
      public float getBlastResistance() {
          Validate.isTrue(isBlock(), "The Material is not a block!");
@@ -14427,7 +14436,7 @@ index 4ba991b79..3a4a506d9 100644
                  return 3600000.8F;
              default:
                  return 0;
-@@ -8631,18 +8743,854 @@ public enum Material implements Keyed {
+@@ -8635,18 +8754,854 @@ public enum Material implements Keyed {
      @Nullable
      public Material getCraftingRemainingItem() {
          Validate.isTrue(isItem(), "The Material is not an item!");
@@ -15290,7 +15299,7 @@ index 4ba991b79..3a4a506d9 100644
  }
 diff --git a/src/main/java/org/bukkit/MaterialJsonAdapter.java b/src/main/java/org/bukkit/MaterialJsonAdapter.java
 new file mode 100644
-index 000000000..bceed5e28
+index 00000000..bceed5e2
 --- /dev/null
 +++ b/src/main/java/org/bukkit/MaterialJsonAdapter.java
 @@ -0,0 +1,22 @@
@@ -15317,7 +15326,7 @@ index 000000000..bceed5e28
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/Registry.java b/src/main/java/org/bukkit/Registry.java
-index 0fd586d60..0c4fdc1bd 100644
+index 0fd586d6..0c4fdc1b 100644
 --- a/src/main/java/org/bukkit/Registry.java
 +++ b/src/main/java/org/bukkit/Registry.java
 @@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
@@ -15363,7 +15372,7 @@ index 0fd586d60..0c4fdc1bd 100644
          @Override
          public T get(@NotNull NamespacedKey key) {
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 8e01e1bbb..19e66f9d3 100644
+index a79fa08b..fad8578b 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -13,6 +13,7 @@ import java.util.Set;
@@ -15375,7 +15384,7 @@ index 8e01e1bbb..19e66f9d3 100644
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
 diff --git a/src/main/java/org/bukkit/material/Crops.java b/src/main/java/org/bukkit/material/Crops.java
-index 4cf3de5fb..31c5571aa 100644
+index 4cf3de5f..31c5571a 100644
 --- a/src/main/java/org/bukkit/material/Crops.java
 +++ b/src/main/java/org/bukkit/material/Crops.java
 @@ -76,14 +76,14 @@ public class Crops extends MaterialData {
@@ -15422,7 +15431,7 @@ index 4cf3de5fb..31c5571aa 100644
                  setData((byte) ((getData() & 0xC) | (state.getData() >> 1)));
                  break;
 diff --git a/src/main/java/org/bukkit/material/Wood.java b/src/main/java/org/bukkit/material/Wood.java
-index 5d51c9286..3048bd0d9 100644
+index 5d51c928..3048bd0d 100644
 --- a/src/main/java/org/bukkit/material/Wood.java
 +++ b/src/main/java/org/bukkit/material/Wood.java
 @@ -71,18 +71,18 @@ public class Wood extends MaterialData {
@@ -15517,5 +15526,5 @@ index 5d51c9286..3048bd0d9 100644
                  break;
              default:
 -- 
-2.30.0
+2.30.1
 

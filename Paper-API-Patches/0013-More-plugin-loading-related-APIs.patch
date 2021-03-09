@@ -1,14 +1,14 @@
-From a4bd4e83118d427bc3442d875658c2eb3df5be83 Mon Sep 17 00:00:00 2001
+From bf79b6ada99c3dda4fc18ffad50f57a03f1f4c94 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 1 Mar 2020 01:17:13 +0000
 Subject: [PATCH] More plugin-loading related APIs
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 2450d1e29..e50ce8b71 100644
+index 42de06ae..1a76e82f 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -327,6 +327,13 @@ public final class Bukkit {
+@@ -333,6 +333,13 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -23,10 +23,10 @@ index 2450d1e29..e50ce8b71 100644
       * Gets the name of the update folder. The update folder is used to safely
       * update plugins at the right moment on a plugin load.
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 2ba125c61..054a84f99 100644
+index 14dde188..ea90d48f 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -272,6 +272,11 @@ public interface Server extends PluginMessageRecipient {
+@@ -278,6 +278,11 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      }
      // Paper end
  
@@ -39,7 +39,7 @@ index 2ba125c61..054a84f99 100644
       * Gets the name of the update folder. The update folder is used to safely
       * update plugins at the right moment on a plugin load.
 diff --git a/src/main/java/org/bukkit/command/SimpleCommandMap.java b/src/main/java/org/bukkit/command/SimpleCommandMap.java
-index 92b66aba6..8ba0c70f1 100644
+index 92b66aba..8ba0c70f 100644
 --- a/src/main/java/org/bukkit/command/SimpleCommandMap.java
 +++ b/src/main/java/org/bukkit/command/SimpleCommandMap.java
 @@ -21,6 +21,7 @@ import org.bukkit.command.defaults.PluginsCommand;
@@ -65,7 +65,7 @@ index 92b66aba6..8ba0c70f1 100644
       * {@inheritDoc}
       */
 diff --git a/src/main/java/org/bukkit/plugin/PluginLoader.java b/src/main/java/org/bukkit/plugin/PluginLoader.java
-index 6ab9cd821..7d3acca0a 100644
+index 6ab9cd82..7d3acca0 100644
 --- a/src/main/java/org/bukkit/plugin/PluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/PluginLoader.java
 @@ -7,6 +7,7 @@ import java.util.regex.Pattern;
@@ -87,7 +87,7 @@ index 6ab9cd821..7d3acca0a 100644
       * Loads a PluginDescriptionFile from the specified file
       *
 diff --git a/src/main/java/org/bukkit/plugin/PluginManager.java b/src/main/java/org/bukkit/plugin/PluginManager.java
-index 86cc5025a..62d20b9d9 100644
+index 86cc5025..62d20b9d 100644
 --- a/src/main/java/org/bukkit/plugin/PluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/PluginManager.java
 @@ -80,6 +80,9 @@ public interface PluginManager {
@@ -114,7 +114,7 @@ index 86cc5025a..62d20b9d9 100644
       * Disables all the loaded plugins
       */
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 26685f59b..1cd21099c 100644
+index 26685f59..1cd21099 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 @@ -365,6 +365,23 @@ public final class SimplePluginManager implements PluginManager {
@@ -164,7 +164,7 @@ index 26685f59b..1cd21099c 100644
          }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index 384edf989..c3971761d 100644
+index 384edf98..c3971761 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 @@ -68,9 +68,14 @@ public final class JavaPluginLoader implements PluginLoader {
@@ -195,5 +195,5 @@ index 384edf989..c3971761d 100644
          @SuppressWarnings("deprecation")
          final File oldDataFolder = new File(parentFile, description.getRawName());
 -- 
-2.30.0
+2.30.1
 

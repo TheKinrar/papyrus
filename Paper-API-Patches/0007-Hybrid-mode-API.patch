@@ -1,14 +1,14 @@
-From eec4d9fa27cf29c7fd57b3a96109c2917459274f Mon Sep 17 00:00:00 2001
+From bd6b252af56c734383e918cfca3b2c566e0d903e Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 15628376a..2450d1e29 100644
+index 8f6fe6ff..42de06ae 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -1814,6 +1814,17 @@ public final class Bukkit {
+@@ -1928,6 +1928,17 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -27,10 +27,10 @@ index 15628376a..2450d1e29 100644
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 19e66f9d3..2ba125c61 100644
+index fad8578b..14dde188 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1583,4 +1583,13 @@ public interface Server extends PluginMessageRecipient {
+@@ -1689,4 +1689,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      @NotNull
      com.destroystokyo.paper.entity.ai.MobGoals getMobGoals();
      // Paper end
@@ -45,10 +45,10 @@ index 19e66f9d3..2ba125c61 100644
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index f8fa317ce..ec23cc8c0 100644
+index 9473084f..e980f5c9 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1821,6 +1821,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -1951,6 +1951,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * @param canAlwaysOpenCommandBlocks whether this player can always open command blocks
       */
      void setCanAlwaysOpenCommandBlocks(boolean canAlwaysOpenCommandBlocks);
@@ -66,7 +66,7 @@ index f8fa317ce..ec23cc8c0 100644
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java b/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
-index 16b5fd279..86f1a6b2f 100644
+index 16b5fd27..86f1a6b2 100644
 --- a/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
 +++ b/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
 @@ -209,6 +209,10 @@ public class EntityPotionEffectEvent extends EntityEvent implements Cancellable
@@ -81,5 +81,5 @@ index 16b5fd279..86f1a6b2f 100644
           * When all effects are removed due to a bucket of milk.
           */
 -- 
-2.30.0
+2.30.1
 
