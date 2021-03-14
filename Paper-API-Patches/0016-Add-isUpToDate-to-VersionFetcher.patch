@@ -1,25 +1,25 @@
-From 1db94a541cdb21f8828e1fddb60039b7b8ccb5a0 Mon Sep 17 00:00:00 2001
+From 341d36a092d6cbc9dc089cf96a83fe03036bba37 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 4 Jul 2020 21:59:23 +0200
 Subject: [PATCH] Add isUpToDate to VersionFetcher
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/util/VersionFetcher.java b/src/main/java/com/destroystokyo/paper/util/VersionFetcher.java
-index 2a265129..5d0a4de7 100644
+index a736d7bc..7d354291 100644
 --- a/src/main/java/com/destroystokyo/paper/util/VersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/util/VersionFetcher.java
-@@ -25,6 +25,8 @@ public interface VersionFetcher {
+@@ -26,6 +26,8 @@ public interface VersionFetcher {
      @NotNull
-     String getVersionMessage(@NotNull String serverVersion);
+     Component getVersionMessage(@NotNull String serverVersion);
  
 +    boolean isUpToDate();
 +
      class DummyVersionFetcher implements VersionFetcher {
  
          @Override
-@@ -40,5 +42,10 @@ public interface VersionFetcher {
+@@ -41,5 +43,10 @@ public interface VersionFetcher {
              new Throwable().printStackTrace();
-             return "Unable to check for updates. No version provider set.";
+             return Component.text("Unable to check for updates. No version provider set.", NamedTextColor.RED);
          }
 +
 +        @Override
@@ -29,5 +29,5 @@ index 2a265129..5d0a4de7 100644
      }
  }
 -- 
-2.27.0
+2.30.1
 

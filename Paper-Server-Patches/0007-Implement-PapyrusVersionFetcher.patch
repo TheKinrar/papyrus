@@ -1,4 +1,4 @@
-From 67d54eb8be5e391e26cb6bea578e85ef7baf6fe6 Mon Sep 17 00:00:00 2001
+From 851ef595d6cd2eb3c19826e288155ef5ac37ba58 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 1 Nov 2019 01:32:27 +0000
 Subject: [PATCH] Implement PapyrusVersionFetcher
@@ -6,10 +6,10 @@ Subject: [PATCH] Implement PapyrusVersionFetcher
 
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
 new file mode 100644
-index 0000000000..f3014cef7f
+index 0000000000..d5e5729d8b
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
-@@ -0,0 +1,103 @@
+@@ -0,0 +1,108 @@
 +package fr.thekinrar.papyrus;
 +
 +import com.destroystokyo.paper.VersionHistoryManager;
@@ -19,6 +19,11 @@ index 0000000000..f3014cef7f
 +import com.google.gson.Gson;
 +import com.google.gson.JsonObject;
 +import com.google.gson.JsonSyntaxException;
++import net.kyori.adventure.text.Component;
++import net.kyori.adventure.text.TextComponent;
++import net.kyori.adventure.text.format.NamedTextColor;
++import net.kyori.adventure.text.format.TextDecoration;
++import org.bukkit.Bukkit;
 +
 +import java.io.BufferedReader;
 +import java.io.IOException;
@@ -34,12 +39,12 @@ index 0000000000..f3014cef7f
 +    }
 +
 +    @Override
-+    public String getVersionMessage(String serverVersion) {
++    public Component getVersionMessage(String serverVersion) {
 +        String[] parts = serverVersion.substring("git-Papyrus-".length()).split("[-\\s]");
-+        String updateMessage = getUpdateStatusMessage("TheKinrar/Papyrus", parts[0]);
-+        String history = getHistory();
++        Component updateMessage = getUpdateStatusMessage("TheKinrar/Papyrus", parts[0]);
++        Component history = getHistory();
 +
-+        return history != null ? history + "\n" + updateMessage : updateMessage;
++        return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
 +    }
 +
 +    private static String getMinecraftVersion() {
@@ -58,7 +63,7 @@ index 0000000000..f3014cef7f
 +        return mcVer;
 +    }
 +
-+    private static String getUpdateStatusMessage(String repo, String versionInfo) {
++    private static Component getUpdateStatusMessage(String repo, String versionInfo) {
 +        int distance;
 +        try {
 +            int jenkinsBuild = Integer.parseInt(versionInfo);
@@ -69,13 +74,13 @@ index 0000000000..f3014cef7f
 +
 +        switch (distance) {
 +            case -1:
-+                return "Error obtaining version information";
++                return Component.text("Error obtaining version information", NamedTextColor.YELLOW);
 +            case 0:
-+                return "You are running the latest version";
++                return Component.text("You are running the latest version", NamedTextColor.GREEN);
 +            case -2:
-+                return "Unknown version";
++                return Component.text("Unknown version", NamedTextColor.YELLOW);
 +            default:
-+                return "You are " + distance + " version(s) behind";
++                return Component.text("You are " + distance + " version(s) behind", NamedTextColor.YELLOW);
 +        }
 +    }
 +
@@ -99,7 +104,7 @@ index 0000000000..f3014cef7f
 +        }
 +    }
 +
-+    private String getHistory() {
++    private Component getHistory() {
 +        final VersionHistoryManager.VersionData data = VersionHistoryManager.INSTANCE.getVersionData();
 +        if (data == null) {
 +            return null;
@@ -110,11 +115,11 @@ index 0000000000..f3014cef7f
 +            return null;
 +        }
 +
-+        return "Previous version: " + oldVersion;
++        return Component.text("Previous version: " + oldVersion, NamedTextColor.GRAY, TextDecoration.ITALIC);
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 6b8d1024db..5e39fc2adf 100644
+index 0a0763aedf..96e135c49c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -18,6 +18,8 @@ import java.util.Locale;

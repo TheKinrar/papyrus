@@ -1,15 +1,15 @@
-From c0cd232ec76e23e04be82220a353c90185c6d817 Mon Sep 17 00:00:00 2001
+From e2267cbf08056c257a6ce209cf3048054fb2e1f9 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 4 Jul 2020 22:00:43 +0200
 Subject: [PATCH] Implement VersionFetcher#isUpToDate
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index 49a38c660..84f67f79f 100644
+index dc0ea65ab8..70a977d8d4 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-@@ -31,6 +31,11 @@ public class PaperVersionFetcher implements VersionFetcher {
-         return history != null ? history + "\n" + updateMessage : updateMessage;
+@@ -35,6 +35,11 @@ public class PaperVersionFetcher implements VersionFetcher {
+         return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
      }
  
 +    @Override
@@ -21,19 +21,11 @@ index 49a38c660..84f67f79f 100644
          if (mcVer == null) {
              java.util.regex.Matcher matcher = VER_PATTERN.matcher(org.bukkit.Bukkit.getBukkitVersion());
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
-index f3014cef7..ce8c06557 100644
+index d5e5729d8b..2d9ac8caf6 100644
 --- a/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
-@@ -7,6 +7,7 @@ import com.google.common.io.Resources;
- import com.google.gson.Gson;
- import com.google.gson.JsonObject;
- import com.google.gson.JsonSyntaxException;
-+import org.bukkit.Bukkit;
- 
- import java.io.BufferedReader;
- import java.io.IOException;
-@@ -30,6 +31,16 @@ public class PapyrusVersionFetcher implements VersionFetcher {
-         return history != null ? history + "\n" + updateMessage : updateMessage;
+@@ -35,6 +35,16 @@ public class PapyrusVersionFetcher implements VersionFetcher {
+         return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
      }
  
 +    @Override
@@ -50,5 +42,5 @@ index f3014cef7..ce8c06557 100644
          if (mcVer == null) {
              java.util.regex.Matcher matcher = VER_PATTERN.matcher(org.bukkit.Bukkit.getBukkitVersion());
 -- 
-2.27.0
+2.30.1
 

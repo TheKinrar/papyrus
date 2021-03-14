@@ -1,4 +1,4 @@
-From f47038cad3574f9d419ae9791de02533fde211f8 Mon Sep 17 00:00:00 2001
+From 630c8a986f83fe338885ea71c866323661cd7fc8 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 3 Nov 2019 16:08:17 +0000
 Subject: [PATCH] Hybrid mode implementation
@@ -501,7 +501,7 @@ index 374c27d5ad..1262f4f004 100644
      public int getPlayerCount() {
          return this.players.size();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index edb26986ca..b927da1b92 100644
+index c756d9a17c..68aa9af201 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1,5 +1,6 @@
@@ -544,7 +544,7 @@ index edb26986ca..b927da1b92 100644
          overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
          ignoreVanillaPermissions = commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2484,4 +2490,24 @@ public final class CraftServer implements Server {
+@@ -2493,4 +2499,24 @@ public final class CraftServer implements Server {
          return mobGoals;
      }
      // Paper end
