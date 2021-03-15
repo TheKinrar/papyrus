@@ -1,11 +1,11 @@
-From 124ac2ab6bd5251046973d2f76a25ee1645b627a Mon Sep 17 00:00:00 2001
+From e3ea649421ad680fc0e4dfa21dff9b85261a14da Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Oct 2019 19:50:39 +0100
 Subject: [PATCH] Material Class/Enum Plugin Compatibility
 
 
 diff --git a/pom.xml b/pom.xml
-index 29fb4949c9..43c80f7d6f 100644
+index de5a65f1e..0be4035d6 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -149,6 +149,13 @@
@@ -21,8 +21,8 @@ index 29fb4949c9..43c80f7d6f 100644
 +        </dependency>
      </dependencies>
  
-     <repositories>
-@@ -305,6 +312,7 @@
+     <!-- This builds a completely 'ready to start' jar with all dependencies inside -->
+@@ -285,6 +292,7 @@
                                      <shadedPattern>org.bukkit.craftbukkit.v${minecraft_version}</shadedPattern>
                                      <excludes>
                                          <exclude>org.bukkit.craftbukkit.Main*</exclude>
@@ -32,7 +32,7 @@ index 29fb4949c9..43c80f7d6f 100644
                                  <relocation>
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatClass.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatClass.java
 new file mode 100644
-index 0000000000..812175524b
+index 000000000..812175524
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatClass.java
 @@ -0,0 +1,24 @@
@@ -62,7 +62,7 @@ index 0000000000..812175524b
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumMap.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumMap.java
 new file mode 100644
-index 0000000000..9d46fe510b
+index 000000000..9d46fe510
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumMap.java
 @@ -0,0 +1,144 @@
@@ -212,7 +212,7 @@ index 0000000000..9d46fe510b
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumSet.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumSet.java
 new file mode 100644
-index 0000000000..ef67807955
+index 000000000..ef6780795
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatEnumSet.java
 @@ -0,0 +1,256 @@
@@ -474,7 +474,7 @@ index 0000000000..ef67807955
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/CompatField.java b/src/main/java/fr/thekinrar/papyrus/compat/CompatField.java
 new file mode 100644
-index 0000000000..39ed4779ad
+index 000000000..39ed4779a
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/CompatField.java
 @@ -0,0 +1,18 @@
@@ -498,7 +498,7 @@ index 0000000000..39ed4779ad
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/Compatibility.java b/src/main/java/fr/thekinrar/papyrus/compat/Compatibility.java
 new file mode 100644
-index 0000000000..50c5799cca
+index 000000000..50c5799cc
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/Compatibility.java
 @@ -0,0 +1,13 @@
@@ -517,7 +517,7 @@ index 0000000000..50c5799cca
 +@interface Compatibility {}
 diff --git a/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java b/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java
 new file mode 100644
-index 0000000000..77e1a84b8c
+index 000000000..77e1a84b8
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/compat/PapyrusCompat.java
 @@ -0,0 +1,139 @@
@@ -661,7 +661,7 @@ index 0000000000..77e1a84b8c
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
-index 1d78086cb9..89b06f60d0 100644
+index 1d78086cb..89b06f60d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 @@ -14,6 +14,8 @@ import java.util.jar.JarEntry;
@@ -674,7 +674,7 @@ index 1d78086cb9..89b06f60d0 100644
  import joptsimple.OptionSet;
  import joptsimple.OptionSpec;
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 00e53d577b..6b8d1024db 100644
+index 57d56ff1b..0a0763aed 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -362,6 +362,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
