@@ -27,13 +27,22 @@ gitcmd="git -c commit.gpgsign=false"
 
 source "$basedir/scripts/functions.sh"
 
+"$basedir"/scripts/requireDeps.sh || exit 1
+
 failed=0
 case "$1" in
     "rb" | "rbp" | "rebuild")
     (
         set -e
         cd "$basedir"
-        scripts/rebuildPatches.sh "$basedir" || exit 1
+        scripts/rebuildPatches.sh "$basedir" $2 || exit 1
+    ) || failed=1
+    ;;
+    "rbf" | "rbfull")
+    (
+        set -e
+        cd "$basedir"
+        scripts/rebuildPatches.sh "$basedir" "nofilter" || exit 1
     ) || failed=1
     ;;
     "p" | "patch")
@@ -48,6 +57,34 @@ case "$1" in
         set -e
         cd "$basedir"
         scripts/build.sh "$basedir" "--jar" || exit 1
+    ) || failed=1
+    ;;
+    "b" | "build")
+    (
+        set -e
+        cd "$basedir"
+        scripts/build.sh "$basedir" || exit 1
+        (cd Papyrus-API ; mvn clean install) || exit 1
+        (cd Papyrus-MojangAPI ; mvn clean install) || exit 1
+        (cd Papyrus-Server ; mvn clean package) || exit 1
+        echo "Papyrus jar successfully built"
+        ls -la Papyrus-Server/target/papyrus*.jar
+    ) || failed=1
+    ;;
+    "i" | "install")
+    (
+        set -e
+        cd "$basedir"
+        scripts/build.sh "$basedir" || exit 1
+        mvn clean install || exit 1
+        echo "Papyrus jar successfully built and installed to local repo"
+    ) || failed=1
+    ;;
+    "pc" | "paperclip")
+    (
+        set -e
+        cd "$basedir"
+        scripts/paperclip.sh "$basedir" || exit 1
     ) || failed=1
     ;;
     "make")
@@ -104,10 +141,18 @@ case "$1" in
         rm -rf work
         echo "Cleaned build files"
     ;;
+    "con" | "continue")
+        if [ -d ".git/rebase-apply" ]; then
+            git -c commit.gpgsign=false am --continue
+        elif [ -d ".git/rebase-merge" ]; then
+            git -c commit.gpgsign=false rebase --continue
+        fi
+    ;;
     "e" | "edit")
         case "$2" in
             "s" | "server")
-            export PAPER_LAST_EDIT="$basedir/Papyrus-Server"
+            mkdir -p "$basedir/work/Temp"
+            echo "$basedir/Papyrus-Server" > "$basedir/work/Temp/PAPYRUS_LAST_EDIT"
             cd "$basedir/Papyrus-Server"
             (
                 set -e
@@ -118,7 +163,8 @@ case "$1" in
             )
             ;;
             "a" | "api")
-            export PAPER_LAST_EDIT="$basedir/Papyrus-API"
+            mkdir -p "$basedir/work/Temp"
+            echo "$basedir/Papyrus-API" > "$basedir/work/Temp/PAPYRUS_LAST_EDIT"
             cd "$basedir/Papyrus-API"
             (
                 set -e
@@ -129,8 +175,8 @@ case "$1" in
             )
             ;;
             "c" | "continue")
-            cd "$PAPER_LAST_EDIT"
-            unset PAPER_LAST_EDIT
+            cd "$( < "$basedir/work/Temp/PAPYRUS_LAST_EDIT")"
+            rm -f "$basedir/work/Temp/PAPYRUS_LAST_EDIT"
             (
                 set -e
 
@@ -161,34 +207,38 @@ case "$1" in
         fi
     ;;
     *)
-        echo "PapyrusMC build tool command. This provides a variety of commands to build and manage the PapyrusMC build"
+        echo "Papyrus build tool command. This provides a variety of commands to build and manage the Papyrus build"
         echo "environment. For all of the functionality of this command to be available, you must first run the"
         echo "'setup' command. View below for details. For essential building and patching, you do not need to do the setup."
         echo ""
         echo " Normal commands:"
-        echo "  * rb, rebuild       | Rebuild patches, can be called from anywhere."
-        echo "  * p, patch          | Apply all patches to the project without building it. Can be run from anywhere."
-        echo "  * j, jar            | Apply all patches and build the project, paperclip.jar will be output. Can be run from anywhere."
-        echo "  * m, mcdev          | Setup decompiled sources for non-modified NMS files to be imported into an IDE. Can be run from anywhere."
-        echo "  * u, up, upstream   | Updates the submodules used by Papyrus to their latest upstream versions."
-        echo "  * t, testserver     | Run the test server with the set of plugins Papyrus uses as a basis for server tests."
+        echo "  * rb, rebuild         | Rebuild patches, can be called from anywhere."
+        echo "  * p, patch            | Apply all patches to the project without building it. Can be run from anywhere."
+        echo "  * j, jar              | Apply all patches and build the project, paperclip.jar will be output. Can be run from anywhere."
+        echo "  * i, install          | Build and install papyrus into the local repo. Can be run from anywhere."
+        echo "  * m, mcdev            | Setup decompiled sources for non-modified NMS files to be imported into an IDE. Can be run from anywhere."
+        echo "  * u, up, upstream     | Updates the submodules used by Papyrus to their latest upstream versions."
+        echo "  * upc, upstreamcommit | Creates the correctly-formatted upstream commit after updating upstream."
+        echo "  * c, clean            | Removes all generated files, Papyrus-API, Papyrus-Server, and work."
+        echo "  * t, testserver       | Run the test server with the set of plugins Papyrus uses as a basis for server tests."
+        echo "  * con, continue       | Shortcut command for running git am --continue, or git rebase --continue."
         echo ""
         echo " These commands require the setup command before use:"
-        echo "  * r, root           | Change directory to the root of the project."
-        echo "  * a. api            | Move to the Papyrus-API directory."
-        echo "  * s, server         | Move to the Papyrus-Server directory."
-        echo "  * td, testdirectory | Move to the test-server directory."
-        echo "  * e, edit           | Use to edit a specific patch, give it the argument \"server\" or \"api\""
-        echo "                      | respectively to edit the correct project. Use the argument \"continue\" after"
-        echo "                      | the changes have been made to finish and rebuild patches. Can be called from anywhere."
+        echo "  * r, root             | Change directory to the root of the project."
+        echo "  * a. api              | Move to the Papyrus-API directory."
+        echo "  * s, server           | Move to the Papyrus-Server directory."
+        echo "  * td, testdirectory   | Move to the test-server directory."
+        echo "  * e, edit             | Use to edit a specific patch, give it the argument \"server\" or \"api\""
+        echo "                        | respectively to edit the correct project. Use the argument \"continue\" after"
+        echo "                        | the changes have been made to finish and rebuild patches. Can be called from anywhere."
         echo ""
-        echo "  * setup             | Add an alias to $RCPATH to allow full functionality of this script. Run as:"
-        echo "                      |     . ./papyrus setup"
-        echo "                      | After you run this command you'll be able to just run 'papyrus' from anywhere."
-        echo "                      | The default name for the resulting alias is 'papyrus', you can give an argument to override"
-        echo "                      | this default, such as:"
-        echo "                      |     . ./papyrus setup example"
-        echo "                      | Which will allow you to run 'example' instead."
+        echo "  * setup               | Add an alias to $RCPATH to allow full functionality of this script. Run as:"
+        echo "                        |     . ./papyrus setup"
+        echo "                        | After you run this command you'll be able to just run 'papyrus' from anywhere."
+        echo "                        | The default name for the resulting alias is 'papyrus', you can give an argument to override"
+        echo "                        | this default, such as:"
+        echo "                        |     . ./papyrus setup example"
+        echo "                        | Which will allow you to run 'example' instead."
     ;;
 esac
 

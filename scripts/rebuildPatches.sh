@@ -16,13 +16,7 @@ function cleanupPatches {
     cd "$1"
     for patch in *.patch; do
         echo "$patch"
-        gitver=$(tail -n 2 "$patch" | grep -ve "^$" | tail -n 1)
-        diffs=$($gitcmd diff --staged "$patch" | grep --color=none -E "^(\+|\-)" | grep --color=none -Ev "(From [a-f0-9]{32,}|\-\-\- a|\+\+\+ b|^.index)")
-
-        testver=$(echo "$diffs" | tail -n 2 | grep --color=none -ve "^$" | tail -n 1 | grep --color=none "$gitver")
-        if [ "x$testver" != "x" ]; then
-            diffs=$(echo "$diffs" | sed 'N;$!P;$!D;$d')
-        fi
+        diffs=$($gitcmd diff --staged "$patch" | grep --color=none -E "^(\+|\-)" | grep --color=none -Ev "(\-\-\- a|\+\+\+ b|^.index)")
 
         if [ "x$diffs" == "x" ] ; then
             $gitcmd reset HEAD "$patch" >/dev/null
@@ -56,10 +50,10 @@ function savePatches {
 
     cd "$basedir/$target"
 
-    $gitcmd format-patch --no-stat -N -o "$basedir/${what_name}-Patches/" upstream/upstream >/dev/null
+    $gitcmd format-patch --zero-commit --full-index --no-signature --no-stat -N -o "$basedir/${what_name}-Patches/" upstream/upstream >/dev/null
     cd "$basedir"
     $gitcmd add -A "$basedir/${what_name}-Patches"
-    if [ "$nofilter" == "0" ]; then
+    if [ "$2" == "nofilter" ] || [ "$2" == "noclean" ]; then
         cleanupPatches "$basedir/${what_name}-Patches"
     fi
     echo "  Patches saved for $what to $what_name-Patches/"
@@ -67,9 +61,9 @@ function savePatches {
 
 savePatches "$workdir/Paper/Paper-API" "Papyrus-API"
 if [ -f "$basedir/Papyrus-API/.git/patch-apply-failed" ]; then
-    echo "$(color 1 31)[[[ WARNING ]]] $(color 1 33)- Not saving Paper-Server as it appears Paper-API did not apply clean.$(colorend)"
-    echo "$(color 1 33)If this is a mistake, delete $(color 1 34)Paper-API/.git/patch-apply-failed$(color 1 33) and run rebuild again.$(colorend)"
-    echo "$(color 1 33)Otherwise, rerun ./paper patch to have a clean Paper-API apply so the latest Paper-Server can build.$(colorend)"
+    echo "$(color 1 31)[[[ WARNING ]]] $(color 1 33)- Not saving Papyrus-Server as it appears Papyrus-API did not apply clean.$(colorend)"
+    echo "$(color 1 33)If this is a mistake, delete $(color 1 34)Papyrus-API/.git/patch-apply-failed$(color 1 33) and run rebuild again.$(colorend)"
+    echo "$(color 1 33)Otherwise, rerun ./papyrus patch to have a clean Papyrus-API apply so the latest Papyrus-Server can build.$(colorend)"
 else
     savePatches "$workdir/Paper/Paper-Server" "Papyrus-Server"
 fi

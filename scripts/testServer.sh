@@ -10,7 +10,7 @@ gitcmd="git -c commit.gpgsign=false"
 #
 # FUNCTIONS
 #
-source $basedir/scripts/functions.sh
+source "$basedir"/scripts/functions.sh
 
 updateTest() {
     paperstash
@@ -65,6 +65,9 @@ fi
 
 folder="$basedir/Paper-Server"
 jar="$folder/target/paper-${minecraftversion}.jar"
+if [ ! -z "$PAPER_JAR" ]; then
+    jar="$PAPER_JAR"
+fi
 if [ ! -d "$folder" ]; then
 (
     echo "Building Patched Repo"
@@ -73,7 +76,7 @@ if [ ! -d "$folder" ]; then
 )
 fi
 
-if [ ! -f "$jar" ] || [ "$2" == "build" ] || [ "$3" == "build" ]; then
+if [ "$2" == "build" ] || [ "$3" == "build" ]; then
 (
     echo "Building Paper"
     cd "$basedir"
@@ -85,13 +88,17 @@ fi
 # JVM FLAGS
 #
 
+if [ -f "$jar" ]; then
+    cp "$jar" paper.jar
+fi
 baseargs="-server -Xms${PAPER_MIN_TEST_MEMORY:-512M} -Xmx${PAPER_TEST_MEMORY:-2G} -Dfile.encoding=UTF-8 -XX:MaxGCPauseMillis=150 -XX:+UseG1GC "
-baseargs="$baseargs -DIReallyKnowWhatIAmDoingISwear=1 -XX:TargetSurvivorRatio=90 "
-baseargs="$baseargs -XX:+UnlockExperimentalVMOptions -XX:G1NewSizePercent=40 -XX:G1MaxNewSizePercent=80 "
-baseargs="$baseargs -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=20 "
+baseargs="$baseargs -DIReallyKnowWhatIAmDoingISwear=1 "
+baseargs="$baseargs -XX:+UnlockExperimentalVMOptions -XX:G1NewSizePercent=40 -XX:G1MaxNewSizePercent=60 "
+baseargs="$baseargs -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=80 "
 baseargs="$baseargs -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5100"
 
-cmd="java ${PAPER_TEST_BASE_JVM_ARGS:-$baseargs} ${PAPER_TEST_EXTRA_JVM_ARGS} -jar $jar"
+
+cmd="java ${PAPER_TEST_BASE_JVM_ARGS:-$baseargs} ${PAPER_TEST_EXTRA_JVM_ARGS} -jar paper.jar ${PAPER_TEST_APP_ARGS:-} nogui"
 screen_command="screen -DURS papertest $cmd"
 tmux_command="tmux new-session -A -s Paper -n 'Paper Test' -c '$(pwd)' '$cmd'"
 
@@ -101,7 +108,9 @@ tmux_command="tmux new-session -A -s Paper -n 'Paper Test' -c '$(pwd)' '$cmd'"
 
 multiplex=${PAPER_TEST_MULTIPLEXER}
 
-if [ "$multiplex" == "screen" ]; then
+if [ ! -z "$PAPER_NO_MULTIPLEX" ]; then
+    cmd="$cmd"
+elif [ "$multiplex" == "screen" ]; then
     if command -v "screen" >/dev/null 2>&1 ; then
         cmd="$screen_command"
     else
@@ -135,6 +144,6 @@ if [ ! -z "$PAPER_TEST_COMMAND_WRAPPER" ]; then
 else
     echo "Running command: $cmd"
     echo "In directory: $(pwd)"
-    sleep 1
+    #sleep 1
     /usr/bin/env bash -c "$cmd"
 fi

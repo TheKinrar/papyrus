@@ -39,6 +39,7 @@ function applyPatch {
 
     statusfile=".git/patch-apply-failed"
     rm -f "$statusfile"
+    git config commit.gpgsign false
     $gitcmd am --abort >/dev/null 2>&1
 
     # Special case Windows handling because of ARG_MAX constraint
@@ -111,12 +112,12 @@ cd "$basedir"
     applyPatch "work/Paper/Paper-API" Papyrus-API HEAD &&
     applyPatch "work/Paper/Paper-Server" Papyrus-Server HEAD
 
-    # if we have previously ran ./paper mcdev, update it
+    # if we have previously ran ./papyrus mcdev, update it
     if [ -d "$workdir/Minecraft/$minecraftversion/src" ]; then
-        $basedir/scripts/makemcdevsrc.sh $basedir
+        ./scripts/makemcdevsrc.sh "$basedir"
     fi
 ) || (
-    echo "Failed to apply Paper Patches"
+    echo "Failed to apply Papyrus Patches"
     exit 1
 ) || exit 1
 ) || exit 1
