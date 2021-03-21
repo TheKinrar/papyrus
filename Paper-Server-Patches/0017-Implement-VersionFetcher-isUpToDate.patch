@@ -1,11 +1,11 @@
-From e2267cbf08056c257a6ce209cf3048054fb2e1f9 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 4 Jul 2020 22:00:43 +0200
 Subject: [PATCH] Implement VersionFetcher#isUpToDate
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index dc0ea65ab8..70a977d8d4 100644
+index dc0ea65ab87255fad0d54dfb509300098a0b4864..70a977d8d4e182242bac1299fff930b16f533c19 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 @@ -35,6 +35,11 @@ public class PaperVersionFetcher implements VersionFetcher {
@@ -21,7 +21,7 @@ index dc0ea65ab8..70a977d8d4 100644
          if (mcVer == null) {
              java.util.regex.Matcher matcher = VER_PATTERN.matcher(org.bukkit.Bukkit.getBukkitVersion());
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
-index d5e5729d8b..2d9ac8caf6 100644
+index d5e5729d8b051898e325905aee2fc109513cd13a..2d9ac8caf6c95f4972445ffdf3fe0cd7d576056c 100644
 --- a/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
 @@ -35,6 +35,16 @@ public class PapyrusVersionFetcher implements VersionFetcher {
@@ -41,6 +41,3 @@ index d5e5729d8b..2d9ac8caf6 100644
      private static String getMinecraftVersion() {
          if (mcVer == null) {
              java.util.regex.Matcher matcher = VER_PATTERN.matcher(org.bukkit.Bukkit.getBukkitVersion());
--- 
-2.30.1
-

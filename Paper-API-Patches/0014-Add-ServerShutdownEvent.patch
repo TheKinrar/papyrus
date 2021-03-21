@@ -1,4 +1,4 @@
-From 75210bbd51bb51910fe2d732fa9577d31165833f Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 7 Mar 2020 02:56:54 +0000
 Subject: [PATCH] Add ServerShutdownEvent
@@ -6,7 +6,7 @@ Subject: [PATCH] Add ServerShutdownEvent
 
 diff --git a/src/main/java/org/bukkit/event/server/ServerShutdownEvent.java b/src/main/java/org/bukkit/event/server/ServerShutdownEvent.java
 new file mode 100644
-index 00000000..5c686640
+index 0000000000000000000000000000000000000000..5c68664068f15eebaa3ff3e5e16ebf3dfbcf5f7e
 --- /dev/null
 +++ b/src/main/java/org/bukkit/event/server/ServerShutdownEvent.java
 @@ -0,0 +1,23 @@
@@ -33,6 +33,3 @@ index 00000000..5c686640
 +        return handlers;
 +    }
 +}
--- 
-2.26.2
-

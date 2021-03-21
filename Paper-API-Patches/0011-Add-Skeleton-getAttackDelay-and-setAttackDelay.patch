@@ -1,11 +1,11 @@
-From e874b57cba5e186eaf7b332e1f66ab72b7782667 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 29 Dec 2019 22:06:28 +0000
 Subject: [PATCH] Add Skeleton#getAttackDelay and setAttackDelay
 
 
 diff --git a/src/main/java/org/bukkit/entity/Skeleton.java b/src/main/java/org/bukkit/entity/Skeleton.java
-index 1c367f78..f48a2092 100644
+index 1c367f78eadf24850061a84ce63b950b79d3c435..f48a20925afa08d169b1ee2593f0dfda8234829a 100644
 --- a/src/main/java/org/bukkit/entity/Skeleton.java
 +++ b/src/main/java/org/bukkit/entity/Skeleton.java
 @@ -27,6 +27,10 @@ public interface Skeleton extends Monster, RangedEntity { // Paper
@@ -19,6 +19,3 @@ index 1c367f78..f48a2092 100644
      /*
       * @deprecated classes are different types
       */
--- 
-2.26.2
-

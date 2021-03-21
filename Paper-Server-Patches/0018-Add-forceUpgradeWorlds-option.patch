@@ -1,23 +1,22 @@
-From 22d5fe6802cff69341c2cb76c7fffe8f44df31e0 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 18 Aug 2020 02:32:00 +0200
 Subject: [PATCH] Add forceUpgradeWorlds option
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c161736106..965dae51a8 100644
+index 9edca24380858946124c3a74da755b3ea98a8e04..19c5dc329a226b723913a01b2eb462f881208056 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -53,6 +53,8 @@ import java.util.function.Function;
- import java.util.stream.Stream;
- import javax.annotation.Nullable;
- import javax.imageio.ImageIO;
-+
+@@ -155,6 +155,7 @@ import net.minecraft.world.phys.Vec3D;
+ import net.minecraft.world.scores.PersistentScoreboard;
+ import net.minecraft.world.scores.Scoreboard;
+ import net.minecraft.world.scores.ScoreboardTeam;
 +import org.apache.commons.lang3.ArrayUtils;
  import org.apache.commons.lang3.Validate;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
-@@ -173,6 +175,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -285,6 +286,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
  
      public volatile Thread shutdownThread; // Paper
  
@@ -26,7 +25,7 @@ index c161736106..965dae51a8 100644
      public static <S extends MinecraftServer> S a(Function<Thread, S> function) {
          AtomicReference<S> atomicreference = new AtomicReference();
          Thread thread = new Thread(() -> {
-@@ -254,6 +258,12 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -366,6 +369,12 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          */
          // Paper end
          Runtime.getRuntime().addShutdownHook(new org.bukkit.craftbukkit.util.ServerShutdownThread(this));
@@ -39,7 +38,7 @@ index c161736106..965dae51a8 100644
      }
      // CraftBukkit end
  
-@@ -392,11 +402,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -504,11 +513,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
              }
              worlddata.checkName(name); // CraftBukkit - Migration did not rewrite the level.dat; This forces 1.8 to take the last loaded world as respawn (in this case the end)
              if (options.has("forceUpgrade")) {
@@ -54,12 +53,12 @@ index c161736106..965dae51a8 100644
  
              IWorldDataServer iworlddataserver = worlddata;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 14ff3c0f17..3275a2bd4f 100644
+index 82a9e1547c5360fcb3b6f6cdf7ba15c1d5cb4005..fcb998af232dbfd6840a34d112fac2a20a06d955 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -108,6 +108,7 @@ import net.minecraft.server.WorldNBTStorage;
- import net.minecraft.server.WorldServer;
- import net.minecraft.server.WorldSettings;
+@@ -108,6 +108,7 @@ import net.minecraft.world.level.storage.WorldNBTStorage;
+ import net.minecraft.world.level.storage.loot.LootTableRegistry;
+ import net.minecraft.world.phys.Vec3D;
  import org.apache.commons.lang.Validate;
 +import org.apache.commons.lang3.ArrayUtils;
  import org.apache.commons.lang3.StringUtils;
@@ -80,10 +79,10 @@ index 14ff3c0f17..3275a2bd4f 100644
  
          long j = BiomeManager.a(creator.seed());
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 74172504f0..0e50c41d52 100644
+index 2abb23d34ba7b133e2b33bd5812a8feccae3c309..2fc4e06584866b58db239a16f6a2c21566234544 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -115,6 +115,13 @@ public class Main {
+@@ -117,6 +117,13 @@ public class Main {
                  acceptsAll(asList("eraseCache"), "Whether to force cache erase during world upgrade");
                  acceptsAll(asList("nogui"), "Disables the graphical console");
  
@@ -97,6 +96,3 @@ index 74172504f0..0e50c41d52 100644
                  acceptsAll(asList("nojline"), "Disables jline and emulates the vanilla console");
  
                  acceptsAll(asList("noconsole"), "Disables the console");
--- 
-2.30.1
-

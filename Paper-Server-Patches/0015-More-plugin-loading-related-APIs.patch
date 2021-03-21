@@ -1,11 +1,11 @@
-From feede888993ae616bf4477a40eb3b96e25ba4e7f Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 1 Mar 2020 01:18:01 +0000
 Subject: [PATCH] More plugin-loading related APIs
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index b927da1b92..14ff3c0f17 100644
+index dd57fb59276ebbdcbca8686aa472f578e4c264ae..82a9e1547c5360fcb3b6f6cdf7ba15c1d5cb4005 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -692,6 +692,11 @@ public final class CraftServer implements Server {
@@ -20,6 +20,3 @@ index b927da1b92..14ff3c0f17 100644
      @Override
      public String getUpdateFolder() {
          return this.configuration.getString("settings.update-folder", "update");
--- 
-2.30.1
-

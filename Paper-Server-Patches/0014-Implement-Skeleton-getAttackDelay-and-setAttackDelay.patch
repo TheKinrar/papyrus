@@ -1,28 +1,24 @@
-From 2f62c3977027d75e0ea653aeb1045e19ea3d6a7f Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 29 Dec 2019 22:09:11 +0000
 Subject: [PATCH] Implement Skeleton#getAttackDelay and setAttackDelay
 
 
-diff --git a/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java b/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java
-index f73304240a..d4eb06f4ec 100644
---- a/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java
-+++ b/src/main/java/net/minecraft/server/EntitySkeletonAbstract.java
-@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
- 
- public abstract class EntitySkeletonAbstract extends EntityMonster implements IRangedEntity {
- 
-+    public PathfinderGoalBowShoot getPathfinderGoalBowShoot() { return b; } // Papyrus
-     private final PathfinderGoalBowShoot<EntitySkeletonAbstract> b = new PathfinderGoalBowShoot<>(this, 1.0D, 20, 15.0F);
-     private final PathfinderGoalMeleeAttack c = new PathfinderGoalMeleeAttack(this, 1.2D, false) {
-         @Override
-diff --git a/src/main/java/net/minecraft/server/PathfinderGoalBowShoot.java b/src/main/java/net/minecraft/server/PathfinderGoalBowShoot.java
+diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalBowShoot.java b/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalBowShoot.java
 new file mode 100644
-index 0000000000..e7da98b126
+index 0000000000000000000000000000000000000000..d98bf2dbd418a34978270ac00ce12094d67bfa8b
 --- /dev/null
-+++ b/src/main/java/net/minecraft/server/PathfinderGoalBowShoot.java
-@@ -0,0 +1,129 @@
-+package net.minecraft.server;
++++ b/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalBowShoot.java
+@@ -0,0 +1,137 @@
++package net.minecraft.world.entity.ai.goal;
++
++import net.minecraft.world.entity.Entity;
++import net.minecraft.world.entity.EntityLiving;
++import net.minecraft.world.entity.monster.EntityMonster;
++import net.minecraft.world.entity.monster.IRangedEntity;
++import net.minecraft.world.entity.projectile.ProjectileHelper;
++import net.minecraft.world.item.ItemBow;
++import net.minecraft.world.item.Items;
 +
 +import java.util.EnumSet;
 +
@@ -151,11 +147,23 @@ index 0000000000..e7da98b126
 +        }
 +    }
 +}
+diff --git a/src/main/java/net/minecraft/world/entity/monster/EntitySkeletonAbstract.java b/src/main/java/net/minecraft/world/entity/monster/EntitySkeletonAbstract.java
+index 06d50b22ede102556fdb3e2a6f1424f7ff13f120..0749e4458c2b92e15832348d595024d38eb38f53 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/EntitySkeletonAbstract.java
++++ b/src/main/java/net/minecraft/world/entity/monster/EntitySkeletonAbstract.java
+@@ -48,6 +48,7 @@ import net.minecraft.world.level.block.state.IBlockData;
+ 
+ public abstract class EntitySkeletonAbstract extends EntityMonster implements IRangedEntity {
+ 
++    public PathfinderGoalBowShoot getPathfinderGoalBowShoot() { return b; } // Papyrus
+     private final PathfinderGoalBowShoot<EntitySkeletonAbstract> b = new PathfinderGoalBowShoot<>(this, 1.0D, 20, 15.0F);
+     private final PathfinderGoalMeleeAttack c = new PathfinderGoalMeleeAttack(this, 1.2D, false) {
+         @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftSkeleton.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftSkeleton.java
-index cf68b17745..07078367cd 100644
+index c2acfa2cc27a187154e17b7f45908682b41b52af..7c3f913a00c885b237233da9d2cc793b7c035e23 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftSkeleton.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftSkeleton.java
-@@ -37,4 +37,14 @@ public class CraftSkeleton extends CraftMonster implements Skeleton, CraftRanged
+@@ -36,4 +36,14 @@ public class CraftSkeleton extends CraftMonster implements Skeleton, com.destroy
      public void setSkeletonType(SkeletonType type) {
          throw new UnsupportedOperationException("Not supported.");
      }
@@ -170,6 +178,3 @@ index cf68b17745..07078367cd 100644
 +        getHandle().getPathfinderGoalBowShoot().setDelay(delay);
 +    }
  }
--- 
-2.30.1
-

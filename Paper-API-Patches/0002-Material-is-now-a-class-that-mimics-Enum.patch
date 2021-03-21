@@ -1,4 +1,4 @@
-From 3bb72d7a5fd795feec80601c5e5423dede3f9030 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 1 Oct 2019 12:02:30 +0100
 Subject: [PATCH] Material is now a class that mimics Enum
@@ -6,7 +6,7 @@ Subject: [PATCH] Material is now a class that mimics Enum
 This will be used to enable new Material to be created at runtime
 
 diff --git a/src/main/java/co/aikar/timings/TimingHistory.java b/src/main/java/co/aikar/timings/TimingHistory.java
-index 203cda0f..c6e453f8 100644
+index 203cda0f9a4dea4f28a21ea9ee8db7a7369842e3..c6e453f87fa5c637fd78e347b0df841088159371 100644
 --- a/src/main/java/co/aikar/timings/TimingHistory.java
 +++ b/src/main/java/co/aikar/timings/TimingHistory.java
 @@ -40,9 +40,11 @@ import co.aikar.util.MRUMapCache;
@@ -31,7 +31,7 @@ index 203cda0f..c6e453f8 100644
  
          static class RegionId {
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 5f720819..f9fab673 100644
+index 5f7208196684d9c8373df28b7cfb5f9e21baa41e..f9fab673088335fed2eb9927eff3c5df60650f9f 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -13,6 +13,7 @@ import java.util.Set;
@@ -43,7 +43,7 @@ index 5f720819..f9fab673 100644
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index 0a31a532..4bf4c043 100644
+index 0a31a5321ac519568db936c94394f71b2e2fcec1..4bf4c04392e65c9a93ffc36561163abf42fbaa3d 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
 @@ -1,10 +1,17 @@
@@ -15291,7 +15291,7 @@ index 0a31a532..4bf4c043 100644
  }
 diff --git a/src/main/java/org/bukkit/MaterialJsonAdapter.java b/src/main/java/org/bukkit/MaterialJsonAdapter.java
 new file mode 100644
-index 00000000..bceed5e2
+index 0000000000000000000000000000000000000000..bceed5e2853d6f071ada51eb7429a1fbb27c98bc
 --- /dev/null
 +++ b/src/main/java/org/bukkit/MaterialJsonAdapter.java
 @@ -0,0 +1,22 @@
@@ -15318,7 +15318,7 @@ index 00000000..bceed5e2
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/Registry.java b/src/main/java/org/bukkit/Registry.java
-index 0fd586d6..0c4fdc1b 100644
+index 0fd586d6053bf3a7d2e766a30541b143b298482a..0c4fdc1bdcf3eb5f37ac66fd6f1d926985852062 100644
 --- a/src/main/java/org/bukkit/Registry.java
 +++ b/src/main/java/org/bukkit/Registry.java
 @@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
@@ -15364,7 +15364,7 @@ index 0fd586d6..0c4fdc1b 100644
          @Override
          public T get(@NotNull NamespacedKey key) {
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index f3e27d2d..3678420a 100644
+index f3e27d2d02a9407bb1b091b8c1125ad5abf99e55..3678420a5fe08789b4dfe205296f99705e495022 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -13,6 +13,7 @@ import java.util.Set;
@@ -15376,7 +15376,7 @@ index f3e27d2d..3678420a 100644
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
 diff --git a/src/main/java/org/bukkit/material/Crops.java b/src/main/java/org/bukkit/material/Crops.java
-index 4cf3de5f..31c5571a 100644
+index 4cf3de5fbba8617bc8edab9ca1c0ddee8033ed09..31c5571aa74734e797253e6d5b9d4d0a7751c8a5 100644
 --- a/src/main/java/org/bukkit/material/Crops.java
 +++ b/src/main/java/org/bukkit/material/Crops.java
 @@ -76,14 +76,14 @@ public class Crops extends MaterialData {
@@ -15423,7 +15423,7 @@ index 4cf3de5f..31c5571a 100644
                  setData((byte) ((getData() & 0xC) | (state.getData() >> 1)));
                  break;
 diff --git a/src/main/java/org/bukkit/material/Wood.java b/src/main/java/org/bukkit/material/Wood.java
-index 5d51c928..3048bd0d 100644
+index 5d51c9286dbf71ff4bb8717d5e83431b1815770e..3048bd0d95c3dcd237bccb5bfd3e3f7a749475ba 100644
 --- a/src/main/java/org/bukkit/material/Wood.java
 +++ b/src/main/java/org/bukkit/material/Wood.java
 @@ -71,18 +71,18 @@ public class Wood extends MaterialData {
@@ -15517,6 +15517,3 @@ index 5d51c928..3048bd0d 100644
                  setData((byte) ((getData() & 0x8) | species.getData()));
                  break;
              default:
--- 
-2.30.1
-

@@ -1,11 +1,11 @@
-From 0e433c9333b21db296d25ad5dd4c935750d81b62 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Mon, 4 Nov 2019 19:42:56 +0000
 Subject: [PATCH] Hybrid mode API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index f9fab673..48ae2047 100644
+index f9fab673088335fed2eb9927eff3c5df60650f9f..48ae204774db1dcb31a5745c9a009782651efb94 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -1940,6 +1940,17 @@ public final class Bukkit {
@@ -27,7 +27,7 @@ index f9fab673..48ae2047 100644
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 3678420a..15dbeb72 100644
+index 3678420a5fe08789b4dfe205296f99705e495022..15dbeb722abf93d9749fed299b240fbd2b195ba1 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -1700,4 +1700,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
@@ -45,7 +45,7 @@ index 3678420a..15dbeb72 100644
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 9473084f..e980f5c9 100644
+index 9473084f12d31f986a2aaeec25f6b32afcb30075..e980f5c94c62271d47a9ed5be66f6027fa7afdbc 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -1951,6 +1951,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
@@ -66,7 +66,7 @@ index 9473084f..e980f5c9 100644
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java b/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
-index 16b5fd27..86f1a6b2 100644
+index 16b5fd279b0cb926900247618bcdb381a93f5a35..86f1a6b2f8bce5e6fd516a8b99d4047f945301cc 100644
 --- a/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
 +++ b/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
 @@ -209,6 +209,10 @@ public class EntityPotionEffectEvent extends EntityEvent implements Cancellable
@@ -80,6 +80,3 @@ index 16b5fd27..86f1a6b2 100644
          /**
           * When all effects are removed due to a bucket of milk.
           */
--- 
-2.30.1
-

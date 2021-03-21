@@ -1,11 +1,11 @@
-From 341d36a092d6cbc9dc089cf96a83fe03036bba37 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 4 Jul 2020 21:59:23 +0200
 Subject: [PATCH] Add isUpToDate to VersionFetcher
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/util/VersionFetcher.java b/src/main/java/com/destroystokyo/paper/util/VersionFetcher.java
-index a736d7bc..7d354291 100644
+index a736d7bcdc5861a01b66ba36158db1c716339346..7d3542911efe976564a62923ebc6e043d98590de 100644
 --- a/src/main/java/com/destroystokyo/paper/util/VersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/util/VersionFetcher.java
 @@ -26,6 +26,8 @@ public interface VersionFetcher {
@@ -28,6 +28,3 @@ index a736d7bc..7d354291 100644
 +        }
      }
  }
--- 
-2.30.1
-

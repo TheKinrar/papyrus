@@ -1,11 +1,11 @@
-From bbc8857b9174e520363590d34cb0a436f33b3926 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 13 Dec 2019 18:26:58 +0000
 Subject: [PATCH] Add showInvalidBedMessage world config
 
 
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
-index 52274c1bb3..4cdcd51049 100644
+index 52274c1bb387ae8e42f3c7078328d99f5e7df1df..4cdcd51049703e12978588736fea3b9277d9aeba 100644
 --- a/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
 @@ -59,4 +59,10 @@ public class PapyrusWorldConfig {
@@ -19,11 +19,11 @@ index 52274c1bb3..4cdcd51049 100644
 +        log("Show invalid bed message: " + showInvalidBedMessage);
 +    }
  }
-diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 1262f4f004..d609ab3e5c 100644
---- a/src/main/java/net/minecraft/server/PlayerList.java
-+++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -822,7 +822,9 @@ public abstract class PlayerList {
+diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
+index 7f151ce35f7432471a725093fae1972f325f5933..f447e0999f62390dd1ca1596ffef593d8066af1c 100644
+--- a/src/main/java/net/minecraft/server/players/PlayerList.java
++++ b/src/main/java/net/minecraft/server/players/PlayerList.java
+@@ -908,7 +908,9 @@ public abstract class PlayerList {
                      isBedSpawn = true;
                      location = new Location(worldserver1.getWorld(), vec3d.x, vec3d.y, vec3d.z, f1, 0.0F);
                  } else if (blockposition != null) {
@@ -34,6 +34,3 @@ index 1262f4f004..d609ab3e5c 100644
                  }
              }
  
--- 
-2.30.1
-

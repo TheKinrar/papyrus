@@ -1,15 +1,15 @@
-From 7c760828d6a69799c22a136d27ebfd34bcbbbcb2 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 23 Nov 2019 02:29:24 +0000
 Subject: [PATCH] Case-insensitive command matching for command blocks
 
 (Which matches the behaviour for players and console)
 
-diff --git a/src/main/java/net/minecraft/server/CommandDispatcher.java b/src/main/java/net/minecraft/server/CommandDispatcher.java
-index e56ff36511..a7239366b3 100644
---- a/src/main/java/net/minecraft/server/CommandDispatcher.java
-+++ b/src/main/java/net/minecraft/server/CommandDispatcher.java
-@@ -140,6 +140,7 @@ public class CommandDispatcher {
+diff --git a/src/main/java/net/minecraft/commands/CommandDispatcher.java b/src/main/java/net/minecraft/commands/CommandDispatcher.java
+index a70e0761aeddee8fafff971b5cbd0422ab560fb5..692bfbf681aada708587b25aea04d77ef27a2ad6 100644
+--- a/src/main/java/net/minecraft/commands/CommandDispatcher.java
++++ b/src/main/java/net/minecraft/commands/CommandDispatcher.java
+@@ -224,6 +224,7 @@ public class CommandDispatcher {
  
          String[] args = command.split(" ");
          if (args.length == 0) return 0; // Paper - empty commands shall not be dispatched
@@ -17,6 +17,3 @@ index e56ff36511..a7239366b3 100644
  
          String cmd = args[0];
          if (cmd.startsWith("minecraft:")) cmd = cmd.substring("minecraft:".length());
--- 
-2.30.0
-

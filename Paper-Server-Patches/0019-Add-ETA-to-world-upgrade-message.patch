@@ -1,14 +1,22 @@
-From 6e69016230bd89315903c280646577bba082b200 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Tue, 18 Aug 2020 02:41:09 +0200
 Subject: [PATCH] Add ETA to world upgrade message
 
 
 diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
-index 1c6dbd29c8..0efdffbac1 100644
+index 6818f8496ab76ee6ffc747bd6848b43830ec8914..bd35c740988ad8b1023efb7c2815a42023e27677 100644
 --- a/src/main/java/net/minecraft/server/Main.java
 +++ b/src/main/java/net/minecraft/server/Main.java
-@@ -241,6 +241,8 @@ public class Main {
+@@ -43,6 +43,7 @@ import net.minecraft.util.MathHelper;
+ import net.minecraft.util.datafix.DataConverterRegistry;
+ import net.minecraft.util.worldupdate.WorldUpgrader;
+ import net.minecraft.world.entity.npc.VillagerTrades;
++import net.minecraft.world.level.ChunkCoordIntPair;
+ import net.minecraft.world.level.DataPackConfiguration;
+ import net.minecraft.world.level.GameRules;
+ import net.minecraft.world.level.World;
+@@ -281,6 +282,8 @@ public class Main {
          WorldUpgrader worldupgrader = new WorldUpgrader(convertable_conversionsession, datafixer, immutableset, flag);
          IChatBaseComponent ichatbasecomponent = null;
  
@@ -17,7 +25,7 @@ index 1c6dbd29c8..0efdffbac1 100644
          while (!worldupgrader.b()) {
              IChatBaseComponent ichatbasecomponent1 = worldupgrader.h();
  
-@@ -254,7 +256,15 @@ public class Main {
+@@ -294,7 +297,15 @@ public class Main {
              if (i > 0) {
                  int j = worldupgrader.f() + worldupgrader.g();
  
@@ -34,11 +42,11 @@ index 1c6dbd29c8..0efdffbac1 100644
              }
  
              if (!booleansupplier.getAsBoolean()) {
-diff --git a/src/main/java/net/minecraft/server/WorldUpgrader.java b/src/main/java/net/minecraft/server/WorldUpgrader.java
-index 5ccdc0b87b..8610944542 100644
---- a/src/main/java/net/minecraft/server/WorldUpgrader.java
-+++ b/src/main/java/net/minecraft/server/WorldUpgrader.java
-@@ -40,6 +40,7 @@ public class WorldUpgrader {
+diff --git a/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java b/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java
+index a4970654496c52fcd02c5c055ff5ac551bd19da3..b1264c7cc0a2fb656af18a6315c90678f48df12e 100644
+--- a/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java
++++ b/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java
+@@ -57,6 +57,7 @@ public class WorldUpgrader {
      private volatile IChatBaseComponent o = new ChatMessage("optimizeWorld.stage.counting");
      private static final Pattern p = Pattern.compile("^r\\.(-?[0-9]+)\\.(-?[0-9]+)\\.mca$");
      private final WorldPersistentData q;
@@ -46,7 +54,7 @@ index 5ccdc0b87b..8610944542 100644
  
      public WorldUpgrader(Convertable.ConversionSession convertable_conversionsession, DataFixer datafixer, ImmutableSet<ResourceKey<DimensionManager>> immutableset, boolean flag) { // CraftBukkit
          this.c = immutableset;
-@@ -114,6 +115,7 @@ public class WorldUpgrader {
+@@ -131,6 +132,7 @@ public class WorldUpgrader {
                      if (listiterator.hasNext()) {
                          ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair) listiterator.next();
                          boolean flag1 = false;
@@ -54,6 +62,3 @@ index 5ccdc0b87b..8610944542 100644
  
                          try {
                              NBTTagCompound nbttagcompound = ichunkloader.read(chunkcoordintpair);
--- 
-2.30.0
-

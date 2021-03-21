@@ -1,15 +1,15 @@
-From f117533a536140fccdada365aa0a37b70a45e256 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sun, 14 Mar 2021 18:40:25 +0100
 Subject: [PATCH] Implement noWeight, noDeclaration, maxVectorLength in
  Minecart
 
 
-diff --git a/src/main/java/net/minecraft/server/EntityMinecartAbstract.java b/src/main/java/net/minecraft/server/EntityMinecartAbstract.java
-index be859a1b41..b816179289 100644
---- a/src/main/java/net/minecraft/server/EntityMinecartAbstract.java
-+++ b/src/main/java/net/minecraft/server/EntityMinecartAbstract.java
-@@ -68,6 +68,12 @@ public abstract class EntityMinecartAbstract extends Entity {
+diff --git a/src/main/java/net/minecraft/world/entity/vehicle/EntityMinecartAbstract.java b/src/main/java/net/minecraft/world/entity/vehicle/EntityMinecartAbstract.java
+index 75a88ab5d5b0fdb98ea8d61bb6b82049b21101f3..ec798fcb8b4467bab49ed9bac060b7eaef2bc459 100644
+--- a/src/main/java/net/minecraft/world/entity/vehicle/EntityMinecartAbstract.java
++++ b/src/main/java/net/minecraft/world/entity/vehicle/EntityMinecartAbstract.java
+@@ -107,6 +107,12 @@ public abstract class EntityMinecartAbstract extends Entity {
      public double maxSpeed = 0.4D;
      // CraftBukkit end
  
@@ -22,7 +22,7 @@ index be859a1b41..b816179289 100644
      protected EntityMinecartAbstract(EntityTypes<?> entitytypes, World world) {
          super(entitytypes, world);
          this.i = true;
-@@ -518,7 +524,7 @@ public abstract class EntityMinecartAbstract extends Entity {
+@@ -557,7 +563,7 @@ public abstract class EntityMinecartAbstract extends Entity {
              d5 = -d5;
          }
  
@@ -31,7 +31,7 @@ index be859a1b41..b816179289 100644
  
          vec3d1 = new Vec3D(d8 * d4 / d6, vec3d1.y, d8 * d5 / d6);
          this.setMot(vec3d1);
-@@ -570,7 +576,7 @@ public abstract class EntityMinecartAbstract extends Entity {
+@@ -609,7 +615,7 @@ public abstract class EntityMinecartAbstract extends Entity {
          d0 = d11 + d4 * d15;
          d2 = d12 + d5 * d15;
          this.setPosition(d0, d1, d2);
@@ -40,7 +40,7 @@ index be859a1b41..b816179289 100644
          d17 = this.getMaxSpeed();
          vec3d1 = this.getMot();
          this.move(EnumMoveType.SELF, new Vec3D(MathHelper.a(d16 * vec3d1.x, -d17, d17), 0.0D, MathHelper.a(d16 * vec3d1.z, -d17, d17)));
-@@ -649,6 +655,8 @@ public abstract class EntityMinecartAbstract extends Entity {
+@@ -688,6 +694,8 @@ public abstract class EntityMinecartAbstract extends Entity {
      protected void decelerate() {
          double d0 = this.isVehicle() || !this.slowWhenEmpty ? 0.997D : 0.96D; // CraftBukkit - add !this.slowWhenEmpty
  
@@ -50,10 +50,10 @@ index be859a1b41..b816179289 100644
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftMinecart.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftMinecart.java
-index 52b4b15b20..700c226bd3 100644
+index e5ebb80a44da775df6f3d5a9db5cf58295e2e960..7143f903b192928f0578c953d32d433c1b03e701 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftMinecart.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftMinecart.java
-@@ -153,4 +153,36 @@ public abstract class CraftMinecart extends CraftVehicle implements Minecart {
+@@ -152,4 +152,36 @@ public abstract class CraftMinecart extends CraftVehicle implements Minecart {
      public int getDisplayBlockOffset() {
          return getHandle().getDisplayBlockOffset();
      }
@@ -90,6 +90,3 @@ index 52b4b15b20..700c226bd3 100644
 +    }
 +    // Papyrus end
  }
--- 
-2.30.1
-

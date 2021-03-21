@@ -1,11 +1,11 @@
-From 17510c7a750e29ca72095f119d8450166eb98658 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Sat, 26 Oct 2019 03:39:15 +0100
 Subject: [PATCH] POM changes
 
 
 diff --git a/pom.xml b/pom.xml
-index 6c6ae6b48..901363f8f 100644
+index e66661eb84308dc13faa0d39b7487f40c1180443..009e998b299b4c34432b9561a0c57730dc764657 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -3,18 +3,18 @@
@@ -33,6 +33,3 @@ index 6c6ae6b48..901363f8f 100644
      <description>An enhanced plugin API for Minecraft servers.</description>
  
      <properties>
--- 
-2.30.0
-

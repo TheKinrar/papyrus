@@ -1,4 +1,4 @@
-From 851ef595d6cd2eb3c19826e288155ef5ac37ba58 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Fri, 1 Nov 2019 01:32:27 +0000
 Subject: [PATCH] Implement PapyrusVersionFetcher
@@ -6,7 +6,7 @@ Subject: [PATCH] Implement PapyrusVersionFetcher
 
 diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
 new file mode 100644
-index 0000000000..d5e5729d8b
+index 0000000000000000000000000000000000000000..d5e5729d8b051898e325905aee2fc109513cd13a
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/PapyrusVersionFetcher.java
 @@ -0,0 +1,108 @@
@@ -119,7 +119,7 @@ index 0000000000..d5e5729d8b
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 0a0763aedf..96e135c49c 100644
+index 48b3705db1368632cb36bf70e4e0c0d6245bf694..87e9a0c6d03b792ffc840b045e651fda0d3ce059 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -18,6 +18,8 @@ import java.util.Locale;
@@ -128,9 +128,9 @@ index 0a0763aedf..96e135c49c 100644
  import java.util.logging.Logger;
 +
 +import fr.thekinrar.papyrus.PapyrusVersionFetcher;
- import net.minecraft.server.AdvancementDataWorld;
- import net.minecraft.server.Block;
- import net.minecraft.server.ChatDeserializer;
+ import net.minecraft.SharedConstants;
+ import net.minecraft.advancements.critereon.LootDeserializationContext;
+ import net.minecraft.core.IRegistry;
 @@ -381,7 +383,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
  
      @Override
@@ -140,6 +140,3 @@ index 0a0763aedf..96e135c49c 100644
      }
  
      @Override
--- 
-2.30.1
-

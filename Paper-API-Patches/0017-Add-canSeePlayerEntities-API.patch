@@ -1,11 +1,11 @@
-From dfdb0456c075da001e6aebf150c8662e28b7e400 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 9 Sep 2020 00:04:33 +0200
 Subject: [PATCH] Add canSeePlayerEntities API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index e980f5c9..7fbdd9ce 100644
+index e980f5c94c62271d47a9ed5be66f6027fa7afdbc..7fbdd9ceb63c10a26d43c2a8ed82d3f30a8a4985 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -1229,6 +1229,35 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
@@ -44,6 +44,3 @@ index e980f5c9..7fbdd9ce 100644
      /**
       * Checks to see if this player is currently flying or not.
       *
--- 
-2.30.1
-

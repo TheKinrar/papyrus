@@ -1,14 +1,38 @@
-From 42b0fc625378dff286ff5315b87d5c345bb992ba Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Indhi Rousseau <contact@thekinrar.fr>
 Date: Wed, 19 Aug 2020 06:06:57 +0200
 Subject: [PATCH] Add ignoreChunkMismatch option
 
 
-diff --git a/src/main/java/net/minecraft/server/IChunkLoader.java b/src/main/java/net/minecraft/server/IChunkLoader.java
-index 582a5695b..dce25ea10 100644
---- a/src/main/java/net/minecraft/server/IChunkLoader.java
-+++ b/src/main/java/net/minecraft/server/IChunkLoader.java
-@@ -109,8 +109,14 @@ public class IChunkLoader implements AutoCloseable {
+diff --git a/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java b/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java
+index b1264c7cc0a2fb656af18a6315c90678f48df12e..b20891f2ee3aebdfceb8980c2059885b3281d3ed 100644
+--- a/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java
++++ b/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java
+@@ -40,7 +40,7 @@ import net.minecraft.world.level.dimension.DimensionManager;
+ 
+ public class WorldUpgrader {
+ 
+-    private static final Logger LOGGER = LogManager.getLogger();
++    public static final Logger LOGGER = LogManager.getLogger(); // Papyrus - make public
+     private static final ThreadFactory b = (new ThreadFactoryBuilder()).setDaemon(true).build();
+     private final ImmutableSet<ResourceKey<DimensionManager>> c; // CraftBukkit
+     private final boolean d;
+diff --git a/src/main/java/net/minecraft/world/level/chunk/storage/IChunkLoader.java b/src/main/java/net/minecraft/world/level/chunk/storage/IChunkLoader.java
+index 890362d28ab9cb760c73fe5014e144fb08ada6b8..56f45624326b2c9e7dd2f641422dccd8a2d8172d 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/storage/IChunkLoader.java
++++ b/src/main/java/net/minecraft/world/level/chunk/storage/IChunkLoader.java
+@@ -13,8 +13,10 @@ import net.minecraft.SharedConstants;
+ import net.minecraft.nbt.GameProfileSerializer;
+ import net.minecraft.nbt.NBTTagCompound;
+ import net.minecraft.resources.ResourceKey;
++import net.minecraft.server.MinecraftServer;
+ import net.minecraft.server.level.PlayerChunkMap;
+ import net.minecraft.util.datafix.DataFixTypes;
++import net.minecraft.util.worldupdate.WorldUpgrader;
+ import net.minecraft.world.level.ChunkCoordIntPair;
+ import net.minecraft.world.level.World;
+ import net.minecraft.world.level.levelgen.structure.PersistentStructureLegacy;
+@@ -127,8 +129,14 @@ public class IChunkLoader implements AutoCloseable {
          // Paper start
          if (!chunkcoordintpair.equals(ChunkRegionLoader.getChunkCoordinate(nbttagcompound))) {
              String world = (this instanceof PlayerChunkMap) ? ((PlayerChunkMap)this).world.getWorld().getName() : null;
@@ -25,24 +49,11 @@ index 582a5695b..dce25ea10 100644
          }
          // Paper end
          this.regionFileCache.write(chunkcoordintpair, nbttagcompound);
-diff --git a/src/main/java/net/minecraft/server/WorldUpgrader.java b/src/main/java/net/minecraft/server/WorldUpgrader.java
-index 861094454..a2513544b 100644
---- a/src/main/java/net/minecraft/server/WorldUpgrader.java
-+++ b/src/main/java/net/minecraft/server/WorldUpgrader.java
-@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
- 
- public class WorldUpgrader {
- 
--    private static final Logger LOGGER = LogManager.getLogger();
-+    public static final Logger LOGGER = LogManager.getLogger(); // Papyrus - make public
-     private static final ThreadFactory b = (new ThreadFactoryBuilder()).setDaemon(true).build();
-     private final ImmutableSet<ResourceKey<DimensionManager>> c; // CraftBukkit
-     private final boolean d;
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 36392f7a5..4dbe94829 100644
+index 2fc4e06584866b58db239a16f6a2c21566234544..b9c35b7746a32d785c3df51d03c3cb41695f0175 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -120,6 +120,8 @@ public class Main {
+@@ -122,6 +122,8 @@ public class Main {
                          .withOptionalArg()
                          .ofType(String.class)
                          .describedAs("Comma-separated list of world names");
@@ -51,6 +62,3 @@ index 36392f7a5..4dbe94829 100644
                  // Papyrus end
  
                  acceptsAll(asList("nojline"), "Disables jline and emulates the vanilla console");
--- 
-2.28.0
-
