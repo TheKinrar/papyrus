@@ -166,7 +166,7 @@ index 265602ae30763f0df46144c6b840ba84836341f1..9cf7d9db611323756aafce358d6d496b
      public Map<String, Object> serialize() {
          Map<String, Object> result = new LinkedHashMap<String, Object>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 829ddefbd06f735582c38080f0bb714e28635e41..330702335a5cdab9d53c5d4fdafd20b7a15f2f86 100644
+index 5aa55f8e933eef9f3e3413e559e6a52ee2edf090..23464954623041d71f51d67118229ba87551a795 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -1303,7 +1303,7 @@ public class CraftEventFactory {

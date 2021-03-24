@@ -679,7 +679,7 @@ index 4283b092f963d1dcf5e0ed472286663ad98f41bd..265602ae30763f0df46144c6b840ba84
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index f68d48f4c5b6d35f7bbf0def19b6e5b804a0c65d..829ddefbd06f735582c38080f0bb714e28635e41 100644
+index 926440e846eff2c1aaa262aa2b3975b7dd225332..5aa55f8e933eef9f3e3413e559e6a52ee2edf090 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -528,7 +528,12 @@ public class CraftEventFactory {

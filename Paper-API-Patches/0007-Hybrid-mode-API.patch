@@ -5,10 +5,10 @@ Subject: [PATCH] Hybrid mode API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index f9fab673088335fed2eb9927eff3c5df60650f9f..48ae204774db1dcb31a5745c9a009782651efb94 100644
+index 5f7208196684d9c8373df28b7cfb5f9e21baa41e..e1cfcde2f53bca782cff127b6b995bf87c393549 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -1940,6 +1940,17 @@ public final class Bukkit {
+@@ -1939,6 +1939,17 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -27,10 +27,10 @@ index f9fab673088335fed2eb9927eff3c5df60650f9f..48ae204774db1dcb31a5745c9a009782
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 3678420a5fe08789b4dfe205296f99705e495022..15dbeb722abf93d9749fed299b240fbd2b195ba1 100644
+index f3e27d2d02a9407bb1b091b8c1125ad5abf99e55..b88f4b201b6d971465ce659619fb89ef0b60e093 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1700,4 +1700,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1699,4 +1699,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      @NotNull
      com.destroystokyo.paper.entity.ai.MobGoals getMobGoals();
      // Paper end
