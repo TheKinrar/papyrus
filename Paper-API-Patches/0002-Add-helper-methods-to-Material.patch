@@ -5,10 +5,10 @@ Subject: [PATCH] Add helper methods to Material
 
 
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d8a3b5ac2 100644
+index 0a31a5321ac519568db936c94394f71b2e2fcec1..4a8fb06fa9bd740bbd1b5d5c00129f2326851c32 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
-@@ -8660,4 +8660,840 @@ public enum Material implements Keyed {
+@@ -8660,4 +8660,878 @@ public enum Material implements Keyed {
              // </editor-fold>
          }
      }
@@ -54,6 +54,7 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +        switch(this) {
 +            // <editor-fold defaultstate="collapsed" desc="isSpawnEgg">
 +            case BAT_SPAWN_EGG:
++            case BEE_SPAWN_EGG:
 +            case BLAZE_SPAWN_EGG:
 +            case CAT_SPAWN_EGG:
 +            case CAVE_SPIDER_SPAWN_EGG:
@@ -71,6 +72,7 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case FOX_SPAWN_EGG:
 +            case GHAST_SPAWN_EGG:
 +            case GUARDIAN_SPAWN_EGG:
++            case HOGLIN_SPAWN_EGG:
 +            case HORSE_SPAWN_EGG:
 +            case HUSK_SPAWN_EGG:
 +            case LLAMA_SPAWN_EGG:
@@ -82,6 +84,8 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case PARROT_SPAWN_EGG:
 +            case PHANTOM_SPAWN_EGG:
 +            case PIG_SPAWN_EGG:
++            case PIGLIN_SPAWN_EGG:
++            case PIGLIN_BRUTE_SPAWN_EGG:
 +            case PILLAGER_SPAWN_EGG:
 +            case POLAR_BEAR_SPAWN_EGG:
 +            case PUFFERFISH_SPAWN_EGG:
@@ -97,6 +101,7 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case SPIDER_SPAWN_EGG:
 +            case SQUID_SPAWN_EGG:
 +            case STRAY_SPAWN_EGG:
++            case STRIDER_SPAWN_EGG:
 +            case TRADER_LLAMA_SPAWN_EGG:
 +            case TROPICAL_FISH_SPAWN_EGG:
 +            case TURTLE_SPAWN_EGG:
@@ -107,10 +112,11 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case WITCH_SPAWN_EGG:
 +            case WITHER_SKELETON_SPAWN_EGG:
 +            case WOLF_SPAWN_EGG:
-+            case ZOMBIE_HORSE_SPAWN_EGG:
-+            case ZOMBIE_PIGMAN_SPAWN_EGG:
++            case ZOGLIN_SPAWN_EGG:
 +            case ZOMBIE_SPAWN_EGG:
++            case ZOMBIE_HORSE_SPAWN_EGG:
 +            case ZOMBIE_VILLAGER_SPAWN_EGG:
++            case ZOMBIFIED_PIGLIN_SPAWN_EGG:
 +                // </editor-fold>
 +                return true;
 +            default:
@@ -257,10 +263,12 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            // <editor-fold defaultstate="collapsed" desc="isSign">
 +            case ACACIA_SIGN:
 +            case BIRCH_SIGN:
++            case CRIMSON_SIGN:
 +            case DARK_OAK_SIGN:
 +            case JUNGLE_SIGN:
 +            case OAK_SIGN:
 +            case SPRUCE_SIGN:
++            case WARPED_SIGN:
 +                // </editor-fold>
 +                return true;
 +            default:
@@ -273,10 +281,12 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            // <editor-fold defaultstate="collapsed" desc="isWallSign">
 +            case ACACIA_WALL_SIGN:
 +            case BIRCH_WALL_SIGN:
++            case CRIMSON_WALL_SIGN:
 +            case DARK_OAK_WALL_SIGN:
 +            case JUNGLE_WALL_SIGN:
 +            case OAK_WALL_SIGN:
 +            case SPRUCE_WALL_SIGN:
++            case WARPED_WALL_SIGN:
 +                // </editor-fold>
 +                return true;
 +            default:
@@ -349,10 +359,12 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            // <editor-fold defaultstate="collapsed" desc="isWoodenPressurePlate">
 +            case ACACIA_PRESSURE_PLATE:
 +            case BIRCH_PRESSURE_PLATE:
++            case CRIMSON_PRESSURE_PLATE:
 +            case DARK_OAK_PRESSURE_PLATE:
 +            case JUNGLE_PRESSURE_PLATE:
 +            case OAK_PRESSURE_PLATE:
 +            case SPRUCE_PRESSURE_PLATE:
++            case WARPED_PRESSURE_PLATE:
 +                // </editor-fold>
 +                return true;
 +            default:
@@ -373,7 +385,7 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +    }
 +
 +    public boolean isAnyPressurePlate() {
-+        return isWoodenPressurePlate() || isWeightedPressurePlate() || this == STONE_PRESSURE_PLATE;
++        return isWoodenPressurePlate() || isWeightedPressurePlate() || this == STONE_PRESSURE_PLATE || this == POLISHED_BLACKSTONE_PRESSURE_PLATE;
 +    }
 +
 +    public boolean isBed() {
@@ -460,10 +472,12 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            // <editor-fold defaultstate="collapsed" desc="isWoodenButton">
 +            case ACACIA_BUTTON:
 +            case BIRCH_BUTTON:
++            case CRIMSON_BUTTON:
 +            case DARK_OAK_BUTTON:
 +            case JUNGLE_BUTTON:
 +            case OAK_BUTTON:
 +            case SPRUCE_BUTTON:
++            case WARPED_BUTTON:
 +                // </editor-fold>
 +                return true;
 +            default:
@@ -496,10 +510,12 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            // <editor-fold defaultstate="collapsed" desc="isPlanks">
 +            case ACACIA_PLANKS:
 +            case BIRCH_PLANKS:
++            case CRIMSON_PLANKS:
 +            case DARK_OAK_PLANKS:
 +            case JUNGLE_PLANKS:
 +            case OAK_PLANKS:
 +            case SPRUCE_PLANKS:
++            case WARPED_PLANKS:
 +                // </editor-fold>
 +                return true;
 +            default:
@@ -546,8 +562,10 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case ACACIA_STAIRS:
 +            case ANDESITE_STAIRS:
 +            case BIRCH_STAIRS:
++            case BLACKSTONE_STAIRS:
 +            case BRICK_STAIRS:
 +            case COBBLESTONE_STAIRS:
++            case CRIMSON_STAIRS:
 +            case DARK_OAK_STAIRS:
 +            case DARK_PRISMARINE_STAIRS:
 +            case DIORITE_STAIRS:
@@ -559,6 +577,8 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case NETHER_BRICK_STAIRS:
 +            case OAK_STAIRS:
 +            case POLISHED_ANDESITE_STAIRS:
++            case POLISHED_BLACKSTONE_STAIRS:
++            case POLISHED_BLACKSTONE_BRICK_STAIRS:
 +            case POLISHED_DIORITE_STAIRS:
 +            case POLISHED_GRANITE_STAIRS:
 +            case PRISMARINE_BRICK_STAIRS:
@@ -574,6 +594,7 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case SPRUCE_STAIRS:
 +            case STONE_BRICK_STAIRS:
 +            case STONE_STAIRS:
++            case WARPED_STAIRS:
 +                // </editor-fold>
 +                return true;
 +            default:
@@ -586,11 +607,13 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            // <editor-fold defaultstate="collapsed" desc="isFence">
 +            case ACACIA_FENCE:
 +            case BIRCH_FENCE:
++            case CRIMSON_FENCE:
 +            case DARK_OAK_FENCE:
 +            case JUNGLE_FENCE:
 +            case NETHER_BRICK_FENCE:
 +            case OAK_FENCE:
 +            case SPRUCE_FENCE:
++            case WARPED_FENCE:
 +                // </editor-fold>
 +                return true;
 +            default:
@@ -603,10 +626,12 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            // <editor-fold defaultstate="collapsed" desc="isFenceGate">
 +            case ACACIA_FENCE_GATE:
 +            case BIRCH_FENCE_GATE:
++            case CRIMSON_FENCE_GATE:
 +            case DARK_OAK_FENCE_GATE:
 +            case JUNGLE_FENCE_GATE:
 +            case OAK_FENCE_GATE:
 +            case SPRUCE_FENCE_GATE:
++            case WARPED_FENCE_GATE:
 +                // </editor-fold>
 +                return true;
 +            default:
@@ -619,10 +644,12 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            // <editor-fold defaultstate="collapsed" desc="isWoodenDoor">
 +            case ACACIA_DOOR:
 +            case BIRCH_DOOR:
++            case CRIMSON_DOOR:
 +            case DARK_OAK_DOOR:
 +            case JUNGLE_DOOR:
 +            case OAK_DOOR:
 +            case SPRUCE_DOOR:
++            case WARPED_DOOR:
 +                // </editor-fold>
 +                return true;
 +            default:
@@ -639,10 +666,12 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            // <editor-fold defaultstate="collapsed" desc="isWoodenTrapdoor">
 +            case ACACIA_TRAPDOOR:
 +            case BIRCH_TRAPDOOR:
++            case CRIMSON_TRAPDOOR:
 +            case DARK_OAK_TRAPDOOR:
 +            case JUNGLE_TRAPDOOR:
 +            case OAK_TRAPDOOR:
 +            case SPRUCE_TRAPDOOR:
++            case WARPED_TRAPDOOR:
 +                // </editor-fold>
 +                return true;
 +            default:
@@ -663,6 +692,7 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case IRON_HELMET:
 +            case LEATHER_HELMET:
 +            case TURTLE_HELMET:
++            case NETHERITE_HELMET:
 +                // </editor-fold>
 +                return true;
 +            default:
@@ -678,6 +708,7 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case GOLDEN_CHESTPLATE:
 +            case IRON_CHESTPLATE:
 +            case LEATHER_CHESTPLATE:
++            case NETHERITE_CHESTPLATE:
 +                // </editor-fold>
 +                return true;
 +            default:
@@ -693,6 +724,7 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case GOLDEN_LEGGINGS:
 +            case IRON_LEGGINGS:
 +            case LEATHER_LEGGINGS:
++            case NETHERITE_LEGGINGS:
 +                // </editor-fold>
 +                return true;
 +            default:
@@ -708,6 +740,7 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case GOLDEN_BOOTS:
 +            case IRON_BOOTS:
 +            case LEATHER_BOOTS:
++            case NETHERITE_BOOTS:
 +                // </editor-fold>
 +                return true;
 +            default:
@@ -740,6 +773,7 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case GOLDEN_SWORD:
 +            case IRON_SWORD:
 +            case STONE_SWORD:
++            case NETHERITE_SWORD:
 +            case WOODEN_SWORD:
 +                // </editor-fold>
 +                return true;
@@ -755,6 +789,7 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case GOLDEN_AXE:
 +            case IRON_AXE:
 +            case STONE_AXE:
++            case NETHERITE_AXE:
 +            case WOODEN_AXE:
 +                // </editor-fold>
 +                return true;
@@ -770,6 +805,7 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case GOLDEN_PICKAXE:
 +            case IRON_PICKAXE:
 +            case STONE_PICKAXE:
++            case NETHERITE_PICKAXE:
 +            case WOODEN_PICKAXE:
 +                // </editor-fold>
 +                return true;
@@ -785,6 +821,7 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case GOLDEN_HOE:
 +            case IRON_HOE:
 +            case STONE_HOE:
++            case NETHERITE_HOE:
 +            case WOODEN_HOE:
 +                // </editor-fold>
 +                return true;
@@ -799,6 +836,7 @@ index 0a31a5321ac519568db936c94394f71b2e2fcec1..fa5265fc4d80be3694ea1e7715c90d5d
 +            case DIAMOND_SHOVEL:
 +            case GOLDEN_SHOVEL:
 +            case IRON_SHOVEL:
++            case NETHERITE_SHOVEL:
 +            case STONE_SHOVEL:
 +            case WOODEN_SHOVEL:
 +                // </editor-fold>
