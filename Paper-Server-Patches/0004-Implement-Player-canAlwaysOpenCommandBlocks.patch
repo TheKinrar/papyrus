@@ -18,10 +18,10 @@ index 1511cf54fea53577a2808b5d84417eee834db984..7780fdcecffef89372255694946ae66b
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 92ed4938d5fe6b76e3a9ac5491d6e9c004ade843..c072849c9cec87f62f12b7f4b3bde363f07c00d1 100644
+index 2df8e914f66176e22aeddf8b94a83af5ea921d88..91c1680d32a0cf95d824ec0994a77f2899ad9d6a 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1005,6 +1005,9 @@ public abstract class PlayerList {
+@@ -1014,6 +1014,9 @@ public abstract class PlayerList {
          GameProfile gameprofile = entityplayer.getProfile();
          int i = this.server.b(gameprofile);
  

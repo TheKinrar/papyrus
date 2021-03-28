@@ -213,7 +213,7 @@ index 37c9b5fd712e30a9a0faccc840f738f4b2cfc723..9a157781dd036f74dafe16cee6a93265
  
              if (this.ticksLived % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/PlayerConnection.java b/src/main/java/net/minecraft/server/network/PlayerConnection.java
-index 04c31e1f6639f0269fc7dc72c17cb14e7cb073da..1c5324b4c3ca9f4b6bdb6ccaf5fc3b6534e07b5e 100644
+index ba1e5bb1a141079c5e1be1e7bc57d265c5d3b99a..9cf282dff978c4ca785429564301a51eb913b294 100644
 --- a/src/main/java/net/minecraft/server/network/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/network/PlayerConnection.java
 @@ -13,6 +13,8 @@ import io.netty.util.concurrent.Future;
@@ -314,7 +314,7 @@ index 04c31e1f6639f0269fc7dc72c17cb14e7cb073da..1c5324b4c3ca9f4b6bdb6ccaf5fc3b65
              try {
                  byte[] data = new byte[packetplayincustompayload.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index c072849c9cec87f62f12b7f4b3bde363f07c00d1..7f151ce35f7432471a725093fae1972f325f5933 100644
+index 91c1680d32a0cf95d824ec0994a77f2899ad9d6a..a79207847a76a6a3dde95bc3ccae0888ea28e0bd 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
@@ -331,10 +331,10 @@ index c072849c9cec87f62f12b7f4b3bde363f07c00d1..7f151ce35f7432471a725093fae1972f
  import net.minecraft.world.entity.player.EntityHuman;
 +import net.minecraft.world.entity.player.PlayerInventory;
 +import net.minecraft.world.inventory.ContainerPlayer;
+ import net.minecraft.world.item.ItemStack;
  import net.minecraft.world.level.ChunkCoordIntPair;
  import net.minecraft.world.level.EnumGamemode;
- import net.minecraft.world.level.GameRules;
-@@ -121,6 +124,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
+@@ -122,6 +125,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  import org.bukkit.event.player.PlayerLoginEvent;
  import org.bukkit.event.player.PlayerQuitEvent;
  import org.bukkit.event.player.PlayerRespawnEvent;
@@ -342,7 +342,7 @@ index c072849c9cec87f62f12b7f4b3bde363f07c00d1..7f151ce35f7432471a725093fae1972f
  // CraftBukkit end
  
  public abstract class PlayerList {
-@@ -233,6 +237,12 @@ public abstract class PlayerList {
+@@ -234,6 +238,12 @@ public abstract class PlayerList {
  
          if (nbttagcompound == null) entityplayer.moveToSpawn(worldserver1); // Paper - only move to spawn on first login, otherwise, stay where you are....
  
@@ -355,7 +355,7 @@ index c072849c9cec87f62f12b7f4b3bde363f07c00d1..7f151ce35f7432471a725093fae1972f
          entityplayer.spawnIn(worldserver1);
          entityplayer.playerInteractManager.a((WorldServer) entityplayer.world);
          String s1 = "local";
-@@ -265,7 +275,7 @@ public abstract class PlayerList {
+@@ -266,7 +276,7 @@ public abstract class PlayerList {
          PlayerConnection playerconnection = new PlayerConnection(this.server, networkmanager, entityplayer);
          GameRules gamerules = worldserver1.getGameRules();
          boolean flag = gamerules.getBoolean(GameRules.DO_IMMEDIATE_RESPAWN);
@@ -364,7 +364,7 @@ index c072849c9cec87f62f12b7f4b3bde363f07c00d1..7f151ce35f7432471a725093fae1972f
  
          // Spigot - view distance
          playerconnection.sendPacket(new PacketPlayOutLogin(entityplayer.getId(), entityplayer.playerInteractManager.getGameMode(), entityplayer.playerInteractManager.c(), BiomeManager.a(worldserver1.getSeed()), worlddata.isHardcore(), this.server.F(), this.s, worldserver1.getDimensionManager(), worldserver1.getDimensionKey(), this.getMaxPlayers(), worldserver1.getChunkProvider().playerChunkMap.getLoadViewDistance(), flag1, !flag, worldserver1.isDebugWorld(), worldserver1.isFlatWorld())); // Paper - no-tick view distance
-@@ -276,7 +286,7 @@ public abstract class PlayerList {
+@@ -277,7 +287,7 @@ public abstract class PlayerList {
          playerconnection.sendPacket(new PacketPlayOutHeldItemSlot(entityplayer.inventory.itemInHandIndex));
          playerconnection.sendPacket(new PacketPlayOutRecipeUpdate(this.server.getCraftingManager().b()));
          playerconnection.sendPacket(new PacketPlayOutTags(this.server.getTagRegistry()));
@@ -373,7 +373,7 @@ index c072849c9cec87f62f12b7f4b3bde363f07c00d1..7f151ce35f7432471a725093fae1972f
          this.d(entityplayer);
          entityplayer.getStatisticManager().c();
          entityplayer.getRecipeBook().a(entityplayer);
-@@ -1301,17 +1311,32 @@ public abstract class PlayerList {
+@@ -1310,17 +1320,32 @@ public abstract class PlayerList {
      }
  
      public void updateClient(EntityPlayer entityplayer) {
