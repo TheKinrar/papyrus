@@ -5,7 +5,7 @@ Subject: [PATCH] Implement CommandBlockEditEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/network/PlayerConnection.java b/src/main/java/net/minecraft/server/network/PlayerConnection.java
-index 4a3f6f26da0d99ee2ff6942c2ff7d0595b53b684..ba1e5bb1a141079c5e1be1e7bc57d265c5d3b99a 100644
+index 5ee56f3636b299280a7c2bc5a210c63250a47fb3..709c42558f330b869360a0fa058660a23bc9f07c 100644
 --- a/src/main/java/net/minecraft/server/network/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/network/PlayerConnection.java
 @@ -1,6 +1,8 @@

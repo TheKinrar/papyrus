@@ -18,10 +18,10 @@ index 300884804bf9ac3fba7c30a04d8adf52e3dd2e3e..df41f10fc7ec6607801a1a03abb24414
                          }
                      }
 diff --git a/src/main/java/net/minecraft/server/level/WorldServer.java b/src/main/java/net/minecraft/server/level/WorldServer.java
-index 0a698a5a4a6502a488c9afb0ad97165e60030896..66511d96e31f898bedc1872bbd1c17d33a9a9f04 100644
+index 492b57395cd51e39e1d88b193399ce02be378658..0e3a62bbc4ebc22efdbb1909da27125104d72cab 100644
 --- a/src/main/java/net/minecraft/server/level/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/level/WorldServer.java
-@@ -1648,7 +1648,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1647,7 +1647,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
                  double d2 = (double) blockposition.getZ() - entityplayer.locZ();
  
                  // CraftBukkit start
@@ -30,7 +30,7 @@ index 0a698a5a4a6502a488c9afb0ad97165e60030896..66511d96e31f898bedc1872bbd1c17d3
                      continue;
                  }
                  // CraftBukkit end
-@@ -1822,7 +1822,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1821,7 +1821,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
  
          for (EntityHuman entityhuman : receivers) { // Paper - Particle API Expansion
              EntityPlayer entityplayer = (EntityPlayer) entityhuman; // Paper - Particle API Expansion
@@ -53,7 +53,7 @@ index 9f2e7d345d98f50e6d47cbf4bb35714852fa42da..8563080d582b97dfe5373a209cdf5c8a
              return entity1 == null || this.d || !entity1.isSameVehicle(entity);
              // Paper end
 diff --git a/src/main/java/net/minecraft/world/level/World.java b/src/main/java/net/minecraft/world/level/World.java
-index e29366a6e0e491f1154ca26c13266a02e77a9714..2066a487d18e00f26e3e70ea490305697c601cb0 100644
+index 3f5cf6c063d96c6ebd12168e114e7391c38e29ee..c6a875f7c22d60878b682ded68b8479778571167 100644
 --- a/src/main/java/net/minecraft/world/level/World.java
 +++ b/src/main/java/net/minecraft/world/level/World.java
 @@ -278,7 +278,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {

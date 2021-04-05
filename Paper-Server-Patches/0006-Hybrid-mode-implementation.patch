@@ -164,7 +164,7 @@ index f86f430598026a3a7e27fb8d40cfc5fe7b9b845d..babe02b782bacf7078ab2918557b3dd8
  public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 8a6d793e14fdd360cec1f5258eebd581d39ebf10..3976100a1c0b3f5dcb6de34c8f69a5504e2a3d91 100644
+index 0215f1f967072248242437f7ec2a34ef3c89b15f..50f041616ee95fa932e9c72b032981f2753ea270 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1421,6 +1421,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
@@ -213,7 +213,7 @@ index 37c9b5fd712e30a9a0faccc840f738f4b2cfc723..9a157781dd036f74dafe16cee6a93265
  
              if (this.ticksLived % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/PlayerConnection.java b/src/main/java/net/minecraft/server/network/PlayerConnection.java
-index ba1e5bb1a141079c5e1be1e7bc57d265c5d3b99a..9cf282dff978c4ca785429564301a51eb913b294 100644
+index 709c42558f330b869360a0fa058660a23bc9f07c..a1ac765138621e8cd9c34373270c127dafa80b81 100644
 --- a/src/main/java/net/minecraft/server/network/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/network/PlayerConnection.java
 @@ -13,6 +13,8 @@ import io.netty.util.concurrent.Future;
@@ -409,7 +409,7 @@ index 91c1680d32a0cf95d824ec0994a77f2899ad9d6a..a79207847a76a6a3dde95bc3ccae0888
      public int getPlayerCount() {
          return this.players.size();
 diff --git a/src/main/java/net/minecraft/world/entity/EntityLiving.java b/src/main/java/net/minecraft/world/entity/EntityLiving.java
-index b0ee9e98d5f1e56c8d82e90dd7761c8ef79cfb1c..7436dc8b775f09ff6082d80b31407c9c31ba68c9 100644
+index 21341eeb8148be119fbc1dd370c1beaf70a319e0..50e98989281698cf855feb57823c332da12c75ce 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityLiving.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityLiving.java
 @@ -1021,9 +1021,11 @@ public abstract class EntityLiving extends Entity {

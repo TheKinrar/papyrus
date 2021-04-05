@@ -924,7 +924,7 @@ index 0000000000000000000000000000000000000000..52274c1bb387ae8e42f3c7078328d99f
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c372e6897c73fad6f9c478cec9f58303fb0cce17..8a6d793e14fdd360cec1f5258eebd581d39ebf10 100644
+index 0db00322ebf600245bf9311e547c8c743a60a173..0215f1f967072248242437f7ec2a34ef3c89b15f 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1569,7 +1569,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
@@ -965,7 +965,7 @@ index 52bb528e75eb43156ee2bf19877bc051a35bb6e3..11ea2d25723bdaa8409d619103e61de3
          this.setPVP(dedicatedserverproperties.pvp);
          this.setAllowFlight(dedicatedserverproperties.allowFlight);
 diff --git a/src/main/java/net/minecraft/world/level/World.java b/src/main/java/net/minecraft/world/level/World.java
-index 78dcba08d6d796d5d97c8304bf1f1e7d1e650d5d..e29366a6e0e491f1154ca26c13266a02e77a9714 100644
+index 6581fe0d93a5c2e7b444a44c01726e02d4a28e63..3f5cf6c063d96c6ebd12168e114e7391c38e29ee 100644
 --- a/src/main/java/net/minecraft/world/level/World.java
 +++ b/src/main/java/net/minecraft/world/level/World.java
 @@ -162,6 +162,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
