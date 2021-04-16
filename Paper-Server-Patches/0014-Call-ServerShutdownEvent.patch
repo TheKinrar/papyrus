@@ -5,7 +5,7 @@ Subject: [PATCH] Call ServerShutdownEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 50f041616ee95fa932e9c72b032981f2753ea270..6d3a9ccc5c220a2c12b4a109b306c0244f4dbd05 100644
+index a84151ad941902b1c5e5c18280996951ddff9f49..401e013989d75c8ae9c8a2212c33b53c70ad1b77 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -182,6 +182,8 @@ import co.aikar.timings.MinecraftTimings; // Paper
@@ -17,7 +17,7 @@ index 50f041616ee95fa932e9c72b032981f2753ea270..6d3a9ccc5c220a2c12b4a109b306c024
  
  public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTask> implements IMojangStatistics, ICommandListener, AutoCloseable {
  
-@@ -976,6 +978,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -986,6 +988,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.safeShutdown(flag, false);
      }
      public void safeShutdown(boolean flag, boolean isRestarting) {

@@ -164,10 +164,10 @@ index f86f430598026a3a7e27fb8d40cfc5fe7b9b845d..babe02b782bacf7078ab2918557b3dd8
  public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 0215f1f967072248242437f7ec2a34ef3c89b15f..50f041616ee95fa932e9c72b032981f2753ea270 100644
+index 3f258f39278b56151a1b306c2bb21c0b2c53de3f..a84151ad941902b1c5e5c18280996951ddff9f49 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1421,6 +1421,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1431,6 +1431,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.methodProfiler.exitEnter("levels");
          Iterator iterator = this.getWorlds().iterator();
  
@@ -213,7 +213,7 @@ index 37c9b5fd712e30a9a0faccc840f738f4b2cfc723..9a157781dd036f74dafe16cee6a93265
  
              if (this.ticksLived % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/PlayerConnection.java b/src/main/java/net/minecraft/server/network/PlayerConnection.java
-index 709c42558f330b869360a0fa058660a23bc9f07c..a1ac765138621e8cd9c34373270c127dafa80b81 100644
+index 3596695841a06d3bb0db35cd0631272621e4cedf..a71ddec0ad22f4434d91f6b1bba7be8071b57089 100644
 --- a/src/main/java/net/minecraft/server/network/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/network/PlayerConnection.java
 @@ -13,6 +13,8 @@ import io.netty.util.concurrent.Future;
@@ -679,7 +679,7 @@ index 4283b092f963d1dcf5e0ed472286663ad98f41bd..265602ae30763f0df46144c6b840ba84
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 926440e846eff2c1aaa262aa2b3975b7dd225332..5aa55f8e933eef9f3e3413e559e6a52ee2edf090 100644
+index 9084aa4b7c0059c995a3d1a89188379b52c9d620..5ccb1ab265748ee7502eed34cb29fadef89ac49a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -528,7 +528,12 @@ public class CraftEventFactory {

@@ -5,7 +5,7 @@ Subject: [PATCH] Add forceUpgradeWorlds option
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 6d3a9ccc5c220a2c12b4a109b306c0244f4dbd05..3124af00be2ebcd308eb0522aff5c6de1d59219b 100644
+index 401e013989d75c8ae9c8a2212c33b53c70ad1b77..b11de6ebe7077cc4cb69c49d365557da941157b7 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -155,6 +155,7 @@ import net.minecraft.world.phys.Vec3D;
@@ -38,15 +38,15 @@ index 6d3a9ccc5c220a2c12b4a109b306c0244f4dbd05..3124af00be2ebcd308eb0522aff5c6de
      }
      // CraftBukkit end
  
-@@ -504,11 +513,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -516,11 +525,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
              }
              worlddata.checkName(name); // CraftBukkit - Migration did not rewrite the level.dat; This forces 1.8 to take the last loaded world as respawn (in this case the end)
              if (options.has("forceUpgrade")) {
 +                if(forceUpgradeWorlds == null || ArrayUtils.contains(this.forceUpgradeWorlds, s)) { // Papyrus
                  net.minecraft.server.Main.convertWorld(worldSession, DataConverterRegistry.a(), options.has("eraseCache"), () -> {
                      return true;
-                 }, worlddata.getGeneratorSettings().d().d().stream().map((entry) -> {
-                     return ResourceKey.a(IRegistry.K, ((ResourceKey) entry.getKey()).a());
+                 }, worlddata.getGeneratorSettings().d().d().stream().map((entry1) -> {
+                     return ResourceKey.a(IRegistry.K, ((ResourceKey) entry1.getKey()).a());
                  }).collect(ImmutableSet.toImmutableSet()));
 +                }
              }
@@ -79,7 +79,7 @@ index 82a9e1547c5360fcb3b6f6cdf7ba15c1d5cb4005..fcb998af232dbfd6840a34d112fac2a2
  
          long j = BiomeManager.a(creator.seed());
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 2abb23d34ba7b133e2b33bd5812a8feccae3c309..2fc4e06584866b58db239a16f6a2c21566234544 100644
+index 8037bce08eccb2eec8b931dec774868a77addb95..2d1cc5e246926b83312570884b71b06d917227fe 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -117,6 +117,13 @@ public class Main {

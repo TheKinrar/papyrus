@@ -50,7 +50,7 @@ index 890362d28ab9cb760c73fe5014e144fb08ada6b8..56f45624326b2c9e7dd2f641422dccd8
          // Paper end
          this.regionFileCache.write(chunkcoordintpair, nbttagcompound);
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 2fc4e06584866b58db239a16f6a2c21566234544..b9c35b7746a32d785c3df51d03c3cb41695f0175 100644
+index 2d1cc5e246926b83312570884b71b06d917227fe..cb06c05e74567835f1618694455b488e8e19f05c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -122,6 +122,8 @@ public class Main {

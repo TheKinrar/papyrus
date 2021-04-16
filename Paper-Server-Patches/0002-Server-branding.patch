@@ -924,10 +924,10 @@ index 0000000000000000000000000000000000000000..52274c1bb387ae8e42f3c7078328d99f
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 0db00322ebf600245bf9311e547c8c743a60a173..0215f1f967072248242437f7ec2a34ef3c89b15f 100644
+index 8ee622108cebff2bba8a44fb255a3b6c03ed0220..3f258f39278b56151a1b306c2bb21c0b2c53de3f 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1569,7 +1569,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1579,7 +1579,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      }
  
      public String getServerModName() {
@@ -1007,7 +1007,7 @@ index 03b8d67a5f0088c0254b2099f27e8dcae32a6221..13e8e14a2161ade859b807f9d822ef6a
              world.worldDataServer.setDifficulty(config.difficulty);
              world.setSpawnFlags(config.spawnMonsters, config.spawnAnimals);
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 23389d0a0e7bd8aeb2f1ab0ea6a149ef99e800fb..2abb23d34ba7b133e2b33bd5812a8feccae3c309 100644
+index 154f3a6a3d37b94c40cb29c305e3aa5fb494850c..8037bce08eccb2eec8b931dec774868a77addb95 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -141,6 +141,14 @@ public class Main {
