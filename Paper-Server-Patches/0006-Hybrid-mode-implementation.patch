@@ -164,7 +164,7 @@ index f86f430598026a3a7e27fb8d40cfc5fe7b9b845d..babe02b782bacf7078ab2918557b3dd8
  public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 3f258f39278b56151a1b306c2bb21c0b2c53de3f..a84151ad941902b1c5e5c18280996951ddff9f49 100644
+index 58e2ed0b8560c90c9d917351cfd58cbea85b522f..55ea2d5b9ce14c74009412779c3db9f7f7cbbb90 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1431,6 +1431,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
@@ -187,7 +187,7 @@ index 3f258f39278b56151a1b306c2bb21c0b2c53de3f..a84151ad941902b1c5e5c18280996951
          // Run tasks that are waiting on processing
          MinecraftTimings.processQueueTimer.startTiming(); // Spigot
 diff --git a/src/main/java/net/minecraft/server/level/EntityPlayer.java b/src/main/java/net/minecraft/server/level/EntityPlayer.java
-index 37c9b5fd712e30a9a0faccc840f738f4b2cfc723..9a157781dd036f74dafe16cee6a93265d355ffcf 100644
+index 1161605d9f4f9727282ac3677a916a9ebdb1263b..a3788689151adc5428b7efbfcfb77e425ad8b8a8 100644
 --- a/src/main/java/net/minecraft/server/level/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/EntityPlayer.java
 @@ -162,6 +162,8 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -213,7 +213,7 @@ index 37c9b5fd712e30a9a0faccc840f738f4b2cfc723..9a157781dd036f74dafe16cee6a93265
  
              if (this.ticksLived % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/PlayerConnection.java b/src/main/java/net/minecraft/server/network/PlayerConnection.java
-index 3596695841a06d3bb0db35cd0631272621e4cedf..a71ddec0ad22f4434d91f6b1bba7be8071b57089 100644
+index f18347c38310e856298ab4fee32b06e3f9dd3947..5451bb1b34efc5d1c54ab10ae898129458ad22f4 100644
 --- a/src/main/java/net/minecraft/server/network/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/network/PlayerConnection.java
 @@ -13,6 +13,8 @@ import io.netty.util.concurrent.Future;
@@ -225,7 +225,7 @@ index 3596695841a06d3bb0db35cd0631272621e4cedf..a71ddec0ad22f4434d91f6b1bba7be80
  import java.util.Collections;
  import java.util.Iterator;
  import java.util.List;
-@@ -1344,6 +1346,13 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1360,6 +1362,13 @@ public class PlayerConnection implements PacketListenerPlayIn {
                              }
                              // Paper end
  
@@ -239,7 +239,7 @@ index 3596695841a06d3bb0db35cd0631272621e4cedf..a71ddec0ad22f4434d91f6b1bba7be80
                              if (!this.player.H() && (!this.player.getWorldServer().getGameRules().getBoolean(GameRules.DISABLE_ELYTRA_MOVEMENT_CHECK) || !this.player.isGliding())) {
                                  float f2 = this.player.isGliding() ? 300.0F : 100.0F;
  
-@@ -1618,6 +1627,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1634,6 +1643,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
  
          switch (packetplayinblockdig_enumplayerdigtype) {
              case SWAP_ITEM_WITH_OFFHAND:
@@ -248,7 +248,7 @@ index 3596695841a06d3bb0db35cd0631272621e4cedf..a71ddec0ad22f4434d91f6b1bba7be80
                  if (!this.player.isSpectator()) {
                      ItemStack itemstack = this.player.b(EnumHand.OFF_HAND);
  
-@@ -1645,6 +1656,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1661,6 +1672,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
  
                  return;
              case DROP_ITEM:
@@ -257,7 +257,7 @@ index 3596695841a06d3bb0db35cd0631272621e4cedf..a71ddec0ad22f4434d91f6b1bba7be80
                  if (!this.player.isSpectator()) {
                      // limit how quickly items can be dropped
                      // If the ticks aren't the same then the count starts from 0 and we update the lastDropTick.
-@@ -1666,12 +1679,16 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1682,12 +1695,16 @@ public class PlayerConnection implements PacketListenerPlayIn {
  
                  return;
              case DROP_ALL_ITEMS:
@@ -274,7 +274,7 @@ index 3596695841a06d3bb0db35cd0631272621e4cedf..a71ddec0ad22f4434d91f6b1bba7be80
                  this.player.releaseActiveItem();
                  return;
              case START_DESTROY_BLOCK:
-@@ -2027,6 +2044,11 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -2044,6 +2061,11 @@ public class PlayerConnection implements PacketListenerPlayIn {
                  }
              }
  
@@ -286,7 +286,7 @@ index 3596695841a06d3bb0db35cd0631272621e4cedf..a71ddec0ad22f4434d91f6b1bba7be80
              // CraftBukkit start
              if (isSync) {
                  try {
-@@ -3064,6 +3086,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -3092,6 +3114,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
      // CraftBukkit start
      private static final MinecraftKey CUSTOM_REGISTER = new MinecraftKey("register");
      private static final MinecraftKey CUSTOM_UNREGISTER = new MinecraftKey("unregister");
@@ -294,7 +294,7 @@ index 3596695841a06d3bb0db35cd0631272621e4cedf..a71ddec0ad22f4434d91f6b1bba7be80
  
      private static final MinecraftKey MINECRAFT_BRAND = new MinecraftKey("brand"); // Paper - Brand support
  
-@@ -3090,6 +3113,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -3118,6 +3141,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
                  PlayerConnection.LOGGER.error("Couldn\'t unregister custom payload", ex);
                  this.disconnect("Invalid payload UNREGISTER!");
              }
@@ -409,7 +409,7 @@ index 91c1680d32a0cf95d824ec0994a77f2899ad9d6a..a79207847a76a6a3dde95bc3ccae0888
      public int getPlayerCount() {
          return this.players.size();
 diff --git a/src/main/java/net/minecraft/world/entity/EntityLiving.java b/src/main/java/net/minecraft/world/entity/EntityLiving.java
-index 21341eeb8148be119fbc1dd370c1beaf70a319e0..50e98989281698cf855feb57823c332da12c75ce 100644
+index 2537c9fcf155253da53ada3829c3caca765f35f4..c3c776d722e691126af881d62bc7bfd49eea5704 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityLiving.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityLiving.java
 @@ -1021,9 +1021,11 @@ public abstract class EntityLiving extends Entity {
@@ -452,7 +452,7 @@ index 21341eeb8148be119fbc1dd370c1beaf70a319e0..50e98989281698cf855feb57823c332d
  
          return (MobEffect) this.effects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
-index ec0956a98c133bcd3d4f92f696c667eab6ff98f1..a644511d6767e161a6d0206cd519a931999ee2f8 100644
+index 3a13e7a050db7f5c93d810afe56325495cec7aa4..554c6e1b94c5043305c69b09ef3c62e080e3a420 100644
 --- a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
 +++ b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
 @@ -114,11 +114,15 @@ import net.minecraft.world.scores.ScoreboardTeam;
@@ -482,19 +482,19 @@ index ec0956a98c133bcd3d4f92f696c667eab6ff98f1..a644511d6767e161a6d0206cd519a931
      public EntityHuman(World world, BlockPosition blockposition, float f, GameProfile gameprofile) {
          super(EntityTypes.PLAYER, world);
          this.bL = ItemStack.b;
-@@ -680,10 +688,7 @@ public abstract class EntityHuman extends EntityLiving {
+@@ -692,10 +700,7 @@ public abstract class EntityHuman extends EntityLiving {
              Player player = (Player) this.getBukkitEntity();
              Item drop = (Item) entityitem.getBukkitEntity();
  
 -            PlayerDropItemEvent event = new PlayerDropItemEvent(player, drop);
 -            this.world.getServer().getPluginManager().callEvent(event);
 -
--            if (event.isCancelled()) {
-+            if (hybridCall(new PlayerDropItemEvent(player, drop))) {
+-            if (event.isCancelled() && !alwaysSucceed) { // Paper - Fix duplicating /give items on item drop cancel
++            if (hybridCall(new PlayerDropItemEvent(player, drop)) && !alwaysSucceed) { // Paper - Fix duplicating /give items on item drop cancel
                  org.bukkit.inventory.ItemStack cur = player.getInventory().getItemInHand();
                  if (flag1 && (cur == null || cur.getAmount() == 0)) {
                      // The complete stack was dropped
-@@ -710,6 +715,14 @@ public abstract class EntityHuman extends EntityLiving {
+@@ -722,6 +727,14 @@ public abstract class EntityHuman extends EntityLiving {
          }
      }
  

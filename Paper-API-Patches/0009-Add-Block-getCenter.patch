@@ -5,7 +5,7 @@ Subject: [PATCH] Add Block#getCenter
 
 
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index 85ff6ce3bf75ab78f066a508d130def5913fff0e..e2cd15ea53778fe1c855c8e04a55b273db644d50 100644
+index 08e6f1741685f54506c8a4ff29bbd30f62cf8e45..b5b9cd84bdab37c7458efb5089c646ec35aadad6 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
 @@ -237,6 +237,13 @@ public interface Block extends Metadatable {

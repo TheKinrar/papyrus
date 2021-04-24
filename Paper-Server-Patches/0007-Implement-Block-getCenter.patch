@@ -5,7 +5,7 @@ Subject: [PATCH] Implement Block#getCenter
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-index eeeaadbd3aa290fc916f0d465f10cad0687b900d..5113e7600f04f5e624ca0c2c2de9dbf48be53afc 100644
+index 0006b3cad5fe46e50b0efeae99102f9d80276d61..345ef2575ca4e55b77259e44333da630d66b8320 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 @@ -97,6 +97,11 @@ public class CraftBlock implements Block {

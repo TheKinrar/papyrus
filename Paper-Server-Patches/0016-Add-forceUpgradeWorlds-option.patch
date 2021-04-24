@@ -5,7 +5,7 @@ Subject: [PATCH] Add forceUpgradeWorlds option
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 401e013989d75c8ae9c8a2212c33b53c70ad1b77..b11de6ebe7077cc4cb69c49d365557da941157b7 100644
+index 8c8dce403712f07666d258dddffb2c5ca0f1f7a5..496eba2644437088eb315925eec5879f8ec7a719 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -155,6 +155,7 @@ import net.minecraft.world.phys.Vec3D;

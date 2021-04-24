@@ -5,7 +5,7 @@ Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
 
 
 diff --git a/src/main/java/net/minecraft/server/level/PlayerInteractManager.java b/src/main/java/net/minecraft/server/level/PlayerInteractManager.java
-index 1511cf54fea53577a2808b5d84417eee834db984..7780fdcecffef89372255694946ae66bd9ebb1c6 100644
+index 4203081692d2e4c43abc47aeb85f42b09acb7eee..a5db166a21c0657538280c7b68e7937b5687f525 100644
 --- a/src/main/java/net/minecraft/server/level/PlayerInteractManager.java
 +++ b/src/main/java/net/minecraft/server/level/PlayerInteractManager.java
 @@ -387,7 +387,7 @@ public class PlayerInteractManager {

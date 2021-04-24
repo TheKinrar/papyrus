@@ -6,7 +6,7 @@ Subject: [PATCH] Case-insensitive command matching for command blocks
 (Which matches the behaviour for players and console)
 
 diff --git a/src/main/java/net/minecraft/commands/CommandDispatcher.java b/src/main/java/net/minecraft/commands/CommandDispatcher.java
-index a70e0761aeddee8fafff971b5cbd0422ab560fb5..692bfbf681aada708587b25aea04d77ef27a2ad6 100644
+index 988d1c9e9f4f29325043eb083123d12dd5f8081d..91a1e2ff46685d52cf15487bf2466bb52ad7aa2e 100644
 --- a/src/main/java/net/minecraft/commands/CommandDispatcher.java
 +++ b/src/main/java/net/minecraft/commands/CommandDispatcher.java
 @@ -224,6 +224,7 @@ public class CommandDispatcher {

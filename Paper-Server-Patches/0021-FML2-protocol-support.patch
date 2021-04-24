@@ -84,10 +84,10 @@ index b9e36a83837913cd3e5abe598f695ba7a9ffc417..cfc02997663917ddd4afd1b1d6775189
          }
      }
 diff --git a/src/main/java/net/minecraft/server/network/HandshakeListener.java b/src/main/java/net/minecraft/server/network/HandshakeListener.java
-index b97d289afdff81d9959e238639f4e3e186f8e9c8..0eb1fbfc8aa3e16df2cbfec8b970ffcd790bfa16 100644
+index 423696df365ceb20b673a87714b753d7b3b7a3af..24a820c5757b263e4edae544650466beb30e341f 100644
 --- a/src/main/java/net/minecraft/server/network/HandshakeListener.java
 +++ b/src/main/java/net/minecraft/server/network/HandshakeListener.java
-@@ -148,6 +148,7 @@ public class HandshakeListener implements PacketHandshakingInListener {
+@@ -160,6 +160,7 @@ public class HandshakeListener implements PacketHandshakingInListener {
          // Paper start - NetworkClient implementation
          this.getNetworkManager().protocolVersion = packethandshakinginsetprotocol.getProtocolVersion();
          this.getNetworkManager().virtualHost = com.destroystokyo.paper.network.PaperNetworkClient.prepareVirtualHost(packethandshakinginsetprotocol.hostname, packethandshakinginsetprotocol.port);

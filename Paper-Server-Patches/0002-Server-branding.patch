@@ -5,7 +5,7 @@ Subject: [PATCH] Server branding
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index c56e7fb18f9a56c8025eb70a524f028b5942da37..d63d8564d6f1bed0812d153987b4d8a516d40c7c 100644
+index efc1e42d606e1c9feb1a4871c0714933ae92a1b2..50d3a6b019503c817ad7f22eca8af44ae45a4e6a 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -97,7 +97,7 @@ public class PaperConfig {
@@ -924,7 +924,7 @@ index 0000000000000000000000000000000000000000..52274c1bb387ae8e42f3c7078328d99f
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 8ee622108cebff2bba8a44fb255a3b6c03ed0220..3f258f39278b56151a1b306c2bb21c0b2c53de3f 100644
+index 61712ae515b329a6b85dbe2e5960e4e864dc7731..58e2ed0b8560c90c9d917351cfd58cbea85b522f 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1579,7 +1579,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas

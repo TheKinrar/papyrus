@@ -5,7 +5,7 @@ Subject: [PATCH] Implement CommandBlockEditEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/network/PlayerConnection.java b/src/main/java/net/minecraft/server/network/PlayerConnection.java
-index e6ea84ba098b4d77bc68e99862992a10ef4585b5..3596695841a06d3bb0db35cd0631272621e4cedf 100644
+index b543776da3b799643893984a8c6f29477ed78d4a..f18347c38310e856298ab4fee32b06e3f9dd3947 100644
 --- a/src/main/java/net/minecraft/server/network/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/network/PlayerConnection.java
 @@ -1,6 +1,8 @@
@@ -34,29 +34,9 @@ index e6ea84ba098b4d77bc68e99862992a10ef4585b5..3596695841a06d3bb0db35cd06312726
  import org.bukkit.event.block.SignChangeEvent;
  import org.bukkit.event.inventory.ClickType;
  import org.bukkit.event.inventory.CraftItemEvent;
-@@ -198,27 +203,19 @@ import org.bukkit.event.inventory.InventoryClickEvent;
- import org.bukkit.event.inventory.InventoryCloseEvent; // Paper
- import org.bukkit.event.inventory.InventoryCreativeEvent;
- import org.bukkit.event.inventory.InventoryType.SlotType;
--import org.bukkit.event.player.AsyncPlayerChatEvent;
--import org.bukkit.event.player.PlayerAnimationEvent;
--import org.bukkit.event.player.PlayerChatEvent;
--import org.bukkit.event.player.PlayerCommandPreprocessEvent;
--import org.bukkit.event.player.PlayerInteractAtEntityEvent;
--import org.bukkit.event.player.PlayerInteractEntityEvent;
--import org.bukkit.event.player.PlayerItemHeldEvent;
--import org.bukkit.event.player.PlayerKickEvent;
--import org.bukkit.event.player.PlayerMoveEvent;
--import org.bukkit.event.player.PlayerResourcePackStatusEvent;
--import org.bukkit.event.player.PlayerSwapHandItemsEvent;
--import org.bukkit.event.player.PlayerTeleportEvent;
--import org.bukkit.event.player.PlayerToggleFlightEvent;
--import org.bukkit.event.player.PlayerToggleSneakEvent;
--import org.bukkit.event.player.PlayerToggleSprintEvent;
-+import org.bukkit.event.player.*;
- import org.bukkit.inventory.CraftingInventory;
- import org.bukkit.inventory.EquipmentSlot;
+@@ -219,8 +224,14 @@ import org.bukkit.inventory.EquipmentSlot;
  import org.bukkit.inventory.InventoryView;
+ import org.bukkit.inventory.SmithingInventory;
  import org.bukkit.util.NumberConversions;
 -import co.aikar.timings.MinecraftTimings; // Paper
 -// CraftBukkit end
@@ -71,7 +51,7 @@ index e6ea84ba098b4d77bc68e99862992a10ef4585b5..3596695841a06d3bb0db35cd06312726
  
  public class PlayerConnection implements PacketListenerPlayIn {
  
-@@ -809,63 +806,117 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -811,63 +822,117 @@ public class PlayerConnection implements PacketListenerPlayIn {
      @Override
      public void a(PacketPlayInSetCommandBlock packetplayinsetcommandblock) {
          PlayerConnectionUtils.ensureMainThread(packetplayinsetcommandblock, this, this.player.getWorldServer());
