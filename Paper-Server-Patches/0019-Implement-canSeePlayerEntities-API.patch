@@ -166,10 +166,10 @@ index 265602ae30763f0df46144c6b840ba84836341f1..9cf7d9db611323756aafce358d6d496b
      public Map<String, Object> serialize() {
          Map<String, Object> result = new LinkedHashMap<String, Object>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 5ccb1ab265748ee7502eed34cb29fadef89ac49a..294540b3098885641ed8b2db673a0059f8cf7dd2 100644
+index f82318cbdcfbdcfb877929a25017f8ab19201e28..bb4e6a5ff9632167364bc412cad4d8e6717f7ce1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1303,7 +1303,7 @@ public class CraftEventFactory {
+@@ -1317,7 +1317,7 @@ public class CraftEventFactory {
          com.destroystokyo.paper.event.entity.ProjectileCollideEvent event = new com.destroystokyo.paper.event.entity.ProjectileCollideEvent(projectile, collided);
  
          if (projectile.getShooter() instanceof Player && collided instanceof Player) {

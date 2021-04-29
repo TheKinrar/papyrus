@@ -20,10 +20,10 @@ index 52274c1bb387ae8e42f3c7078328d99f5e7df1df..4cdcd51049703e12978588736fea3b92
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index a79207847a76a6a3dde95bc3ccae0888ea28e0bd..e8d9751b9f10b57f07e3d90d4786b9f792c4d7e9 100644
+index 251227402a6135de754afbaadd665a1ba6a605a1..e54f14ea90f28c71c5355840f3bce967d2971566 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -917,7 +917,9 @@ public abstract class PlayerList {
+@@ -919,7 +919,9 @@ public abstract class PlayerList {
                      isBedSpawn = true;
                      location = new Location(worldserver1.getWorld(), vec3d.x, vec3d.y, vec3d.z, f1, 0.0F);
                  } else if (blockposition != null) {

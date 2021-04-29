@@ -314,7 +314,7 @@ index f18347c38310e856298ab4fee32b06e3f9dd3947..5451bb1b34efc5d1c54ab10ae8981294
              try {
                  byte[] data = new byte[packetplayincustompayload.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 91c1680d32a0cf95d824ec0994a77f2899ad9d6a..a79207847a76a6a3dde95bc3ccae0888ea28e0bd 100644
+index 2ba8add1afae4e1b550ecbdad46874a3aa4d7951..251227402a6135de754afbaadd665a1ba6a605a1 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
@@ -373,7 +373,7 @@ index 91c1680d32a0cf95d824ec0994a77f2899ad9d6a..a79207847a76a6a3dde95bc3ccae0888
          this.d(entityplayer);
          entityplayer.getStatisticManager().c();
          entityplayer.getRecipeBook().a(entityplayer);
-@@ -1310,17 +1320,32 @@ public abstract class PlayerList {
+@@ -1312,17 +1322,32 @@ public abstract class PlayerList {
      }
  
      public void updateClient(EntityPlayer entityplayer) {
@@ -452,7 +452,7 @@ index 2537c9fcf155253da53ada3829c3caca765f35f4..c3c776d722e691126af881d62bc7bfd4
  
          return (MobEffect) this.effects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
-index 3a13e7a050db7f5c93d810afe56325495cec7aa4..554c6e1b94c5043305c69b09ef3c62e080e3a420 100644
+index c39c50e53549e9cb9d3520bc7e8b7e89cfa20163..3c8c48dad244e955712af9eced2c9b4a0e2e57da 100644
 --- a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
 +++ b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
 @@ -114,11 +114,15 @@ import net.minecraft.world.scores.ScoreboardTeam;
@@ -679,10 +679,10 @@ index 4283b092f963d1dcf5e0ed472286663ad98f41bd..265602ae30763f0df46144c6b840ba84
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 9084aa4b7c0059c995a3d1a89188379b52c9d620..5ccb1ab265748ee7502eed34cb29fadef89ac49a 100644
+index ac89b7f0de0e5015c599648dc93cbcae760744f2..f82318cbdcfbdcfb877929a25017f8ab19201e28 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -528,7 +528,12 @@ public class CraftEventFactory {
+@@ -542,7 +542,12 @@ public class CraftEventFactory {
          if (cancelledBlock) {
              event.setUseInteractedBlock(Event.Result.DENY);
          }

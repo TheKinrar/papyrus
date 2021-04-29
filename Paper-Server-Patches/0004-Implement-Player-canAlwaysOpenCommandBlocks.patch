@@ -5,10 +5,10 @@ Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
 
 
 diff --git a/src/main/java/net/minecraft/server/level/PlayerInteractManager.java b/src/main/java/net/minecraft/server/level/PlayerInteractManager.java
-index 4203081692d2e4c43abc47aeb85f42b09acb7eee..a5db166a21c0657538280c7b68e7937b5687f525 100644
+index 87722285690d9d3370610e2a2eb809e0d1f497c9..6880ff68e8c807aadfdb94869d11a46cd4ba63f8 100644
 --- a/src/main/java/net/minecraft/server/level/PlayerInteractManager.java
 +++ b/src/main/java/net/minecraft/server/level/PlayerInteractManager.java
-@@ -387,7 +387,7 @@ public class PlayerInteractManager {
+@@ -388,7 +388,7 @@ public class PlayerInteractManager {
              TileEntity tileentity = this.world.getTileEntity(blockposition);
              Block block = iblockdata.getBlock();
  
@@ -18,10 +18,10 @@ index 4203081692d2e4c43abc47aeb85f42b09acb7eee..a5db166a21c0657538280c7b68e7937b
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 2df8e914f66176e22aeddf8b94a83af5ea921d88..91c1680d32a0cf95d824ec0994a77f2899ad9d6a 100644
+index f8f0212497ad4fbb1273820a06a4ae6721053b8e..2ba8add1afae4e1b550ecbdad46874a3aa4d7951 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1014,6 +1014,9 @@ public abstract class PlayerList {
+@@ -1016,6 +1016,9 @@ public abstract class PlayerList {
          GameProfile gameprofile = entityplayer.getProfile();
          int i = this.server.b(gameprofile);
  

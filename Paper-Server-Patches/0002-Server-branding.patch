@@ -937,7 +937,7 @@ index 61712ae515b329a6b85dbe2e5960e4e864dc7731..58e2ed0b8560c90c9d917351cfd58cbe
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 52bb528e75eb43156ee2bf19877bc051a35bb6e3..11ea2d25723bdaa8409d619103e61de3566efca1 100644
+index df8270c40ed7ce6f628686ff6f4fa4cf96af6738..385b969c589b98ef21370d87370580fa6f1fec64 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -7,6 +7,7 @@ import com.mojang.authlib.GameProfileRepository;
@@ -948,9 +948,9 @@ index 52bb528e75eb43156ee2bf19877bc051a35bb6e3..11ea2d25723bdaa8409d619103e61de3
  import java.io.IOException;
  import java.io.InputStreamReader;
  import java.net.InetAddress;
-@@ -214,6 +215,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
-         com.destroystokyo.paper.PaperConfig.registerCommands();
+@@ -215,6 +216,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
          com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // load version history now
+         io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
 +        // Papyrus start
 +        try {
