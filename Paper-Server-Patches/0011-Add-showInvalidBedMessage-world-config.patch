@@ -20,7 +20,7 @@ index 52274c1bb387ae8e42f3c7078328d99f5e7df1df..4cdcd51049703e12978588736fea3b92
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 251227402a6135de754afbaadd665a1ba6a605a1..e54f14ea90f28c71c5355840f3bce967d2971566 100644
+index 74cec15774dcfce42fb9c9c4c23bf9c40c57a6e6..8f911d7d2b9d2196fd34ba9a17cbc2c2a69e8913 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -919,7 +919,9 @@ public abstract class PlayerList {

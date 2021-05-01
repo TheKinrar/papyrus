@@ -18,7 +18,7 @@ index 87722285690d9d3370610e2a2eb809e0d1f497c9..6880ff68e8c807aadfdb94869d11a46c
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index f8f0212497ad4fbb1273820a06a4ae6721053b8e..2ba8add1afae4e1b550ecbdad46874a3aa4d7951 100644
+index 6bfa8020c19721dd63e038e4b866a7d3a24e66ac..dae16e3bedc1994ae424d2b20fa404404cc41742 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1016,6 +1016,9 @@ public abstract class PlayerList {
