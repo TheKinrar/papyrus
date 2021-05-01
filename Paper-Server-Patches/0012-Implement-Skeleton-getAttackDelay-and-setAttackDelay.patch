@@ -6,7 +6,7 @@ Subject: [PATCH] Implement Skeleton#getAttackDelay and setAttackDelay
 
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalBowShoot.java b/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalBowShoot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..d98bf2dbd418a34978270ac00ce12094d67bfa8b
+index 0000000000000000000000000000000000000000..cb3a9fff6f7d0b138d78382422e2ac5e503944d8
 --- /dev/null
 +++ b/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalBowShoot.java
 @@ -0,0 +1,137 @@
@@ -132,7 +132,7 @@ index 0000000000000000000000000000000000000000..d98bf2dbd418a34978270ac00ce12094
 +                if (!flag && this.f < -60) {
 +                    this.a.clearActiveItem();
 +                } else if (flag) {
-+                    int i = this.a.dZ();
++                    int i = this.a.ea();
 +
 +                    if (i >= 20) {
 +                        this.a.clearActiveItem();
@@ -141,7 +141,7 @@ index 0000000000000000000000000000000000000000..d98bf2dbd418a34978270ac00ce12094
 +                    }
 +                }
 +            } else if (--this.e <= 0 && this.f >= -60) {
-+                this.a.c(ProjectileHelper.a(this.a, Items.BOW));
++                this.a.c(ProjectileHelper.a((EntityLiving) this.a, Items.BOW));
 +            }
 +
 +        }
