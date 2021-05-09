@@ -53,7 +53,7 @@ index 8c8dce403712f07666d258dddffb2c5ca0f1f7a5..496eba2644437088eb315925eec5879f
  
              IWorldDataServer iworlddataserver = worlddata;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 82a9e1547c5360fcb3b6f6cdf7ba15c1d5cb4005..fcb998af232dbfd6840a34d112fac2a20a06d955 100644
+index 034e60e5255877fe3f781481b28423f8efe88213..c23b5577c293cd014f25e2bb3f7679adef44fb4c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -108,6 +108,7 @@ import net.minecraft.world.level.storage.WorldNBTStorage;

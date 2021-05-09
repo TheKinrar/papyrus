@@ -213,7 +213,7 @@ index 1161605d9f4f9727282ac3677a916a9ebdb1263b..a3788689151adc5428b7efbfcfb77e42
  
              if (this.ticksLived % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/PlayerConnection.java b/src/main/java/net/minecraft/server/network/PlayerConnection.java
-index efe00dbd7d8b6041f43b45e858fcedb5ec73caef..350a4169dc21811b08ae3f444640408d8e29fae1 100644
+index 227012eee9afde0aab138343f38f7cb83400021e..14a8c0848dba0aecd6aa929e257e6a349b6e6597 100644
 --- a/src/main/java/net/minecraft/server/network/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/network/PlayerConnection.java
 @@ -13,6 +13,8 @@ import io.netty.util.concurrent.Future;
@@ -225,7 +225,7 @@ index efe00dbd7d8b6041f43b45e858fcedb5ec73caef..350a4169dc21811b08ae3f444640408d
  import java.util.Collections;
  import java.util.Iterator;
  import java.util.List;
-@@ -1360,6 +1362,13 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1365,6 +1367,13 @@ public class PlayerConnection implements PacketListenerPlayIn {
                              }
                              // Paper end
  
@@ -239,7 +239,7 @@ index efe00dbd7d8b6041f43b45e858fcedb5ec73caef..350a4169dc21811b08ae3f444640408d
                              if (!this.player.H() && (!this.player.getWorldServer().getGameRules().getBoolean(GameRules.DISABLE_ELYTRA_MOVEMENT_CHECK) || !this.player.isGliding())) {
                                  float f2 = this.player.isGliding() ? 300.0F : 100.0F;
  
-@@ -1634,6 +1643,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1639,6 +1648,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
  
          switch (packetplayinblockdig_enumplayerdigtype) {
              case SWAP_ITEM_WITH_OFFHAND:
@@ -248,7 +248,7 @@ index efe00dbd7d8b6041f43b45e858fcedb5ec73caef..350a4169dc21811b08ae3f444640408d
                  if (!this.player.isSpectator()) {
                      ItemStack itemstack = this.player.b(EnumHand.OFF_HAND);
  
-@@ -1661,6 +1672,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1666,6 +1677,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
  
                  return;
              case DROP_ITEM:
@@ -257,7 +257,7 @@ index efe00dbd7d8b6041f43b45e858fcedb5ec73caef..350a4169dc21811b08ae3f444640408d
                  if (!this.player.isSpectator()) {
                      // limit how quickly items can be dropped
                      // If the ticks aren't the same then the count starts from 0 and we update the lastDropTick.
-@@ -1682,12 +1695,16 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1687,12 +1700,16 @@ public class PlayerConnection implements PacketListenerPlayIn {
  
                  return;
              case DROP_ALL_ITEMS:
@@ -274,7 +274,7 @@ index efe00dbd7d8b6041f43b45e858fcedb5ec73caef..350a4169dc21811b08ae3f444640408d
                  this.player.releaseActiveItem();
                  return;
              case START_DESTROY_BLOCK:
-@@ -2044,6 +2061,11 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -2049,6 +2066,11 @@ public class PlayerConnection implements PacketListenerPlayIn {
                  }
              }
  
@@ -286,7 +286,7 @@ index efe00dbd7d8b6041f43b45e858fcedb5ec73caef..350a4169dc21811b08ae3f444640408d
              // CraftBukkit start
              if (isSync) {
                  try {
-@@ -3092,6 +3114,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -3097,6 +3119,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
      // CraftBukkit start
      private static final MinecraftKey CUSTOM_REGISTER = new MinecraftKey("register");
      private static final MinecraftKey CUSTOM_UNREGISTER = new MinecraftKey("unregister");
@@ -294,7 +294,7 @@ index efe00dbd7d8b6041f43b45e858fcedb5ec73caef..350a4169dc21811b08ae3f444640408d
  
      private static final MinecraftKey MINECRAFT_BRAND = new MinecraftKey("brand"); // Paper - Brand support
  
-@@ -3118,6 +3141,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -3123,6 +3146,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
                  PlayerConnection.LOGGER.error("Couldn\'t unregister custom payload", ex);
                  this.disconnect("Invalid payload UNREGISTER!");
              }
@@ -314,7 +314,7 @@ index efe00dbd7d8b6041f43b45e858fcedb5ec73caef..350a4169dc21811b08ae3f444640408d
              try {
                  byte[] data = new byte[packetplayincustompayload.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index dae16e3bedc1994ae424d2b20fa404404cc41742..74cec15774dcfce42fb9c9c4c23bf9c40c57a6e6 100644
+index ed643dcb6f10ecc5a0f6b23bf89ab7abd75b8546..94997fccdd2b46e026c2791d49dc6ebbb8782eca 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
@@ -373,7 +373,7 @@ index dae16e3bedc1994ae424d2b20fa404404cc41742..74cec15774dcfce42fb9c9c4c23bf9c4
          this.d(entityplayer);
          entityplayer.getStatisticManager().c();
          entityplayer.getRecipeBook().a(entityplayer);
-@@ -1312,17 +1322,32 @@ public abstract class PlayerList {
+@@ -1318,17 +1328,32 @@ public abstract class PlayerList {
      }
  
      public void updateClient(EntityPlayer entityplayer) {
@@ -510,7 +510,7 @@ index c39c50e53549e9cb9d3520bc7e8b7e89cfa20163..3c8c48dad244e955712af9eced2c9b4a
          float f = this.inventory.a(iblockdata);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 13e8e14a2161ade859b807f9d822ef6a2392b6c3..dd57fb59276ebbdcbca8686aa472f578e4c264ae 100644
+index e8fce2bc75cc31ab6a2516fb9ac8e0aa6dfdd7e6..00b23e8cc4a20bf02aad9b556459b9847e23196b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1,5 +1,6 @@
@@ -553,7 +553,7 @@ index 13e8e14a2161ade859b807f9d822ef6a2392b6c3..dd57fb59276ebbdcbca8686aa472f578
          overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
          ignoreVanillaPermissions = commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2493,4 +2499,24 @@ public final class CraftServer implements Server {
+@@ -2492,4 +2498,24 @@ public final class CraftServer implements Server {
          return mobGoals;
      }
      // Paper end
