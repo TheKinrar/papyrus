@@ -164,10 +164,10 @@ index f86f430598026a3a7e27fb8d40cfc5fe7b9b845d..babe02b782bacf7078ab2918557b3dd8
  public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 58e2ed0b8560c90c9d917351cfd58cbea85b522f..55ea2d5b9ce14c74009412779c3db9f7f7cbbb90 100644
+index db3b6be8d93bc5e46e6ff516033f89deae531319..7dc8779b7f4cae20a386bce7f66baed67d0c2436 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1431,6 +1431,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1432,6 +1432,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.methodProfiler.exitEnter("levels");
          Iterator iterator = this.getWorlds().iterator();
  
@@ -187,19 +187,19 @@ index 58e2ed0b8560c90c9d917351cfd58cbea85b522f..55ea2d5b9ce14c74009412779c3db9f7
          // Run tasks that are waiting on processing
          MinecraftTimings.processQueueTimer.startTiming(); // Spigot
 diff --git a/src/main/java/net/minecraft/server/level/EntityPlayer.java b/src/main/java/net/minecraft/server/level/EntityPlayer.java
-index 1161605d9f4f9727282ac3677a916a9ebdb1263b..a3788689151adc5428b7efbfcfb77e425ad8b8a8 100644
+index 8683d6ddc5d8ce4a302fa6e2665b7dcd64f6a00a..01094d96e9ec1c9006636b970fb3f487ce318a6e 100644
 --- a/src/main/java/net/minecraft/server/level/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/EntityPlayer.java
-@@ -162,6 +162,8 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
- import org.bukkit.craftbukkit.event.CraftEventFactory;
+@@ -163,6 +163,8 @@ import org.bukkit.craftbukkit.event.CraftEventFactory;
  import org.bukkit.craftbukkit.event.CraftPortalEvent;
  import org.bukkit.craftbukkit.inventory.CraftItemStack;
+ import org.bukkit.craftbukkit.util.CraftDimensionUtil;
 +import org.bukkit.event.Cancellable;
 +import org.bukkit.event.Event;
  import org.bukkit.event.inventory.InventoryType;
  import org.bukkit.event.player.PlayerBedLeaveEvent;
  import org.bukkit.event.player.PlayerChangedMainHandEvent;
-@@ -706,7 +708,12 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -707,7 +709,12 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
  
              if (this.expTotal != this.lastSentExp) {
                  this.lastSentExp = this.expTotal;
@@ -314,7 +314,7 @@ index 227012eee9afde0aab138343f38f7cb83400021e..14a8c0848dba0aecd6aa929e257e6a34
              try {
                  byte[] data = new byte[packetplayincustompayload.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index ed643dcb6f10ecc5a0f6b23bf89ab7abd75b8546..94997fccdd2b46e026c2791d49dc6ebbb8782eca 100644
+index 7d0e3a35e45c08480a722b66533e2754e48d5cf5..3dec1c6fbfa88a727a616e8a31fe48ac04bbaa2a 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
@@ -510,7 +510,7 @@ index c39c50e53549e9cb9d3520bc7e8b7e89cfa20163..3c8c48dad244e955712af9eced2c9b4a
          float f = this.inventory.a(iblockdata);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index e8fce2bc75cc31ab6a2516fb9ac8e0aa6dfdd7e6..00b23e8cc4a20bf02aad9b556459b9847e23196b 100644
+index ef15d827a95e2eb0fe4b99ac4a07be44daff4548..4f0d93fdd3b2ae46e30b103e2077eb13d0ce0c91 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1,5 +1,6 @@
@@ -529,7 +529,7 @@ index e8fce2bc75cc31ab6a2516fb9ac8e0aa6dfdd7e6..00b23e8cc4a20bf02aad9b556459b984
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufOutputStream;
  import io.netty.buffer.Unpooled;
-@@ -222,6 +225,7 @@ import org.bukkit.potion.PotionEffectType;
+@@ -223,6 +226,7 @@ import org.bukkit.potion.PotionEffectType;
  import org.bukkit.scheduler.BukkitWorker;
  import org.bukkit.util.StringUtil;
  import org.bukkit.util.permissions.DefaultPermissions;
@@ -537,7 +537,7 @@ index e8fce2bc75cc31ab6a2516fb9ac8e0aa6dfdd7e6..00b23e8cc4a20bf02aad9b556459b984
  import org.yaml.snakeyaml.Yaml;
  import org.yaml.snakeyaml.constructor.SafeConstructor;
  import org.yaml.snakeyaml.error.MarkedYAMLException;
-@@ -425,6 +429,7 @@ public final class CraftServer implements Server {
+@@ -428,6 +432,7 @@ public final class CraftServer implements Server {
              commandMap.registerServerAliases();
              DefaultPermissions.registerCorePermissions();
              CraftDefaultPermissions.registerCorePermissions();
@@ -545,7 +545,7 @@ index e8fce2bc75cc31ab6a2516fb9ac8e0aa6dfdd7e6..00b23e8cc4a20bf02aad9b556459b984
              if (!com.destroystokyo.paper.PaperConfig.loadPermsBeforePlugins) loadCustomPermissions(); // Paper
              helpMap.initializeCommands();
              syncCommands();
-@@ -917,6 +922,7 @@ public final class CraftServer implements Server {
+@@ -920,6 +925,7 @@ public final class CraftServer implements Server {
          reloadData();
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
@@ -553,9 +553,9 @@ index e8fce2bc75cc31ab6a2516fb9ac8e0aa6dfdd7e6..00b23e8cc4a20bf02aad9b556459b984
          overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
          ignoreVanillaPermissions = commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2492,4 +2498,24 @@ public final class CraftServer implements Server {
-         return mobGoals;
+@@ -2509,4 +2515,24 @@ public final class CraftServer implements Server {
      }
+ 
      // Paper end
 +
 +    // Papyrus start
@@ -630,7 +630,7 @@ index 3d497f69f89455b88fba423de8effb3db83e7af4..2c789c857eebe17ebc9da2aa44052a84
      public Collection<PotionEffect> getActivePotionEffects() {
          List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 4283b092f963d1dcf5e0ed472286663ad98f41bd..265602ae30763f0df46144c6b840ba84836341f1 100644
+index a7cd42ee4173597e51a48c1a55681f246c6e105d..dbe5a58ccb2c978f3456c216a720af07392c86d3 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
@@ -660,7 +660,7 @@ index 4283b092f963d1dcf5e0ed472286663ad98f41bd..265602ae30763f0df46144c6b840ba84
      public GameProfile getProfile() {
          return getHandle().getProfile();
      }
-@@ -2336,6 +2342,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2339,6 +2345,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
          MinecraftServer.getServer().getPlayerList().d(getHandle());
      }
@@ -679,10 +679,10 @@ index 4283b092f963d1dcf5e0ed472286663ad98f41bd..265602ae30763f0df46144c6b840ba84
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index ac89b7f0de0e5015c599648dc93cbcae760744f2..f82318cbdcfbdcfb877929a25017f8ab19201e28 100644
+index b14cec316b16e46d54d389650372c5c9ce1e5a4d..abb14d16875164efc76b5a198b8500ea0b7a5c7a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -542,7 +542,12 @@ public class CraftEventFactory {
+@@ -543,7 +543,12 @@ public class CraftEventFactory {
          if (cancelledBlock) {
              event.setUseInteractedBlock(Event.Result.DENY);
          }

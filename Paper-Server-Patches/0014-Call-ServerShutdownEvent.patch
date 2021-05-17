@@ -5,10 +5,10 @@ Subject: [PATCH] Call ServerShutdownEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 55ea2d5b9ce14c74009412779c3db9f7f7cbbb90..8c8dce403712f07666d258dddffb2c5ca0f1f7a5 100644
+index 7dc8779b7f4cae20a386bce7f66baed67d0c2436..e52af3f7afff3ae91572680d356014214ac58f2f 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -182,6 +182,8 @@ import co.aikar.timings.MinecraftTimings; // Paper
+@@ -183,6 +183,8 @@ import co.aikar.timings.MinecraftTimings; // Paper
  import org.spigotmc.SlackActivityAccountant; // Spigot
  import io.papermc.paper.util.PaperJvmChecker; // Paper
  import io.papermc.paper.event.server.ServerResourcesReloadedEvent; // Paper
@@ -17,7 +17,7 @@ index 55ea2d5b9ce14c74009412779c3db9f7f7cbbb90..8c8dce403712f07666d258dddffb2c5c
  
  public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTask> implements IMojangStatistics, ICommandListener, AutoCloseable {
  
-@@ -986,6 +988,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -987,6 +989,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.safeShutdown(flag, false);
      }
      public void safeShutdown(boolean flag, boolean isRestarting) {

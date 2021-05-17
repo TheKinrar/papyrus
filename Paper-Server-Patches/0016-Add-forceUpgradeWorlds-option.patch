@@ -5,10 +5,10 @@ Subject: [PATCH] Add forceUpgradeWorlds option
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 8c8dce403712f07666d258dddffb2c5ca0f1f7a5..496eba2644437088eb315925eec5879f8ec7a719 100644
+index e52af3f7afff3ae91572680d356014214ac58f2f..05c2ccf34e7499abe95cc129fa2d5e5b67e23bb9 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -155,6 +155,7 @@ import net.minecraft.world.phys.Vec3D;
+@@ -156,6 +156,7 @@ import net.minecraft.world.phys.Vec3D;
  import net.minecraft.world.scores.PersistentScoreboard;
  import net.minecraft.world.scores.Scoreboard;
  import net.minecraft.world.scores.ScoreboardTeam;
@@ -16,7 +16,7 @@ index 8c8dce403712f07666d258dddffb2c5ca0f1f7a5..496eba2644437088eb315925eec5879f
  import org.apache.commons.lang3.Validate;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
-@@ -285,6 +286,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -286,6 +287,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
  
      public volatile Thread shutdownThread; // Paper
  
@@ -25,7 +25,7 @@ index 8c8dce403712f07666d258dddffb2c5ca0f1f7a5..496eba2644437088eb315925eec5879f
      public static <S extends MinecraftServer> S a(Function<Thread, S> function) {
          AtomicReference<S> atomicreference = new AtomicReference();
          Thread thread = new Thread(() -> {
-@@ -366,6 +369,12 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -367,6 +370,12 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          */
          // Paper end
          Runtime.getRuntime().addShutdownHook(new org.bukkit.craftbukkit.util.ServerShutdownThread(this));
@@ -38,7 +38,7 @@ index 8c8dce403712f07666d258dddffb2c5ca0f1f7a5..496eba2644437088eb315925eec5879f
      }
      // CraftBukkit end
  
-@@ -516,11 +525,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -517,11 +526,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
              }
              worlddata.checkName(name); // CraftBukkit - Migration did not rewrite the level.dat; This forces 1.8 to take the last loaded world as respawn (in this case the end)
              if (options.has("forceUpgrade")) {
@@ -53,10 +53,10 @@ index 8c8dce403712f07666d258dddffb2c5ca0f1f7a5..496eba2644437088eb315925eec5879f
  
              IWorldDataServer iworlddataserver = worlddata;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 034e60e5255877fe3f781481b28423f8efe88213..c23b5577c293cd014f25e2bb3f7679adef44fb4c 100644
+index ba535e1cc74c8ba98c2145ad4600fa533c1e2d29..4e2d679aaa7df0dc4bedbdaacfc11120f282817b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -108,6 +108,7 @@ import net.minecraft.world.level.storage.WorldNBTStorage;
+@@ -109,6 +109,7 @@ import net.minecraft.world.level.storage.WorldNBTStorage;
  import net.minecraft.world.level.storage.loot.LootTableRegistry;
  import net.minecraft.world.phys.Vec3D;
  import org.apache.commons.lang.Validate;
@@ -64,7 +64,7 @@ index 034e60e5255877fe3f781481b28423f8efe88213..c23b5577c293cd014f25e2bb3f7679ad
  import org.apache.commons.lang3.StringUtils;
  import org.bukkit.BanList;
  import org.bukkit.Bukkit;
-@@ -1144,11 +1145,13 @@ public final class CraftServer implements Server {
+@@ -1147,11 +1148,13 @@ public final class CraftServer implements Server {
          worlddata.a(console.getServerModName(), console.getModded().isPresent());
  
          if (console.options.has("forceUpgrade")) {
@@ -79,10 +79,10 @@ index 034e60e5255877fe3f781481b28423f8efe88213..c23b5577c293cd014f25e2bb3f7679ad
  
          long j = BiomeManager.a(creator.seed());
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 8037bce08eccb2eec8b931dec774868a77addb95..2d1cc5e246926b83312570884b71b06d917227fe 100644
+index 9801c2d45d3c75cf878e2c2531281fa721ec684b..54aa1b32fd3417873ea9abcecd98d92e1d69607d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -117,6 +117,13 @@ public class Main {
+@@ -123,6 +123,13 @@ public class Main {
                  acceptsAll(asList("eraseCache"), "Whether to force cache erase during world upgrade");
                  acceptsAll(asList("nogui"), "Disables the graphical console");
  

@@ -386,7 +386,7 @@ index 0000000000000000000000000000000000000000..50e48e8be078bde13bde4b93040ee59e
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index c3971761d1c9218d0acd3f24dac9bde62dbd8643..73df5f3cc9926a0391e2169e588fa68573ede4eb 100644
+index f2df4fc2e02a88584272d9f0f2094e9b16353004..b281065738eb236966719680a736f96ea942df8c 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 @@ -28,6 +28,7 @@ import org.bukkit.event.Event;
@@ -397,15 +397,15 @@ index c3971761d1c9218d0acd3f24dac9bde62dbd8643..73df5f3cc9926a0391e2169e588fa685
  import org.bukkit.event.server.PluginDisableEvent;
  import org.bukkit.event.server.PluginEnableEvent;
  import org.bukkit.plugin.AuthorNagException;
-@@ -38,6 +39,7 @@ import org.bukkit.plugin.Plugin;
- import org.bukkit.plugin.PluginDescriptionFile;
+@@ -39,6 +40,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
  import org.bukkit.plugin.PluginLoader;
  import org.bukkit.plugin.RegisteredListener;
+ import org.bukkit.plugin.SimplePluginManager;
 +import org.bukkit.plugin.SmartRegisteredListener;
  import org.bukkit.plugin.TimedRegisteredListener;
  import org.bukkit.plugin.UnknownDependencyException;
  import org.jetbrains.annotations.NotNull;
-@@ -353,6 +355,8 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -337,6 +339,8 @@ public final class JavaPluginLoader implements PluginLoader {
              EventExecutor executor = new co.aikar.timings.TimedEventExecutor(EventExecutor.create(method, eventClass), plugin, method, eventClass); // Paper // Paper (Yes.) - Use factory method `EventExecutor.create()`
              if (false) { // Spigot - RL handles useTimings check now
                  eventSet.add(new TimedRegisteredListener(listener, executor, eh.priority(), plugin, eh.ignoreCancelled()));

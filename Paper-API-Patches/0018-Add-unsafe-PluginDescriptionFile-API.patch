@@ -5,10 +5,10 @@ Subject: [PATCH] Add unsafe PluginDescriptionFile API
 
 
 diff --git a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
-index 9933dcf5c9b1057faf6a8810f70ca65137923b4f..07cb435ddf49eeabb0c0abe8dbc7cb5f44b8ef34 100644
+index 857e9100ddacbf893815e1c6480770b4ceee5a42..fb30581f676d66288234c5d9aecb193dce8da7bc 100644
 --- a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
 +++ b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
-@@ -250,7 +250,11 @@ public final class PluginDescriptionFile {
+@@ -257,7 +257,11 @@ public final class PluginDescriptionFile {
      private boolean papyrus = false;
  
      public PluginDescriptionFile(@NotNull final InputStream stream) throws InvalidDescriptionException {
@@ -21,7 +21,7 @@ index 9933dcf5c9b1057faf6a8810f70ca65137923b4f..07cb435ddf49eeabb0c0abe8dbc7cb5f
      }
  
      /**
-@@ -261,9 +265,15 @@ public final class PluginDescriptionFile {
+@@ -268,9 +272,15 @@ public final class PluginDescriptionFile {
       *     invalid
       */
      public PluginDescriptionFile(@NotNull final Reader reader) throws InvalidDescriptionException {
@@ -38,7 +38,7 @@ index 9933dcf5c9b1057faf6a8810f70ca65137923b4f..07cb435ddf49eeabb0c0abe8dbc7cb5f
      /**
       * Creates a new PluginDescriptionFile with the given detailed
       *
-@@ -981,7 +991,7 @@ public final class PluginDescriptionFile {
+@@ -1004,7 +1014,7 @@ public final class PluginDescriptionFile {
          YAML.get().dump(saveMap(), writer);
      }
  
@@ -47,7 +47,7 @@ index 9933dcf5c9b1057faf6a8810f70ca65137923b4f..07cb435ddf49eeabb0c0abe8dbc7cb5f
          try {
              name = rawName = map.get("name").toString();
  
-@@ -1007,12 +1017,15 @@ public final class PluginDescriptionFile {
+@@ -1030,12 +1040,15 @@ public final class PluginDescriptionFile {
  
          try {
              main = map.get("main").toString();

@@ -5,18 +5,18 @@ Subject: [PATCH] Add papyrus option to PluginDescriptionFile
 
 
 diff --git a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
-index f78a7df6e2edbbbaeb0edf4330125b2c2fa39a57..9933dcf5c9b1057faf6a8810f70ca65137923b4f 100644
+index 801a323d9c328c1ab8e58c651cea9c5f3dfbcdca..857e9100ddacbf893815e1c6480770b4ceee5a42 100644
 --- a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
 +++ b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
-@@ -247,6 +247,7 @@ public final class PluginDescriptionFile {
-     private PermissionDefault defaultPerm = PermissionDefault.OP;
+@@ -254,6 +254,7 @@ public final class PluginDescriptionFile {
      private Set<PluginAwareness> awareness = ImmutableSet.of();
      private String apiVersion = null;
+     private List<String> libraries = ImmutableList.of();
 +    private boolean papyrus = false;
  
      public PluginDescriptionFile(@NotNull final InputStream stream) throws InvalidDescriptionException {
          loadMap(asMap(YAML.get().load(stream)));
-@@ -957,6 +958,10 @@ public final class PluginDescriptionFile {
+@@ -964,6 +965,10 @@ public final class PluginDescriptionFile {
          return apiVersion;
      }
  
@@ -25,9 +25,9 @@ index f78a7df6e2edbbbaeb0edf4330125b2c2fa39a57..9933dcf5c9b1057faf6a8810f70ca651
 +    }
 +
      /**
-      * @return unused
-      * @deprecated unused
-@@ -1136,6 +1141,14 @@ public final class PluginDescriptionFile {
+      * Gets the libraries this plugin requires. This is a preview feature.
+      * <ul>
+@@ -1173,6 +1178,14 @@ public final class PluginDescriptionFile {
          if (map.get("prefix") != null) {
              prefix = map.get("prefix").toString();
          }
@@ -42,7 +42,7 @@ index f78a7df6e2edbbbaeb0edf4330125b2c2fa39a57..9933dcf5c9b1057faf6a8810f70ca651
      }
  
      @NotNull
-@@ -1209,6 +1222,8 @@ public final class PluginDescriptionFile {
+@@ -1250,6 +1263,8 @@ public final class PluginDescriptionFile {
              map.put("prefix", prefix);
          }
  
@@ -52,10 +52,10 @@ index f78a7df6e2edbbbaeb0edf4330125b2c2fa39a57..9933dcf5c9b1057faf6a8810f70ca651
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 6f99f08cbba41d76f6aa6d4d5a09b0f2b77782a3..1cc67ca4e4ade2c4fc0a60690678f9f1f3ac3f24 100644
+index 81da90531cc3a7ab13d455860f89411081825949..59db536ed1e2592104ab473303e0f65642c992aa 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-@@ -18,7 +18,9 @@ import java.util.jar.JarEntry;
+@@ -19,7 +19,9 @@ import java.util.jar.JarEntry;
  import java.util.jar.JarFile;
  import java.util.jar.Manifest;
  import java.util.logging.Level;

@@ -18,7 +18,7 @@ index 87722285690d9d3370610e2a2eb809e0d1f497c9..6880ff68e8c807aadfdb94869d11a46c
                  return false;
              } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index aaa6f3aeaf1b47275a1c8fc22ee99475e62c32a0..ed643dcb6f10ecc5a0f6b23bf89ab7abd75b8546 100644
+index 2a76c3624c64e93509a96579f48c507e29901625..7d0e3a35e45c08480a722b66533e2754e48d5cf5 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1022,6 +1022,9 @@ public abstract class PlayerList {
@@ -91,7 +91,7 @@ index f7d22282a59277375d146e9459f9f43962dd7d09..38a4beee1d976025e91cba007e9714a9
              return EnumInteractionResult.a(world.isClientSide);
          } else {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index e5549439b3d4d608cf37dd33b6c8c9e10dfe9328..4283b092f963d1dcf5e0ed472286663ad98f41bd 100644
+index 05248f560d643080a3eac581c01aa89fb3709e6c..a7cd42ee4173597e51a48c1a55681f246c6e105d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -56,6 +56,7 @@ import net.minecraft.network.protocol.game.PacketPlayOutWorldEvent;
@@ -110,7 +110,7 @@ index e5549439b3d4d608cf37dd33b6c8c9e10dfe9328..4283b092f963d1dcf5e0ed472286663a
  
      public CraftPlayer(CraftServer server, EntityPlayer entity) {
          super(server, entity);
-@@ -2322,6 +2324,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2325,6 +2327,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      }
      // Paper end
  

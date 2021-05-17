@@ -5,7 +5,7 @@ Subject: [PATCH] Add ETA to world upgrade message
 
 
 diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
-index 6818f8496ab76ee6ffc747bd6848b43830ec8914..bd35c740988ad8b1023efb7c2815a42023e27677 100644
+index bf4051349917cc1d727fc5544237e0291cb6f1e6..a6bc198f2f15cfa493147f2c7e8a15caa7b9bfa5 100644
 --- a/src/main/java/net/minecraft/server/Main.java
 +++ b/src/main/java/net/minecraft/server/Main.java
 @@ -43,6 +43,7 @@ import net.minecraft.util.MathHelper;
@@ -16,7 +16,7 @@ index 6818f8496ab76ee6ffc747bd6848b43830ec8914..bd35c740988ad8b1023efb7c2815a420
  import net.minecraft.world.level.DataPackConfiguration;
  import net.minecraft.world.level.GameRules;
  import net.minecraft.world.level.World;
-@@ -281,6 +282,8 @@ public class Main {
+@@ -282,6 +283,8 @@ public class Main {
          WorldUpgrader worldupgrader = new WorldUpgrader(convertable_conversionsession, datafixer, immutableset, flag);
          IChatBaseComponent ichatbasecomponent = null;
  
@@ -25,7 +25,7 @@ index 6818f8496ab76ee6ffc747bd6848b43830ec8914..bd35c740988ad8b1023efb7c2815a420
          while (!worldupgrader.b()) {
              IChatBaseComponent ichatbasecomponent1 = worldupgrader.h();
  
-@@ -294,7 +297,15 @@ public class Main {
+@@ -295,7 +298,15 @@ public class Main {
              if (i > 0) {
                  int j = worldupgrader.f() + worldupgrader.g();
  

@@ -5,10 +5,10 @@ Subject: [PATCH] Implement canSeePlayerEntities API
 
 
 diff --git a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-index 300884804bf9ac3fba7c30a04d8adf52e3dd2e3e..df41f10fc7ec6607801a1a03abb24414de66c126 100644
+index 6835401bd7863bbd655502547a9fd4ae0f298da1..c84782c83821b7565faeff1c633f4e614948bf84 100644
 --- a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-@@ -2475,7 +2475,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+@@ -2483,7 +2483,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
                      // CraftBukkit start - respect vanish API
                      if (this.tracker instanceof EntityPlayer) {
                          Player player = ((EntityPlayer) this.tracker).getBukkitEntity();
@@ -18,10 +18,10 @@ index 300884804bf9ac3fba7c30a04d8adf52e3dd2e3e..df41f10fc7ec6607801a1a03abb24414
                          }
                      }
 diff --git a/src/main/java/net/minecraft/server/level/WorldServer.java b/src/main/java/net/minecraft/server/level/WorldServer.java
-index 47fbb8df04b2b77e10314666e87eaef621cffb3b..a2206dd88a7a2f0052aa9519fe9bc0962dcf609b 100644
+index 6aace2155258d8257d53ebfcb20c37ea7497c02c..b4f6532f917e1d06fcddf17da7fcc62638f24f3d 100644
 --- a/src/main/java/net/minecraft/server/level/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/level/WorldServer.java
-@@ -1649,7 +1649,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1648,7 +1648,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
                  double d2 = (double) blockposition.getZ() - entityplayer.locZ();
  
                  // CraftBukkit start
@@ -30,7 +30,7 @@ index 47fbb8df04b2b77e10314666e87eaef621cffb3b..a2206dd88a7a2f0052aa9519fe9bc096
                      continue;
                  }
                  // CraftBukkit end
-@@ -1823,7 +1823,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1822,7 +1822,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
  
          for (EntityHuman entityhuman : receivers) { // Paper - Particle API Expansion
              EntityPlayer entityplayer = (EntityPlayer) entityhuman; // Paper - Particle API Expansion
@@ -40,10 +40,10 @@ index 47fbb8df04b2b77e10314666e87eaef621cffb3b..a2206dd88a7a2f0052aa9519fe9bc096
              if (this.a(entityplayer, force, d0, d1, d2, packetplayoutworldparticles)) { // CraftBukkit
                  ++j;
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/IProjectile.java b/src/main/java/net/minecraft/world/entity/projectile/IProjectile.java
-index 9f2e7d345d98f50e6d47cbf4bb35714852fa42da..8563080d582b97dfe5373a209cdf5c8a7b0f172d 100644
+index 8fe98404ebb8b3b5d1fdac0896b27da10736026d..01c56ee399834d2ffe5e60e9c23149610be21bd5 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/IProjectile.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/IProjectile.java
-@@ -156,7 +156,7 @@ public abstract class IProjectile extends Entity {
+@@ -174,7 +174,7 @@ public abstract class IProjectile extends Entity {
              if (entity1 instanceof EntityPlayer && entity instanceof EntityPlayer) {
                  org.bukkit.entity.Player collided = (org.bukkit.entity.Player) entity.getBukkitEntity();
                  org.bukkit.entity.Player shooter = (org.bukkit.entity.Player) entity1.getBukkitEntity();
@@ -79,7 +79,7 @@ index 1f9b710f2af3c5067b3c2b73bebb11f8e22c403e..a73fdcfc0d646846ff209df83269de84
                  }
              });
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 265602ae30763f0df46144c6b840ba84836341f1..9cf7d9db611323756aafce358d6d496b210055f1 100644
+index dbe5a58ccb2c978f3456c216a720af07392c86d3..0879c486ebb46e3e849aa8ad0a557d5d8ce9e09e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -148,6 +148,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
@@ -90,7 +90,7 @@ index 265602ae30763f0df46144c6b840ba84836341f1..9cf7d9db611323756aafce358d6d496b
      private static final WeakHashMap<Plugin, WeakReference<Plugin>> pluginWeakReferences = new WeakHashMap<>();
      private int hash = 0;
      private double health = 20;
-@@ -1396,9 +1397,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1394,9 +1395,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
          getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, other));
  
@@ -105,7 +105,7 @@ index 265602ae30763f0df46144c6b840ba84836341f1..9cf7d9db611323756aafce358d6d496b
          }
      }
      // Paper start
-@@ -1455,6 +1458,59 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1453,6 +1456,59 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return !hiddenPlayers.containsKey(player.getUniqueId());
      }
  
@@ -166,10 +166,10 @@ index 265602ae30763f0df46144c6b840ba84836341f1..9cf7d9db611323756aafce358d6d496b
      public Map<String, Object> serialize() {
          Map<String, Object> result = new LinkedHashMap<String, Object>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index f82318cbdcfbdcfb877929a25017f8ab19201e28..bb4e6a5ff9632167364bc412cad4d8e6717f7ce1 100644
+index abb14d16875164efc76b5a198b8500ea0b7a5c7a..244bee05c1dc21d13a25d9a22af5b43ae6c45282 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1317,7 +1317,7 @@ public class CraftEventFactory {
+@@ -1321,7 +1321,7 @@ public class CraftEventFactory {
          com.destroystokyo.paper.event.entity.ProjectileCollideEvent event = new com.destroystokyo.paper.event.entity.ProjectileCollideEvent(projectile, collided);
  
          if (projectile.getShooter() instanceof Player && collided instanceof Player) {

@@ -148,7 +148,7 @@ index 0000000000000000000000000000000000000000..cb3a9fff6f7d0b138d78382422e2ac5e
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/entity/monster/EntitySkeletonAbstract.java b/src/main/java/net/minecraft/world/entity/monster/EntitySkeletonAbstract.java
-index 06d50b22ede102556fdb3e2a6f1424f7ff13f120..0749e4458c2b92e15832348d595024d38eb38f53 100644
+index f8358e40c42f219232bf928f4e0073339a5e19d5..e63bf0f908ba80a1e557222818608f71352364a2 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/EntitySkeletonAbstract.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/EntitySkeletonAbstract.java
 @@ -48,6 +48,7 @@ import net.minecraft.world.level.block.state.IBlockData;
@@ -160,13 +160,13 @@ index 06d50b22ede102556fdb3e2a6f1424f7ff13f120..0749e4458c2b92e15832348d595024d3
      private final PathfinderGoalMeleeAttack c = new PathfinderGoalMeleeAttack(this, 1.2D, false) {
          @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftSkeleton.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftSkeleton.java
-index c2acfa2cc27a187154e17b7f45908682b41b52af..7c3f913a00c885b237233da9d2cc793b7c035e23 100644
+index f48c4225dbc3467aaf8d14bc4047430548cc7c78..ebd6270317fc0b3b18e1cdf609aaf93fc49d10f0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftSkeleton.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftSkeleton.java
-@@ -36,4 +36,14 @@ public class CraftSkeleton extends CraftMonster implements Skeleton, com.destroy
-     public void setSkeletonType(SkeletonType type) {
-         throw new UnsupportedOperationException("Not supported.");
+@@ -48,4 +48,14 @@ public class CraftSkeleton extends CraftMonster implements Skeleton, com.destroy
+         getHandle().setShouldBurnInDay(shouldBurnInDay);
      }
+     // Paper end
 +
 +    @Override
 +    public int getAttackDelay() {
