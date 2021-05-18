@@ -5,7 +5,7 @@ Subject: [PATCH] Call ServerShutdownEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 7dc8779b7f4cae20a386bce7f66baed67d0c2436..e52af3f7afff3ae91572680d356014214ac58f2f 100644
+index 39167ddd88f575dbff0034b18741447f4f33391f..fdc59ae93cb18caac4f45ce8f3499417f097e08a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -183,6 +183,8 @@ import co.aikar.timings.MinecraftTimings; // Paper

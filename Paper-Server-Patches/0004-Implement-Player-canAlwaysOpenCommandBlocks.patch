@@ -91,7 +91,7 @@ index f7d22282a59277375d146e9459f9f43962dd7d09..38a4beee1d976025e91cba007e9714a9
              return EnumInteractionResult.a(world.isClientSide);
          } else {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 05248f560d643080a3eac581c01aa89fb3709e6c..a7cd42ee4173597e51a48c1a55681f246c6e105d 100644
+index 34395248e3daea47178cb40aad53680fbce73600..4c3f8740896ba73fa9490bce5ae25ee22eed487d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -56,6 +56,7 @@ import net.minecraft.network.protocol.game.PacketPlayOutWorldEvent;
