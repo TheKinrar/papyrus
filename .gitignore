@@ -33,6 +33,7 @@ work/Paperclip
 work/Spigot
 work/Spigot-Server
 work/Spigot-API
+work/Temp
 work/*.jar
 work/test-server
 work/ForgeFlower
