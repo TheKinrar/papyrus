@@ -986,7 +986,7 @@ index 6581fe0d93a5c2e7b444a44c01726e02d4a28e63..3f5cf6c063d96c6ebd12168e114e7391
          this.generator = gen;
          this.world = new CraftWorld((WorldServer) this, gen, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 033a0f1852afd6c1fd136ef07b611a9132adfa0c..82fc5028d69e43f3badca644e35b62b7f39c2b1a 100644
+index c51e9b50323f5e33bad5fd25d74c572241377059..dfe5a8dfbfe6c53d6bf467185d224ce3b210f6a9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -230,7 +230,7 @@ import javax.annotation.Nullable; // Paper
@@ -998,7 +998,7 @@ index 033a0f1852afd6c1fd136ef07b611a9132adfa0c..82fc5028d69e43f3badca644e35b62b7
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
-@@ -864,6 +864,7 @@ public final class CraftServer implements Server {
+@@ -881,6 +881,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
@@ -1007,7 +1007,7 @@ index 033a0f1852afd6c1fd136ef07b611a9132adfa0c..82fc5028d69e43f3badca644e35b62b7
              world.worldDataServer.setDifficulty(config.difficulty);
              world.setSpawnFlags(config.spawnMonsters, config.spawnAnimals);
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 68229f7679f9e974dc7af6c34d6f1d3f8db49353..9801c2d45d3c75cf878e2c2531281fa721ec684b 100644
+index 409fbeeb66fb8f58a72d94686bc9515299927b75..8c28275b6497778f8578e449d545644eb7860ce7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -147,6 +147,14 @@ public class Main {

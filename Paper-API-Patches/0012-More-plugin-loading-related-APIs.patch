@@ -114,10 +114,10 @@ index 86cc5025ad98f7a752c51713b7cd6a39d5136ecc..62d20b9d9660391d574cef358061d4cc
       * Disables all the loaded plugins
       */
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 26685f59b235ea5b4c4fb7ae21acb5149edaa2b3..1cd21099cc31d009aef342a5b05b583f6cd44546 100644
+index ca866876f2f35a1c41eb009064412423fa09e441..8714695b0cc14e510a0c1ad63e526f2c23455d52 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-@@ -365,6 +365,23 @@ public final class SimplePluginManager implements PluginManager {
+@@ -377,6 +377,23 @@ public final class SimplePluginManager implements PluginManager {
          return result.toArray(new Plugin[result.size()]);
      }
  
@@ -141,7 +141,7 @@ index 26685f59b235ea5b4c4fb7ae21acb5149edaa2b3..1cd21099cc31d009aef342a5b05b583f
      /**
       * Loads the plugin in the specified file
       * <p>
-@@ -380,6 +397,12 @@ public final class SimplePluginManager implements PluginManager {
+@@ -392,6 +409,12 @@ public final class SimplePluginManager implements PluginManager {
      @Override
      @Nullable
      public synchronized Plugin loadPlugin(@NotNull File file) throws InvalidPluginException, UnknownDependencyException {
@@ -154,7 +154,7 @@ index 26685f59b235ea5b4c4fb7ae21acb5149edaa2b3..1cd21099cc31d009aef342a5b05b583f
          Validate.notNull(file, "File cannot be null");
  
          checkUpdate(file);
-@@ -394,7 +417,7 @@ public final class SimplePluginManager implements PluginManager {
+@@ -406,7 +429,7 @@ public final class SimplePluginManager implements PluginManager {
              if (match.find()) {
                  PluginLoader loader = fileAssociations.get(filter);
  
@@ -164,7 +164,7 @@ index 26685f59b235ea5b4c4fb7ae21acb5149edaa2b3..1cd21099cc31d009aef342a5b05b583f
          }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index 31793f46e5623729dfb4048e901f274082f57826..f2df4fc2e02a88584272d9f0f2094e9b16353004 100644
+index d3812d8cd195017841ee08ffbc53a5748fcc74ec..73d045b3fc8dcad149b6087aee39a095967082d1 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 @@ -78,9 +78,14 @@ public final class JavaPluginLoader implements PluginLoader {
@@ -183,14 +183,12 @@ index 31793f46e5623729dfb4048e901f274082f57826..f2df4fc2e02a88584272d9f0f2094e9b
          Validate.notNull(file, "File cannot be null");
  
          if (!file.exists()) {
-@@ -94,7 +99,9 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -94,7 +99,7 @@ public final class JavaPluginLoader implements PluginLoader {
              throw new InvalidPluginException(ex);
          }
  
--        final File parentFile = file.getParentFile();
-+        if(parentFile == null)
-+            parentFile = file.getParentFile();
-+
+-        final File parentFile = ((SimplePluginManager) this.server.getPluginManager()).pluginsDirectory(); // Paper
++        if(parentFile == null) parentFile = ((SimplePluginManager) this.server.getPluginManager()).pluginsDirectory(); // Paper // Papyrus - only if not provided
          final File dataFolder = new File(parentFile, description.getName());
          @SuppressWarnings("deprecation")
          final File oldDataFolder = new File(parentFile, description.getRawName());

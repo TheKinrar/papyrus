@@ -510,7 +510,7 @@ index c39c50e53549e9cb9d3520bc7e8b7e89cfa20163..3c8c48dad244e955712af9eced2c9b4a
          float f = this.inventory.a(iblockdata);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 82fc5028d69e43f3badca644e35b62b7f39c2b1a..f186a144ab1eb7f5995c9b156279cb0e157b0585 100644
+index dfe5a8dfbfe6c53d6bf467185d224ce3b210f6a9..c2b11f801dfc6c7ba753fca4ea969f7696b59c31 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1,5 +1,6 @@
@@ -537,7 +537,7 @@ index 82fc5028d69e43f3badca644e35b62b7f39c2b1a..f186a144ab1eb7f5995c9b156279cb0e
  import org.yaml.snakeyaml.Yaml;
  import org.yaml.snakeyaml.constructor.SafeConstructor;
  import org.yaml.snakeyaml.error.MarkedYAMLException;
-@@ -425,6 +429,7 @@ public final class CraftServer implements Server {
+@@ -442,6 +446,7 @@ public final class CraftServer implements Server {
              commandMap.registerServerAliases();
              DefaultPermissions.registerCorePermissions();
              CraftDefaultPermissions.registerCorePermissions();
@@ -545,7 +545,7 @@ index 82fc5028d69e43f3badca644e35b62b7f39c2b1a..f186a144ab1eb7f5995c9b156279cb0e
              if (!com.destroystokyo.paper.PaperConfig.loadPermsBeforePlugins) loadCustomPermissions(); // Paper
              helpMap.initializeCommands();
              syncCommands();
-@@ -917,6 +922,7 @@ public final class CraftServer implements Server {
+@@ -934,6 +939,7 @@ public final class CraftServer implements Server {
          reloadData();
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
@@ -553,7 +553,7 @@ index 82fc5028d69e43f3badca644e35b62b7f39c2b1a..f186a144ab1eb7f5995c9b156279cb0e
          overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
          ignoreVanillaPermissions = commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2504,4 +2510,24 @@ public final class CraftServer implements Server {
+@@ -2521,4 +2527,24 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
