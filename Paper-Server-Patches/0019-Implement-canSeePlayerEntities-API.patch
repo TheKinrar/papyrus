@@ -53,10 +53,10 @@ index 8fe98404ebb8b3b5d1fdac0896b27da10736026d..01c56ee399834d2ffe5e60e9c2314961
              return entity1 == null || this.d || !entity1.isSameVehicle(entity);
              // Paper end
 diff --git a/src/main/java/net/minecraft/world/level/World.java b/src/main/java/net/minecraft/world/level/World.java
-index 3f5cf6c063d96c6ebd12168e114e7391c38e29ee..c6a875f7c22d60878b682ded68b8479778571167 100644
+index 94f735c430d6e5a068c0cdc3fff201adbdd0e7b9..fcca3d03da3a442eef85a6ccb30ca869dab5c2a1 100644
 --- a/src/main/java/net/minecraft/world/level/World.java
 +++ b/src/main/java/net/minecraft/world/level/World.java
-@@ -278,7 +278,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -287,7 +287,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
              Entity entity = entities.get(i);
  
              if (checkCanSee && source instanceof EntityPlayer && entity instanceof EntityPlayer

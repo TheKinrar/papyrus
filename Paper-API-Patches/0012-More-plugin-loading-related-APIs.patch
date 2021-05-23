@@ -114,10 +114,10 @@ index 86cc5025ad98f7a752c51713b7cd6a39d5136ecc..62d20b9d9660391d574cef358061d4cc
       * Disables all the loaded plugins
       */
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index ca866876f2f35a1c41eb009064412423fa09e441..8714695b0cc14e510a0c1ad63e526f2c23455d52 100644
+index d1c35e4cf778070f8d18bbe0af8d423334c6dfbf..02a9cdeda89eabaa0cbfe8ba26d82f07fd5e4ae2 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-@@ -377,6 +377,23 @@ public final class SimplePluginManager implements PluginManager {
+@@ -382,6 +382,23 @@ public final class SimplePluginManager implements PluginManager {
          return result.toArray(new Plugin[result.size()]);
      }
  
@@ -141,7 +141,7 @@ index ca866876f2f35a1c41eb009064412423fa09e441..8714695b0cc14e510a0c1ad63e526f2c
      /**
       * Loads the plugin in the specified file
       * <p>
-@@ -392,6 +409,12 @@ public final class SimplePluginManager implements PluginManager {
+@@ -397,6 +414,12 @@ public final class SimplePluginManager implements PluginManager {
      @Override
      @Nullable
      public synchronized Plugin loadPlugin(@NotNull File file) throws InvalidPluginException, UnknownDependencyException {
@@ -154,7 +154,7 @@ index ca866876f2f35a1c41eb009064412423fa09e441..8714695b0cc14e510a0c1ad63e526f2c
          Validate.notNull(file, "File cannot be null");
  
          checkUpdate(file);
-@@ -406,7 +429,7 @@ public final class SimplePluginManager implements PluginManager {
+@@ -411,7 +434,7 @@ public final class SimplePluginManager implements PluginManager {
              if (match.find()) {
                  PluginLoader loader = fileAssociations.get(filter);
  
@@ -164,7 +164,7 @@ index ca866876f2f35a1c41eb009064412423fa09e441..8714695b0cc14e510a0c1ad63e526f2c
          }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index d3812d8cd195017841ee08ffbc53a5748fcc74ec..73d045b3fc8dcad149b6087aee39a095967082d1 100644
+index b622cedeeee017f042bcf92485d81832030a8030..c5cbf5318eedaa28ee3b1b7d557993b2bf8d2701 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 @@ -78,9 +78,14 @@ public final class JavaPluginLoader implements PluginLoader {

@@ -164,10 +164,10 @@ index f86f430598026a3a7e27fb8d40cfc5fe7b9b845d..babe02b782bacf7078ab2918557b3dd8
  public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 04cc9cbd5ab0c356708a902762be974b1cb5ccb5..39167ddd88f575dbff0034b18741447f4f33391f 100644
+index fd5060b956b7db7f8e724fab5126224ee95c0234..a19ee21bcd6a8b3a1cee35298fc83c30e08fbe0e 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1432,6 +1432,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1434,6 +1434,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.methodProfiler.exitEnter("levels");
          Iterator iterator = this.getWorlds().iterator();
  
@@ -510,7 +510,7 @@ index c39c50e53549e9cb9d3520bc7e8b7e89cfa20163..3c8c48dad244e955712af9eced2c9b4a
          float f = this.inventory.a(iblockdata);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index dfe5a8dfbfe6c53d6bf467185d224ce3b210f6a9..c2b11f801dfc6c7ba753fca4ea969f7696b59c31 100644
+index 49979b4fa301e7129e5e3b7f2584c0a1c21fb142..f52702048732eb3906d71a302cb225eef092091c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1,5 +1,6 @@
@@ -553,7 +553,7 @@ index dfe5a8dfbfe6c53d6bf467185d224ce3b210f6a9..c2b11f801dfc6c7ba753fca4ea969f76
          overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
          ignoreVanillaPermissions = commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2521,4 +2527,24 @@ public final class CraftServer implements Server {
+@@ -2522,4 +2528,24 @@ public final class CraftServer implements Server {
      }
  
      // Paper end

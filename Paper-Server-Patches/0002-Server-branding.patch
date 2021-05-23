@@ -924,10 +924,10 @@ index 0000000000000000000000000000000000000000..52274c1bb387ae8e42f3c7078328d99f
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index d69ddb0236c8553cf63c4a007dfa7b87e8f58299..04cc9cbd5ab0c356708a902762be974b1cb5ccb5 100644
+index 848219f43b2bcb2d79147107c68df52efd46d461..fd5060b956b7db7f8e724fab5126224ee95c0234 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1580,7 +1580,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1582,7 +1582,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      }
  
      public String getServerModName() {
@@ -965,7 +965,7 @@ index df8270c40ed7ce6f628686ff6f4fa4cf96af6738..385b969c589b98ef21370d87370580fa
          this.setPVP(dedicatedserverproperties.pvp);
          this.setAllowFlight(dedicatedserverproperties.allowFlight);
 diff --git a/src/main/java/net/minecraft/world/level/World.java b/src/main/java/net/minecraft/world/level/World.java
-index 6581fe0d93a5c2e7b444a44c01726e02d4a28e63..3f5cf6c063d96c6ebd12168e114e7391c38e29ee 100644
+index f7f593a9e58b537109fa6ca1c783f6614f4bfad5..94f735c430d6e5a068c0cdc3fff201adbdd0e7b9 100644
 --- a/src/main/java/net/minecraft/world/level/World.java
 +++ b/src/main/java/net/minecraft/world/level/World.java
 @@ -162,6 +162,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -977,7 +977,7 @@ index 6581fe0d93a5c2e7b444a44c01726e02d4a28e63..3f5cf6c063d96c6ebd12168e114e7391
      public CraftWorld getWorld() {
          return this.world;
      }
-@@ -184,6 +186,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -193,6 +195,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
      protected World(WorldDataMutable worlddatamutable, ResourceKey<World> resourcekey, final DimensionManager dimensionmanager, Supplier<GameProfilerFiller> supplier, boolean flag, boolean flag1, long i, org.bukkit.generator.ChunkGenerator gen, org.bukkit.World.Environment env, java.util.concurrent.Executor executor) { // Paper
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.WorldDataServer) worlddatamutable).getName()); // Spigot
          this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(((net.minecraft.world.level.storage.WorldDataServer) worlddatamutable).getName(), this.spigotConfig); // Paper
@@ -986,7 +986,7 @@ index 6581fe0d93a5c2e7b444a44c01726e02d4a28e63..3f5cf6c063d96c6ebd12168e114e7391
          this.generator = gen;
          this.world = new CraftWorld((WorldServer) this, gen, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index c51e9b50323f5e33bad5fd25d74c572241377059..dfe5a8dfbfe6c53d6bf467185d224ce3b210f6a9 100644
+index ff79c13bc7717eb9529e802b8e31a1f756b02f97..49979b4fa301e7129e5e3b7f2584c0a1c21fb142 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -230,7 +230,7 @@ import javax.annotation.Nullable; // Paper

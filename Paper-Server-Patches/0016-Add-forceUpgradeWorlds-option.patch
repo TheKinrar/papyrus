@@ -5,7 +5,7 @@ Subject: [PATCH] Add forceUpgradeWorlds option
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index fdc59ae93cb18caac4f45ce8f3499417f097e08a..ea3fc395e25e7b00dea067f62519262d2cf81cc8 100644
+index 9aea5583ffc2da318a6aabc413ef7101f732606e..21a5aa3c8fbb2a15aa91c153e84a0b9c37e91e5e 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -156,6 +156,7 @@ import net.minecraft.world.phys.Vec3D;
@@ -38,22 +38,25 @@ index fdc59ae93cb18caac4f45ce8f3499417f097e08a..ea3fc395e25e7b00dea067f62519262d
      }
      // CraftBukkit end
  
-@@ -517,11 +526,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -516,7 +525,15 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+                 worlddata = new WorldDataServer(worldsettings, generatorsettings, Lifecycle.stable());
              }
              worlddata.checkName(name); // CraftBukkit - Migration did not rewrite the level.dat; This forces 1.8 to take the last loaded world as respawn (in this case the end)
-             if (options.has("forceUpgrade")) {
+-            // Paper - move down
++            if (options.has("forceUpgrade")) {
 +                if(forceUpgradeWorlds == null || ArrayUtils.contains(this.forceUpgradeWorlds, s)) { // Papyrus
-                 net.minecraft.server.Main.convertWorld(worldSession, DataConverterRegistry.a(), options.has("eraseCache"), () -> {
-                     return true;
-                 }, worlddata.getGeneratorSettings().d().d().stream().map((entry1) -> {
-                     return ResourceKey.a(IRegistry.K, ((ResourceKey) entry1.getKey()).a());
-                 }).collect(ImmutableSet.toImmutableSet()));
++                net.minecraft.server.Main.convertWorld(worldSession, DataConverterRegistry.a(), options.has("eraseCache"), () -> {
++                    return true;
++                }, worlddata.getGeneratorSettings().d().d().stream().map((entry1) -> {
++                    return ResourceKey.a(IRegistry.K, ((ResourceKey) entry1.getKey()).a());
++                }).collect(ImmutableSet.toImmutableSet()));
 +                }
-             }
++            }
  
              IWorldDataServer iworlddataserver = worlddata;
+             GeneratorSettings generatorsettings = worlddata.getGeneratorSettings();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 229a7389ff663de2d2f6cfe02ab36d30e3740639..65f89f747e6e206caa77c78c14086ad2e4c7ab92 100644
+index 553645c2684b679a1ecc8071b5be3fda275e0315..77f92195908e756262658945d3e7f981f3813188 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -109,6 +109,8 @@ import net.minecraft.world.level.storage.WorldNBTStorage;
@@ -65,20 +68,23 @@ index 229a7389ff663de2d2f6cfe02ab36d30e3740639..65f89f747e6e206caa77c78c14086ad2
  import org.bukkit.BanList;
  import org.bukkit.Bukkit;
  import org.bukkit.ChatColor;
-@@ -1161,11 +1163,13 @@ public final class CraftServer implements Server {
+@@ -1161,6 +1163,16 @@ public final class CraftServer implements Server {
          worlddata.a(console.getServerModName(), console.getModded().isPresent());
+         // Paper - move down
  
-         if (console.options.has("forceUpgrade")) {
++        if (console.options.has("forceUpgrade")) {
 +            if(console.forceUpgradeWorlds == null || ArrayUtils.contains(console.forceUpgradeWorlds, name)) { // Papyrus
-             net.minecraft.server.Main.convertWorld(worldSession, DataConverterRegistry.a(), console.options.has("eraseCache"), () -> {
-                 return true;
-             }, worlddata.getGeneratorSettings().d().d().stream().map((entry) -> {
-                 return ResourceKey.a(IRegistry.K, ((ResourceKey) entry.getKey()).a());
-             }).collect(ImmutableSet.toImmutableSet()));
++            net.minecraft.server.Main.convertWorld(worldSession, DataConverterRegistry.a(), console.options.has("eraseCache"), () -> {
++                return true;
++            }, worlddata.getGeneratorSettings().d().d().stream().map((entry) -> {
++                return ResourceKey.a(IRegistry.K, ((ResourceKey) entry.getKey()).a());
++            }).collect(ImmutableSet.toImmutableSet()));
 +            }
-         }
- 
++        }
++
          long j = BiomeManager.a(creator.seed());
+         List<MobSpawner> list = ImmutableList.of(new MobSpawnerPhantom(), new MobSpawnerPatrol(), new MobSpawnerCat(), new VillageSiege(), new MobSpawnerTrader(worlddata));
+         RegistryMaterials<WorldDimension> registrymaterials = worlddata.getGeneratorSettings().d();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
 index 8c28275b6497778f8578e449d545644eb7860ce7..af9a3bad3724eaafe4826c2e1d7f30113f6c2c27 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java

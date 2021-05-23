@@ -5,7 +5,7 @@ Subject: [PATCH] Add ignoreChunkMismatch option
 
 
 diff --git a/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java b/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java
-index b1264c7cc0a2fb656af18a6315c90678f48df12e..b20891f2ee3aebdfceb8980c2059885b3281d3ed 100644
+index 1204ebc8dd7f1cad00be901c2a16d1228c56b8c8..2b9b029774329c35fa05a5ee07479d686c371b21 100644
 --- a/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java
 +++ b/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java
 @@ -40,7 +40,7 @@ import net.minecraft.world.level.dimension.DimensionManager;
@@ -18,7 +18,7 @@ index b1264c7cc0a2fb656af18a6315c90678f48df12e..b20891f2ee3aebdfceb8980c2059885b
      private final ImmutableSet<ResourceKey<DimensionManager>> c; // CraftBukkit
      private final boolean d;
 diff --git a/src/main/java/net/minecraft/world/level/chunk/storage/IChunkLoader.java b/src/main/java/net/minecraft/world/level/chunk/storage/IChunkLoader.java
-index 890362d28ab9cb760c73fe5014e144fb08ada6b8..56f45624326b2c9e7dd2f641422dccd8a2d8172d 100644
+index e20b9e6c46093d48d5fa5eb3006087d4e998c205..243508074a942319b08d6f9b157a5cc9c9dbb294 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/storage/IChunkLoader.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/storage/IChunkLoader.java
 @@ -13,8 +13,10 @@ import net.minecraft.SharedConstants;
@@ -32,7 +32,7 @@ index 890362d28ab9cb760c73fe5014e144fb08ada6b8..56f45624326b2c9e7dd2f641422dccd8
  import net.minecraft.world.level.ChunkCoordIntPair;
  import net.minecraft.world.level.World;
  import net.minecraft.world.level.levelgen.structure.PersistentStructureLegacy;
-@@ -127,8 +129,14 @@ public class IChunkLoader implements AutoCloseable {
+@@ -128,8 +130,14 @@ public class IChunkLoader implements AutoCloseable {
          // Paper start
          if (!chunkcoordintpair.equals(ChunkRegionLoader.getChunkCoordinate(nbttagcompound))) {
              String world = (this instanceof PlayerChunkMap) ? ((PlayerChunkMap)this).world.getWorld().getName() : null;
