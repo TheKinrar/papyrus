@@ -119,7 +119,7 @@ index 0000000000000000000000000000000000000000..d5e5729d8b051898e325905aee2fc109
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index a386beea01056a7fb448596ba45342d832a4c63d..d1fe103ba91db3cd36322c7b3507293fa63facba 100644
+index 6cb8608f8238c4a8c346b92ba672c8cc1c0cbcc4..546535d1c1835e30305192e70f4d18df97bc3428 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -18,6 +18,8 @@ import java.util.Locale;

@@ -5,10 +5,10 @@ Subject: [PATCH] Hybrid mode API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 33f04d57b7df3a6f9743246ba9af6d67f4fa4b54..98eb1e82fe61e396f1728e60ab24f3bc3e066464 100644
+index e8414592b3afeb1e5db2b817b8fb7c13e073b9aa..1087abf086397d34abae04d82dd4d00280ae3674 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -1947,6 +1947,17 @@ public final class Bukkit {
+@@ -1959,6 +1959,17 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -27,10 +27,10 @@ index 33f04d57b7df3a6f9743246ba9af6d67f4fa4b54..98eb1e82fe61e396f1728e60ab24f3bc
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 35ec8a060c2a2d2d48477b1bb940db51d18bf38e..54b7deab238890e7eb23a750a30c2559fe2a8f95 100644
+index e88b47a838dc472ad64271a518ee1789f7be19fa..9e0b6e1be44e6379c0d6fda7482343352cbae34c 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1705,4 +1705,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1716,4 +1716,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      @NotNull
      io.papermc.paper.datapack.DatapackManager getDatapackManager();
      // Paper end
@@ -45,10 +45,10 @@ index 35ec8a060c2a2d2d48477b1bb940db51d18bf38e..54b7deab238890e7eb23a750a30c2559
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index cd7c8608856452b823cebac6af3e0744701aa595..4aac78f3fd57d9d8fc20ba8c8d255d8cb984996a 100644
+index e9ca698212835746a7a9abf0d610e1044d153945..69fa16e2ad42d30d4c236d6fcbea10e0c3511e9a 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1966,6 +1966,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -1974,6 +1974,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * @param canAlwaysOpenCommandBlocks whether this player can always open command blocks
       */
      void setCanAlwaysOpenCommandBlocks(boolean canAlwaysOpenCommandBlocks);

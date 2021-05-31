@@ -18,7 +18,7 @@ index 6835401bd7863bbd655502547a9fd4ae0f298da1..c84782c83821b7565faeff1c633f4e61
                          }
                      }
 diff --git a/src/main/java/net/minecraft/server/level/WorldServer.java b/src/main/java/net/minecraft/server/level/WorldServer.java
-index 6aace2155258d8257d53ebfcb20c37ea7497c02c..b4f6532f917e1d06fcddf17da7fcc62638f24f3d 100644
+index f68a252378a94c8fcab622d2d89d738aceab45a4..83066513d7d618d599d03e6ff6b5fd84d612fbfa 100644
 --- a/src/main/java/net/minecraft/server/level/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/level/WorldServer.java
 @@ -1648,7 +1648,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
@@ -66,10 +66,10 @@ index 94f735c430d6e5a068c0cdc3fff201adbdd0e7b9..fcca3d03da3a442eef85a6ccb30ca869
              }
  
 diff --git a/src/main/java/net/minecraft/world/level/saveddata/maps/WorldMap.java b/src/main/java/net/minecraft/world/level/saveddata/maps/WorldMap.java
-index 1f9b710f2af3c5067b3c2b73bebb11f8e22c403e..a73fdcfc0d646846ff209df83269de84f0e88fc7 100644
+index 97fe61dcd066ec0ee05e81fc22409d6aa6b3a6d5..d9c59efb543b9d8765bde0807ec628ad28688c36 100644
 --- a/src/main/java/net/minecraft/world/level/saveddata/maps/WorldMap.java
 +++ b/src/main/java/net/minecraft/world/level/saveddata/maps/WorldMap.java
-@@ -482,7 +482,7 @@ public class WorldMap extends PersistentBase {
+@@ -486,7 +486,7 @@ public class WorldMap extends PersistentBase {
              WorldMap.this.decorations.forEach((name, mapIcon) -> {
                  // If this cursor is for a player check visibility with vanish system
                  org.bukkit.entity.Player other = org.bukkit.Bukkit.getPlayerExact(name); // Spigot
@@ -79,7 +79,7 @@ index 1f9b710f2af3c5067b3c2b73bebb11f8e22c403e..a73fdcfc0d646846ff209df83269de84
                  }
              });
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 8da77c27a25242e7a247e58898571f7701c733ba..612bac79d76494bdbfed65cf39fb2249f1b71abe 100644
+index c632a21272aac066248a1537925177cde8eb5abc..ccbb4cba0b169e99b98dc67ed093916ea8c6e612 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -148,6 +148,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
@@ -90,7 +90,7 @@ index 8da77c27a25242e7a247e58898571f7701c733ba..612bac79d76494bdbfed65cf39fb2249
      private static final WeakHashMap<Plugin, WeakReference<Plugin>> pluginWeakReferences = new WeakHashMap<>();
      private int hash = 0;
      private double health = 20;
-@@ -1394,9 +1395,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1399,9 +1400,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
          getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, other));
  
@@ -105,7 +105,7 @@ index 8da77c27a25242e7a247e58898571f7701c733ba..612bac79d76494bdbfed65cf39fb2249
          }
      }
      // Paper start
-@@ -1453,6 +1456,59 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1458,6 +1461,59 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return !hiddenPlayers.containsKey(player.getUniqueId());
      }
  
@@ -166,10 +166,10 @@ index 8da77c27a25242e7a247e58898571f7701c733ba..612bac79d76494bdbfed65cf39fb2249
      public Map<String, Object> serialize() {
          Map<String, Object> result = new LinkedHashMap<String, Object>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index abb14d16875164efc76b5a198b8500ea0b7a5c7a..244bee05c1dc21d13a25d9a22af5b43ae6c45282 100644
+index 95a46421af85e8c0debde82fe12ff4134a49fe91..45fbc4010083853f625519f61ac6c1f6db344bc6 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1321,7 +1321,7 @@ public class CraftEventFactory {
+@@ -1324,7 +1324,7 @@ public class CraftEventFactory {
          com.destroystokyo.paper.event.entity.ProjectileCollideEvent event = new com.destroystokyo.paper.event.entity.ProjectileCollideEvent(projectile, collided);
  
          if (projectile.getShooter() instanceof Player && collided instanceof Player) {

@@ -5,7 +5,7 @@ Subject: [PATCH] Implement CommandBlockEditEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/network/PlayerConnection.java b/src/main/java/net/minecraft/server/network/PlayerConnection.java
-index fdc824c7b4e9aae29a8ea08a492fbdeb6519ca60..e41265fd172be8606365c37da89da4a7cf35eb8d 100644
+index 4001078e2a408dfd5a93c21f55a58c1fde32abbb..705cf5d422c4e9faf790f4d99586848f5a00eb39 100644
 --- a/src/main/java/net/minecraft/server/network/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/network/PlayerConnection.java
 @@ -1,6 +1,8 @@
@@ -51,7 +51,7 @@ index fdc824c7b4e9aae29a8ea08a492fbdeb6519ca60..e41265fd172be8606365c37da89da4a7
  
  public class PlayerConnection implements PacketListenerPlayIn {
  
-@@ -816,63 +827,117 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -824,63 +835,117 @@ public class PlayerConnection implements PacketListenerPlayIn {
      @Override
      public void a(PacketPlayInSetCommandBlock packetplayinsetcommandblock) {
          PlayerConnectionUtils.ensureMainThread(packetplayinsetcommandblock, this, this.player.getWorldServer());

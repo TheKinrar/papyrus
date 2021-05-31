@@ -5,7 +5,7 @@ Subject: [PATCH] Add forceUpgradeWorlds option
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 9aea5583ffc2da318a6aabc413ef7101f732606e..21a5aa3c8fbb2a15aa91c153e84a0b9c37e91e5e 100644
+index 21543d435f9bab42580deaf450f690a1ae0337dc..7f52c6d2f80a79091207cd5380877be7e66f1cf8 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -156,6 +156,7 @@ import net.minecraft.world.phys.Vec3D;
@@ -16,16 +16,16 @@ index 9aea5583ffc2da318a6aabc413ef7101f732606e..21a5aa3c8fbb2a15aa91c153e84a0b9c
  import org.apache.commons.lang3.Validate;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
-@@ -286,6 +287,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
- 
+@@ -287,6 +288,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      public volatile Thread shutdownThread; // Paper
+     public volatile boolean abnormalExit = false; // Paper
  
 +    public String[] forceUpgradeWorlds = null; // Papyrus
 +
      public static <S extends MinecraftServer> S a(Function<Thread, S> function) {
          AtomicReference<S> atomicreference = new AtomicReference();
          Thread thread = new Thread(() -> {
-@@ -367,6 +370,12 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -368,6 +371,12 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          */
          // Paper end
          Runtime.getRuntime().addShutdownHook(new org.bukkit.craftbukkit.util.ServerShutdownThread(this));
@@ -38,7 +38,7 @@ index 9aea5583ffc2da318a6aabc413ef7101f732606e..21a5aa3c8fbb2a15aa91c153e84a0b9c
      }
      // CraftBukkit end
  
-@@ -516,7 +525,15 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -517,7 +526,15 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                  worlddata = new WorldDataServer(worldsettings, generatorsettings, Lifecycle.stable());
              }
              worlddata.checkName(name); // CraftBukkit - Migration did not rewrite the level.dat; This forces 1.8 to take the last loaded world as respawn (in this case the end)
@@ -56,7 +56,7 @@ index 9aea5583ffc2da318a6aabc413ef7101f732606e..21a5aa3c8fbb2a15aa91c153e84a0b9c
              IWorldDataServer iworlddataserver = worlddata;
              GeneratorSettings generatorsettings = worlddata.getGeneratorSettings();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 553645c2684b679a1ecc8071b5be3fda275e0315..77f92195908e756262658945d3e7f981f3813188 100644
+index d0fafe0fca4a08d1a5b2e3fac269b75297e3264d..2e3a3152eb86ac7d96340262059b468a60c01475 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -109,6 +109,8 @@ import net.minecraft.world.level.storage.WorldNBTStorage;
@@ -68,7 +68,7 @@ index 553645c2684b679a1ecc8071b5be3fda275e0315..77f92195908e756262658945d3e7f981
  import org.bukkit.BanList;
  import org.bukkit.Bukkit;
  import org.bukkit.ChatColor;
-@@ -1161,6 +1163,16 @@ public final class CraftServer implements Server {
+@@ -1160,6 +1162,16 @@ public final class CraftServer implements Server {
          worlddata.a(console.getServerModName(), console.getModded().isPresent());
          // Paper - move down
  

@@ -924,10 +924,10 @@ index 0000000000000000000000000000000000000000..52274c1bb387ae8e42f3c7078328d99f
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 848219f43b2bcb2d79147107c68df52efd46d461..fd5060b956b7db7f8e724fab5126224ee95c0234 100644
+index bf80e870e6a2a6fe1d4ae1bea355bcd7a0735d3b..d292ae8786585a66ab6231249362e124a8ef01c1 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1582,7 +1582,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1583,7 +1583,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      }
  
      public String getServerModName() {
@@ -937,7 +937,7 @@ index 848219f43b2bcb2d79147107c68df52efd46d461..fd5060b956b7db7f8e724fab5126224e
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index df8270c40ed7ce6f628686ff6f4fa4cf96af6738..385b969c589b98ef21370d87370580fa6f1fec64 100644
+index 1929b992be3aeaa37c7b04c458f0ee41a60c692e..abc63fba8d583517f3ebe66d4b8d3e8ad82dc6c8 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -7,6 +7,7 @@ import com.mojang.authlib.GameProfileRepository;
@@ -986,7 +986,7 @@ index f7f593a9e58b537109fa6ca1c783f6614f4bfad5..94f735c430d6e5a068c0cdc3fff201ad
          this.generator = gen;
          this.world = new CraftWorld((WorldServer) this, gen, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index ff79c13bc7717eb9529e802b8e31a1f756b02f97..49979b4fa301e7129e5e3b7f2584c0a1c21fb142 100644
+index cebecee640ed5a7fc2b978e00ff7eb012228267d..2fc4b0199320f768b7e59961c4ca1fbf2f117b54 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -230,7 +230,7 @@ import javax.annotation.Nullable; // Paper
@@ -998,7 +998,7 @@ index ff79c13bc7717eb9529e802b8e31a1f756b02f97..49979b4fa301e7129e5e3b7f2584c0a1
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
-@@ -881,6 +881,7 @@ public final class CraftServer implements Server {
+@@ -880,6 +880,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
@@ -1026,7 +1026,7 @@ index 409fbeeb66fb8f58a72d94686bc9515299927b75..8c28275b6497778f8578e449d545644e
                  acceptsAll(asList("server-name"), "Name of the server")
                          .withRequiredArg()
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index 30a665c090f419985e1d0f49df9e8d110c83943a..9840ff6d433bb2ffb39b519d9dea456511ed1d4e 100644
+index c58de4de8d98c6b1e79d83cc7fcd46a7590ed2a0..213d27827f936b49ef3928987ff7ea474ad2e4a9 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
 @@ -26,7 +26,7 @@ public class WatchdogThread extends Thread
