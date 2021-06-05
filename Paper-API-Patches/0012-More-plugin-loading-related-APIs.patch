@@ -114,7 +114,7 @@ index 86cc5025ad98f7a752c51713b7cd6a39d5136ecc..62d20b9d9660391d574cef358061d4cc
       * Disables all the loaded plugins
       */
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index d1c35e4cf778070f8d18bbe0af8d423334c6dfbf..02a9cdeda89eabaa0cbfe8ba26d82f07fd5e4ae2 100644
+index 0e25119564dfa9cb12f3c5dc5f653d7f2c147a9d..0dad789a906a6f805f12eea9a624eff9dba3194e 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 @@ -382,6 +382,23 @@ public final class SimplePluginManager implements PluginManager {

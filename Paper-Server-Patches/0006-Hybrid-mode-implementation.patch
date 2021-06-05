@@ -187,7 +187,7 @@ index d292ae8786585a66ab6231249362e124a8ef01c1..584bf154bf1b7a89d77bb35f03fef350
          // Run tasks that are waiting on processing
          MinecraftTimings.processQueueTimer.startTiming(); // Spigot
 diff --git a/src/main/java/net/minecraft/server/level/EntityPlayer.java b/src/main/java/net/minecraft/server/level/EntityPlayer.java
-index 558af73ac16550ee6964c4dce681a404633b2552..50c5a1ef546bcba97031717385ab70843c3fb1b6 100644
+index 75bcfb3a2b4a104aeebb2fe3298714b2e5b569d2..4fcc79c81d39c26d7a7728d7b62d5a3fb1a21545 100644
 --- a/src/main/java/net/minecraft/server/level/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/EntityPlayer.java
 @@ -163,6 +163,8 @@ import org.bukkit.craftbukkit.event.CraftEventFactory;
@@ -409,7 +409,7 @@ index 886118c287f09c74dbe4eb5083cbd2d519ca6784..0677341bc58a816306e9889afc9d1c40
      public int getPlayerCount() {
          return this.players.size();
 diff --git a/src/main/java/net/minecraft/world/entity/EntityLiving.java b/src/main/java/net/minecraft/world/entity/EntityLiving.java
-index 2657dd71213455e2da3a4ff4d338a33896ffe855..a339f167aeec51c769360fc5bd0b16141d30edff 100644
+index b7b07b652b29e6f84f87fc92add99ce68f8bbd09..32964e192f1619f1a66dd9adfd10d3b1bae78b52 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityLiving.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityLiving.java
 @@ -1021,9 +1021,11 @@ public abstract class EntityLiving extends Entity {
@@ -596,7 +596,7 @@ index 2fd69c0f915f1c3cb1c410d5dab0498f05d5c888..e8902262eb0edb422d3fd052bae2e0ef
  
      public CraftCommandMap(Server server) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index 32428b1260bbc4bae67ec74969c67f71272de418..95430b7303c2b9101286869edcbf41d5c202fbda 100644
+index 592dacf8cc924caac339a8810ba5b0d85448ed90..ec35ab6ffa58891c60fc9fe8f72d0de26877b280 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 @@ -420,7 +420,17 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
