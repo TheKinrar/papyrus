@@ -86,7 +86,7 @@ index d0fafe0fca4a08d1a5b2e3fac269b75297e3264d..2e3a3152eb86ac7d96340262059b468a
          List<MobSpawner> list = ImmutableList.of(new MobSpawnerPhantom(), new MobSpawnerPatrol(), new MobSpawnerCat(), new VillageSiege(), new MobSpawnerTrader(worlddata));
          RegistryMaterials<WorldDimension> registrymaterials = worlddata.getGeneratorSettings().d();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 8c28275b6497778f8578e449d545644eb7860ce7..af9a3bad3724eaafe4826c2e1d7f30113f6c2c27 100644
+index f68746b99386060e91e1ea70862573b9a004ac3b..9762a0045bdc688b7cee92b2e83aefbd08b82848 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -123,6 +123,13 @@ public class Main {

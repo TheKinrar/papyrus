@@ -52,7 +52,7 @@ index 801a323d9c328c1ab8e58c651cea9c5f3dfbcdca..857e9100ddacbf893815e1c6480770b4
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 81da90531cc3a7ab13d455860f89411081825949..59db536ed1e2592104ab473303e0f65642c992aa 100644
+index d2fa792e182736070a119e96b4ae79337de53d2a..80d90660c14693de9cc47a59f051231291136ea5 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -19,7 +19,9 @@ import java.util.jar.JarEntry;
