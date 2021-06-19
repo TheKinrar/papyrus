@@ -5,10 +5,10 @@ Subject: [PATCH] Add helper methods to Material
 
 
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index e2b3470e3c9a97671723f5a67f722fb86fb07fbf..9a172a9754960c14470f9af16e99f8ec2b7b119b 100644
+index d635c4fb85d3eeea3853037b2da5881c4853b193..b1f683bc63d0e4c79a3a4ae40b8154d354f9a82e 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
-@@ -8731,4 +8731,878 @@ public enum Material implements Keyed {
+@@ -9822,4 +9822,878 @@ public enum Material implements Keyed {
              // </editor-fold>
          }
      }

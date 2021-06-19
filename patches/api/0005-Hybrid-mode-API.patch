@@ -45,10 +45,10 @@ index e88b47a838dc472ad64271a518ee1789f7be19fa..9e0b6e1be44e6379c0d6fda748234335
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index e9ca698212835746a7a9abf0d610e1044d153945..69fa16e2ad42d30d4c236d6fcbea10e0c3511e9a 100644
+index 276ce9fafb5adeb4557782c0de800c8fe47f9d52..c0e15ec75548e6001dfc357f5280de6d082a563e 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1974,6 +1974,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -2001,6 +2001,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * @param canAlwaysOpenCommandBlocks whether this player can always open command blocks
       */
      void setCanAlwaysOpenCommandBlocks(boolean canAlwaysOpenCommandBlocks);
@@ -66,10 +66,10 @@ index e9ca698212835746a7a9abf0d610e1044d153945..69fa16e2ad42d30d4c236d6fcbea10e0
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java b/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
-index 16b5fd279b0cb926900247618bcdb381a93f5a35..86f1a6b2f8bce5e6fd516a8b99d4047f945301cc 100644
+index b915c3cab168a2bbdca740e662baaa708d425e41..955c0b6dcce2e61cf30adfb9d9f28e64a7da81f7 100644
 --- a/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
 +++ b/src/main/java/org/bukkit/event/entity/EntityPotionEffectEvent.java
-@@ -209,6 +209,10 @@ public class EntityPotionEffectEvent extends EntityEvent implements Cancellable
+@@ -213,6 +213,10 @@ public class EntityPotionEffectEvent extends EntityEvent implements Cancellable
           * When an illusion illager makes himself disappear.
           */
          ILLUSION,

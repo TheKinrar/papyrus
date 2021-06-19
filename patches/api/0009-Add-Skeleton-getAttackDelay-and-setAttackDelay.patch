@@ -5,17 +5,19 @@ Subject: [PATCH] Add Skeleton#getAttackDelay and setAttackDelay
 
 
 diff --git a/src/main/java/org/bukkit/entity/Skeleton.java b/src/main/java/org/bukkit/entity/Skeleton.java
-index 684477b894e52ff33f9fce2edf76e58c292dd75e..3560a49300bf3c04a029f033083d514058ba83c2 100644
+index 2ca7c040270fa1b0fe623a0a779879783201a2f1..f8d90cd09b31eef5254e5630d6d081e8a73f2bc5 100644
 --- a/src/main/java/org/bukkit/entity/Skeleton.java
 +++ b/src/main/java/org/bukkit/entity/Skeleton.java
-@@ -27,6 +27,10 @@ public interface Skeleton extends Monster, RangedEntity { // Paper
-     @Contract("_ -> fail")
-     public void setSkeletonType(SkeletonType type);
+@@ -41,6 +41,12 @@ public interface Skeleton extends AbstractSkeleton, com.destroystokyo.paper.enti
+      */
+     void setConversionTime(int time);
  
++    // Papyrus start
 +    public int getAttackDelay();
 +
 +    public void setAttackDelay(int delay);
++    // Papyrus end
 +
-     /*
-      * @deprecated classes are different types
-      */
+     /**
+      * A legacy enum that defines the different variances of skeleton-like
+      * entities on the server.
