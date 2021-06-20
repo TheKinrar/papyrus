@@ -5,7 +5,7 @@ Subject: [PATCH] More plugin-loading related APIs
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index be65555847d619ea5d91eccdda084487bde8b41c..863dfab9b78d932eed9cc7c8b43e8d5b3c0ffa10 100644
+index 27c9d641261eab7bb8a91a9c05e82f9d5f490539..0ee8000634f0bb1a83afac5b89780d2ba8a8a4d2 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -701,6 +701,11 @@ public final class CraftServer implements Server {
