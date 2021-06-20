@@ -192,10 +192,10 @@ index 181ab56448796a617f30f1b9e0fec8917b5d8e07..407becfeb8ab625b97d60b9f5ce70868
  
              if (this.tickCount % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 04a77eda194256ed1ffd2a29f9d6216e772a0260..be502c282d6240536344c431e49ceca66dce9682 100644
+index 071173569641aa264888d57468df5b54b013b494..25e8a44765f1bf01dfcb1a62218892c8bc66c7da 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -1385,6 +1385,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -1376,6 +1376,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                              }
                              // Paper end
  
@@ -209,7 +209,7 @@ index 04a77eda194256ed1ffd2a29f9d6216e772a0260..be502c282d6240536344c431e49ceca6
                              if (!this.player.isChangingDimension() && (!this.player.getLevel().getGameRules().getBoolean(GameRules.RULE_DISABLE_ELYTRA_MOVEMENT_CHECK) || !this.player.isFallFlying())) {
                                  float f2 = this.player.isFallFlying() ? 300.0F : 100.0F;
  
-@@ -1671,6 +1678,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -1662,6 +1669,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
          switch (packetplayinblockdig_enumplayerdigtype) {
              case SWAP_ITEM_WITH_OFFHAND:
@@ -218,7 +218,7 @@ index 04a77eda194256ed1ffd2a29f9d6216e772a0260..be502c282d6240536344c431e49ceca6
                  if (!this.player.isSpectator()) {
                      ItemStack itemstack = this.player.getItemInHand(InteractionHand.OFF_HAND);
  
-@@ -1698,6 +1707,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -1689,6 +1698,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
                  return;
              case DROP_ITEM:
@@ -227,7 +227,7 @@ index 04a77eda194256ed1ffd2a29f9d6216e772a0260..be502c282d6240536344c431e49ceca6
                  if (!this.player.isSpectator()) {
                      // limit how quickly items can be dropped
                      // If the ticks aren't the same then the count starts from 0 and we update the lastDropTick.
-@@ -1719,12 +1730,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -1710,12 +1721,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
                  return;
              case DROP_ALL_ITEMS:
@@ -244,7 +244,7 @@ index 04a77eda194256ed1ffd2a29f9d6216e772a0260..be502c282d6240536344c431e49ceca6
                  this.player.releaseUsingItem();
                  return;
              case START_DESTROY_BLOCK:
-@@ -2051,6 +2066,10 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2042,6 +2057,10 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
              // CraftBukkit start
              boolean isSync = s.startsWith("/");
@@ -255,7 +255,7 @@ index 04a77eda194256ed1ffd2a29f9d6216e772a0260..be502c282d6240536344c431e49ceca6
              if (isSync) {
                  try {
                      this.server.server.playerCommandState = true;
-@@ -3099,6 +3118,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3090,6 +3109,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      // CraftBukkit start
      private static final ResourceLocation CUSTOM_REGISTER = new ResourceLocation("register");
      private static final ResourceLocation CUSTOM_UNREGISTER = new ResourceLocation("unregister");
@@ -263,7 +263,7 @@ index 04a77eda194256ed1ffd2a29f9d6216e772a0260..be502c282d6240536344c431e49ceca6
  
      private static final ResourceLocation MINECRAFT_BRAND = new ResourceLocation("brand"); // Paper - Brand support
  
-@@ -3125,6 +3145,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3116,6 +3136,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                  ServerGamePacketListenerImpl.LOGGER.error("Couldn\'t unregister custom payload", ex);
                  this.disconnect("Invalid payload UNREGISTER!", org.bukkit.event.player.PlayerKickEvent.Cause.INVALID_PAYLOAD); // Paper - kick event cause
              }
