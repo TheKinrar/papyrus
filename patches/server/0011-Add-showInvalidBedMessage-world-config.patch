@@ -20,16 +20,16 @@ index 52274c1bb387ae8e42f3c7078328d99f5e7df1df..4cdcd51049703e12978588736fea3b92
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 0677341bc58a816306e9889afc9d1c401a5fbf5e..dd4756a8b93b318054617233b4e7bda3ed3c7b28 100644
+index 9265e63ea53e22d6c4d41975d54e103bcdef1cf5..63eaf23c499da16902d91a24be4a38f1980d0f6a 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -925,7 +925,9 @@ public abstract class PlayerList {
+@@ -892,7 +892,9 @@ public abstract class PlayerList {
                      isBedSpawn = true;
                      location = new Location(worldserver1.getWorld(), vec3d.x, vec3d.y, vec3d.z, f1, 0.0F);
                  } else if (blockposition != null) {
--                    entityplayer1.playerConnection.sendPacket(new PacketPlayOutGameStateChange(PacketPlayOutGameStateChange.a, 0.0F));
-+                    if(worldserver1.getWorld().getHandle().papyrusConfig.showInvalidBedMessage) {
-+                        entityplayer1.playerConnection.sendPacket(new PacketPlayOutGameStateChange(PacketPlayOutGameStateChange.a, 0.0F));
+-                    entityplayer1.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.NO_RESPAWN_BLOCK_AVAILABLE, 0.0F));
++                    if(worldserver1.getWorld().getHandle().papyrusConfig.showInvalidBedMessage) { // Papyrus
++                        entityplayer1.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.NO_RESPAWN_BLOCK_AVAILABLE, 0.0F));
 +                    }
                  }
              }

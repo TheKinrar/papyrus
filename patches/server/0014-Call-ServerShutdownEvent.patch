@@ -5,24 +5,15 @@ Subject: [PATCH] Call ServerShutdownEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 584bf154bf1b7a89d77bb35f03fef3500c78aace..21543d435f9bab42580deaf450f690a1ae0337dc 100644
+index af73683e915c5379534bb2ce2d8c225553920896..554bb098cee47f67411dcef7a0fccdad9bca957f 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -183,6 +183,8 @@ import co.aikar.timings.MinecraftTimings; // Paper
- import org.spigotmc.SlackActivityAccountant; // Spigot
- import io.papermc.paper.util.PaperJvmChecker; // Paper
- import io.papermc.paper.event.server.ServerResourcesReloadedEvent; // Paper
-+import org.bukkit.event.server.ServerShutdownEvent;
-+import org.spigotmc.SlackActivityAccountant; // Spigot
- 
- public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTask> implements IMojangStatistics, ICommandListener, AutoCloseable {
- 
-@@ -990,6 +992,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1039,6 +1039,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          this.safeShutdown(flag, false);
      }
      public void safeShutdown(boolean flag, boolean isRestarting) {
-+        org.bukkit.Bukkit.getPluginManager().callEvent(new ServerShutdownEvent());
++        org.bukkit.Bukkit.getPluginManager().callEvent(new ServerShutdownEvent()); // Papyrus
 +
-         this.isRunning = false;
          this.isRestarting = isRestarting;
          this.hasLoggedStop = true; // Paper
+         if (isDebugging()) io.papermc.paper.util.TraceUtil.dumpTraceForThread("Server stopped"); // Paper

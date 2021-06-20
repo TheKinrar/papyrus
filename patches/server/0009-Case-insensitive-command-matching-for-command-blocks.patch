@@ -5,15 +5,15 @@ Subject: [PATCH] Case-insensitive command matching for command blocks
 
 (Which matches the behaviour for players and console)
 
-diff --git a/src/main/java/net/minecraft/commands/CommandDispatcher.java b/src/main/java/net/minecraft/commands/CommandDispatcher.java
-index 7e30ec9a08d919d2ae9218ee0a11f77719129f07..10e772d4ae370dd941d510f6449f980eef984a10 100644
---- a/src/main/java/net/minecraft/commands/CommandDispatcher.java
-+++ b/src/main/java/net/minecraft/commands/CommandDispatcher.java
-@@ -224,6 +224,7 @@ public class CommandDispatcher {
+diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
+index ff4f48f6646060b398e8bf90a078e7fbf84beada..319fd1a3daff96c56b16b6104164f732a5160287 100644
+--- a/src/main/java/net/minecraft/commands/Commands.java
++++ b/src/main/java/net/minecraft/commands/Commands.java
+@@ -231,6 +231,7 @@ public class Commands {
  
          String[] args = command.split(" ");
          if (args.length == 0) return 0; // Paper - empty commands shall not be dispatched
-+        args[0] = args[0].toLowerCase();
++        args[0] = args[0].toLowerCase(); // Papyrus - lower case match
  
          String cmd = args[0];
          if (cmd.startsWith("minecraft:")) cmd = cmd.substring("minecraft:".length());

@@ -5,7 +5,7 @@ Subject: [PATCH] Hybrid mode implementation
 
 
 diff --git a/src/main/java/co/aikar/timings/MinecraftTimings.java b/src/main/java/co/aikar/timings/MinecraftTimings.java
-index b4d43ceed368552e703886213327a0c0bb5ccb92..5fa4c8ffc634930e67fb27c65c2ed3c24d7ee347 100644
+index b9cdbf8acccfd6b207a0116f068168f3b8c8e17d..36b67af3a4564069e9f2689a85f6c752839d623e 100644
 --- a/src/main/java/co/aikar/timings/MinecraftTimings.java
 +++ b/src/main/java/co/aikar/timings/MinecraftTimings.java
 @@ -46,6 +46,8 @@ public final class MinecraftTimings {
@@ -151,25 +151,13 @@ index 0000000000000000000000000000000000000000..a46fefcd95750ebe6b5b4f73c9ddfe7d
 +        server.getHandle().updateClient(player.getHandle());
 +    }
 +}
-diff --git a/src/main/java/net/minecraft/network/NetworkManager.java b/src/main/java/net/minecraft/network/NetworkManager.java
-index bf0c01eaf593972bbb18c22cfdb3abd658ec6498..230da4140a38093c6e77ee9623e71d4832e7a145 100644
---- a/src/main/java/net/minecraft/network/NetworkManager.java
-+++ b/src/main/java/net/minecraft/network/NetworkManager.java
-@@ -44,6 +44,7 @@ import org.apache.logging.log4j.LogManager;
- import org.apache.logging.log4j.Logger;
- import org.apache.logging.log4j.Marker;
- import org.apache.logging.log4j.MarkerManager;
-+import org.bukkit.Bukkit;
- 
- public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
- 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index d292ae8786585a66ab6231249362e124a8ef01c1..584bf154bf1b7a89d77bb35f03fef3500c78aace 100644
+index 4978648e40161ef45b2700481917d46fe142faff..af73683e915c5379534bb2ce2d8c225553920896 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1435,6 +1435,18 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
-         this.methodProfiler.exitEnter("levels");
-         Iterator iterator = this.getWorlds().iterator();
+@@ -1496,6 +1496,18 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         this.profiler.popPush("levels");
+         Iterator iterator = this.getAllLevels().iterator();
  
 +        // Papyrus start
 +        if(server.getHybridMode()) {
@@ -186,11 +174,11 @@ index d292ae8786585a66ab6231249362e124a8ef01c1..584bf154bf1b7a89d77bb35f03fef350
          // CraftBukkit start
          // Run tasks that are waiting on processing
          MinecraftTimings.processQueueTimer.startTiming(); // Spigot
-diff --git a/src/main/java/net/minecraft/server/level/EntityPlayer.java b/src/main/java/net/minecraft/server/level/EntityPlayer.java
-index 75bcfb3a2b4a104aeebb2fe3298714b2e5b569d2..4fcc79c81d39c26d7a7728d7b62d5a3fb1a21545 100644
---- a/src/main/java/net/minecraft/server/level/EntityPlayer.java
-+++ b/src/main/java/net/minecraft/server/level/EntityPlayer.java
-@@ -163,6 +163,8 @@ import org.bukkit.craftbukkit.event.CraftEventFactory;
+diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+index 181ab56448796a617f30f1b9e0fec8917b5d8e07..94ab089a6d819fa8e686c1c75e4e8daec43826b2 100644
+--- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
++++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+@@ -152,6 +152,8 @@ import org.bukkit.craftbukkit.event.CraftEventFactory;
  import org.bukkit.craftbukkit.event.CraftPortalEvent;
  import org.bukkit.craftbukkit.inventory.CraftItemStack;
  import org.bukkit.craftbukkit.util.CraftDimensionUtil;
@@ -199,56 +187,47 @@ index 75bcfb3a2b4a104aeebb2fe3298714b2e5b569d2..4fcc79c81d39c26d7a7728d7b62d5a3f
  import org.bukkit.event.inventory.InventoryType;
  import org.bukkit.event.player.PlayerBedLeaveEvent;
  import org.bukkit.event.player.PlayerChangedMainHandEvent;
-@@ -716,7 +718,12 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -729,7 +731,12 @@ public class ServerPlayer extends Player {
  
-             if (this.expTotal != this.lastSentExp) {
-                 this.lastSentExp = this.expTotal;
+             if (this.totalExperience != this.lastSentExp) {
+                 this.lastSentExp = this.totalExperience;
 +
 +                if(this.unauthenticated) {
-+                this.playerConnection.sendPacket(new PacketPlayOutExperience(0, 0, 0));
++                this.connection.send(new ClientboundSetExperiencePacket(0, 0, 0));
 +                } else {
-                 this.playerConnection.sendPacket(new PacketPlayOutExperience(this.exp, this.expTotal, this.expLevel));
+                 this.connection.send(new ClientboundSetExperiencePacket(this.experienceProgress, this.totalExperience, this.experienceLevel));
 +                }
              }
  
-             if (this.ticksLived % 20 == 0) {
-diff --git a/src/main/java/net/minecraft/server/network/PlayerConnection.java b/src/main/java/net/minecraft/server/network/PlayerConnection.java
-index 705cf5d422c4e9faf790f4d99586848f5a00eb39..b47f8d6bd14e6f6ab5039faa2eee886210e3e1a7 100644
---- a/src/main/java/net/minecraft/server/network/PlayerConnection.java
-+++ b/src/main/java/net/minecraft/server/network/PlayerConnection.java
-@@ -13,6 +13,8 @@ import io.netty.util.concurrent.Future;
- import io.netty.util.concurrent.GenericFutureListener;
- import it.unimi.dsi.fastutil.ints.Int2ShortMap;
- import it.unimi.dsi.fastutil.ints.Int2ShortOpenHashMap;
-+
-+import java.nio.charset.StandardCharsets;
- import java.util.Collections;
- import java.util.Iterator;
- import java.util.List;
-@@ -1373,6 +1375,13 @@ public class PlayerConnection implements PacketListenerPlayIn {
+             if (this.tickCount % 20 == 0) {
+diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+index 6be5b79bb81165bd40c2d4f4ec68e5e0464554df..2dbe124a6849bbbaaae200f1eda5c5c3ffabd969 100644
+--- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
++++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+@@ -1385,6 +1385,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                              }
                              // Paper end
  
 +                            // Papyrus start - Hybrid mode
 +                            if(player.unauthenticated) {
-+                                this.internalTeleport(this.player.locX(), this.player.locY(), this.player.locZ(), this.player.yaw, this.player.pitch, Collections.emptySet());
++                                this.teleport(this.player.getX(), this.player.getY(), this.player.getZ(), this.player.getYRot(), this.player.getXRot());
 +                                return;
 +                            }
 +                            // Papyrus end
 +
-                             if (!this.player.H() && (!this.player.getWorldServer().getGameRules().getBoolean(GameRules.DISABLE_ELYTRA_MOVEMENT_CHECK) || !this.player.isGliding())) {
-                                 float f2 = this.player.isGliding() ? 300.0F : 100.0F;
+                             if (!this.player.isChangingDimension() && (!this.player.getLevel().getGameRules().getBoolean(GameRules.RULE_DISABLE_ELYTRA_MOVEMENT_CHECK) || !this.player.isFallFlying())) {
+                                 float f2 = this.player.isFallFlying() ? 300.0F : 100.0F;
  
-@@ -1648,6 +1657,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1671,6 +1678,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
          switch (packetplayinblockdig_enumplayerdigtype) {
              case SWAP_ITEM_WITH_OFFHAND:
 +                if(player.unauthenticated) return; // Papyrus
 +
                  if (!this.player.isSpectator()) {
-                     ItemStack itemstack = this.player.b(EnumHand.OFF_HAND);
+                     ItemStack itemstack = this.player.getItemInHand(InteractionHand.OFF_HAND);
  
-@@ -1675,6 +1686,8 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1698,6 +1707,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
                  return;
              case DROP_ITEM:
@@ -257,26 +236,26 @@ index 705cf5d422c4e9faf790f4d99586848f5a00eb39..b47f8d6bd14e6f6ab5039faa2eee8862
                  if (!this.player.isSpectator()) {
                      // limit how quickly items can be dropped
                      // If the ticks aren't the same then the count starts from 0 and we update the lastDropTick.
-@@ -1696,12 +1709,16 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1719,12 +1730,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
                  return;
              case DROP_ALL_ITEMS:
 +                if(player.unauthenticated) return; // Papyrus
 +
                  if (!this.player.isSpectator()) {
-                     this.player.dropItem(true);
+                     this.player.drop(true);
                  }
  
                  return;
              case RELEASE_USE_ITEM:
 +                if(player.unauthenticated) return; // Papyrus
 +
-                 this.player.releaseActiveItem();
+                 this.player.releaseUsingItem();
                  return;
              case START_DESTROY_BLOCK:
-@@ -2058,6 +2075,11 @@ public class PlayerConnection implements PacketListenerPlayIn {
-                 }
-             }
+@@ -2049,6 +2064,11 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+             this.player.resetLastActionTime();
+             String s = message.getRaw();
  
 +            if(player.unauthenticated && !isSync) {
 +                server.getLogger().warning(player.getName() + " tried chatting while unauthenticated: " + s);
@@ -284,18 +263,18 @@ index 705cf5d422c4e9faf790f4d99586848f5a00eb39..b47f8d6bd14e6f6ab5039faa2eee8862
 +            }
 +
              // CraftBukkit start
+             boolean isSync = s.startsWith("/");
              if (isSync) {
-                 try {
-@@ -3106,6 +3128,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -3099,6 +3119,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      // CraftBukkit start
-     private static final MinecraftKey CUSTOM_REGISTER = new MinecraftKey("register");
-     private static final MinecraftKey CUSTOM_UNREGISTER = new MinecraftKey("unregister");
-+    private static final MinecraftKey CUSTOM_HYBRID = new MinecraftKey("bungeecord:hybrid");
+     private static final ResourceLocation CUSTOM_REGISTER = new ResourceLocation("register");
+     private static final ResourceLocation CUSTOM_UNREGISTER = new ResourceLocation("unregister");
++    private static final ResourceLocation CUSTOM_HYBRID = new ResourceLocation("bungeecord:hybrid");
  
-     private static final MinecraftKey MINECRAFT_BRAND = new MinecraftKey("brand"); // Paper - Brand support
+     private static final ResourceLocation MINECRAFT_BRAND = new ResourceLocation("brand"); // Paper - Brand support
  
-@@ -3132,6 +3155,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
-                 PlayerConnection.LOGGER.error("Couldn\'t unregister custom payload", ex);
+@@ -3125,6 +3146,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+                 ServerGamePacketListenerImpl.LOGGER.error("Couldn\'t unregister custom payload", ex);
                  this.disconnect("Invalid payload UNREGISTER!", org.bukkit.event.player.PlayerKickEvent.Cause.INVALID_PAYLOAD); // Paper - kick event cause
              }
 +        } else if (packetplayincustompayload.tag.equals(CUSTOM_HYBRID)) {
@@ -312,9 +291,9 @@ index 705cf5d422c4e9faf790f4d99586848f5a00eb39..b47f8d6bd14e6f6ab5039faa2eee8862
 +            }
          } else {
              try {
-                 byte[] data = new byte[packetplayincustompayload.data.readableBytes()];
+                 byte[] data = new byte[packet.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 886118c287f09c74dbe4eb5083cbd2d519ca6784..0677341bc58a816306e9889afc9d1c401a5fbf5e 100644
+index a5ad4faf00e11e67c18781715762248524e8fc95..9265e63ea53e22d6c4d41975d54e103bcdef1cf5 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
@@ -325,16 +304,15 @@ index 886118c287f09c74dbe4eb5083cbd2d519ca6784..0677341bc58a816306e9889afc9d1c40
  import io.netty.buffer.Unpooled;
  import io.papermc.paper.adventure.PaperAdventure;
  import java.io.File;
-@@ -79,6 +80,8 @@ import net.minecraft.world.entity.Entity;
- import net.minecraft.world.entity.EntityTypes;
- import net.minecraft.world.entity.npc.EntityVillagerAbstract;
- import net.minecraft.world.entity.player.EntityHuman;
-+import net.minecraft.world.entity.player.PlayerInventory;
-+import net.minecraft.world.inventory.ContainerPlayer;
- import net.minecraft.world.item.ItemStack;
- import net.minecraft.world.level.ChunkCoordIntPair;
- import net.minecraft.world.level.EnumGamemode;
-@@ -122,6 +125,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
+@@ -72,7 +73,6 @@ import net.minecraft.tags.Tag;
+ import net.minecraft.util.Mth;
+ import net.minecraft.world.effect.MobEffectInstance;
+ import net.minecraft.world.entity.Entity;
+-import net.minecraft.world.entity.EntityType;
+ import net.minecraft.world.level.GameRules;
+ import net.minecraft.world.level.Level;
+ import net.minecraft.world.level.biome.BiomeManager;
+@@ -116,6 +116,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
  import org.bukkit.event.player.PlayerLoginEvent;
  import org.bukkit.event.player.PlayerQuitEvent;
  import org.bukkit.event.player.PlayerRespawnEvent;
@@ -342,78 +320,71 @@ index 886118c287f09c74dbe4eb5083cbd2d519ca6784..0677341bc58a816306e9889afc9d1c40
  // CraftBukkit end
  
  public abstract class PlayerList {
-@@ -234,6 +238,12 @@ public abstract class PlayerList {
+@@ -229,6 +230,12 @@ public abstract class PlayerList {
  
-         if (nbttagcompound == null) entityplayer.moveToSpawn(worldserver1); // Paper - only move to spawn on first login, otherwise, stay where you are....
+         if (nbttagcompound == null) player.fudgeSpawnLocation(worldserver1); // Paper - only move to spawn on first login, otherwise, stay where you are....
  
 +        // Papyrus start
 +        if(cserver.getHybridMode()) {
-+            entityplayer.getBukkitEntity().initHybrid();
++            player.getBukkitEntity().initHybrid();
 +        }
 +        // Papyrus end
 +
-         entityplayer.spawnIn(worldserver1);
-         entityplayer.playerInteractManager.a((WorldServer) entityplayer.world);
+         player.setLevel(worldserver1);
          String s1 = "local";
-@@ -266,7 +276,7 @@ public abstract class PlayerList {
-         PlayerConnection playerconnection = new PlayerConnection(this.server, networkmanager, entityplayer);
-         GameRules gamerules = worldserver1.getGameRules();
-         boolean flag = gamerules.getBoolean(GameRules.DO_IMMEDIATE_RESPAWN);
--        boolean flag1 = gamerules.getBoolean(GameRules.REDUCED_DEBUG_INFO);
-+        boolean flag1 = hasReducedDebugInfo(entityplayer); // Papyrus
  
-         // Spigot - view distance
-         playerconnection.sendPacket(new PacketPlayOutLogin(entityplayer.getId(), entityplayer.playerInteractManager.getGameMode(), entityplayer.playerInteractManager.c(), BiomeManager.a(worldserver1.getSeed()), worlddata.isHardcore(), this.server.F(), this.s, worldserver1.getDimensionManager(), worldserver1.getDimensionKey(), this.getMaxPlayers(), worldserver1.getChunkProvider().playerChunkMap.getLoadViewDistance(), flag1, !flag, worldserver1.isDebugWorld(), worldserver1.isFlatWorld())); // Paper - no-tick view distance
-@@ -277,7 +287,7 @@ public abstract class PlayerList {
-         playerconnection.sendPacket(new PacketPlayOutHeldItemSlot(entityplayer.inventory.itemInHandIndex));
-         playerconnection.sendPacket(new PacketPlayOutRecipeUpdate(this.server.getCraftingManager().b()));
-         playerconnection.sendPacket(new PacketPlayOutTags(this.server.getTagRegistry()));
--        playerconnection.sendPacket(new PacketPlayOutEntityStatus(entityplayer, (byte) (worldserver1.getGameRules().getBoolean(GameRules.REDUCED_DEBUG_INFO) ? 22 : 23))); // Paper - fix this rule not being initialized on the client
-+        playerconnection.sendPacket(new PacketPlayOutEntityStatus(entityplayer, (byte) (hasReducedDebugInfo(entityplayer) ? 22 : 23))); // Paper - fix this rule not being initialized on the client
-         this.d(entityplayer);
-         entityplayer.getStatisticManager().c();
-         entityplayer.getRecipeBook().a(entityplayer);
-@@ -1318,17 +1328,32 @@ public abstract class PlayerList {
+@@ -271,7 +278,7 @@ public abstract class PlayerList {
+         playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
+         playerconnection.send(new ClientboundUpdateRecipesPacket(this.server.getRecipeManager().getRecipes()));
+         playerconnection.send(new ClientboundUpdateTagsPacket(this.server.getTags().serializeToNetwork((RegistryAccess) this.registryHolder)));
+-        playerconnection.send(new ClientboundEntityEventPacket(player, (byte) (worldserver1.getGameRules().getBoolean(GameRules.RULE_REDUCEDDEBUGINFO) ? 22 : 23))); // Paper - fix this rule not being initialized on the client
++        playerconnection.send(new ClientboundEntityEventPacket(player, (byte) (hasReducedDebugInfo(player) ? 22 : 23))); // Paper - fix this rule not being initialized on the client
+         this.sendPlayerPermissionLevel(player);
+         player.getStats().markAllDirty();
+         player.getRecipeBook().sendInitialRecipeBook(player);
+@@ -1294,18 +1301,32 @@ public abstract class PlayerList {
      }
  
-     public void updateClient(EntityPlayer entityplayer) {
--        entityplayer.updateInventory(entityplayer.defaultContainer);
+     public void sendAllPlayerInfo(ServerPlayer player) {
+-        player.inventoryMenu.sendAllDataToRemote();
 +        // Papyrus start
-+        if(entityplayer.unauthenticated)
-+            entityplayer.updateInventory(new ContainerPlayer(new PlayerInventory(entityplayer), true, entityplayer));
++        if(player.unauthenticated)
++            new InventoryMenu(new Inventory(player), true, player).sendAllDataToRemote();
 +        else // Papyrus end
-+            entityplayer.updateInventory(entityplayer.defaultContainer);
++            player.inventoryMenu.sendAllDataToRemote();
          // entityplayer.triggerHealthUpdate();
-         entityplayer.getBukkitEntity().updateScaledHealth(); // CraftBukkit - Update scaled health on respawn and worldchange
-         entityplayer.playerConnection.sendPacket(new PacketPlayOutHeldItemSlot(entityplayer.inventory.itemInHandIndex));
-+
-+        updateReducedDebugInfo(entityplayer); // Papyrus
-+    }
-+
-+    // Papyrus start
-+    public void updateReducedDebugInfo(EntityPlayer entityplayer) {
+         player.getBukkitEntity().updateScaledHealth(); // CraftBukkit - Update scaled health on respawn and worldchange
+         player.connection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
          // CraftBukkit start - from GameRules
--        int i = entityplayer.world.getGameRules().getBoolean(GameRules.REDUCED_DEBUG_INFO) ? 22 : 23;
-+        int i = hasReducedDebugInfo(entityplayer) ? 22 : 23;
-         entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityStatus(entityplayer, (byte) i));
-         float immediateRespawn = entityplayer.world.getGameRules().getBoolean(GameRules.DO_IMMEDIATE_RESPAWN) ? 1.0F: 0.0F;
-         entityplayer.playerConnection.sendPacket(new PacketPlayOutGameStateChange(PacketPlayOutGameStateChange.l, immediateRespawn));
+-        int i = player.level.getGameRules().getBoolean(GameRules.RULE_REDUCEDDEBUGINFO) ? 22 : 23;
+-        player.connection.send(new ClientboundEntityEventPacket(player, (byte) i));
+-        float immediateRespawn = player.level.getGameRules().getBoolean(GameRules.RULE_DO_IMMEDIATE_RESPAWN) ? 1.0F: 0.0F;
++        updateReducedDebugInfo(player); // Papyrus
++        float immediateRespawn = player.level.getGameRules().getBoolean(GameRules.RULE_DO_IMMEDIATE_RESPAWN) ? 1.0F : 0.0F;
+         player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.IMMEDIATE_RESPAWN, immediateRespawn));
          // CraftBukkit end
      }
+ 
++    // Papyrus start
++    public void updateReducedDebugInfo(ServerPlayer player) {
++        int i = hasReducedDebugInfo(player) ? 22 : 23;
++        player.connection.send(new ClientboundEntityEventPacket(player, (byte) i));
++    }
 +    // Papyrus end
 +
-+    private boolean hasReducedDebugInfo(EntityPlayer entityplayer) {
-+        return entityplayer.world.getGameRules().getBoolean(GameRules.REDUCED_DEBUG_INFO) || entityplayer.unauthenticated;
++    private boolean hasReducedDebugInfo(ServerPlayer player) {
++        return player.level.getGameRules().getBoolean(GameRules.RULE_REDUCEDDEBUGINFO) || player.unauthenticated;
 +    }
- 
++
      public int getPlayerCount() {
          return this.players.size();
-diff --git a/src/main/java/net/minecraft/world/entity/EntityLiving.java b/src/main/java/net/minecraft/world/entity/EntityLiving.java
-index b7b07b652b29e6f84f87fc92add99ce68f8bbd09..32964e192f1619f1a66dd9adfd10d3b1bae78b52 100644
---- a/src/main/java/net/minecraft/world/entity/EntityLiving.java
-+++ b/src/main/java/net/minecraft/world/entity/EntityLiving.java
-@@ -1021,9 +1021,11 @@ public abstract class EntityLiving extends Entity {
-                 override = new MobEffect(mobeffect1).b(mobeffect);
+     }
+diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+index 57c448ee93df76fc2a17c75fafc78408d720ced3..abfeb86c79146b42a9ea84209ce99ed85cc3d195 100644
+--- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
++++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+@@ -1107,9 +1107,12 @@ public abstract class LivingEntity extends Entity {
+                 override = new MobEffectInstance(mobeffect1).update(mobeffect);
              }
  
 -            EntityPotionEffectEvent event = CraftEventFactory.callEntityPotionEffectChangeEvent(this, mobeffect1, mobeffect, cause, override);
@@ -424,19 +395,20 @@ index b7b07b652b29e6f84f87fc92add99ce68f8bbd09..32964e192f1619f1a66dd9adfd10d3b1
 +                if (event.isCancelled()) {
 +                    return false;
 +                }
++                override = event.isOverride(); // Papyrus - see below
              }
              // CraftBukkit end
  
-@@ -1032,7 +1034,7 @@ public abstract class EntityLiving extends Entity {
-                 this.a(mobeffect);
+@@ -1118,7 +1121,7 @@ public abstract class LivingEntity extends Entity {
+                 this.onEffectAdded(mobeffect, entity);
                  return true;
                  // CraftBukkit start
 -            } else if (event.isOverride()) {
 +            } else if (override) { // Papyrus - read override directly
-                 mobeffect1.b(mobeffect);
-                 this.a(mobeffect1, true);
+                 mobeffect1.update(mobeffect);
+                 this.onEffectUpdated(mobeffect1, true, entity);
                  // CraftBukkit end
-@@ -1077,9 +1079,11 @@ public abstract class EntityLiving extends Entity {
+@@ -1176,9 +1179,11 @@ public abstract class LivingEntity extends Entity {
              return null;
          }
  
@@ -450,14 +422,14 @@ index b7b07b652b29e6f84f87fc92add99ce68f8bbd09..32964e192f1619f1a66dd9adfd10d3b1
 +            }
          }
  
-         return (MobEffect) this.effects.remove(mobeffectlist);
-diff --git a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
-index c39c50e53549e9cb9d3520bc7e8b7e89cfa20163..3c8c48dad244e955712af9eced2c9b4a0e2e57da 100644
---- a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
-+++ b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
-@@ -114,11 +114,15 @@ import net.minecraft.world.scores.ScoreboardTeam;
- import net.minecraft.world.scores.ScoreboardTeamBase;
- 
+         return (MobEffectInstance) this.activeEffects.remove(mobeffectlist);
+diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
+index d286d88a3c3f93dbfa92de9421e320c92cd96350..cf6eec97b8edf99ed2048104914dfdd8e82eb76e 100644
+--- a/src/main/java/net/minecraft/world/entity/player/Player.java
++++ b/src/main/java/net/minecraft/world/entity/player/Player.java
+@@ -115,10 +115,15 @@ import net.minecraft.world.phys.Vec3;
+ import net.minecraft.world.scores.PlayerTeam;
+ import net.minecraft.world.scores.Scoreboard;
  // CraftBukkit start
 +import fr.thekinrar.papyrus.PapyrusConfig;
  import org.bukkit.craftbukkit.entity.CraftHumanEntity;
@@ -465,13 +437,13 @@ index c39c50e53549e9cb9d3520bc7e8b7e89cfa20163..3c8c48dad244e955712af9eced2c9b4a
 +import org.bukkit.craftbukkit.entity.CraftPlayer;
  import org.bukkit.craftbukkit.util.CraftVector;
  import org.bukkit.entity.Item;
- import org.bukkit.entity.Player;
++import org.bukkit.entity.Player;
 +import org.bukkit.event.Cancellable;
 +import org.bukkit.event.Event;
  import org.bukkit.event.entity.CreatureSpawnEvent;
  import org.bukkit.event.entity.EntityCombustByEntityEvent;
  import org.bukkit.event.entity.EntityExhaustionEvent;
-@@ -181,6 +185,10 @@ public abstract class EntityHuman extends EntityLiving {
+@@ -193,6 +198,10 @@ public abstract class Player extends LivingEntity {
      }
      // CraftBukkit end
  
@@ -479,22 +451,22 @@ index c39c50e53549e9cb9d3520bc7e8b7e89cfa20163..3c8c48dad244e955712af9eced2c9b4a
 +    public boolean unauthenticated = PapyrusConfig.hybridMode;
 +    // Papyrus end
 +
-     public EntityHuman(World world, BlockPosition blockposition, float f, GameProfile gameprofile) {
-         super(EntityTypes.PLAYER, world);
-         this.bL = ItemStack.b;
-@@ -692,10 +700,7 @@ public abstract class EntityHuman extends EntityLiving {
-             Player player = (Player) this.getBukkitEntity();
+     public Player(Level world, BlockPos pos, float yaw, GameProfile profile) {
+         super(EntityType.PLAYER, world);
+         this.lastItemInMainHand = ItemStack.EMPTY;
+@@ -739,10 +748,7 @@ public abstract class Player extends LivingEntity {
+             org.bukkit.entity.Player player = (org.bukkit.entity.Player) this.getBukkitEntity();
              Item drop = (Item) entityitem.getBukkitEntity();
  
 -            PlayerDropItemEvent event = new PlayerDropItemEvent(player, drop);
--            this.world.getServer().getPluginManager().callEvent(event);
+-            this.level.getCraftServer().getPluginManager().callEvent(event);
 -
 -            if (event.isCancelled() && !alwaysSucceed) { // Paper - Fix duplicating /give items on item drop cancel
 +            if (hybridCall(new PlayerDropItemEvent(player, drop)) && !alwaysSucceed) { // Paper - Fix duplicating /give items on item drop cancel
                  org.bukkit.inventory.ItemStack cur = player.getInventory().getItemInHand();
-                 if (flag1 && (cur == null || cur.getAmount() == 0)) {
+                 if (retainOwnership && (cur == null || cur.getAmount() == 0)) {
                      // The complete stack was dropped
-@@ -722,6 +727,14 @@ public abstract class EntityHuman extends EntityLiving {
+@@ -769,6 +775,14 @@ public abstract class Player extends LivingEntity {
          }
      }
  
@@ -502,15 +474,15 @@ index c39c50e53549e9cb9d3520bc7e8b7e89cfa20163..3c8c48dad244e955712af9eced2c9b4a
 +        if(unauthenticated)
 +            return true;
 +
-+        this.world.getServer().getPluginManager().callEvent(event);
++        this.level.getCraftServer().getPluginManager().callEvent(event);
 +        return event instanceof Cancellable && ((Cancellable) event).isCancelled();
 +    }
 +
-     public float c(IBlockData iblockdata) {
-         float f = this.inventory.a(iblockdata);
+     public float getDestroySpeed(BlockState block) {
+         float f = this.inventory.getDestroySpeed(block);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 2fc4b0199320f768b7e59961c4ca1fbf2f117b54..0df3864de34334606da4b597861482e10b15c9c2 100644
+index 224351ffae7c9717d6035543d736e0ca49580dae..fbb2669e3764e1f3b29fd53cf7e4e5f899c12450 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1,5 +1,6 @@
@@ -537,23 +509,28 @@ index 2fc4b0199320f768b7e59961c4ca1fbf2f117b54..0df3864de34334606da4b597861482e1
  import org.yaml.snakeyaml.Yaml;
  import org.yaml.snakeyaml.constructor.SafeConstructor;
  import org.yaml.snakeyaml.error.MarkedYAMLException;
-@@ -442,6 +446,7 @@ public final class CraftServer implements Server {
-             commandMap.registerServerAliases();
+@@ -442,9 +446,7 @@ public final class CraftServer implements Server {
+             this.commandMap.registerServerAliases();
              DefaultPermissions.registerCorePermissions();
              CraftDefaultPermissions.registerCorePermissions();
+-            if (!com.destroystokyo.paper.PaperConfig.loadPermsBeforePlugins) this.loadCustomPermissions(); // Paper
+-            this.helpMap.initializeCommands();
+-            this.syncCommands();
 +            PapyrusPermissions.registerPermissions(); // Papyrus
-             if (!com.destroystokyo.paper.PaperConfig.loadPermsBeforePlugins) loadCustomPermissions(); // Paper
-             helpMap.initializeCommands();
-             syncCommands();
-@@ -933,6 +938,7 @@ public final class CraftServer implements Server {
-         reloadData();
+         }
+     }
+ 
+@@ -929,8 +931,7 @@ public final class CraftServer implements Server {
+         this.reloadData();
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
+-        this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
+-        this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
 +        fr.thekinrar.papyrus.PapyrusConfig.registerCommands(); // Papyrus
-         overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
-         ignoreVanillaPermissions = commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2526,4 +2532,24 @@ public final class CraftServer implements Server {
+         int pollCount = 0;
+ 
+@@ -2523,4 +2524,24 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
@@ -596,14 +573,14 @@ index 2fd69c0f915f1c3cb1c410d5dab0498f05d5c888..e8902262eb0edb422d3fd052bae2e0ef
  
      public CraftCommandMap(Server server) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index 592dacf8cc924caac339a8810ba5b0d85448ed90..ec35ab6ffa58891c60fc9fe8f72d0de26877b280 100644
+index 53b61b609361c305fb8d1f1a8700e81ce139fde4..643423bd9dbf88805e90c0e812a6ff22e84f324f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-@@ -420,7 +420,17 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+@@ -403,7 +403,17 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
  
      @Override
      public boolean addPotionEffect(PotionEffect effect, boolean force) {
--        getHandle().addEffect(new MobEffect(MobEffectList.fromId(effect.getType().getId()), effect.getDuration(), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles(), effect.hasIcon()), EntityPotionEffectEvent.Cause.PLUGIN); // Paper - Don't ignore icon
+-        this.getHandle().addEffect(new MobEffectInstance(MobEffect.byId(effect.getType().getId()), effect.getDuration(), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles(), effect.hasIcon()), EntityPotionEffectEvent.Cause.PLUGIN); // Paper - Don't ignore icon
 +        return addPotionEffect(effect, force, EntityPotionEffectEvent.Cause.PLUGIN);
 +    }
 +
@@ -614,12 +591,12 @@ index 592dacf8cc924caac339a8810ba5b0d85448ed90..ec35ab6ffa58891c60fc9fe8f72d0de2
 +            }
 +            removePotionEffect(effect.getType());
 +        }
-+        getHandle().addEffect(new MobEffect(MobEffectList.fromId(effect.getType().getId()), effect.getDuration(), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles(), effect.hasIcon()), cause);
++        this.getHandle().addEffect(new MobEffectInstance(MobEffect.byId(effect.getType().getId()), effect.getDuration(), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles(), effect.hasIcon()), cause);
          return true;
      }
  
-@@ -449,6 +459,10 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
-         getHandle().removeEffect(MobEffectList.fromId(type.getId()), EntityPotionEffectEvent.Cause.PLUGIN);
+@@ -432,6 +442,10 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+         this.getHandle().removeEffect(MobEffect.byId(type.getId()), EntityPotionEffectEvent.Cause.PLUGIN);
      }
  
 +    public void removePotionEffect(PotionEffectType type, EntityPotionEffectEvent.Cause cause) {
@@ -630,10 +607,10 @@ index 592dacf8cc924caac339a8810ba5b0d85448ed90..ec35ab6ffa58891c60fc9fe8f72d0de2
      public Collection<PotionEffect> getActivePotionEffects() {
          List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index a819f1658f2558495140497177d9bb620c766cde..c632a21272aac066248a1537925177cde8eb5abc 100644
+index 7cf40184b42b1ad53428b26ba45b05764b3770b0..054f5b7c2454ab67fdf55d1fe4f19e695c272236 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
+@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
  import com.google.common.collect.ImmutableSet;
  import com.google.common.io.BaseEncoding;
  import com.mojang.authlib.GameProfile;
@@ -641,16 +618,16 @@ index a819f1658f2558495140497177d9bb620c766cde..c632a21272aac066248a1537925177cd
  import io.netty.buffer.Unpooled;
  import java.io.ByteArrayOutputStream;
  import java.io.IOException;
-@@ -159,6 +160,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -153,6 +154,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private long lastSaveTime;
      // Paper end
      private boolean canAlwaysOpenCommandBlocks = false; // Papyrus
 +    private HybridPlayer hybrid;
  
-     public CraftPlayer(CraftServer server, EntityPlayer entity) {
+     public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -166,6 +168,10 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
-         firstPlayed = System.currentTimeMillis();
+@@ -160,6 +162,10 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         this.firstPlayed = System.currentTimeMillis();
      }
  
 +    public HybridPlayer getHybrid() {
@@ -658,11 +635,11 @@ index a819f1658f2558495140497177d9bb620c766cde..c632a21272aac066248a1537925177cd
 +    }
 +
      public GameProfile getProfile() {
-         return getHandle().getProfile();
+         return this.getHandle().getGameProfile();
      }
-@@ -2344,6 +2350,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2372,6 +2378,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
-         MinecraftServer.getServer().getPlayerList().d(getHandle());
+         net.minecraft.server.MinecraftServer.getServer().getPlayerList().sendPlayerPermissionLevel(getHandle());
      }
 +
 +    @Override
@@ -679,10 +656,10 @@ index a819f1658f2558495140497177d9bb620c766cde..c632a21272aac066248a1537925177cd
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index a678277416cd71e01cd6980bcfaf9a9803e7ea17..95a46421af85e8c0debde82fe12ff4134a49fe91 100644
+index a59a449c0a7b76527f009031aee2d11d6b43cadf..cb1d42b5ee4c4fb4ee07b18cbdb41d078c01c6d3 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -546,7 +546,12 @@ public class CraftEventFactory {
+@@ -535,7 +535,12 @@ public class CraftEventFactory {
          if (cancelledBlock) {
              event.setUseInteractedBlock(Event.Result.DENY);
          }

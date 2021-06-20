@@ -4,73 +4,74 @@ Date: Wed, 9 Sep 2020 00:05:06 +0200
 Subject: [PATCH] Implement canSeePlayerEntities API
 
 
-diff --git a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-index 6835401bd7863bbd655502547a9fd4ae0f298da1..c84782c83821b7565faeff1c633f4e614948bf84 100644
---- a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-+++ b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-@@ -2483,7 +2483,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
-                     // CraftBukkit start - respect vanish API
-                     if (this.tracker instanceof EntityPlayer) {
-                         Player player = ((EntityPlayer) this.tracker).getBukkitEntity();
--                        if (!entityplayer.getBukkitEntity().canSee(player)) {
-+                        if (!entityplayer.getBukkitEntity().canSeePlayerEntity(player)) {
-                             flag1 = false;
-                         }
+diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
+index 7f7bc04a30a0422b2d589adb488082c0aa5326dc..1c1fb69ca7d0866169cf824aa03693e32c01df55 100644
+--- a/src/main/java/net/minecraft/server/level/ChunkMap.java
++++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
+@@ -2371,7 +2371,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+                 // CraftBukkit start - respect vanish API
+                 if (this.entity instanceof ServerPlayer) {
+                     Player player1 = ((ServerPlayer) this.entity).getBukkitEntity();
+-                    if (!player.getBukkitEntity().canSee(player1)) {
++                    if (!player.getBukkitEntity().canSeePlayerEntity(player1)) { // Papyrus - canSeePlayerEntity
+                         flag = false;
                      }
-diff --git a/src/main/java/net/minecraft/server/level/WorldServer.java b/src/main/java/net/minecraft/server/level/WorldServer.java
-index f68a252378a94c8fcab622d2d89d738aceab45a4..83066513d7d618d599d03e6ff6b5fd84d612fbfa 100644
---- a/src/main/java/net/minecraft/server/level/WorldServer.java
-+++ b/src/main/java/net/minecraft/server/level/WorldServer.java
-@@ -1648,7 +1648,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
-                 double d2 = (double) blockposition.getZ() - entityplayer.locZ();
+                 }
+diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
+index b3312fa2fd218ffcfaa61d98584003c97fbda4ce..6568e7e809d98dfb52d74d904cebcc0370dd7d67 100644
+--- a/src/main/java/net/minecraft/server/level/ServerLevel.java
++++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -1293,7 +1293,7 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+                 double d2 = (double) pos.getZ() - entityplayer.getZ();
  
                  // CraftBukkit start
--                if (entityhuman != null && entityhuman instanceof EntityPlayer && !entityplayer.getBukkitEntity().canSee(((EntityPlayer) entityhuman).getBukkitEntity())) {
-+                if (entityhuman != null && entityhuman instanceof EntityPlayer && !entityplayer.getBukkitEntity().canSeePlayerEntity(((EntityPlayer) entityhuman).getBukkitEntity())) {
+-                if (entityhuman != null && entityhuman instanceof ServerPlayer && !entityplayer.getBukkitEntity().canSee(((ServerPlayer) entityhuman).getBukkitEntity())) {
++                if (entityhuman != null && entityhuman instanceof ServerPlayer && !entityplayer.getBukkitEntity().canSeePlayerEntity(((ServerPlayer) entityhuman).getBukkitEntity())) { // Papyrus - canSeePlayerEntity
                      continue;
                  }
                  // CraftBukkit end
-@@ -1822,7 +1822,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1485,7 +1485,7 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
  
-         for (EntityHuman entityhuman : receivers) { // Paper - Particle API Expansion
-             EntityPlayer entityplayer = (EntityPlayer) entityhuman; // Paper - Particle API Expansion
+         for (Player entityhuman : receivers) { // Paper - Particle API Expansion
+             ServerPlayer entityplayer = (ServerPlayer) entityhuman; // Paper - Particle API Expansion
 -            if (sender != null && !entityplayer.getBukkitEntity().canSee(sender.getBukkitEntity())) continue; // CraftBukkit
-+            if (sender != null && !entityplayer.getBukkitEntity().canSeePlayerEntity(sender.getBukkitEntity())) continue; // CraftBukkit
++            if (sender != null && !entityplayer.getBukkitEntity().canSeePlayerEntity(sender.getBukkitEntity())) continue; // CraftBukkit // Papyrus - canSeePlayerEntity
  
-             if (this.a(entityplayer, force, d0, d1, d2, packetplayoutworldparticles)) { // CraftBukkit
+             if (this.sendParticles(entityplayer, force, d0, d1, d2, packetplayoutworldparticles)) { // CraftBukkit
                  ++j;
-diff --git a/src/main/java/net/minecraft/world/entity/projectile/IProjectile.java b/src/main/java/net/minecraft/world/entity/projectile/IProjectile.java
-index 8fe98404ebb8b3b5d1fdac0896b27da10736026d..01c56ee399834d2ffe5e60e9c23149610be21bd5 100644
---- a/src/main/java/net/minecraft/world/entity/projectile/IProjectile.java
-+++ b/src/main/java/net/minecraft/world/entity/projectile/IProjectile.java
-@@ -174,7 +174,7 @@ public abstract class IProjectile extends Entity {
-             if (entity1 instanceof EntityPlayer && entity instanceof EntityPlayer) {
+diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
+index 69f439851fe1ff07d827eaed274940a5783d5f6c..679286f6fa274b6375aed17bc9af872d932d502e 100644
+--- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
++++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
+@@ -225,7 +225,7 @@ public abstract class Projectile extends Entity {
+             if (entity1 instanceof net.minecraft.server.level.ServerPlayer && entity instanceof net.minecraft.server.level.ServerPlayer) {
                  org.bukkit.entity.Player collided = (org.bukkit.entity.Player) entity.getBukkitEntity();
                  org.bukkit.entity.Player shooter = (org.bukkit.entity.Player) entity1.getBukkitEntity();
 -                if (!shooter.canSee(collided)) return false;
 +                if (!shooter.canSeePlayerEntity(collided)) return false;
              }
-             return entity1 == null || this.d || !entity1.isSameVehicle(entity);
+             return entity1 == null || this.leftOwner || !entity1.isPassengerOfSameVehicle(entity);
              // Paper end
-diff --git a/src/main/java/net/minecraft/world/level/World.java b/src/main/java/net/minecraft/world/level/World.java
-index 94f735c430d6e5a068c0cdc3fff201adbdd0e7b9..fcca3d03da3a442eef85a6ccb30ca869dab5c2a1 100644
---- a/src/main/java/net/minecraft/world/level/World.java
-+++ b/src/main/java/net/minecraft/world/level/World.java
-@@ -287,7 +287,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
+index 282c241ec00d01b83d491d5b7d0b35834fee2822..746a8a68aa8c8656a9521a8afcc32d5fce76b27f 100644
+--- a/src/main/java/net/minecraft/world/level/Level.java
++++ b/src/main/java/net/minecraft/world/level/Level.java
+@@ -296,7 +296,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
              Entity entity = entities.get(i);
  
-             if (checkCanSee && source instanceof EntityPlayer && entity instanceof EntityPlayer
--                && !((EntityPlayer) source).getBukkitEntity().canSee(((EntityPlayer) entity).getBukkitEntity())) {
-+                && !((EntityPlayer) source).getBukkitEntity().canSeePlayerEntity(((EntityPlayer) entity).getBukkitEntity())) {
+             if (checkCanSee && source instanceof net.minecraft.server.level.ServerPlayer && entity instanceof net.minecraft.server.level.ServerPlayer
+-                && !((net.minecraft.server.level.ServerPlayer) source).getBukkitEntity().canSee(((net.minecraft.server.level.ServerPlayer) entity).getBukkitEntity())) {
++                && !((net.minecraft.server.level.ServerPlayer) source).getBukkitEntity().canSeePlayerEntity(((net.minecraft.server.level.ServerPlayer) entity).getBukkitEntity())) { // Papyrus - canSeePlayerEntity
++
                  continue;
              }
  
-diff --git a/src/main/java/net/minecraft/world/level/saveddata/maps/WorldMap.java b/src/main/java/net/minecraft/world/level/saveddata/maps/WorldMap.java
-index 97fe61dcd066ec0ee05e81fc22409d6aa6b3a6d5..d9c59efb543b9d8765bde0807ec628ad28688c36 100644
---- a/src/main/java/net/minecraft/world/level/saveddata/maps/WorldMap.java
-+++ b/src/main/java/net/minecraft/world/level/saveddata/maps/WorldMap.java
-@@ -486,7 +486,7 @@ public class WorldMap extends PersistentBase {
-             WorldMap.this.decorations.forEach((name, mapIcon) -> {
+diff --git a/src/main/java/net/minecraft/world/level/saveddata/maps/MapItemSavedData.java b/src/main/java/net/minecraft/world/level/saveddata/maps/MapItemSavedData.java
+index 60d7496966b22e0553372a93e3c0e7ed9e166cba..5f1ca2d6220ec4fd505c8cdda30656159aa1e48a 100644
+--- a/src/main/java/net/minecraft/world/level/saveddata/maps/MapItemSavedData.java
++++ b/src/main/java/net/minecraft/world/level/saveddata/maps/MapItemSavedData.java
+@@ -583,7 +583,7 @@ public class MapItemSavedData extends SavedData {
+             MapItemSavedData.this.decorations.forEach((name, mapIcon) -> {
                  // If this cursor is for a player check visibility with vanish system
                  org.bukkit.entity.Player other = org.bukkit.Bukkit.getPlayerExact(name); // Spigot
 -                if (other == null || player.canSee(other)) {
@@ -79,10 +80,10 @@ index 97fe61dcd066ec0ee05e81fc22409d6aa6b3a6d5..d9c59efb543b9d8765bde0807ec628ad
                  }
              });
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index c632a21272aac066248a1537925177cde8eb5abc..ccbb4cba0b169e99b98dc67ed093916ea8c6e612 100644
+index 054f5b7c2454ab67fdf55d1fe4f19e695c272236..a325ea51d30c5ec2159ecc02a8aaa05cdd6c6aa9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -148,6 +148,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -142,6 +142,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private final ConversationTracker conversationTracker = new ConversationTracker();
      private final Set<String> channels = new HashSet<String>();
      private final Map<UUID, Set<WeakReference<Plugin>>> hiddenPlayers = new HashMap<>();
@@ -90,23 +91,23 @@ index c632a21272aac066248a1537925177cde8eb5abc..ccbb4cba0b169e99b98dc67ed093916e
      private static final WeakHashMap<Plugin, WeakReference<Plugin>> pluginWeakReferences = new WeakHashMap<>();
      private int hash = 0;
      private double health = 20;
-@@ -1399,9 +1400,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1454,9 +1455,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
-         getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, other));
+         this.getHandle().connection.send(new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.ADD_PLAYER, other));
  
--        PlayerChunkMap.EntityTracker entry = tracker.trackedEntities.get(other.getId());
--        if (entry != null && !entry.trackedPlayers.contains(getHandle())) {
--            entry.updatePlayer(getHandle());
-+        if(canSeePlayerEntities()) {
-+            PlayerChunkMap.EntityTracker entry = tracker.trackedEntities.get(other.getId());
-+            if (entry != null && !entry.trackedPlayers.contains(getHandle())) {
-+                entry.updatePlayer(getHandle());
+-        ChunkMap.TrackedEntity entry = tracker.entityMap.get(other.getId());
+-        if (entry != null && !entry.seenBy.contains(this.getHandle())) {
+-            entry.updatePlayer(this.getHandle());
++        if(canSeePlayerEntities()) { // Papyrus
++            ChunkMap.TrackedEntity entry = tracker.entityMap.get(other.getId());
++            if(entry != null && !entry.seenBy.contains(this.getHandle())) {
++                entry.updatePlayer(this.getHandle());
 +            }
          }
      }
      // Paper start
-@@ -1458,6 +1461,59 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
-         return !hiddenPlayers.containsKey(player.getUniqueId());
+@@ -1513,6 +1516,59 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         return !this.hiddenPlayers.containsKey(player.getUniqueId());
      }
  
 +    @Override
@@ -166,10 +167,10 @@ index c632a21272aac066248a1537925177cde8eb5abc..ccbb4cba0b169e99b98dc67ed093916e
      public Map<String, Object> serialize() {
          Map<String, Object> result = new LinkedHashMap<String, Object>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 95a46421af85e8c0debde82fe12ff4134a49fe91..45fbc4010083853f625519f61ac6c1f6db344bc6 100644
+index cb1d42b5ee4c4fb4ee07b18cbdb41d078c01c6d3..9ab7c47955c8b62321fc8bd4cc9dc6377e775ecc 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1324,7 +1324,7 @@ public class CraftEventFactory {
+@@ -1318,7 +1318,7 @@ public class CraftEventFactory {
          com.destroystokyo.paper.event.entity.ProjectileCollideEvent event = new com.destroystokyo.paper.event.entity.ProjectileCollideEvent(projectile, collided);
  
          if (projectile.getShooter() instanceof Player && collided instanceof Player) {
@@ -179,11 +180,11 @@ index 95a46421af85e8c0debde82fe12ff4134a49fe91..45fbc4010083853f625519f61ac6c1f6
                  return event;
              }
 diff --git a/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java b/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java
-index 1f0b117fc961da0f8f3462ec386def7dffa026ba..f0ee3a5a24e829beb4053066be5e252646b22d3c 100644
+index b47f18b1e448807a17ca9f2ae9609680233da837..40a28390339d63ac683dfb9f908553146a828e78 100644
 --- a/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/map/CraftMapRenderer.java
 @@ -37,7 +37,7 @@ public class CraftMapRenderer extends MapRenderer {
-         for (Object key : worldMap.decorations.keySet()) {
+         for (String key : worldMap.decorations.keySet()) {
              // If this cursor is for a player check visibility with vanish system
              Player other = Bukkit.getPlayerExact((String) key);
 -            if (other != null && !player.canSee(other)) {

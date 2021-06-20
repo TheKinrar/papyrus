@@ -4,31 +4,33 @@ Date: Wed, 30 Oct 2019 01:32:35 +0000
 Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
 
 
-diff --git a/src/main/java/net/minecraft/server/level/PlayerInteractManager.java b/src/main/java/net/minecraft/server/level/PlayerInteractManager.java
-index 87722285690d9d3370610e2a2eb809e0d1f497c9..6880ff68e8c807aadfdb94869d11a46cd4ba63f8 100644
---- a/src/main/java/net/minecraft/server/level/PlayerInteractManager.java
-+++ b/src/main/java/net/minecraft/server/level/PlayerInteractManager.java
-@@ -388,7 +388,7 @@ public class PlayerInteractManager {
-             TileEntity tileentity = this.world.getTileEntity(blockposition);
+diff --git a/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java b/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
+index 4b756c0a4b607faa03b00ab81761335be63c39eb..8776fbaabdb54577d30d3670d5681926e1bea93f 100644
+--- a/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
++++ b/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
+@@ -398,8 +398,9 @@ public class ServerPlayerGameMode {
+             BlockEntity tileentity = this.level.getBlockEntity(pos);
              Block block = iblockdata.getBlock();
  
--            if ((block instanceof BlockCommand || block instanceof BlockStructure || block instanceof BlockJigsaw) && !this.player.isCreativeAndOp() && !(block instanceof BlockCommand && (this.player.isCreative() && this.player.getBukkitEntity().hasPermission("minecraft.commandblock")))) { // Paper - command block permission
-+            if ((block instanceof BlockCommand || block instanceof BlockStructure || block instanceof BlockJigsaw) && !this.player.isCreativeAndOp() && !(block instanceof BlockCommand && (this.player.getBukkitEntity().canAlwaysOpenCommandBlocks() || (this.player.isCreative() && this.player.getBukkitEntity().hasPermission("minecraft.commandblock"))))) { // Paper - command block permission
-                 this.world.notify(blockposition, iblockdata, iblockdata, 3);
+-            if (block instanceof GameMasterBlock && !this.player.canUseGameMasterBlocks() && !(block instanceof net.minecraft.world.level.block.CommandBlock && (this.player.isCreative() && this.player.getBukkitEntity().hasPermission("minecraft.commandblock")))) { // Paper - command block permission
++            if (block instanceof GameMasterBlock && !this.player.canUseGameMasterBlocks() && !(block instanceof net.minecraft.world.level.block.CommandBlock && (this.player.getBukkitEntity().canAlwaysOpenCommandBlocks() || (this.player.isCreative() && this.player.getBukkitEntity().hasPermission("minecraft.commandblock"))))) { // Paper - command block permission
+                 this.level.sendBlockUpdated(pos, iblockdata, iblockdata, 3);
++
                  return false;
-             } else if (this.player.a((World) this.world, blockposition, this.gamemode)) {
+             } else if (this.player.blockActionRestricted((Level) this.level, pos, this.gameModeForPlayer)) {
+                 return false;
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 90776231b1faffb11e4394f555f336ca248e3004..886118c287f09c74dbe4eb5083cbd2d519ca6784 100644
+index d76d8d8db7921d16f87dd162ccd115e351cde106..a5ad4faf00e11e67c18781715762248524e8fc95 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1022,6 +1022,9 @@ public abstract class PlayerList {
-         GameProfile gameprofile = entityplayer.getProfile();
-         int i = this.server.b(gameprofile);
+@@ -992,6 +992,9 @@ public abstract class PlayerList {
+         GameProfile gameprofile = player.getGameProfile();
+         int i = this.server.getProfilePermissions(gameprofile);
  
-+        if(entityplayer.getBukkitEntity().canAlwaysOpenCommandBlocks() && i < 2)
++        if(player.getBukkitEntity().canAlwaysOpenCommandBlocks() && i < 2)
 +            i = 2;
 +
-         this.a(entityplayer, i);
+         this.sendPlayerPermissionLevel(player, i);
      }
  
 diff --git a/src/main/java/net/minecraft/world/item/ItemRestricted.java b/src/main/java/net/minecraft/world/item/ItemRestricted.java
@@ -65,52 +67,44 @@ index 0000000000000000000000000000000000000000..782eb93c496a48571fdb9dba86bf87be
 +        ) ? null : super.c(blockactioncontext);
 +    }
 +}
-diff --git a/src/main/java/net/minecraft/world/level/block/BlockCommand.java b/src/main/java/net/minecraft/world/level/block/BlockCommand.java
-index f7d22282a59277375d146e9459f9f43962dd7d09..38a4beee1d976025e91cba007e9714a989d78f3e 100644
---- a/src/main/java/net/minecraft/world/level/block/BlockCommand.java
-+++ b/src/main/java/net/minecraft/world/level/block/BlockCommand.java
-@@ -27,6 +27,7 @@ import net.minecraft.world.phys.MovingObjectPositionBlock;
+diff --git a/src/main/java/net/minecraft/world/level/block/CommandBlock.java b/src/main/java/net/minecraft/world/level/block/CommandBlock.java
+index fd73e9100feac8c7bf9a5fee21a0ab2d502dc3e0..59fb3a3bfb764efc97f4ee13e2d9d3ad64beeff3 100644
+--- a/src/main/java/net/minecraft/world/level/block/CommandBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/CommandBlock.java
+@@ -26,6 +26,7 @@ import net.minecraft.world.phys.BlockHitResult;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  
 +import org.bukkit.craftbukkit.entity.CraftPlayer;
  import org.bukkit.event.block.BlockRedstoneEvent; // CraftBukkit
  
- public class BlockCommand extends BlockTileEntity {
-@@ -128,7 +129,11 @@ public class BlockCommand extends BlockTileEntity {
-     public EnumInteractionResult interact(IBlockData iblockdata, World world, BlockPosition blockposition, EntityHuman entityhuman, EnumHand enumhand, MovingObjectPositionBlock movingobjectpositionblock) {
-         TileEntity tileentity = world.getTileEntity(blockposition);
+ public class CommandBlock extends BaseEntityBlock implements GameMasterBlock {
+@@ -129,7 +130,11 @@ public class CommandBlock extends BaseEntityBlock implements GameMasterBlock {
+     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+         BlockEntity tileentity = world.getBlockEntity(pos);
  
--        if (tileentity instanceof TileEntityCommand && (entityhuman.isCreativeAndOp() || (entityhuman.isCreative() && entityhuman.getBukkitEntity().hasPermission("minecraft.commandblock")))) { // Paper - command block permission
-+        if (tileentity instanceof TileEntityCommand && (
-+                entityhuman.isCreativeAndOp()
-+                || ((CraftPlayer) entityhuman.getBukkitEntity()).canAlwaysOpenCommandBlocks()
-+                || (entityhuman.isCreative() && entityhuman.getBukkitEntity().hasPermission("minecraft.commandblock"))
+-        if (tileentity instanceof CommandBlockEntity && (player.canUseGameMasterBlocks() || (player.isCreative() && player.getBukkitEntity().hasPermission("minecraft.commandblock")))) { // Paper - command block permission
++        if (tileentity instanceof CommandBlockEntity && (
++                player.canUseGameMasterBlocks()
++                || ((CraftPlayer) player.getBukkitEntity()).canAlwaysOpenCommandBlocks()
++                || (player.isCreative() && player.getBukkitEntity().hasPermission("minecraft.commandblock"))
 +        )) {
-             entityhuman.a((TileEntityCommand) tileentity);
-             return EnumInteractionResult.a(world.isClientSide);
+             player.openCommandBlock((CommandBlockEntity) tileentity);
+             return InteractionResult.sidedSuccess(world.isClientSide);
          } else {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index cfe6898dc373fe55a08acf5c90e200061aa7d0fc..a819f1658f2558495140497177d9bb620c766cde 100644
+index 76e2ae09855e0efaaa0856d2f49e4968adbccbdc..7cf40184b42b1ad53428b26ba45b05764b3770b0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -56,6 +56,7 @@ import net.minecraft.network.protocol.game.PacketPlayOutWorldEvent;
- import net.minecraft.network.protocol.game.PacketPlayOutWorldParticles;
- import net.minecraft.resources.MinecraftKey;
- import net.minecraft.server.AdvancementDataPlayer;
-+import net.minecraft.server.MinecraftServer;
- import net.minecraft.server.level.EntityPlayer;
- import net.minecraft.server.level.PlayerChunkMap;
- import net.minecraft.server.level.WorldServer;
-@@ -157,6 +158,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -152,6 +152,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime;
      // Paper end
 +    private boolean canAlwaysOpenCommandBlocks = false; // Papyrus
  
-     public CraftPlayer(CraftServer server, EntityPlayer entity) {
+     public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -2330,6 +2332,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2359,6 +2360,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      }
      // Paper end
  
@@ -124,7 +118,7 @@ index cfe6898dc373fe55a08acf5c90e200061aa7d0fc..a819f1658f2558495140497177d9bb62
 +    public void setCanAlwaysOpenCommandBlocks(boolean canAlwaysOpenCommandBlocks) {
 +        this.canAlwaysOpenCommandBlocks = canAlwaysOpenCommandBlocks;
 +
-+        MinecraftServer.getServer().getPlayerList().d(getHandle());
++        net.minecraft.server.MinecraftServer.getServer().getPlayerList().sendPlayerPermissionLevel(getHandle());
 +    }
 +    // Papyrus end
 +
