@@ -5,7 +5,7 @@ Subject: [PATCH] Branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 04938bb10c35d2e424043adb7ed8fec2e42bb816..1fbe4001264698435f10bdae7d63b534ebd21cf5 100644
+index 04938bb10c35d2e424043adb7ed8fec2e42bb816..d531028f7b93c12f576bcf59348f14c3ba99e2d0 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -18,8 +18,8 @@ repositories {
@@ -19,16 +19,20 @@ index 04938bb10c35d2e424043adb7ed8fec2e42bb816..1fbe4001264698435f10bdae7d63b534
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
      implementation("net.minecrell:terminalconsoleappender:1.2.0")
-@@ -66,7 +66,7 @@ tasks.jar {
+@@ -63,10 +63,11 @@ tasks.jar {
+     manifest {
+         val git = Git(rootProject.layout.projectDirectory.path)
+         val gitHash = git("rev-parse", "HEAD").getText().substring(0, 7)
++        val version = System.getenv("BUILD_NUMBER") ?: "\"$gitHash\""
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
 -            "Implementation-Version" to "git-Paper-\"$gitHash\"",
-+            "Implementation-Version" to "git-Papyrus-\"$gitHash\"",
++            "Implementation-Version" to "git-Papyrus-$version",
              "Implementation-Vendor" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date()), // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -96,7 +96,7 @@ tasks.shadowJar {
+@@ -96,7 +97,7 @@ tasks.shadowJar {
  
      // Needed for Paperclip's install to maven local feature
      from(generatePom) {
@@ -37,7 +41,7 @@ index 04938bb10c35d2e424043adb7ed8fec2e42bb816..1fbe4001264698435f10bdae7d63b534
          rename { "pom.xml" }
      }
  
-@@ -122,7 +122,7 @@ tasks.test {
+@@ -122,7 +123,7 @@ tasks.test {
  fun TaskContainer.registerRunTask(
      name: String, block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
