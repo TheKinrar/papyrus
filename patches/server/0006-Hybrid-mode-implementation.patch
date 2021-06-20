@@ -391,7 +391,7 @@ index 57c448ee93df76fc2a17c75fafc78408d720ced3..abfeb86c79146b42a9ea84209ce99ed8
  
          return (MobEffectInstance) this.activeEffects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index d286d88a3c3f93dbfa92de9421e320c92cd96350..c80f003c65d0ec8058e45b62676fb13810f91dfa 100644
+index d286d88a3c3f93dbfa92de9421e320c92cd96350..0db1216ea18bc829acee471b238624999114437e 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -193,6 +193,10 @@ public abstract class Player extends LivingEntity {
@@ -399,7 +399,7 @@ index d286d88a3c3f93dbfa92de9421e320c92cd96350..c80f003c65d0ec8058e45b62676fb138
      // CraftBukkit end
  
 +    // Papyrus start
-+    public boolean unauthenticated = PapyrusConfig.hybridMode;
++    public boolean unauthenticated = fr.thekinrar.papyrus.PapyrusConfig.hybridMode;
 +    // Papyrus end
 +
      public Player(Level world, BlockPos pos, float yaw, GameProfile profile) {
@@ -421,12 +421,12 @@ index d286d88a3c3f93dbfa92de9421e320c92cd96350..c80f003c65d0ec8058e45b62676fb138
          }
      }
  
-+    public boolean hybridCall(Event event) {
++    public boolean hybridCall(org.bukkit.event.Event event) {
 +        if(unauthenticated)
 +            return true;
 +
 +        this.level.getCraftServer().getPluginManager().callEvent(event);
-+        return event instanceof Cancellable && ((Cancellable) event).isCancelled();
++        return event instanceof org.bukkit.event.Cancellable && ((org.bukkit.event.Cancellable) event).isCancelled();
 +    }
 +
      public float getDestroySpeed(BlockState block) {
