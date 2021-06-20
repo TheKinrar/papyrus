@@ -152,7 +152,7 @@ index 0000000000000000000000000000000000000000..9e689ecad1618108d6f9d3a9a3d15b73
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 4978648e40161ef45b2700481917d46fe142faff..af73683e915c5379534bb2ce2d8c225553920896 100644
+index 4978648e40161ef45b2700481917d46fe142faff..9ebdf3120d467cb938936916a0cef149b0097790 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1496,6 +1496,18 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -162,7 +162,7 @@ index 4978648e40161ef45b2700481917d46fe142faff..af73683e915c5379534bb2ce2d8c2255
 +        // Papyrus start
 +        if(server.getHybridMode()) {
 +            MinecraftTimings.hybridEngineTimer.startTiming();
-+            for(EntityPlayer player : playerList.players) {
++            for(ServerPlayer player : playerList.players) {
 +                if(player.unauthenticated) {
 +                    player.getBukkitEntity().getHybrid().tick();
 +                }
@@ -192,7 +192,7 @@ index 181ab56448796a617f30f1b9e0fec8917b5d8e07..407becfeb8ab625b97d60b9f5ce70868
  
              if (this.tickCount % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 071173569641aa264888d57468df5b54b013b494..25e8a44765f1bf01dfcb1a62218892c8bc66c7da 100644
+index 071173569641aa264888d57468df5b54b013b494..df2856f8a4a74a939c19380e03befdc9cbf86e52 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1376,6 +1376,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -267,17 +267,17 @@ index 071173569641aa264888d57468df5b54b013b494..25e8a44765f1bf01dfcb1a62218892c8
                  ServerGamePacketListenerImpl.LOGGER.error("Couldn\'t unregister custom payload", ex);
                  this.disconnect("Invalid payload UNREGISTER!", org.bukkit.event.player.PlayerKickEvent.Cause.INVALID_PAYLOAD); // Paper - kick event cause
              }
-+        } else if (packetplayincustompayload.tag.equals(CUSTOM_HYBRID)) {
++        } else if (packet.identifier.equals(CUSTOM_HYBRID)) {
 +            try {
-+                String[] data = packetplayincustompayload.data.toString(StandardCharsets.UTF_8).split("\0");
++                String[] data = packet.data.toString(java.nio.charset.StandardCharsets.UTF_8).split("\0");
 +                if("authenticate".equals(data[0])) {
 +                    player.unauthenticated = false;
-+                    getPlayer().getHybrid().clearEffects();
++                    player.getBukkitEntity().getHybrid().clearEffects();
 +                } else {
 +                    throw new IllegalArgumentException("Unknown subchannel: " + data[0]);
 +                }
 +            } catch (Exception ex) {
-+                PlayerConnection.LOGGER.error("Couldn't process hybrid custom payload", ex);
++                ServerGamePacketListenerImpl.LOGGER.error("Couldn't process hybrid custom payload", ex);
 +            }
          } else {
              try {
