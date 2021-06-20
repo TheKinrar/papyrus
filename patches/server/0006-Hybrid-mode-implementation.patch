@@ -447,7 +447,7 @@ index 8cfce2d85041849ef3943e56c204fefeb07f96ec..b82e4e8220b0dd4444e51aed4b10cc75
      }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 224351ffae7c9717d6035543d736e0ca49580dae..be65555847d619ea5d91eccdda084487bde8b41c 100644
+index 224351ffae7c9717d6035543d736e0ca49580dae..27c9d641261eab7bb8a91a9c05e82f9d5f490539 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -442,9 +442,7 @@ public final class CraftServer implements Server {
@@ -457,7 +457,7 @@ index 224351ffae7c9717d6035543d736e0ca49580dae..be65555847d619ea5d91eccdda084487
 -            if (!com.destroystokyo.paper.PaperConfig.loadPermsBeforePlugins) this.loadCustomPermissions(); // Paper
 -            this.helpMap.initializeCommands();
 -            this.syncCommands();
-+            PapyrusPermissions.registerPermissions(); // Papyrus
++            fr.thekinrar.papyrus.PapyrusPermissions.registerPermissions(); // Papyrus
          }
      }
  
@@ -479,20 +479,20 @@ index 224351ffae7c9717d6035543d736e0ca49580dae..be65555847d619ea5d91eccdda084487
 +    // Papyrus start
 +    @Override
 +    public boolean getHybridMode() {
-+        if (PapyrusConfig.hybridMode) {
++        if (fr.thekinrar.papyrus.PapyrusConfig.hybridMode) {
 +            if (getOnlineMode()) {
 +                getLogger().warning("Hybrid mode enabled but server is in online mode. Disabling hybrid mode.");
-+                PapyrusConfig.hybridMode = false;
-+            } else if(!SpigotConfig.bungee) {
++                fr.thekinrar.papyrus.PapyrusConfig.hybridMode = false;
++            } else if(!org.spigotmc.SpigotConfig.bungee) {
 +                getLogger().warning("Hybrid mode enabled but bungee support is disabled. Disabling hybrid mode.");
-+                PapyrusConfig.hybridMode = false;
-+            } else if(PaperConfig.bungeeOnlineMode) {
++                fr.thekinrar.papyrus.PapyrusConfig.hybridMode = false;
++            } else if(com.destroystokyo.paper.PaperConfig.bungeeOnlineMode) {
 +                getLogger().warning("Hybrid mode enabled but bungee support is online mode. Disabling hybrid mode.");
-+                PapyrusConfig.hybridMode = false;
++                fr.thekinrar.papyrus.PapyrusConfig.hybridMode = false;
 +            }
 +        }
 +
-+        return PapyrusConfig.hybridMode;
++        return fr.thekinrar.papyrus.PapyrusConfig.hybridMode;
 +    }
 +    // Papyrus end
  }
