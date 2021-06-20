@@ -924,7 +924,7 @@ index 0000000000000000000000000000000000000000..52274c1bb387ae8e42f3c7078328d99f
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index eeefbb86cb88bd1b132bb6e22b4a4572cfb5e22c..90371acb94a7896fd1803725deb8a4b181b60df7 100644
+index eeefbb86cb88bd1b132bb6e22b4a4572cfb5e22c..9db5471cb124df03ceeaa1f13637c59da98044ff 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -221,6 +221,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -933,7 +933,7 @@ index eeefbb86cb88bd1b132bb6e22b4a4572cfb5e22c..90371acb94a7896fd1803725deb8a4b1
          // Paper end
 +        // Papyrus start
 +        try {
-+            fr.thekinrar.papyrus.PapyrusConfig.init((File) options.valueOf("papyrus-settings"));
++            fr.thekinrar.papyrus.PapyrusConfig.init((java.io.File) options.valueOf("papyrus-settings"));
 +        } catch (Exception e) {
 +            DedicatedServer.LOGGER.error("Unable to load server configuration", e);
 +            return false;

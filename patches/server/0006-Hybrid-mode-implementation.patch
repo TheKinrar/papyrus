@@ -192,7 +192,7 @@ index 181ab56448796a617f30f1b9e0fec8917b5d8e07..407becfeb8ab625b97d60b9f5ce70868
  
              if (this.tickCount % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 6be5b79bb81165bd40c2d4f4ec68e5e0464554df..2dbe124a6849bbbaaae200f1eda5c5c3ffabd969 100644
+index 04a77eda194256ed1ffd2a29f9d6216e772a0260..2a347b9f6b370952ca291392e42bf1284c9e9afc 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1385,6 +1385,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -284,7 +284,7 @@ index 6be5b79bb81165bd40c2d4f4ec68e5e0464554df..2dbe124a6849bbbaaae200f1eda5c5c3
              try {
                  byte[] data = new byte[packet.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index a5ad4faf00e11e67c18781715762248524e8fc95..1acd10937fa4bc0ae7106708cc4b60a7ad672d34 100644
+index a5ad4faf00e11e67c18781715762248524e8fc95..b2c3c00a663eb92fe9a7a9d5c17340d4d5c9f3f1 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -229,6 +229,12 @@ public abstract class PlayerList {
@@ -316,7 +316,7 @@ index a5ad4faf00e11e67c18781715762248524e8fc95..1acd10937fa4bc0ae7106708cc4b60a7
 -        player.inventoryMenu.sendAllDataToRemote();
 +        // Papyrus start
 +        if(player.unauthenticated)
-+            new InventoryMenu(new Inventory(player), true, player).sendAllDataToRemote();
++            new net.minecraft.world.inventory.InventoryMenu(new net.minecraft.world.entity.player.Inventory(player), true, player).sendAllDataToRemote();
 +        else // Papyrus end
 +            player.inventoryMenu.sendAllDataToRemote();
          // entityplayer.triggerHealthUpdate();

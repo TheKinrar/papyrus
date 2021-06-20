@@ -5,7 +5,7 @@ Subject: [PATCH] Implement CommandBlockEditEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 7d2ac8aa97805e8b022d3982b1332c5055fc8b90..6be5b79bb81165bd40c2d4f4ec68e5e0464554df 100644
+index 7d2ac8aa97805e8b022d3982b1332c5055fc8b90..04a77eda194256ed1ffd2a29f9d6216e772a0260 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -175,6 +175,8 @@ import net.minecraft.world.inventory.MerchantMenu;
@@ -63,7 +63,7 @@ index 7d2ac8aa97805e8b022d3982b1332c5055fc8b90..6be5b79bb81165bd40c2d4f4ec68e5e0
 +
 +        CommandBlockEditEvent event = new CommandBlockEditEvent(
 +            CraftBlock.at(this.player.level, blockposition),
-+            (Player) CraftPlayer.getEntity((CraftServer) Bukkit.getServer(), this.player),
++            (Player) CraftPlayer.getEntity((CraftServer) org.bukkit.Bukkit.getServer(), this.player),
 +
 +            // Command
 +            commandblocklistenerabstract.getCommand(),
@@ -89,7 +89,7 @@ index 7d2ac8aa97805e8b022d3982b1332c5055fc8b90..6be5b79bb81165bd40c2d4f4ec68e5e0
 +            this.player.canUseGameMasterBlocks() || (this.player.isCreative() && this.player.getBukkitEntity().hasPermission("minecraft.commandblock"))
 +        );
 +
-+        Bukkit.getServer().getPluginManager().callEvent(event);
++        org.bukkit.Bukkit.getServer().getPluginManager().callEvent(event);
 +
 +        if(event.isCancelled())
 +            return;
