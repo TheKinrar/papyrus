@@ -33,40 +33,6 @@ index d76d8d8db7921d16f87dd162ccd115e351cde106..a5ad4faf00e11e67c187817157622485
          this.sendPlayerPermissionLevel(player, i);
      }
  
-diff --git a/src/main/java/net/minecraft/world/item/ItemRestricted.java b/src/main/java/net/minecraft/world/item/ItemRestricted.java
-new file mode 100644
-index 0000000000000000000000000000000000000000..782eb93c496a48571fdb9dba86bf87be1f1627d1
---- /dev/null
-+++ b/src/main/java/net/minecraft/world/item/ItemRestricted.java
-@@ -0,0 +1,28 @@
-+package net.minecraft.world.item;
-+
-+import net.minecraft.world.entity.player.EntityHuman;
-+import net.minecraft.world.item.ItemBlock;
-+import net.minecraft.world.item.context.BlockActionContext;
-+import net.minecraft.world.level.block.Block;
-+import net.minecraft.world.level.block.state.IBlockData;
-+import org.bukkit.craftbukkit.entity.CraftPlayer;
-+
-+import javax.annotation.Nullable;
-+
-+public class ItemRestricted extends ItemBlock {
-+
-+    public ItemRestricted(Block block, Info item_info) {
-+        super(block, item_info);
-+    }
-+
-+    @Nullable
-+    @Override
-+    protected IBlockData c(BlockActionContext blockactioncontext) {
-+        EntityHuman entityhuman = blockactioncontext.getEntity();
-+
-+        return entityhuman != null && !(
-+                entityhuman.isCreativeAndOp() ||
-+                ((CraftPlayer) entityhuman.getBukkitEntity()).canAlwaysOpenCommandBlocks()
-+        ) ? null : super.c(blockactioncontext);
-+    }
-+}
 diff --git a/src/main/java/net/minecraft/world/level/block/CommandBlock.java b/src/main/java/net/minecraft/world/level/block/CommandBlock.java
 index fd73e9100feac8c7bf9a5fee21a0ab2d502dc3e0..59fb3a3bfb764efc97f4ee13e2d9d3ad64beeff3 100644
 --- a/src/main/java/net/minecraft/world/level/block/CommandBlock.java
