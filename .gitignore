@@ -1,10 +1,13 @@
-# Gradle
 .gradle/
+build/
 
 # Eclipse stuff
 .classpath
 .project
 .settings/
+
+# VSCode stuff
+.vscode/
 
 # netbeans
 nbproject/
@@ -26,21 +29,6 @@ bin/
 dist/
 manifest.mf
 
-work/1.*
-work/Minecraft
-work/BuildData
-work/Bukkit
-work/CraftBukkit
-work/Paper
-work/Paperclip
-work/Spigot
-work/Spigot-Server
-work/Spigot-API
-work/Temp
-work/*.jar
-work/test-server
-work/ForgeFlower
-
 # Mac filesystem dust
 .DS_Store/
 .DS_Store
@@ -60,13 +48,5 @@ run/
 
 Papyrus-Server
 Papyrus-API
-Paperclip.jar
-paperclip.jar
-paperclip-*.jar
-paperclip.properties
 
-# Ignore Gradle project-specific cache directory
-.gradle
-
-# Ignore Gradle build output directory
-build
+!gradle/wrapper/gradle-wrapper.jar
