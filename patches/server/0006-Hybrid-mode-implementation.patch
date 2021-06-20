@@ -192,7 +192,7 @@ index 181ab56448796a617f30f1b9e0fec8917b5d8e07..407becfeb8ab625b97d60b9f5ce70868
  
              if (this.tickCount % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 04a77eda194256ed1ffd2a29f9d6216e772a0260..2a347b9f6b370952ca291392e42bf1284c9e9afc 100644
+index 04a77eda194256ed1ffd2a29f9d6216e772a0260..be502c282d6240536344c431e49ceca66dce9682 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1385,6 +1385,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -244,19 +244,18 @@ index 04a77eda194256ed1ffd2a29f9d6216e772a0260..2a347b9f6b370952ca291392e42bf128
                  this.player.releaseUsingItem();
                  return;
              case START_DESTROY_BLOCK:
-@@ -2049,6 +2064,11 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
-             this.player.resetLastActionTime();
-             String s = message.getRaw();
+@@ -2051,6 +2066,10 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
-+            if(player.unauthenticated && !isSync) {
-+                server.getLogger().warning(player.getName() + " tried chatting while unauthenticated: " + s);
-+                return;
-+            }
-+
              // CraftBukkit start
              boolean isSync = s.startsWith("/");
++            if(player.unauthenticated && !isSync) {
++                ServerGamePacketListenerImpl.LOGGER.warn(this.player.getScoreboardName() + " tried chatting while unauthenticated: " + s);
++                return;
++            }
              if (isSync) {
-@@ -3099,6 +3119,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+                 try {
+                     this.server.server.playerCommandState = true;
+@@ -3099,6 +3118,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      // CraftBukkit start
      private static final ResourceLocation CUSTOM_REGISTER = new ResourceLocation("register");
      private static final ResourceLocation CUSTOM_UNREGISTER = new ResourceLocation("unregister");
@@ -264,7 +263,7 @@ index 04a77eda194256ed1ffd2a29f9d6216e772a0260..2a347b9f6b370952ca291392e42bf128
  
      private static final ResourceLocation MINECRAFT_BRAND = new ResourceLocation("brand"); // Paper - Brand support
  
-@@ -3125,6 +3146,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3125,6 +3145,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                  ServerGamePacketListenerImpl.LOGGER.error("Couldn\'t unregister custom payload", ex);
                  this.disconnect("Invalid payload UNREGISTER!", org.bukkit.event.player.PlayerKickEvent.Cause.INVALID_PAYLOAD); // Paper - kick event cause
              }
