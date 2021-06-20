@@ -80,10 +80,10 @@ index 60d7496966b22e0553372a93e3c0e7ed9e166cba..5f1ca2d6220ec4fd505c8cdda3065615
                  }
              });
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 054f5b7c2454ab67fdf55d1fe4f19e695c272236..a325ea51d30c5ec2159ecc02a8aaa05cdd6c6aa9 100644
+index b5472615a46d91ae2f91fe3be4715d0a7fcb7e23..83d972adcbc3e58191209193a938fbaf5bb432e4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -142,6 +142,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -141,6 +141,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private final ConversationTracker conversationTracker = new ConversationTracker();
      private final Set<String> channels = new HashSet<String>();
      private final Map<UUID, Set<WeakReference<Plugin>>> hiddenPlayers = new HashMap<>();
@@ -91,7 +91,7 @@ index 054f5b7c2454ab67fdf55d1fe4f19e695c272236..a325ea51d30c5ec2159ecc02a8aaa05c
      private static final WeakHashMap<Plugin, WeakReference<Plugin>> pluginWeakReferences = new WeakHashMap<>();
      private int hash = 0;
      private double health = 20;
-@@ -1454,9 +1455,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1453,9 +1454,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
          this.getHandle().connection.send(new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.ADD_PLAYER, other));
  
@@ -106,7 +106,7 @@ index 054f5b7c2454ab67fdf55d1fe4f19e695c272236..a325ea51d30c5ec2159ecc02a8aaa05c
          }
      }
      // Paper start
-@@ -1513,6 +1516,59 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1512,6 +1515,59 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return !this.hiddenPlayers.containsKey(player.getUniqueId());
      }
  

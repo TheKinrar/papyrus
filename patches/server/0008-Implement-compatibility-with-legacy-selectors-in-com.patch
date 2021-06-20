@@ -6,12 +6,12 @@ Subject: [PATCH] Implement compatibility with legacy selectors in command
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
-index e8902262eb0edb422d3fd052bae2e0ef638b64ee..81ef27d689bc2ffc0ffa41bf17dcd0f29567f2f2 100644
+index 2fd69c0f915f1c3cb1c410d5dab0498f05d5c888..8be021a81b00c9e04eb1856e117285f2df200b85 100644
 --- a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
 +++ b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
-@@ -1,18 +1,142 @@
- package org.bukkit.craftbukkit.command;
+@@ -2,16 +2,136 @@ package org.bukkit.craftbukkit.command;
  
+ import java.util.Map;
  import org.bukkit.Server;
 +import org.bukkit.Location;
 +import org.bukkit.command.BlockCommandSender;
@@ -20,23 +20,17 @@ index e8902262eb0edb422d3fd052bae2e0ef638b64ee..81ef27d689bc2ffc0ffa41bf17dcd0f2
 +import org.bukkit.craftbukkit.CraftServer;
 +import org.bukkit.craftbukkit.entity.CraftPlayer;
  
-+import java.util.Comparator;
-+import java.util.HashMap;
- import java.util.Map;
-+import java.util.Random;
-+import java.util.stream.Stream;
- 
  public class CraftCommandMap extends SimpleCommandMap {
  
 -    public CraftCommandMap(Server server) {
 +    private CraftServer server;
-+    private Random random;
++    private java.util.Random random;
 +
 +    public CraftCommandMap(CraftServer server) {
          super(server);
 +
 +        this.server = server;
-+        this.random = new Random();
++        this.random = new java.util.Random();
      }
  
      public Map<String, Command> getKnownCommands() {
@@ -97,7 +91,7 @@ index e8902262eb0edb422d3fd052bae2e0ef638b64ee..81ef27d689bc2ffc0ffa41bf17dcd0f2
 +            return null;
 +
 +        String[] arr = s.substring(1, s.length() - 1).split(",");
-+        Map<Character, Double> map = new HashMap<>(arr.length, 1);
++        Map<Character, Double> map = new java.util.HashMap<>(arr.length, 1);
 +
 +        for(String e : arr) {
 +            if(e.length() < 3 || e.charAt(1) != '=')
@@ -114,7 +108,7 @@ index e8902262eb0edb422d3fd052bae2e0ef638b64ee..81ef27d689bc2ffc0ffa41bf17dcd0f2
 +    }
 +
 +    private CraftPlayer[] selectPlayers(Location loc, String selector, boolean sort) {
-+        Stream<CraftPlayer> stream = server.getOnlinePlayers().stream()
++        java.util.stream.Stream<CraftPlayer> stream = server.getOnlinePlayers().stream()
 +                .filter(player -> player.getWorld().equals(loc.getWorld()));
 +
 +        if(selector.length() > 2) {
@@ -142,12 +136,12 @@ index e8902262eb0edb422d3fd052bae2e0ef638b64ee..81ef27d689bc2ffc0ffa41bf17dcd0f2
 +
 +            boolean hasC = args.containsKey('c');
 +            if(hasC || sort)
-+                stream = stream.sorted(Comparator.comparingDouble(p -> p.getLocation().distanceSquared(loc)));
++                stream = stream.sorted(java.util.Comparator.comparingDouble(p -> p.getLocation().distanceSquared(loc)));
 +
 +            if(hasC)
 +                stream = stream.limit(args.get('c').longValue());
 +        } else if(sort) {
-+            stream = stream.sorted(Comparator.comparingDouble(p -> p.getLocation().distanceSquared(loc)));
++            stream = stream.sorted(java.util.Comparator.comparingDouble(p -> p.getLocation().distanceSquared(loc)));
 +        }
 +
 +        return stream.toArray(CraftPlayer[]::new);

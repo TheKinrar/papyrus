@@ -101,7 +101,7 @@ index 0000000000000000000000000000000000000000..8d1cd1c5c197e73f955563ec1312a729
 +}
 diff --git a/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPlayer.java b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPlayer.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..a46fefcd95750ebe6b5b4f73c9ddfe7df4da370f
+index 0000000000000000000000000000000000000000..9e689ecad1618108d6f9d3a9a3d15b738cb0c12e
 --- /dev/null
 +++ b/src/main/java/fr/thekinrar/papyrus/hybrid/HybridPlayer.java
 @@ -0,0 +1,46 @@
@@ -129,7 +129,7 @@ index 0000000000000000000000000000000000000000..a46fefcd95750ebe6b5b4f73c9ddfe7d
 +        ++ticks;
 +
 +        if(ticks == 0) {
-+            server.getHandle().updateClient(player.getHandle());
++            server.getHandle().sendAllPlayerInfo(player.getHandle());
 +        }
 +
 +        if(ticks % 20 == 0)
@@ -148,7 +148,7 @@ index 0000000000000000000000000000000000000000..a46fefcd95750ebe6b5b4f73c9ddfe7d
 +        player.removePotionEffect(PotionEffectType.BLINDNESS, EntityPotionEffectEvent.Cause.HYBRID_AUTH);
 +
 +        player.getHandle().lastSentExp = -1;
-+        server.getHandle().updateClient(player.getHandle());
++        server.getHandle().sendAllPlayerInfo(player.getHandle());
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
@@ -175,19 +175,10 @@ index 4978648e40161ef45b2700481917d46fe142faff..af73683e915c5379534bb2ce2d8c2255
          // Run tasks that are waiting on processing
          MinecraftTimings.processQueueTimer.startTiming(); // Spigot
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 181ab56448796a617f30f1b9e0fec8917b5d8e07..94ab089a6d819fa8e686c1c75e4e8daec43826b2 100644
+index 181ab56448796a617f30f1b9e0fec8917b5d8e07..407becfeb8ab625b97d60b9f5ce7086815a345f6 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -152,6 +152,8 @@ import org.bukkit.craftbukkit.event.CraftEventFactory;
- import org.bukkit.craftbukkit.event.CraftPortalEvent;
- import org.bukkit.craftbukkit.inventory.CraftItemStack;
- import org.bukkit.craftbukkit.util.CraftDimensionUtil;
-+import org.bukkit.event.Cancellable;
-+import org.bukkit.event.Event;
- import org.bukkit.event.inventory.InventoryType;
- import org.bukkit.event.player.PlayerBedLeaveEvent;
- import org.bukkit.event.player.PlayerChangedMainHandEvent;
-@@ -729,7 +731,12 @@ public class ServerPlayer extends Player {
+@@ -729,7 +729,12 @@ public class ServerPlayer extends Player {
  
              if (this.totalExperience != this.lastSentExp) {
                  this.lastSentExp = this.totalExperience;
@@ -293,34 +284,10 @@ index 6be5b79bb81165bd40c2d4f4ec68e5e0464554df..2dbe124a6849bbbaaae200f1eda5c5c3
              try {
                  byte[] data = new byte[packet.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index a5ad4faf00e11e67c18781715762248524e8fc95..9265e63ea53e22d6c4d41975d54e103bcdef1cf5 100644
+index a5ad4faf00e11e67c18781715762248524e8fc95..1acd10937fa4bc0ae7106708cc4b60a7ad672d34 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
- import com.mojang.authlib.GameProfile;
- import com.mojang.serialization.DataResult;
- import com.mojang.serialization.Dynamic;
-+import fr.thekinrar.papyrus.PapyrusConfig;
- import io.netty.buffer.Unpooled;
- import io.papermc.paper.adventure.PaperAdventure;
- import java.io.File;
-@@ -72,7 +73,6 @@ import net.minecraft.tags.Tag;
- import net.minecraft.util.Mth;
- import net.minecraft.world.effect.MobEffectInstance;
- import net.minecraft.world.entity.Entity;
--import net.minecraft.world.entity.EntityType;
- import net.minecraft.world.level.GameRules;
- import net.minecraft.world.level.Level;
- import net.minecraft.world.level.biome.BiomeManager;
-@@ -116,6 +116,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
- import org.bukkit.event.player.PlayerLoginEvent;
- import org.bukkit.event.player.PlayerQuitEvent;
- import org.bukkit.event.player.PlayerRespawnEvent;
-+import org.spigotmc.event.player.PlayerSpawnLocationEvent;
- // CraftBukkit end
- 
- public abstract class PlayerList {
-@@ -229,6 +230,12 @@ public abstract class PlayerList {
+@@ -229,6 +229,12 @@ public abstract class PlayerList {
  
          if (nbttagcompound == null) player.fudgeSpawnLocation(worldserver1); // Paper - only move to spawn on first login, otherwise, stay where you are....
  
@@ -333,7 +300,7 @@ index a5ad4faf00e11e67c18781715762248524e8fc95..9265e63ea53e22d6c4d41975d54e103b
          player.setLevel(worldserver1);
          String s1 = "local";
  
-@@ -271,7 +278,7 @@ public abstract class PlayerList {
+@@ -271,7 +277,7 @@ public abstract class PlayerList {
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
          playerconnection.send(new ClientboundUpdateRecipesPacket(this.server.getRecipeManager().getRecipes()));
          playerconnection.send(new ClientboundUpdateTagsPacket(this.server.getTags().serializeToNetwork((RegistryAccess) this.registryHolder)));
@@ -342,7 +309,7 @@ index a5ad4faf00e11e67c18781715762248524e8fc95..9265e63ea53e22d6c4d41975d54e103b
          this.sendPlayerPermissionLevel(player);
          player.getStats().markAllDirty();
          player.getRecipeBook().sendInitialRecipeBook(player);
-@@ -1294,18 +1301,32 @@ public abstract class PlayerList {
+@@ -1294,18 +1300,32 @@ public abstract class PlayerList {
      }
  
      public void sendAllPlayerInfo(ServerPlayer player) {
@@ -424,26 +391,10 @@ index 57c448ee93df76fc2a17c75fafc78408d720ced3..abfeb86c79146b42a9ea84209ce99ed8
  
          return (MobEffectInstance) this.activeEffects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index d286d88a3c3f93dbfa92de9421e320c92cd96350..cf6eec97b8edf99ed2048104914dfdd8e82eb76e 100644
+index d286d88a3c3f93dbfa92de9421e320c92cd96350..c80f003c65d0ec8058e45b62676fb13810f91dfa 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -115,10 +115,15 @@ import net.minecraft.world.phys.Vec3;
- import net.minecraft.world.scores.PlayerTeam;
- import net.minecraft.world.scores.Scoreboard;
- // CraftBukkit start
-+import fr.thekinrar.papyrus.PapyrusConfig;
- import org.bukkit.craftbukkit.entity.CraftHumanEntity;
- import org.bukkit.craftbukkit.event.CraftEventFactory;
-+import org.bukkit.craftbukkit.entity.CraftPlayer;
- import org.bukkit.craftbukkit.util.CraftVector;
- import org.bukkit.entity.Item;
-+import org.bukkit.entity.Player;
-+import org.bukkit.event.Cancellable;
-+import org.bukkit.event.Event;
- import org.bukkit.event.entity.CreatureSpawnEvent;
- import org.bukkit.event.entity.EntityCombustByEntityEvent;
- import org.bukkit.event.entity.EntityExhaustionEvent;
-@@ -193,6 +198,10 @@ public abstract class Player extends LivingEntity {
+@@ -193,6 +193,10 @@ public abstract class Player extends LivingEntity {
      }
      // CraftBukkit end
  
@@ -454,7 +405,7 @@ index d286d88a3c3f93dbfa92de9421e320c92cd96350..cf6eec97b8edf99ed2048104914dfdd8
      public Player(Level world, BlockPos pos, float yaw, GameProfile profile) {
          super(EntityType.PLAYER, world);
          this.lastItemInMainHand = ItemStack.EMPTY;
-@@ -739,10 +748,7 @@ public abstract class Player extends LivingEntity {
+@@ -739,10 +743,7 @@ public abstract class Player extends LivingEntity {
              org.bukkit.entity.Player player = (org.bukkit.entity.Player) this.getBukkitEntity();
              Item drop = (Item) entityitem.getBukkitEntity();
  
@@ -466,7 +417,7 @@ index d286d88a3c3f93dbfa92de9421e320c92cd96350..cf6eec97b8edf99ed2048104914dfdd8
                  org.bukkit.inventory.ItemStack cur = player.getInventory().getItemInHand();
                  if (retainOwnership && (cur == null || cur.getAmount() == 0)) {
                      // The complete stack was dropped
-@@ -769,6 +775,14 @@ public abstract class Player extends LivingEntity {
+@@ -769,6 +770,14 @@ public abstract class Player extends LivingEntity {
          }
      }
  
@@ -482,34 +433,10 @@ index d286d88a3c3f93dbfa92de9421e320c92cd96350..cf6eec97b8edf99ed2048104914dfdd8
          float f = this.inventory.getDestroySpeed(block);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 224351ffae7c9717d6035543d736e0ca49580dae..fbb2669e3764e1f3b29fd53cf7e4e5f899c12450 100644
+index 224351ffae7c9717d6035543d736e0ca49580dae..be65555847d619ea5d91eccdda084487bde8b41c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1,5 +1,6 @@
- package org.bukkit.craftbukkit;
- 
-+import com.destroystokyo.paper.PaperConfig;
- import com.google.common.base.Charsets;
- import com.google.common.base.Function;
- import com.google.common.base.Preconditions;
-@@ -15,6 +16,8 @@ import com.mojang.brigadier.tree.CommandNode;
- import com.mojang.brigadier.tree.LiteralCommandNode;
- import com.mojang.serialization.DynamicOps;
- import com.mojang.serialization.Lifecycle;
-+import fr.thekinrar.papyrus.PapyrusConfig;
-+import fr.thekinrar.papyrus.PapyrusPermissions;
- import io.netty.buffer.ByteBuf;
- import io.netty.buffer.ByteBufOutputStream;
- import io.netty.buffer.Unpooled;
-@@ -220,6 +223,7 @@ import org.bukkit.potion.PotionEffectType;
- import org.bukkit.scheduler.BukkitWorker;
- import org.bukkit.util.StringUtil;
- import org.bukkit.util.permissions.DefaultPermissions;
-+import org.spigotmc.SpigotConfig;
- import org.yaml.snakeyaml.Yaml;
- import org.yaml.snakeyaml.constructor.SafeConstructor;
- import org.yaml.snakeyaml.error.MarkedYAMLException;
-@@ -442,9 +446,7 @@ public final class CraftServer implements Server {
+@@ -442,9 +442,7 @@ public final class CraftServer implements Server {
              this.commandMap.registerServerAliases();
              DefaultPermissions.registerCorePermissions();
              CraftDefaultPermissions.registerCorePermissions();
@@ -520,7 +447,7 @@ index 224351ffae7c9717d6035543d736e0ca49580dae..fbb2669e3764e1f3b29fd53cf7e4e5f8
          }
      }
  
-@@ -929,8 +931,7 @@ public final class CraftServer implements Server {
+@@ -929,8 +927,7 @@ public final class CraftServer implements Server {
          this.reloadData();
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
@@ -530,7 +457,7 @@ index 224351ffae7c9717d6035543d736e0ca49580dae..fbb2669e3764e1f3b29fd53cf7e4e5f8
  
          int pollCount = 0;
  
-@@ -2523,4 +2524,24 @@ public final class CraftServer implements Server {
+@@ -2523,4 +2520,24 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
@@ -555,25 +482,8 @@ index 224351ffae7c9717d6035543d736e0ca49580dae..fbb2669e3764e1f3b29fd53cf7e4e5f8
 +    }
 +    // Papyrus end
  }
-diff --git a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
-index 2fd69c0f915f1c3cb1c410d5dab0498f05d5c888..e8902262eb0edb422d3fd052bae2e0ef638b64ee 100644
---- a/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
-+++ b/src/main/java/org/bukkit/craftbukkit/command/CraftCommandMap.java
-@@ -1,10 +1,11 @@
- package org.bukkit.craftbukkit.command;
- 
--import java.util.Map;
- import org.bukkit.Server;
- import org.bukkit.command.Command;
- import org.bukkit.command.SimpleCommandMap;
- 
-+import java.util.Map;
-+
- public class CraftCommandMap extends SimpleCommandMap {
- 
-     public CraftCommandMap(Server server) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index 53b61b609361c305fb8d1f1a8700e81ce139fde4..643423bd9dbf88805e90c0e812a6ff22e84f324f 100644
+index 53b61b609361c305fb8d1f1a8700e81ce139fde4..f446aca778f1000674720c8609211cd93c2685e4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 @@ -403,7 +403,17 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
@@ -600,44 +510,36 @@ index 53b61b609361c305fb8d1f1a8700e81ce139fde4..643423bd9dbf88805e90c0e812a6ff22
      }
  
 +    public void removePotionEffect(PotionEffectType type, EntityPotionEffectEvent.Cause cause) {
-+        getHandle().removeEffect(MobEffectList.fromId(type.getId()), cause);
++        this.getHandle().removeEffect(MobEffect.byId(type.getId()), cause);
 +    }
 +
      @Override
      public Collection<PotionEffect> getActivePotionEffects() {
          List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 7cf40184b42b1ad53428b26ba45b05764b3770b0..054f5b7c2454ab67fdf55d1fe4f19e695c272236 100644
+index 7cf40184b42b1ad53428b26ba45b05764b3770b0..b5472615a46d91ae2f91fe3be4715d0a7fcb7e23 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
- import com.google.common.collect.ImmutableSet;
- import com.google.common.io.BaseEncoding;
- import com.mojang.authlib.GameProfile;
-+import fr.thekinrar.papyrus.hybrid.HybridPlayer;
- import io.netty.buffer.Unpooled;
- import java.io.ByteArrayOutputStream;
- import java.io.IOException;
-@@ -153,6 +154,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -153,6 +153,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private long lastSaveTime;
      // Paper end
      private boolean canAlwaysOpenCommandBlocks = false; // Papyrus
-+    private HybridPlayer hybrid;
++    private fr.thekinrar.papyrus.hybrid.HybridPlayer hybrid;
  
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -160,6 +162,10 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -160,6 +161,10 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          this.firstPlayed = System.currentTimeMillis();
      }
  
-+    public HybridPlayer getHybrid() {
++    public fr.thekinrar.papyrus.hybrid.HybridPlayer getHybrid() {
 +        return hybrid;
 +    }
 +
      public GameProfile getProfile() {
          return this.getHandle().getGameProfile();
      }
-@@ -2372,6 +2378,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2372,6 +2377,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
          net.minecraft.server.MinecraftServer.getServer().getPlayerList().sendPlayerPermissionLevel(getHandle());
      }
@@ -649,7 +551,7 @@ index 7cf40184b42b1ad53428b26ba45b05764b3770b0..054f5b7c2454ab67fdf55d1fe4f19e69
 +
 +    public void initHybrid() {
 +        if(hybrid == null) {
-+            hybrid = new HybridPlayer(this);
++            hybrid = new fr.thekinrar.papyrus.hybrid.HybridPlayer(this);
 +        }
 +    }
      // Papyrus end

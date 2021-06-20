@@ -5,10 +5,10 @@ Subject: [PATCH] More plugin-loading related APIs
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index fbb2669e3764e1f3b29fd53cf7e4e5f899c12450..567f88959df5408f02e1166adf6296986a2ae688 100644
+index be65555847d619ea5d91eccdda084487bde8b41c..863dfab9b78d932eed9cc7c8b43e8d5b3c0ffa10 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -705,6 +705,11 @@ public final class CraftServer implements Server {
+@@ -701,6 +701,11 @@ public final class CraftServer implements Server {
      }
      // End Temporary calls
  
