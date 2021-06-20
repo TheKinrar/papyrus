@@ -5,14 +5,14 @@ Subject: [PATCH] Call ServerShutdownEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index af73683e915c5379534bb2ce2d8c225553920896..554bb098cee47f67411dcef7a0fccdad9bca957f 100644
+index 9ebdf3120d467cb938936916a0cef149b0097790..04affc62a9d77e40df6707deea5e609e1e8f54be 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1039,6 +1039,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          this.safeShutdown(flag, false);
      }
      public void safeShutdown(boolean flag, boolean isRestarting) {
-+        org.bukkit.Bukkit.getPluginManager().callEvent(new ServerShutdownEvent()); // Papyrus
++        org.bukkit.Bukkit.getPluginManager().callEvent(new org.bukkit.event.server.ServerShutdownEvent()); // Papyrus
 +
          this.isRestarting = isRestarting;
          this.hasLoggedStop = true; // Paper
