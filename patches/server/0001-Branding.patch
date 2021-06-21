@@ -5,10 +5,10 @@ Subject: [PATCH] Branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 04938bb10c35d2e424043adb7ed8fec2e42bb816..d531028f7b93c12f576bcf59348f14c3ba99e2d0 100644
+index f427c6f5adf20f9e1b1fa4ab56041506d8240c92..a936437f9b64c058ba061ebff64249cc4fb7d196 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -18,8 +18,8 @@ repositories {
+@@ -30,8 +30,8 @@ repositories {
  }
  
  dependencies {
@@ -19,7 +19,7 @@ index 04938bb10c35d2e424043adb7ed8fec2e42bb816..d531028f7b93c12f576bcf59348f14c3
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
      implementation("net.minecrell:terminalconsoleappender:1.2.0")
-@@ -63,10 +63,11 @@ tasks.jar {
+@@ -77,10 +77,11 @@ tasks.jar {
      manifest {
          val git = Git(rootProject.layout.projectDirectory.path)
          val gitHash = git("rev-parse", "HEAD").getText().substring(0, 7)
@@ -32,7 +32,7 @@ index 04938bb10c35d2e424043adb7ed8fec2e42bb816..d531028f7b93c12f576bcf59348f14c3
              "Implementation-Vendor" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date()), // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -96,7 +97,7 @@ tasks.shadowJar {
+@@ -110,7 +111,7 @@ tasks.shadowJar {
  
      // Needed for Paperclip's install to maven local feature
      from(generatePom) {
@@ -41,7 +41,7 @@ index 04938bb10c35d2e424043adb7ed8fec2e42bb816..d531028f7b93c12f576bcf59348f14c3
          rename { "pom.xml" }
      }
  
-@@ -122,7 +123,7 @@ tasks.test {
+@@ -174,7 +175,7 @@ tasks.test {
  fun TaskContainer.registerRunTask(
      name: String, block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
@@ -51,7 +51,7 @@ index 04938bb10c35d2e424043adb7ed8fec2e42bb816..d531028f7b93c12f576bcf59348f14c3
      workingDir = rootProject.layout.projectDirectory.dir(
          providers.gradleProperty("runWorkDir").forUseAtConfigurationTime().orElse("run")
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 7acf077bc131af718c7548cc29deef558c04e463..879b22c6955a010e2dd7e5ddb76e12c573c74c8c 100644
+index 73652e403eaa419fb5b4b54bd506f246c0aa4e99..13eb0da1a1a16865e5e595ba3fb72f1635ebf57e 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -97,7 +97,7 @@ public class PaperConfig {
@@ -1003,7 +1003,7 @@ index eeefbb86cb88bd1b132bb6e22b4a4572cfb5e22c..9db5471cb124df03ceeaa1f13637c59d
          this.setPvpAllowed(dedicatedserverproperties.pvp);
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 870ff060e34de4ec49ad5496e79c2bd543297c41..282c241ec00d01b83d491d5b7d0b35834fee2822 100644
+index 9da5b7b54c91894b379d41fb8d2b24f7c1c9d96f..75eef41a934b4795c9bb5c95d2dddcefdf1cc9c7 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -183,6 +183,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -1024,7 +1024,7 @@ index 870ff060e34de4ec49ad5496e79c2bd543297c41..282c241ec00d01b83d491d5b7d0b3583
          this.world = new CraftWorld((ServerLevel) this, gen, env);
          this.ticksPerAnimalSpawns = this.getCraftServer().getTicksPerAnimalSpawns(); // CraftBukkit
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 8a98bd1018afd934696fedbed24e271ab6b75f51..224351ffae7c9717d6035543d736e0ca49580dae 100644
+index 0bcb3b4f156221521e4a2289196a7bee0767f494..9ce862102158626f777241744cd44230b2a4a71b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -230,7 +230,7 @@ import javax.annotation.Nullable; // Paper
@@ -1036,7 +1036,7 @@ index 8a98bd1018afd934696fedbed24e271ab6b75f51..224351ffae7c9717d6035543d736e0ca
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
-@@ -879,6 +879,7 @@ public final class CraftServer implements Server {
+@@ -875,6 +875,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
@@ -1132,7 +1132,7 @@ index 4d271cae88c16ed2419f896c728fdff612540500..ecf5bd521a67f7b9fde3f3c200c8f240
  
                  log.log( Level.SEVERE, "------------------------------" );
 diff --git a/src/main/resources/log4j2.xml b/src/main/resources/log4j2.xml
-index 67da1aa7a21622fb231d19dede3775a282a4a12e..03d5b81194ea700c3394b142041bda765de70af0 100644
+index f91d0df569b2f1d430ea5eee5f53779902a4f32c..aa8045dba4d354dbbbbcbf459350c063bd3e09b6 100644
 --- a/src/main/resources/log4j2.xml
 +++ b/src/main/resources/log4j2.xml
 @@ -9,7 +9,7 @@

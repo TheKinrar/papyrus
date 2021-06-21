@@ -175,7 +175,7 @@ index 4978648e40161ef45b2700481917d46fe142faff..9ebdf3120d467cb938936916a0cef149
          // Run tasks that are waiting on processing
          MinecraftTimings.processQueueTimer.startTiming(); // Spigot
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 181ab56448796a617f30f1b9e0fec8917b5d8e07..407becfeb8ab625b97d60b9f5ce7086815a345f6 100644
+index 935b22199ebdf84db591f8442e0506d8fcc92e02..32911cbd6b3dbe18caeb599e4e1700bd0d2b3b1b 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -729,7 +729,12 @@ public class ServerPlayer extends Player {
@@ -192,7 +192,7 @@ index 181ab56448796a617f30f1b9e0fec8917b5d8e07..407becfeb8ab625b97d60b9f5ce70868
  
              if (this.tickCount % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 071173569641aa264888d57468df5b54b013b494..df2856f8a4a74a939c19380e03befdc9cbf86e52 100644
+index 82e536ee00a7fa4ec88ff4b1deebb91901c315c6..0a9a9ca6c26fa0ab7a95e3a5698279ed5365faed 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1376,6 +1376,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -283,10 +283,10 @@ index 071173569641aa264888d57468df5b54b013b494..df2856f8a4a74a939c19380e03befdc9
              try {
                  byte[] data = new byte[packet.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index a5ad4faf00e11e67c18781715762248524e8fc95..b2c3c00a663eb92fe9a7a9d5c17340d4d5c9f3f1 100644
+index ab393f07ee5339d4794fbee2c8c50f777d0edf45..32fa86349dbe3bfe2f65cb28c00e132666b3b9eb 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -229,6 +229,12 @@ public abstract class PlayerList {
+@@ -230,6 +230,12 @@ public abstract class PlayerList {
  
          if (nbttagcompound == null) player.fudgeSpawnLocation(worldserver1); // Paper - only move to spawn on first login, otherwise, stay where you are....
  
@@ -299,7 +299,7 @@ index a5ad4faf00e11e67c18781715762248524e8fc95..b2c3c00a663eb92fe9a7a9d5c17340d4
          player.setLevel(worldserver1);
          String s1 = "local";
  
-@@ -271,7 +277,7 @@ public abstract class PlayerList {
+@@ -272,7 +278,7 @@ public abstract class PlayerList {
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
          playerconnection.send(new ClientboundUpdateRecipesPacket(this.server.getRecipeManager().getRecipes()));
          playerconnection.send(new ClientboundUpdateTagsPacket(this.server.getTags().serializeToNetwork((RegistryAccess) this.registryHolder)));
@@ -308,7 +308,7 @@ index a5ad4faf00e11e67c18781715762248524e8fc95..b2c3c00a663eb92fe9a7a9d5c17340d4
          this.sendPlayerPermissionLevel(player);
          player.getStats().markAllDirty();
          player.getRecipeBook().sendInitialRecipeBook(player);
-@@ -1294,18 +1300,32 @@ public abstract class PlayerList {
+@@ -1300,18 +1306,32 @@ public abstract class PlayerList {
      }
  
      public void sendAllPlayerInfo(ServerPlayer player) {
@@ -390,7 +390,7 @@ index 57c448ee93df76fc2a17c75fafc78408d720ced3..abfeb86c79146b42a9ea84209ce99ed8
  
          return (MobEffectInstance) this.activeEffects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index d286d88a3c3f93dbfa92de9421e320c92cd96350..0db1216ea18bc829acee471b238624999114437e 100644
+index 1bccd932851045c374e3092d33dc77fab680d0db..b5451faf06b17d64ba64e69ea1689549cc3e489e 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -193,6 +193,10 @@ public abstract class Player extends LivingEntity {
@@ -404,7 +404,7 @@ index d286d88a3c3f93dbfa92de9421e320c92cd96350..0db1216ea18bc829acee471b23862499
      public Player(Level world, BlockPos pos, float yaw, GameProfile profile) {
          super(EntityType.PLAYER, world);
          this.lastItemInMainHand = ItemStack.EMPTY;
-@@ -739,10 +743,7 @@ public abstract class Player extends LivingEntity {
+@@ -744,10 +748,7 @@ public abstract class Player extends LivingEntity {
              org.bukkit.entity.Player player = (org.bukkit.entity.Player) this.getBukkitEntity();
              Item drop = (Item) entityitem.getBukkitEntity();
  
@@ -416,7 +416,7 @@ index d286d88a3c3f93dbfa92de9421e320c92cd96350..0db1216ea18bc829acee471b23862499
                  org.bukkit.inventory.ItemStack cur = player.getInventory().getItemInHand();
                  if (retainOwnership && (cur == null || cur.getAmount() == 0)) {
                      // The complete stack was dropped
-@@ -769,6 +770,14 @@ public abstract class Player extends LivingEntity {
+@@ -774,6 +775,14 @@ public abstract class Player extends LivingEntity {
          }
      }
  
@@ -447,7 +447,7 @@ index 8cfce2d85041849ef3943e56c204fefeb07f96ec..b82e4e8220b0dd4444e51aed4b10cc75
      }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 224351ffae7c9717d6035543d736e0ca49580dae..27c9d641261eab7bb8a91a9c05e82f9d5f490539 100644
+index 9ce862102158626f777241744cd44230b2a4a71b..e9d0eaeb4543baac2b06bf2e04ddda4f9fb62c87 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -442,9 +442,7 @@ public final class CraftServer implements Server {
@@ -461,7 +461,7 @@ index 224351ffae7c9717d6035543d736e0ca49580dae..27c9d641261eab7bb8a91a9c05e82f9d
          }
      }
  
-@@ -929,8 +927,7 @@ public final class CraftServer implements Server {
+@@ -925,8 +923,7 @@ public final class CraftServer implements Server {
          this.reloadData();
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
@@ -471,7 +471,7 @@ index 224351ffae7c9717d6035543d736e0ca49580dae..27c9d641261eab7bb8a91a9c05e82f9d
  
          int pollCount = 0;
  
-@@ -2523,4 +2520,24 @@ public final class CraftServer implements Server {
+@@ -2519,4 +2516,24 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
