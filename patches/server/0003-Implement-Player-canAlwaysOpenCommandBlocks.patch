@@ -33,6 +33,21 @@ index a6ecbb7eb1df7923d58366327e0f00512a3a1677..ab393f07ee5339d4794fbee2c8c50f77
          this.sendPlayerPermissionLevel(player, i);
      }
  
+diff --git a/src/main/java/net/minecraft/world/item/GameMasterBlockItem.java b/src/main/java/net/minecraft/world/item/GameMasterBlockItem.java
+index 8cfce2d85041849ef3943e56c204fefeb07f96ec..b82e4e8220b0dd4444e51aed4b10cc75825875d2 100644
+--- a/src/main/java/net/minecraft/world/item/GameMasterBlockItem.java
++++ b/src/main/java/net/minecraft/world/item/GameMasterBlockItem.java
+@@ -15,6 +15,9 @@ public class GameMasterBlockItem extends BlockItem {
+     @Override
+     protected BlockState getPlacementState(BlockPlaceContext context) {
+         Player player = context.getPlayer();
+-        return player != null && !player.canUseGameMasterBlocks() ? null : super.getPlacementState(context);
++        return player != null && !(
++                player.canUseGameMasterBlocks() ||
++                ((org.bukkit.craftbukkit.entity.CraftPlayer) player.getBukkitEntity()).canAlwaysOpenCommandBlocks()
++        ) ? null : super.getPlacementState(context);
+     }
+ }
 diff --git a/src/main/java/net/minecraft/world/level/block/CommandBlock.java b/src/main/java/net/minecraft/world/level/block/CommandBlock.java
 index fd73e9100feac8c7bf9a5fee21a0ab2d502dc3e0..59fb3a3bfb764efc97f4ee13e2d9d3ad64beeff3 100644
 --- a/src/main/java/net/minecraft/world/level/block/CommandBlock.java
