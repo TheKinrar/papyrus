@@ -5,10 +5,10 @@ Subject: [PATCH] More plugin-loading related APIs
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 1087abf086397d34abae04d82dd4d00280ae3674..55950bee47644a090f08ed3008d0ec4172419799 100644
+index 5ed026babd9515bf5ee2930816f6350e0273c88a..4661be603a85fb994238dfc3256185f2d88a70dd 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -332,6 +332,13 @@ public final class Bukkit {
+@@ -351,6 +351,13 @@ public final class Bukkit {
      }
      // Paper end
  

@@ -5,10 +5,10 @@ Subject: [PATCH] Hybrid mode API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index e8414592b3afeb1e5db2b817b8fb7c13e073b9aa..1087abf086397d34abae04d82dd4d00280ae3674 100644
+index b5158151960db5c474b3aaa24bfa428e2a158fd9..5ed026babd9515bf5ee2930816f6350e0273c88a 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -1959,6 +1959,17 @@ public final class Bukkit {
+@@ -1978,6 +1978,17 @@ public final class Bukkit {
      }
      // Paper end
  
