@@ -1,3 +1,5 @@
+import io.papermc.paperweight.util.Git
+
 plugins {
     java
     id("com.github.johnrengelman.shadow") version "7.0.0" apply false
@@ -48,16 +50,37 @@ subprojects {
     }
 }
 
+val paperDir = layout.projectDirectory.dir("work/Paper")
+val initSubmodules by tasks.registering {
+    outputs.upToDateWhen { false }
+    doLast {
+        Git(layout.projectDirectory)("submodule", "update", "--init").executeOut()
+    }
+}
+
 paperweight {
     serverProject.set(project(":Papyrus-Server"))
 
-    usePaperUpstream(providers.gradleProperty("paperRef")) {
-        withPaperPatcher {
-            apiPatchDir.set(layout.projectDirectory.dir("patches/api"))
-            apiOutputDir.set(layout.projectDirectory.dir("Papyrus-API"))
+    upstreams {
+        register("paper") {
+            upstreamDataTask {
+                dependsOn(initSubmodules)
+                projectDir.set(paperDir)
+            }
 
-            serverPatchDir.set(layout.projectDirectory.dir("patches/server"))
-            serverOutputDir.set(layout.projectDirectory.dir("Papyrus-Server"))
+            patchTasks {
+                register("api") {
+                    upstreamDir.set(paperDir.dir("Paper-API"))
+                    patchDir.set(layout.projectDirectory.dir("patches/api"))
+                    outputDir.set(layout.projectDirectory.dir("Papyrus-API"))
+                }
+                register("server") {
+                    upstreamDir.set(paperDir.dir("Paper-Server"))
+                    importMcDev.set(true)
+                    patchDir.set(layout.projectDirectory.dir("patches/server"))
+                    outputDir.set(layout.projectDirectory.dir("Papyrus-Server"))
+                }
+            }
         }
     }
 }
