@@ -1,0 +1,21 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Fri, 25 Jun 2021 21:36:42 +0200
+Subject: [PATCH] Add disableVanillaEntityCollisions API
+
+
+diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
+index a9e455c5b3bbe4edbdb71f86f5c6eebc2f605547..b1fb637e7743b8c7f57c468f7062f4731c87db4a 100644
+--- a/src/main/java/org/bukkit/entity/Entity.java
++++ b/src/main/java/org/bukkit/entity/Entity.java
+@@ -753,4 +753,10 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+      */
+     public boolean isTicking();
+     // Paper end
++
++    // Papyrus start
++    public void setIgnoresVanillaEntityCollisions(boolean ignores);
++
++    public boolean ignoresVanillaEntityCollisions();
++    // Papyrus end
+ }

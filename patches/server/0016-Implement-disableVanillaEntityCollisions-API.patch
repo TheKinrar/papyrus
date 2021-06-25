@@ -1,0 +1,52 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Indhi Rousseau <contact@thekinrar.fr>
+Date: Fri, 25 Jun 2021 21:37:27 +0200
+Subject: [PATCH] Implement disableVanillaEntityCollisions API
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index 4fd030ef9537d9b31c6167d73349f4c4a6b33a15..23206b1a5a3a723c86b63aab680866524f10b507 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -310,6 +310,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+     private org.bukkit.util.Vector origin;
+     @javax.annotation.Nullable
+     private UUID originWorld;
++    public boolean disableVanillaEntityCollisions; // Papyrus
+ 
+     public void setOrigin(@javax.annotation.Nonnull Location location) {
+         this.origin = location.toVector();
+@@ -1081,7 +1082,11 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+         Stream<VoxelShape> stream1 = this.level.getEntityCollisions(this, axisalignedbb.expandTowards(movement), (entity) -> {
+             return true;
+         });
+-        RewindableStream<VoxelShape> streamaccumulator = new RewindableStream<>(Stream.concat(stream1, stream));
++        RewindableStream<VoxelShape> streamaccumulator;
++        if(disableVanillaEntityCollisions)
++            streamaccumulator = new net.minecraft.util.RewindableStream<>(stream);
++        else
++            streamaccumulator = new net.minecraft.util.RewindableStream<>(java.util.stream.Stream.concat(stream1, stream));
+         Vec3 vec3d1 = movement.lengthSqr() == 0.0D ? movement : Entity.collideBoundingBoxHeuristically(this, movement, axisalignedbb, this.level, voxelshapecollision, streamaccumulator);
+         boolean flag = movement.x != vec3d1.x;
+         boolean flag1 = movement.y != vec3d1.y;
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
+index 8246ad7ebecdfc0b7519fe4412fef7b07407e850..c845f36bd8d0967f33becc0018ab3331c70f5a08 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
+@@ -1207,4 +1207,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+         return getHandle().isTicking();
+     }
+     // Paper end
++
++    // Papyrus start
++    @Override
++    public void setIgnoresVanillaEntityCollisions(boolean ignores) {
++        getHandle().disableVanillaEntityCollisions = ignores;
++    }
++
++    @Override
++    public boolean ignoresVanillaEntityCollisions() {
++        return getHandle().disableVanillaEntityCollisions;
++    }
++    // Papyrus end
+ }
