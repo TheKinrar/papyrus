@@ -27,6 +27,7 @@ dependencies {
 
 subprojects {
     apply(plugin = "java")
+    apply(plugin = "maven-publish")
 
     java {
         toolchain {
@@ -35,8 +36,24 @@ subprojects {
     }
 
     tasks.withType<JavaCompile>().configureEach {
-        options.encoding = "UTF-8"
+        options.encoding = Charsets.UTF_8.name()
         options.release.set(16)
+    }
+    tasks.withType<Javadoc> {
+        options.encoding = Charsets.UTF_8.name()
+    }
+    tasks.withType<ProcessResources> {
+        filteringCharset = Charsets.UTF_8.name()
+    }
+
+    configure<PublishingExtension> {
+        repositories {
+            maven {
+                name = "papyrus"
+                url = uri("https://maven.atlanti.se/repository/maven-papyrus/")
+                credentials(PasswordCredentials::class)
+            }
+        }
     }
 
     repositories {
