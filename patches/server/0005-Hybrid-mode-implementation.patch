@@ -152,7 +152,7 @@ index 0000000000000000000000000000000000000000..9e689ecad1618108d6f9d3a9a3d15b73
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 4978648e40161ef45b2700481917d46fe142faff..9ebdf3120d467cb938936916a0cef149b0097790 100644
+index f50cc4caef998da44ae5ff598831cf536e0345ae..75101970a54c058b3b0ada1224e68a2965dfdb1b 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1496,6 +1496,18 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -192,7 +192,7 @@ index 935b22199ebdf84db591f8442e0506d8fcc92e02..32911cbd6b3dbe18caeb599e4e1700bd
  
              if (this.tickCount % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 82e536ee00a7fa4ec88ff4b1deebb91901c315c6..0a9a9ca6c26fa0ab7a95e3a5698279ed5365faed 100644
+index 65b7f728837ef14366ff6c63897060d7311542ba..f5d707f79db3e81df645b47a4f3cb53b4707bf7d 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1376,6 +1376,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -432,7 +432,7 @@ index 1bccd932851045c374e3092d33dc77fab680d0db..b5451faf06b17d64ba64e69ea1689549
          float f = this.inventory.getDestroySpeed(block);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 9ce862102158626f777241744cd44230b2a4a71b..e9d0eaeb4543baac2b06bf2e04ddda4f9fb62c87 100644
+index ad745ed50f0cc74fdc8e317c3d6cc40f24176d9a..411d0726aa449af12ff658ba5dc74e27013fc84e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -442,9 +442,7 @@ public final class CraftServer implements Server {
@@ -482,10 +482,10 @@ index 9ce862102158626f777241744cd44230b2a4a71b..e9d0eaeb4543baac2b06bf2e04ddda4f
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index 53b61b609361c305fb8d1f1a8700e81ce139fde4..f446aca778f1000674720c8609211cd93c2685e4 100644
+index 53b61b609361c305fb8d1f1a8700e81ce139fde4..93c13316e1378e7b649917f38e95324322155a96 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-@@ -403,7 +403,17 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+@@ -403,7 +403,11 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
  
      @Override
      public boolean addPotionEffect(PotionEffect effect, boolean force) {
@@ -494,27 +494,10 @@ index 53b61b609361c305fb8d1f1a8700e81ce139fde4..f446aca778f1000674720c8609211cd9
 +    }
 +
 +    public boolean addPotionEffect(PotionEffect effect, boolean force, EntityPotionEffectEvent.Cause cause) {
-+        if (hasPotionEffect(effect.getType())) {
-+            if (!force) {
-+                return false;
-+            }
-+            removePotionEffect(effect.getType());
-+        }
 +        this.getHandle().addEffect(new MobEffectInstance(MobEffect.byId(effect.getType().getId()), effect.getDuration(), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles(), effect.hasIcon()), cause);
          return true;
      }
  
-@@ -432,6 +442,10 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
-         this.getHandle().removeEffect(MobEffect.byId(type.getId()), EntityPotionEffectEvent.Cause.PLUGIN);
-     }
- 
-+    public void removePotionEffect(PotionEffectType type, EntityPotionEffectEvent.Cause cause) {
-+        this.getHandle().removeEffect(MobEffect.byId(type.getId()), cause);
-+    }
-+
-     @Override
-     public Collection<PotionEffect> getActivePotionEffects() {
-         List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 index 7cf40184b42b1ad53428b26ba45b05764b3770b0..b5472615a46d91ae2f91fe3be4715d0a7fcb7e23 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
