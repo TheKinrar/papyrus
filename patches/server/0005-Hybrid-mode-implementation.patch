@@ -283,7 +283,7 @@ index 65b7f728837ef14366ff6c63897060d7311542ba..f5d707f79db3e81df645b47a4f3cb53b
              try {
                  byte[] data = new byte[packet.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index ab393f07ee5339d4794fbee2c8c50f777d0edf45..32fa86349dbe3bfe2f65cb28c00e132666b3b9eb 100644
+index 5ad1b24755bf95242915ad08a4417823c4ce7f68..3b228cfa57a8603ccb85e64a8730db19a8bffd4d 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -230,6 +230,12 @@ public abstract class PlayerList {
@@ -482,7 +482,7 @@ index ad745ed50f0cc74fdc8e317c3d6cc40f24176d9a..411d0726aa449af12ff658ba5dc74e27
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index 53b61b609361c305fb8d1f1a8700e81ce139fde4..93c13316e1378e7b649917f38e95324322155a96 100644
+index 53b61b609361c305fb8d1f1a8700e81ce139fde4..b862385abd11ab36fe53f1b8c0b412951f40340f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 @@ -403,7 +403,11 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
@@ -498,6 +498,17 @@ index 53b61b609361c305fb8d1f1a8700e81ce139fde4..93c13316e1378e7b649917f38e953243
          return true;
      }
  
+@@ -432,6 +436,10 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+         this.getHandle().removeEffect(MobEffect.byId(type.getId()), EntityPotionEffectEvent.Cause.PLUGIN);
+     }
+ 
++    public void removePotionEffect(PotionEffectType type, EntityPotionEffectEvent.Cause cause) {
++        this.getHandle().removeEffect(MobEffect.byId(type.getId()), cause);
++    }
++
+     @Override
+     public Collection<PotionEffect> getActivePotionEffects() {
+         List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 index 7cf40184b42b1ad53428b26ba45b05764b3770b0..b5472615a46d91ae2f91fe3be4715d0a7fcb7e23 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
