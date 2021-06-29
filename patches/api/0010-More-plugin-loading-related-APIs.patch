@@ -5,10 +5,10 @@ Subject: [PATCH] More plugin-loading related APIs
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 5ed026babd9515bf5ee2930816f6350e0273c88a..4661be603a85fb994238dfc3256185f2d88a70dd 100644
+index 38a4a46b3e7c8362b51f893d23b8ab25bee11c3d..83a12b906717b8a366c6000110a2da6b54c6f955 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -351,6 +351,13 @@ public final class Bukkit {
+@@ -375,6 +375,13 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -23,10 +23,10 @@ index 5ed026babd9515bf5ee2930816f6350e0273c88a..4661be603a85fb994238dfc3256185f2
       * Gets the name of the update folder. The update folder is used to safely
       * update plugins at the right moment on a plugin load.
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 9e0b6e1be44e6379c0d6fda7482343352cbae34c..e365b6ac725af7a543483dce53d72a2d623d9bd6 100644
+index c3c08f7470a9a23187928ec30de57883a7be82cf..202578975fc309d5b19b8c694f8e9d7f20d326c6 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -277,6 +277,11 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -297,6 +297,11 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      }
      // Paper end
  

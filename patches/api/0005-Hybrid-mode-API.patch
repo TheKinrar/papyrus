@@ -5,10 +5,10 @@ Subject: [PATCH] Hybrid mode API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index b5158151960db5c474b3aaa24bfa428e2a158fd9..5ed026babd9515bf5ee2930816f6350e0273c88a 100644
+index 001d6e4f6d9d91c6929ae84c53dbd23c6c8112c9..38a4a46b3e7c8362b51f893d23b8ab25bee11c3d 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -1978,6 +1978,17 @@ public final class Bukkit {
+@@ -2002,6 +2002,17 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -27,10 +27,10 @@ index b5158151960db5c474b3aaa24bfa428e2a158fd9..5ed026babd9515bf5ee2930816f6350e
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index e88b47a838dc472ad64271a518ee1789f7be19fa..9e0b6e1be44e6379c0d6fda7482343352cbae34c 100644
+index 07c9635ea2e09e823ed7fa164ed854af41fab7dc..c3c08f7470a9a23187928ec30de57883a7be82cf 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1716,4 +1716,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1736,4 +1736,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      @NotNull
      io.papermc.paper.datapack.DatapackManager getDatapackManager();
      // Paper end
