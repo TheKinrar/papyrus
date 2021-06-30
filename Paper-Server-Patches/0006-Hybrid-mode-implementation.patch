@@ -630,7 +630,7 @@ index 592dacf8cc924caac339a8810ba5b0d85448ed90..ec35ab6ffa58891c60fc9fe8f72d0de2
      public Collection<PotionEffect> getActivePotionEffects() {
          List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index a819f1658f2558495140497177d9bb620c766cde..c632a21272aac066248a1537925177cde8eb5abc 100644
+index 899e51dcff10499c66c82a4c51c1f5f8e8607a87..e81d23357ac346b5fe50ef526b41aa2bd3f74421 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
@@ -660,7 +660,7 @@ index a819f1658f2558495140497177d9bb620c766cde..c632a21272aac066248a1537925177cd
      public GameProfile getProfile() {
          return getHandle().getProfile();
      }
-@@ -2344,6 +2350,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2345,6 +2351,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
          MinecraftServer.getServer().getPlayerList().d(getHandle());
      }

@@ -91,7 +91,7 @@ index f7d22282a59277375d146e9459f9f43962dd7d09..38a4beee1d976025e91cba007e9714a9
              return EnumInteractionResult.a(world.isClientSide);
          } else {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index cfe6898dc373fe55a08acf5c90e200061aa7d0fc..a819f1658f2558495140497177d9bb620c766cde 100644
+index c845896764cfa29f5d111c674b1a9081bd4993a7..899e51dcff10499c66c82a4c51c1f5f8e8607a87 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -56,6 +56,7 @@ import net.minecraft.network.protocol.game.PacketPlayOutWorldEvent;
@@ -110,7 +110,7 @@ index cfe6898dc373fe55a08acf5c90e200061aa7d0fc..a819f1658f2558495140497177d9bb62
  
      public CraftPlayer(CraftServer server, EntityPlayer entity) {
          super(server, entity);
-@@ -2330,6 +2332,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2331,6 +2333,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      }
      // Paper end
  
