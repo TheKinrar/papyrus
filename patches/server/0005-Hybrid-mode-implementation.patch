@@ -175,10 +175,10 @@ index f50cc4caef998da44ae5ff598831cf536e0345ae..75101970a54c058b3b0ada1224e68a29
          // Run tasks that are waiting on processing
          MinecraftTimings.processQueueTimer.startTiming(); // Spigot
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 935b22199ebdf84db591f8442e0506d8fcc92e02..32911cbd6b3dbe18caeb599e4e1700bd0d2b3b1b 100644
+index a0acaac510aa2206a5c58f2b7aafdbc2bdf7a3dd..8492624290c60d4585a6ac687b1d44db3cc7ce73 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -729,7 +729,12 @@ public class ServerPlayer extends Player {
+@@ -734,7 +734,12 @@ public class ServerPlayer extends Player {
  
              if (this.totalExperience != this.lastSentExp) {
                  this.lastSentExp = this.totalExperience;
@@ -192,7 +192,7 @@ index 935b22199ebdf84db591f8442e0506d8fcc92e02..32911cbd6b3dbe18caeb599e4e1700bd
  
              if (this.tickCount % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 65b7f728837ef14366ff6c63897060d7311542ba..f5d707f79db3e81df645b47a4f3cb53b4707bf7d 100644
+index 071afa71731bad989ccbb9594d36e1fa00b0e3d3..52c561ca5eb0f043e1b6166d0d7291b11710b8be 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1376,6 +1376,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser

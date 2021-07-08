@@ -5,10 +5,10 @@ Subject: [PATCH] Implement canSeePlayerEntities API
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 7f7bc04a30a0422b2d589adb488082c0aa5326dc..1c1fb69ca7d0866169cf824aa03693e32c01df55 100644
+index 5d57461d33f442e2ff0363348555357ba90f2f58..c33edf50bb92e7c7b4cda7efbd8c01ade72390b1 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
-@@ -2371,7 +2371,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+@@ -2382,7 +2382,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
                  // CraftBukkit start - respect vanish API
                  if (this.entity instanceof ServerPlayer) {
                      Player player1 = ((ServerPlayer) this.entity).getBukkitEntity();
@@ -18,7 +18,7 @@ index 7f7bc04a30a0422b2d589adb488082c0aa5326dc..1c1fb69ca7d0866169cf824aa03693e3
                      }
                  }
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index b3312fa2fd218ffcfaa61d98584003c97fbda4ce..6568e7e809d98dfb52d74d904cebcc0370dd7d67 100644
+index 8154ca39ec7e2e8559cd125d73a59b8d2b00714c..0d468ea2d77b8de8722d11df35462de10c873f43 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1293,7 +1293,7 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
@@ -53,10 +53,10 @@ index 69f439851fe1ff07d827eaed274940a5783d5f6c..679286f6fa274b6375aed17bc9af872d
              return entity1 == null || this.leftOwner || !entity1.isPassengerOfSameVehicle(entity);
              // Paper end
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 282c241ec00d01b83d491d5b7d0b35834fee2822..746a8a68aa8c8656a9521a8afcc32d5fce76b27f 100644
+index e708f8e778459c9d3db20cab2fac2fd0f08befd6..824854b6f08a764bc3ac5bc992a4bbfb2925b1c5 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -296,7 +296,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -303,7 +303,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
              Entity entity = entities.get(i);
  
              if (checkCanSee && source instanceof net.minecraft.server.level.ServerPlayer && entity instanceof net.minecraft.server.level.ServerPlayer
@@ -80,7 +80,7 @@ index 60d7496966b22e0553372a93e3c0e7ed9e166cba..5f1ca2d6220ec4fd505c8cdda3065615
                  }
              });
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index b5472615a46d91ae2f91fe3be4715d0a7fcb7e23..8e744f18691e95a91c54377dd9edc22cabae41ae 100644
+index 5530d5d54351577c97912fa3e2298502e36eaf39..753ed066120dd00cbea4683de6c3a9401c12ea02 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -141,6 +141,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
