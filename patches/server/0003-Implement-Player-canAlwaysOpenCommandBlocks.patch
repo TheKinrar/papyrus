@@ -20,10 +20,10 @@ index e572088cad8b9e09b1d64f7971bacac2f10c5b17..83dbe2dcb6d7f6e98052cd56e72a8eee
              } else if (this.player.blockActionRestricted((Level) this.level, pos, this.gameModeForPlayer)) {
                  return false;
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 65657c009f6d5a5d5740e80f912a5893333c7085..67aa995a76eac48fbd8e48c4c4156307ef017218 100644
+index 48045993c8ad4b014cf4a67f7c4db42e014d1c81..2740cb522d213bea22af864c8f31cdc98ac7cc14 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1000,6 +1000,9 @@ public abstract class PlayerList {
+@@ -1005,6 +1005,9 @@ public abstract class PlayerList {
          GameProfile gameprofile = player.getGameProfile();
          int i = this.server.getProfilePermissions(gameprofile);
  

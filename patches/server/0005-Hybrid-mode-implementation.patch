@@ -192,7 +192,7 @@ index 8e2bccc3a9ddb17a4978596056189eb776976338..28f5245d4f735d7f31ce0a804633c260
  
              if (this.tickCount % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 5e36617c6292f49bd619e342bef97ba98af21dc3..2d604a4bbd8e4d793d0c19db0dee7b0d06cebed6 100644
+index 952036df8c5a2b355156ecc4b3fb619b55fb5dd2..a6d12c7ecb19a1106c04e10e22072522056e4a60 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1356,6 +1356,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -244,7 +244,7 @@ index 5e36617c6292f49bd619e342bef97ba98af21dc3..2d604a4bbd8e4d793d0c19db0dee7b0d
                  this.player.releaseUsingItem();
                  return;
              case START_DESTROY_BLOCK:
-@@ -2022,6 +2037,10 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2027,6 +2042,10 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
              // CraftBukkit start
              boolean isSync = s.startsWith("/");
@@ -255,7 +255,7 @@ index 5e36617c6292f49bd619e342bef97ba98af21dc3..2d604a4bbd8e4d793d0c19db0dee7b0d
              if (isSync) {
                  try {
                      this.server.server.playerCommandState = true;
-@@ -3071,6 +3090,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3076,6 +3095,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      // CraftBukkit start
      private static final ResourceLocation CUSTOM_REGISTER = new ResourceLocation("register");
      private static final ResourceLocation CUSTOM_UNREGISTER = new ResourceLocation("unregister");
@@ -263,7 +263,7 @@ index 5e36617c6292f49bd619e342bef97ba98af21dc3..2d604a4bbd8e4d793d0c19db0dee7b0d
  
      private static final ResourceLocation MINECRAFT_BRAND = new ResourceLocation("brand"); // Paper - Brand support
  
-@@ -3097,6 +3117,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3102,6 +3122,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                  ServerGamePacketListenerImpl.LOGGER.error("Couldn\'t unregister custom payload", ex);
                  this.disconnect("Invalid payload UNREGISTER!", org.bukkit.event.player.PlayerKickEvent.Cause.INVALID_PAYLOAD); // Paper - kick event cause
              }
@@ -283,7 +283,7 @@ index 5e36617c6292f49bd619e342bef97ba98af21dc3..2d604a4bbd8e4d793d0c19db0dee7b0d
              try {
                  byte[] data = new byte[packet.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 67aa995a76eac48fbd8e48c4c4156307ef017218..9120eea8053042c2bf315f43f6cb493c17281b0d 100644
+index 2740cb522d213bea22af864c8f31cdc98ac7cc14..1754d15078ebb1422d37f1525e9013302006a403 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -232,6 +232,12 @@ public abstract class PlayerList {
@@ -308,7 +308,7 @@ index 67aa995a76eac48fbd8e48c4c4156307ef017218..9120eea8053042c2bf315f43f6cb493c
          this.sendPlayerPermissionLevel(player);
          player.getStats().markAllDirty();
          player.getRecipeBook().sendInitialRecipeBook(player);
-@@ -1302,18 +1308,32 @@ public abstract class PlayerList {
+@@ -1307,18 +1313,32 @@ public abstract class PlayerList {
      }
  
      public void sendAllPlayerInfo(ServerPlayer player) {
@@ -346,7 +346,7 @@ index 67aa995a76eac48fbd8e48c4c4156307ef017218..9120eea8053042c2bf315f43f6cb493c
          return this.players.size();
      }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 92fd98540e8d5ada4eaaf83bee8cdd276c4458a7..19748ab81b7e6f4893c75ec9e1209089225e7b61 100644
+index 027898e97667081840562547653d4adaeae01dda..61558276f76b43c4d2417cf90d1f3622b1857315 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -1107,9 +1107,12 @@ public abstract class LivingEntity extends Entity {
@@ -477,7 +477,7 @@ index 86f3b229f3ae491a2f34062c36e2b0ccd0243176..cf759bb095aa2eee45a8ad66be317470
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index 53b61b609361c305fb8d1f1a8700e81ce139fde4..b862385abd11ab36fe53f1b8c0b412951f40340f 100644
+index eed0abb13b4f27a55db577f1005193c81744d247..8b8ac191856b40476388702fdeb8e73670a7cc82 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 @@ -403,7 +403,11 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
