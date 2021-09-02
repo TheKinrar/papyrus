@@ -18,10 +18,10 @@ index 42fd259f4492e539112b5bcb310aaaadab58a443..99a40d615c2eec1afbf402578b64d003
                      }
                  }
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 6ecf60c69a27f8db1c245db15449bba581c3dbf5..a7cd2a8c3102c0af4a07e154037189d5e62a8634 100644
+index c2e0417ee15018ec31c4aa8eec3dff7a0d16aa9e..d0a34cd06502b2663fb8324e1faea0ac87173d65 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1293,7 +1293,7 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+@@ -1254,7 +1254,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
                  double d2 = (double) pos.getZ() - entityplayer.getZ();
  
                  // CraftBukkit start
@@ -30,7 +30,7 @@ index 6ecf60c69a27f8db1c245db15449bba581c3dbf5..a7cd2a8c3102c0af4a07e154037189d5
                      continue;
                  }
                  // CraftBukkit end
-@@ -1485,7 +1485,7 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+@@ -1446,7 +1446,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
  
          for (Player entityhuman : receivers) { // Paper - Particle API Expansion
              ServerPlayer entityplayer = (ServerPlayer) entityhuman; // Paper - Particle API Expansion

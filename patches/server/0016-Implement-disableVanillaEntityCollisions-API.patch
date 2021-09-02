@@ -5,7 +5,7 @@ Subject: [PATCH] Implement disableVanillaEntityCollisions API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 4fd030ef9537d9b31c6167d73349f4c4a6b33a15..23206b1a5a3a723c86b63aab680866524f10b507 100644
+index a11507c630248b98153275f78c15ebee59a6b0a3..5fa7c38cf3d0d33317ea01984ab322740ba9deab 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -310,6 +310,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
@@ -30,10 +30,10 @@ index 4fd030ef9537d9b31c6167d73349f4c4a6b33a15..23206b1a5a3a723c86b63aab68086652
          boolean flag = movement.x != vec3d1.x;
          boolean flag1 = movement.y != vec3d1.y;
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 8246ad7ebecdfc0b7519fe4412fef7b07407e850..c845f36bd8d0967f33becc0018ab3331c70f5a08 100644
+index 3acb5f8a1f863b5ba47eac4190be8228324fc8e7..a4757c551a19f04ca16b920b45a3ddee4a943757 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -1207,4 +1207,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -1225,4 +1225,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
          return getHandle().isTicking();
      }
      // Paper end
