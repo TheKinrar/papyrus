@@ -34,34 +34,20 @@ index ad9fb50791779a5fe7d22268b71bd10d9c9ff3f0..c361775f1f928cfbc35ca3a0acd03e25
      }
  
 diff --git a/src/main/java/net/minecraft/world/item/GameMasterBlockItem.java b/src/main/java/net/minecraft/world/item/GameMasterBlockItem.java
-new file mode 100644
-index 0000000000000000000000000000000000000000..b82e4e8220b0dd4444e51aed4b10cc75825875d2
---- /dev/null
+index 8cfce2d85041849ef3943e56c204fefeb07f96ec..b82e4e8220b0dd4444e51aed4b10cc75825875d2 100644
+--- a/src/main/java/net/minecraft/world/item/GameMasterBlockItem.java
 +++ b/src/main/java/net/minecraft/world/item/GameMasterBlockItem.java
-@@ -0,0 +1,23 @@
-+package net.minecraft.world.item;
-+
-+import javax.annotation.Nullable;
-+import net.minecraft.world.entity.player.Player;
-+import net.minecraft.world.item.context.BlockPlaceContext;
-+import net.minecraft.world.level.block.Block;
-+import net.minecraft.world.level.block.state.BlockState;
-+
-+public class GameMasterBlockItem extends BlockItem {
-+    public GameMasterBlockItem(Block block, Item.Properties settings) {
-+        super(block, settings);
-+    }
-+
-+    @Nullable
-+    @Override
-+    protected BlockState getPlacementState(BlockPlaceContext context) {
-+        Player player = context.getPlayer();
+@@ -15,6 +15,9 @@ public class GameMasterBlockItem extends BlockItem {
+     @Override
+     protected BlockState getPlacementState(BlockPlaceContext context) {
+         Player player = context.getPlayer();
+-        return player != null && !player.canUseGameMasterBlocks() ? null : super.getPlacementState(context);
 +        return player != null && !(
 +                player.canUseGameMasterBlocks() ||
 +                ((org.bukkit.craftbukkit.entity.CraftPlayer) player.getBukkitEntity()).canAlwaysOpenCommandBlocks()
 +        ) ? null : super.getPlacementState(context);
-+    }
-+}
+     }
+ }
 diff --git a/src/main/java/net/minecraft/world/level/block/CommandBlock.java b/src/main/java/net/minecraft/world/level/block/CommandBlock.java
 index fd73e9100feac8c7bf9a5fee21a0ab2d502dc3e0..59fb3a3bfb764efc97f4ee13e2d9d3ad64beeff3 100644
 --- a/src/main/java/net/minecraft/world/level/block/CommandBlock.java
