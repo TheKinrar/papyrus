@@ -5,10 +5,10 @@ Subject: [PATCH] Implement CommandBlockEditEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 6ff04fc7202a7eb1f2b5978a2e2a573945d9dde1..5e36617c6292f49bd619e342bef97ba98af21dc3 100644
+index 559572d3ff37e016ed07d428cf5d73a00ef48d70..9a1fe222b328062edc5c3ba28e0ec4b45ee335db 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -810,67 +810,119 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -849,67 +849,119 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      @Override
      public void handleSetCommandBlock(ServerboundSetCommandBlockPacket packet) {
          PacketUtils.ensureRunningOnSameThread(packet, this, this.player.getLevel());
@@ -62,7 +62,7 @@ index 6ff04fc7202a7eb1f2b5978a2e2a573945d9dde1..5e36617c6292f49bd619e342bef97ba9
 +
 +        if (!event.getCommandBlocksEnabled()) {
              this.player.sendMessage(new TranslatableComponent("advMode.notEnabled"), Util.NIL_UUID);
--        } else if (!this.player.canUseGameMasterBlocks() && !this.player.isCreative() && !this.player.getBukkitEntity().hasPermission("minecraft.commandblock")) { // Paper - command block permission
+-        } else if (!this.player.canUseGameMasterBlocks() && (!this.player.isCreative() || !this.player.getBukkitEntity().hasPermission("minecraft.commandblock"))) { // Paper - command block permission
 +        } else if (!event.getPlayerCanEdit()) {
              this.player.sendMessage(new TranslatableComponent("advMode.notAllowed"), Util.NIL_UUID);
          } else {

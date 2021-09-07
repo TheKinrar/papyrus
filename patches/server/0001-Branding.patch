@@ -5,10 +5,10 @@ Subject: [PATCH] Branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 4605634d1e0d2c6592d4152e697680e078380868..6cb95dabbbf335f6180973cdb5a16224fc5c8335 100644
+index b3687f632bbf06c933a6ef04dc2236ccf3c030b8..ad4ee507a107a591de677e983354d3a470c804a0 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -30,8 +30,8 @@ repositories {
+@@ -29,8 +29,8 @@ repositories {
  }
  
  dependencies {
@@ -19,16 +19,7 @@ index 4605634d1e0d2c6592d4152e697680e078380868..6cb95dabbbf335f6180973cdb5a16224
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
      implementation("net.minecrell:terminalconsoleappender:1.2.0")
-@@ -80,7 +80,7 @@ tasks.jar {
-         attributes(
-             "Main-Class" to "org.bukkit.craftbukkit.Main",
-             "Implementation-Title" to "CraftBukkit",
--            "Implementation-Version" to "git-Paper-$implementationVersion",
-+            "Implementation-Version" to "git-Papyrus-$implementationVersion",
-             "Implementation-Vendor" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date()), // Paper
-             "Specification-Title" to "Bukkit",
-             "Specification-Version" to project.version,
-@@ -112,7 +112,7 @@ tasks.shadowJar {
+@@ -147,7 +147,7 @@ tasks.shadowJar {
  
      // Needed for Paperclip's install to maven local feature
      from(generatePom) {
@@ -37,7 +28,7 @@ index 4605634d1e0d2c6592d4152e697680e078380868..6cb95dabbbf335f6180973cdb5a16224
          rename { "pom.xml" }
      }
  
-@@ -176,7 +176,7 @@ tasks.test {
+@@ -207,7 +207,7 @@ tasks.test {
  fun TaskContainer.registerRunTask(
      name: String, block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
@@ -46,8 +37,24 @@ index 4605634d1e0d2c6592d4152e697680e078380868..6cb95dabbbf335f6180973cdb5a16224
      standardInput = System.`in`
      workingDir = rootProject.layout.projectDirectory.dir(
          providers.gradleProperty("runWorkDir").forUseAtConfigurationTime().orElse("run")
+diff --git a/build.gradle.kts.rej b/build.gradle.kts.rej
+new file mode 100644
+index 0000000000000000000000000000000000000000..e1f9e31d7c7d85bab763c21d356c5999dc3ac210
+--- /dev/null
++++ b/build.gradle.kts.rej
+@@ -0,0 +1,10 @@
++diff a/build.gradle.kts b/build.gradle.kts	(rejected hunks)
++@@ -80,7 +80,7 @@ tasks.jar {
++         attributes(
++             "Main-Class" to "org.bukkit.craftbukkit.Main",
++             "Implementation-Title" to "CraftBukkit",
++-            "Implementation-Version" to "git-Paper-$implementationVersion",
+++            "Implementation-Version" to "git-Papyrus-$implementationVersion",
++             "Implementation-Vendor" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date()), // Paper
++             "Specification-Title" to "Bukkit",
++             "Specification-Version" to project.version,
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index f101302892a7f95ffa0e6d63cb69d8a3ddbd67a7..396c41c1e67d65a54b95996911dfee6595fe5697 100644
+index dcae40fde8087ce09ec8b9360f2abc860b88c975..31fe6421011024363d807c73a21f7526e351db16 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -97,7 +97,7 @@ public class PaperConfig {
@@ -966,10 +973,10 @@ index 0000000000000000000000000000000000000000..52274c1bb387ae8e42f3c7078328d99f
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 3dded5c491ace6b073a7bc3178976bd70f0b9393..8752274f609aeac7985e00b27e2f77fcc0d3fabf 100644
+index 099db3a627c1d3c08f3b923bb02a1cb8a0a268ab..4d1f2fa55b69f140630354f4f8ca264c78f2ad97 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1651,7 +1651,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1721,7 +1721,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -979,12 +986,12 @@ index 3dded5c491ace6b073a7bc3178976bd70f0b9393..8752274f609aeac7985e00b27e2f77fc
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 6d7eef79de7a899ccdbc3194d925bb4caa0a4b03..bcc0971fa4c77330edd1c3dba467d06361d1c0fe 100644
+index 7b6c547e71230fbb3733f99a4597b3f5b51547b8..bed0911d93b566c840711b069a1ca9d026984816 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -223,6 +223,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
-         io.papermc.paper.util.StacktraceDeobfuscator.INSTANCE.getClass(); // load mappings for stacktrace deobf
+         io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
          // Paper end
 +        // Papyrus start
 +        try {
@@ -999,7 +1006,7 @@ index 6d7eef79de7a899ccdbc3194d925bb4caa0a4b03..bcc0971fa4c77330edd1c3dba467d063
          this.setPvpAllowed(dedicatedserverproperties.pvp);
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 474078b68f1bf22037495f42bae59b790fd8cb46..68ab33af9a4ef636fe7c0e05f713347a7d7c6fc8 100644
+index b93056b91e7ebd49e6ddb53ccb6c05c056088df9..09fe1a5dc33565df79e2960bad442b85bb8fe4a2 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -184,6 +184,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -1011,19 +1018,19 @@ index 474078b68f1bf22037495f42bae59b790fd8cb46..68ab33af9a4ef636fe7c0e05f713347a
      public CraftWorld getWorld() {
          return this.world;
      }
-@@ -206,6 +208,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
-     protected Level(WritableLevelData worlddatamutable, ResourceKey<Level> resourcekey, final DimensionType dimensionmanager, Supplier<ProfilerFiller> supplier, boolean flag, boolean flag1, long i, org.bukkit.generator.ChunkGenerator gen, org.bukkit.World.Environment env, java.util.concurrent.Executor executor) { // Paper - Anti-Xray - Pass executor
+@@ -313,6 +315,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+     protected Level(WritableLevelData worlddatamutable, ResourceKey<Level> resourcekey, final DimensionType dimensionmanager, Supplier<ProfilerFiller> supplier, boolean flag, boolean flag1, long i, org.bukkit.generator.ChunkGenerator gen, org.bukkit.generator.BiomeProvider biomeProvider, org.bukkit.World.Environment env, java.util.concurrent.Executor executor) { // Paper - Anti-Xray - Pass executor
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Spigot
          this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), this.spigotConfig); // Paper
 +        this.papyrusConfig = new fr.thekinrar.papyrus.PapyrusWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Papyrus
          this.generator = gen;
-         this.world = new CraftWorld((ServerLevel) this, gen, env);
+         this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
          this.ticksPerAnimalSpawns = this.getCraftServer().getTicksPerAnimalSpawns(); // CraftBukkit
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index c79b193ad822b8c246f24a87cd418892bc18ff5a..86f3b229f3ae491a2f34062c36e2b0ccd0243176 100644
+index 4687827c096ecf8872ab39b00fbf9261ba5c3689..5994d8732f7e28ca391910277dd62004c1927111 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -230,7 +230,7 @@ import javax.annotation.Nullable; // Paper
+@@ -246,7 +246,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
@@ -1032,7 +1039,7 @@ index c79b193ad822b8c246f24a87cd418892bc18ff5a..86f3b229f3ae491a2f34062c36e2b0cc
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
-@@ -875,6 +875,7 @@ public final class CraftServer implements Server {
+@@ -892,6 +892,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
@@ -1041,7 +1048,7 @@ index c79b193ad822b8c246f24a87cd418892bc18ff5a..86f3b229f3ae491a2f34062c36e2b0cc
              world.serverLevelData.setDifficulty(config.difficulty);
              world.setSpawnSettings(config.spawnMonsters, config.spawnAnimals);
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index c3c7b34ceb1b8f0ed042b29924c633fa7519dc30..30e063891391e863b549e68307e701911560077e 100644
+index 22e9dd17f62103c5061435099ce96a3d70d54808..f329ef347ec4988cd782d683b1fe929118a56d8f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -147,6 +147,14 @@ public class Main {
@@ -1073,10 +1080,10 @@ index 774556a62eb240da42e84db4502e2ed43495be17..b9f5ac9bd016643ebbaa630b26b5ead9
  
          if (stream != null) {
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index dcfbe77bdb25d9c58ffb7b75c48bdb580bc0de47..c01592e9328d9ef3a47093c1010cb3c8250cbc69 100644
+index bee38307494188800886a1622fed229b88dbd8f1..aab49e9a7d9066bad8454af48bf3d68f3d1ddceb 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
-@@ -25,7 +25,7 @@ public class WatchdogThread extends Thread
+@@ -97,7 +97,7 @@ public class WatchdogThread extends Thread
  
      private WatchdogThread(long timeoutTime, boolean restart)
      {
@@ -1085,7 +1092,7 @@ index dcfbe77bdb25d9c58ffb7b75c48bdb580bc0de47..c01592e9328d9ef3a47093c1010cb3c8
          this.timeoutTime = timeoutTime;
          this.restart = restart;
          earlyWarningEvery = Math.min(PaperConfig.watchdogPrintEarlyWarningEvery, timeoutTime); // Paper
-@@ -84,14 +84,14 @@ public class WatchdogThread extends Thread
+@@ -156,14 +156,14 @@ public class WatchdogThread extends Thread
                  if (isLongTimeout) {
                  // Paper end
                  log.log( Level.SEVERE, "------------------------------" );
@@ -1103,7 +1110,7 @@ index dcfbe77bdb25d9c58ffb7b75c48bdb580bc0de47..c01592e9328d9ef3a47093c1010cb3c8
                  //
                  if ( net.minecraft.world.level.Level.lastPhysicsProblem != null )
                  {
-@@ -114,12 +114,12 @@ public class WatchdogThread extends Thread
+@@ -186,12 +186,12 @@ public class WatchdogThread extends Thread
                  // Paper end
                  } else
                  {
@@ -1116,9 +1123,9 @@ index dcfbe77bdb25d9c58ffb7b75c48bdb580bc0de47..c01592e9328d9ef3a47093c1010cb3c8
 -                log.log( Level.SEVERE, "Server thread dump (Look for plugins here before reporting to Paper!):" ); // Paper
 +                log.log( Level.SEVERE, "Server thread dump (Look for plugins here before reporting to Papyrus!):" ); // Paper // Papyrus
                  com.destroystokyo.paper.io.chunk.ChunkTaskManager.dumpAllChunkLoadInfo(); // Paper
+                 this.dumpTickingInfo(); // Paper - log detailed tick information
                  WatchdogThread.dumpThread( ManagementFactory.getThreadMXBean().getThreadInfo( server.serverThread.getId(), Integer.MAX_VALUE ), log );
-                 log.log( Level.SEVERE, "------------------------------" );
-@@ -134,7 +134,7 @@ public class WatchdogThread extends Thread
+@@ -207,7 +207,7 @@ public class WatchdogThread extends Thread
                      WatchdogThread.dumpThread( thread, log );
                  }
                  } else {
@@ -1128,7 +1135,7 @@ index dcfbe77bdb25d9c58ffb7b75c48bdb580bc0de47..c01592e9328d9ef3a47093c1010cb3c8
  
                  log.log( Level.SEVERE, "------------------------------" );
 diff --git a/src/main/resources/log4j2.xml b/src/main/resources/log4j2.xml
-index f91d0df569b2f1d430ea5eee5f53779902a4f32c..aa8045dba4d354dbbbbcbf459350c063bd3e09b6 100644
+index 5704146ae84747cafd4b5f504ba071f6be99f425..1423416e67edee3a34a1543db2767bd98a8dff50 100644
 --- a/src/main/resources/log4j2.xml
 +++ b/src/main/resources/log4j2.xml
 @@ -9,7 +9,7 @@

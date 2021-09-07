@@ -5,10 +5,10 @@ Subject: [PATCH] Implement canSeePlayerEntities API
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 42fd259f4492e539112b5bcb310aaaadab58a443..99a40d615c2eec1afbf402578b64d0030d40de4c 100644
+index 4386402e5e55438475c48b023c61bfb2dbe71a8f..e4de6d74cd457c80042a47a6bb9c34e17a863f3c 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
-@@ -2387,7 +2387,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+@@ -2382,7 +2382,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
                  // CraftBukkit start - respect vanish API
                  if (this.entity instanceof ServerPlayer) {
                      Player player1 = ((ServerPlayer) this.entity).getBukkitEntity();
@@ -18,10 +18,10 @@ index 42fd259f4492e539112b5bcb310aaaadab58a443..99a40d615c2eec1afbf402578b64d003
                      }
                  }
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index c2e0417ee15018ec31c4aa8eec3dff7a0d16aa9e..d0a34cd06502b2663fb8324e1faea0ac87173d65 100644
+index cebaf0fb8187335ca303621a2cb412bb22584e23..ec659ce69b4646fd2b8d9449dbde3715a3563535 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -1254,7 +1254,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1474,7 +1474,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
                  double d2 = (double) pos.getZ() - entityplayer.getZ();
  
                  // CraftBukkit start
@@ -30,7 +30,7 @@ index c2e0417ee15018ec31c4aa8eec3dff7a0d16aa9e..d0a34cd06502b2663fb8324e1faea0ac
                      continue;
                  }
                  // CraftBukkit end
-@@ -1446,7 +1446,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -1681,7 +1681,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
  
          for (Player entityhuman : receivers) { // Paper - Particle API Expansion
              ServerPlayer entityplayer = (ServerPlayer) entityhuman; // Paper - Particle API Expansion
@@ -53,10 +53,10 @@ index 37356b36f0ae12d55150f399318581fa77c30cee..3c2fdab0aa4590781b24b42d088b91e3
              return entity1 == null || this.leftOwner || !entity1.isPassengerOfSameVehicle(entity);
              // Paper end
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 68ab33af9a4ef636fe7c0e05f713347a7d7c6fc8..8bbda8ba830350d5b8c7dbc0f8d646e2f8fd1581 100644
+index 09fe1a5dc33565df79e2960bad442b85bb8fe4a2..406a75409ef3fbd5d8ce92b1e9d941d90ef09912 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -304,7 +304,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -412,7 +412,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
              Entity entity = entities.get(i);
  
              if (checkCanSee && source instanceof net.minecraft.server.level.ServerPlayer && entity instanceof net.minecraft.server.level.ServerPlayer
@@ -80,10 +80,10 @@ index 60d7496966b22e0553372a93e3c0e7ed9e166cba..5f1ca2d6220ec4fd505c8cdda3065615
                  }
              });
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 111660b64debb83d10a2d06c35fd581dcc584bf7..d41ca6dd1279415cc898f2377100618a249af9b8 100644
+index 775e23bbc29eb6b7f9a44d17249da6dc780da031..94978776bd016bf45b488c54a0c4d36c887c8eda 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -141,6 +141,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -142,6 +142,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private final ConversationTracker conversationTracker = new ConversationTracker();
      private final Set<String> channels = new HashSet<String>();
      private final Map<UUID, Set<WeakReference<Plugin>>> hiddenPlayers = new HashMap<>();
@@ -91,7 +91,7 @@ index 111660b64debb83d10a2d06c35fd581dcc584bf7..d41ca6dd1279415cc898f2377100618a
      private static final WeakHashMap<Plugin, WeakReference<Plugin>> pluginWeakReferences = new WeakHashMap<>();
      private int hash = 0;
      private double health = 20;
-@@ -1453,9 +1454,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1514,9 +1515,11 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
          this.getHandle().connection.send(new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.ADD_PLAYER, other));
  
@@ -106,7 +106,7 @@ index 111660b64debb83d10a2d06c35fd581dcc584bf7..d41ca6dd1279415cc898f2377100618a
          }
      }
      // Paper start
-@@ -1512,6 +1515,59 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1573,6 +1576,59 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return !this.hiddenPlayers.containsKey(player.getUniqueId());
      }
  
@@ -167,10 +167,10 @@ index 111660b64debb83d10a2d06c35fd581dcc584bf7..d41ca6dd1279415cc898f2377100618a
      public Map<String, Object> serialize() {
          Map<String, Object> result = new LinkedHashMap<String, Object>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 450852482004c38a30b993c44d1c25a8e0a10b26..3a6847347bb3277924a184e540d5cf05521ee66d 100644
+index 8833e4c6eca0473a9bd674e345ce84cffa8eee21..ef80fc4580c91f65d9d4ea7ad21eedf1e71528a1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1318,7 +1318,7 @@ public class CraftEventFactory {
+@@ -1340,7 +1340,7 @@ public class CraftEventFactory {
          com.destroystokyo.paper.event.entity.ProjectileCollideEvent event = new com.destroystokyo.paper.event.entity.ProjectileCollideEvent(projectile, collided);
  
          if (projectile.getShooter() instanceof Player && collided instanceof Player) {

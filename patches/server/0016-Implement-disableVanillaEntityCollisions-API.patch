@@ -5,10 +5,10 @@ Subject: [PATCH] Implement disableVanillaEntityCollisions API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index a11507c630248b98153275f78c15ebee59a6b0a3..5fa7c38cf3d0d33317ea01984ab322740ba9deab 100644
+index 94857a736d2a16e8ade286c6f2ddf8bd798008eb..9d51b26c2b0078839ee5011a40e54ca0ccf99cc3 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -310,6 +310,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -311,6 +311,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
      private org.bukkit.util.Vector origin;
      @javax.annotation.Nullable
      private UUID originWorld;
@@ -16,24 +16,11 @@ index a11507c630248b98153275f78c15ebee59a6b0a3..5fa7c38cf3d0d33317ea01984ab32274
  
      public void setOrigin(@javax.annotation.Nonnull Location location) {
          this.origin = location.toVector();
-@@ -1081,7 +1082,11 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
-         Stream<VoxelShape> stream1 = this.level.getEntityCollisions(this, axisalignedbb.expandTowards(movement), (entity) -> {
-             return true;
-         });
--        RewindableStream<VoxelShape> streamaccumulator = new RewindableStream<>(Stream.concat(stream1, stream));
-+        RewindableStream<VoxelShape> streamaccumulator;
-+        if(disableVanillaEntityCollisions)
-+            streamaccumulator = new net.minecraft.util.RewindableStream<>(stream);
-+        else
-+            streamaccumulator = new net.minecraft.util.RewindableStream<>(java.util.stream.Stream.concat(stream1, stream));
-         Vec3 vec3d1 = movement.lengthSqr() == 0.0D ? movement : Entity.collideBoundingBoxHeuristically(this, movement, axisalignedbb, this.level, voxelshapecollision, streamaccumulator);
-         boolean flag = movement.x != vec3d1.x;
-         boolean flag1 = movement.y != vec3d1.y;
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 3acb5f8a1f863b5ba47eac4190be8228324fc8e7..a4757c551a19f04ca16b920b45a3ddee4a943757 100644
+index 0e1dcfdf846f978340380352e092375ffa089cb0..9e43212f76f78da56077c6e8438a0c2f6f0247e3 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -1225,4 +1225,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -1239,4 +1239,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
          return getHandle().isTicking();
      }
      // Paper end

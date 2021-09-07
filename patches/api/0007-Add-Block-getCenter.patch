@@ -5,10 +5,10 @@ Subject: [PATCH] Add Block#getCenter
 
 
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index ca488173a20bcf3427906f0a6548f06a97c9dc36..1b151001ff29dadc52d0207560598a1229592c78 100644
+index ad8bce01ba459a036cd4ebbbe4fc974021924fe2..0e40582b0dc7c8937a5258254e4f71d33e5d710c 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
-@@ -238,6 +238,13 @@ public interface Block extends Metadatable {
+@@ -238,6 +238,13 @@ public interface Block extends Metadatable, net.kyori.adventure.translation.Tran
      @NotNull
      Location getLocation();
  
