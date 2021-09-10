@@ -47,7 +47,7 @@ index b3687f632bbf06c933a6ef04dc2236ccf3c030b8..6f65c6d1b96a0c2a1a4e8a46bf664c06
      workingDir = rootProject.layout.projectDirectory.dir(
          providers.gradleProperty("runWorkDir").forUseAtConfigurationTime().orElse("run")
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index dcae40fde8087ce09ec8b9360f2abc860b88c975..31fe6421011024363d807c73a21f7526e351db16 100644
+index f421e6a2e43e0a673dbb8a9a2b4331387e523e02..cf3fbe351a78007ca7b643061c71151aa5e74518 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -97,7 +97,7 @@ public class PaperConfig {
@@ -979,12 +979,12 @@ index 099db3a627c1d3c08f3b923bb02a1cb8a0a268ab..4d1f2fa55b69f140630354f4f8ca264c
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 7b6c547e71230fbb3733f99a4597b3f5b51547b8..bed0911d93b566c840711b069a1ca9d026984816 100644
+index 1bf19965d12514dee34545235bfbadc0b74ddc8b..592464ea06d16f349a2d7ed5f86e121d63baa189 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -223,6 +223,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
-         io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
+         io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
 +        // Papyrus start
 +        try {
