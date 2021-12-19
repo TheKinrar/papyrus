@@ -1,0 +1,194 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Amaury Rousseau <kinrar@kinrar.io>
+Date: Sun, 19 Dec 2021 18:38:32 +0100
+Subject: [PATCH] More plugin-loading related APIs
+
+
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index 16df26daea2b6f4e7c40b30e57bc5981d70582d3..5350f2425cb23a1b5bbe209d96d78b39bc844448 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -399,6 +399,13 @@ public final class Bukkit {
+     }
+     // Paper end
+ 
++    // Papyrus start
++    @NotNull
++    public static File getPluginFolder() {
++        return server.getPluginFolder();
++    }
++    // Papyrus end
++
+     /**
+      * Gets the name of the update folder. The update folder is used to safely
+      * update plugins at the right moment on a plugin load.
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index 84b3bf19f57b5a88f70150893554a959cc32f772..cb176683640fb349f7f52b22cdec4aa9dacfccb5 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -317,6 +317,11 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+     }
+     // Paper end
+ 
++    // Papyrus start
++    @NotNull
++    public File getPluginFolder();
++    // Papyrus end
++
+     /**
+      * Gets the name of the update folder. The update folder is used to safely
+      * update plugins at the right moment on a plugin load.
+diff --git a/src/main/java/org/bukkit/command/SimpleCommandMap.java b/src/main/java/org/bukkit/command/SimpleCommandMap.java
+index 0624c9598ed705ad5e72a8fb760c494a2214a2e9..a157983cf90c41925f9a0081ad56a4f94239897b 100644
+--- a/src/main/java/org/bukkit/command/SimpleCommandMap.java
++++ b/src/main/java/org/bukkit/command/SimpleCommandMap.java
+@@ -21,6 +21,7 @@ import org.bukkit.command.defaults.PluginsCommand;
+ import org.bukkit.command.defaults.ReloadCommand;
+ import org.bukkit.command.defaults.VersionCommand;
+ import org.bukkit.entity.Player;
++import org.bukkit.plugin.Plugin;
+ import org.bukkit.util.StringUtil;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
+@@ -45,6 +46,13 @@ public class SimpleCommandMap implements CommandMap {
+         register("bukkit", new HelpCommand());
+     }
+ 
++    // Papyrus start - unregisterAll
++    public void unregisterAll(@NotNull Plugin plugin) {
++        knownCommands.entrySet().removeIf(entry -> entry.getValue() instanceof PluginCommand
++                && ((PluginCommand) entry.getValue()).getPlugin().equals(plugin));
++    }
++    // Papyrus end
++
+     /**
+      * {@inheritDoc}
+      */
+diff --git a/src/main/java/org/bukkit/plugin/PluginLoader.java b/src/main/java/org/bukkit/plugin/PluginLoader.java
+index 256e440e699942e3c9da4205bb964bdc10ec92c4..d57a6920cfd70ebaae025c7629825168bb148cf8 100644
+--- a/src/main/java/org/bukkit/plugin/PluginLoader.java
++++ b/src/main/java/org/bukkit/plugin/PluginLoader.java
+@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
+ import org.bukkit.event.Event;
+ import org.bukkit.event.Listener;
+ import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
+ 
+ /**
+  * Represents a plugin loader, which handles direct access to specific types
+@@ -28,6 +29,9 @@ public interface PluginLoader {
+     @NotNull
+     public Plugin loadPlugin(@NotNull File file) throws InvalidPluginException, UnknownDependencyException;
+ 
++    @NotNull
++    public Plugin loadPlugin(@NotNull File file, @Nullable File parent) throws InvalidPluginException, UnknownDependencyException;
++
+     /**
+      * Loads a PluginDescriptionFile from the specified file
+      *
+diff --git a/src/main/java/org/bukkit/plugin/PluginManager.java b/src/main/java/org/bukkit/plugin/PluginManager.java
+index 0d1b20f2b5580ea5505ccc2f003925dbcee67199..af2329daba597b7b1aa7161ca2b36e5972dc0e6f 100644
+--- a/src/main/java/org/bukkit/plugin/PluginManager.java
++++ b/src/main/java/org/bukkit/plugin/PluginManager.java
+@@ -80,6 +80,9 @@ public interface PluginManager {
+     @Nullable
+     public Plugin loadPlugin(@NotNull File file) throws InvalidPluginException, InvalidDescriptionException, UnknownDependencyException;
+ 
++    @Nullable
++    public Plugin loadPlugin(@NotNull File file, @Nullable File parentFile) throws InvalidPluginException, InvalidDescriptionException, UnknownDependencyException;
++
+     /**
+      * Loads the plugins contained within the specified directory
+      *
+@@ -89,6 +92,12 @@ public interface PluginManager {
+     @NotNull
+     public Plugin[] loadPlugins(@NotNull File directory);
+ 
++    // Papyrus start - unload
++
++    public void unloadPlugin(@NotNull Plugin plugin);
++
++    // Papyrus end
++
+     /**
+      * Disables all the loaded plugins
+      */
+diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
+index 1366496271c4c7f72d1e5f990e51775b1c371f99..2191e8c0acf5168b6ba8e825747f204d4012c236 100644
+--- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
++++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
+@@ -382,6 +382,23 @@ public final class SimplePluginManager implements PluginManager {
+         return result.toArray(new Plugin[result.size()]);
+     }
+ 
++    // Papyrus start - unload
++
++    @Override
++    public void unloadPlugin(@NotNull Plugin plugin) {
++        if(plugin.isEnabled()) {
++            disablePlugin(plugin, true);
++        }
++
++        commandMap.unregisterAll(plugin);
++        plugin.getDescription().getPermissions().forEach(this::removePermission);
++
++        plugins.remove(plugin);
++        lookupNames.remove(plugin.getDescription().getName().toLowerCase(java.util.Locale.ENGLISH));
++    }
++
++    // Papyrus end
++
+     /**
+      * Loads the plugin in the specified file
+      * <p>
+@@ -397,6 +414,12 @@ public final class SimplePluginManager implements PluginManager {
+     @Override
+     @Nullable
+     public synchronized Plugin loadPlugin(@NotNull File file) throws InvalidPluginException, UnknownDependencyException {
++        return loadPlugin(file, null);
++    }
++
++    @Override
++    @Nullable
++    public synchronized Plugin loadPlugin(@NotNull File file, @Nullable File parentFile) throws InvalidPluginException, UnknownDependencyException {
+         Validate.notNull(file, "File cannot be null");
+ 
+         checkUpdate(file);
+@@ -411,7 +434,7 @@ public final class SimplePluginManager implements PluginManager {
+             if (match.find()) {
+                 PluginLoader loader = fileAssociations.get(filter);
+ 
+-                result = loader.loadPlugin(file);
++                result = loader.loadPlugin(file, parentFile);
+             }
+         }
+ 
+diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
+index c8b11793c6a3baabc1c9566e0463ab1d6e293827..b347b07af3a9f07312fe04705c022c7f00c86e8f 100644
+--- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
++++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
+@@ -78,9 +78,14 @@ public final class JavaPluginLoader implements PluginLoader {
+         this.libraryLoader = libraryLoader;
+     }
+ 
++    @Override
++    public @NotNull Plugin loadPlugin(@NotNull File file) throws InvalidPluginException, UnknownDependencyException {
++        return loadPlugin(file, null);
++    }
++
+     @Override
+     @NotNull
+-    public Plugin loadPlugin(@NotNull final File file) throws InvalidPluginException {
++    public Plugin loadPlugin(@NotNull final File file, @Nullable File parentFile) throws InvalidPluginException {
+         Validate.notNull(file, "File cannot be null");
+ 
+         if (!file.exists()) {
+@@ -94,7 +99,7 @@ public final class JavaPluginLoader implements PluginLoader {
+             throw new InvalidPluginException(ex);
+         }
+ 
+-        final File parentFile = this.server.getPluginsFolder(); // Paper
++        if(parentFile == null) parentFile = this.server.getPluginsFolder(); // Paper // Papyrus - only if not provided
+         final File dataFolder = new File(parentFile, description.getName());
+         @SuppressWarnings("deprecation")
+         final File oldDataFolder = new File(parentFile, description.getRawName());
