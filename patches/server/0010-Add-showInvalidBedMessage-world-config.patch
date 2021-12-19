@@ -1,0 +1,36 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Amaury Rousseau <kinrar@kinrar.io>
+Date: Sun, 19 Dec 2021 18:49:24 +0100
+Subject: [PATCH] Add showInvalidBedMessage world config
+
+
+diff --git a/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java b/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
+index 52274c1bb387ae8e42f3c7078328d99f5e7df1df..4cdcd51049703e12978588736fea3b9277d9aeba 100644
+--- a/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
++++ b/src/main/java/fr/thekinrar/papyrus/PapyrusWorldConfig.java
+@@ -59,4 +59,10 @@ public class PapyrusWorldConfig {
+         config.addDefault("world-settings.default." + path, def);
+         return config.getString("world-settings." + worldName + "." + path, config.getString("world-settings.default." + path));
+     }
++
++    public boolean showInvalidBedMessage = true;
++    private void showInvalidBedMessage() {
++        showInvalidBedMessage = getBoolean("show-invalid-bed-message", showInvalidBedMessage);
++        log("Show invalid bed message: " + showInvalidBedMessage);
++    }
+ }
+diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
+index e7a1781d76b54228c84003bac818e92eae7b6e14..63476b3f0862d3390c9a7937fc6d42fb26586829 100644
+--- a/src/main/java/net/minecraft/server/players/PlayerList.java
++++ b/src/main/java/net/minecraft/server/players/PlayerList.java
+@@ -903,7 +903,9 @@ public abstract class PlayerList {
+                     isBedSpawn = true;
+                     location = new Location(worldserver1.getWorld(), vec3d.x, vec3d.y, vec3d.z, f1, 0.0F);
+                 } else if (blockposition != null) {
+-                    entityplayer1.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.NO_RESPAWN_BLOCK_AVAILABLE, 0.0F));
++                    if(worldserver1.getWorld().getHandle().papyrusConfig.showInvalidBedMessage) { // Papyrus
++                        entityplayer1.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.NO_RESPAWN_BLOCK_AVAILABLE, 0.0F));
++                    }
+                     entityplayer1.setRespawnPosition(null, null, 0f, false, false); // CraftBukkit - SPIGOT-5988: Clear respawn location when obstructed
+                 }
+             }
