@@ -5,6 +5,6 @@ pluginManagement {
     }
 }
 
-rootProject.name = "Papyrus"
+rootProject.name = "papyrus"
 
-include("Papyrus-API", "Papyrus-Server")
+include("papyrus-api", "papyrus-server")

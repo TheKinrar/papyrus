@@ -61,7 +61,7 @@ val initSubmodules by tasks.registering {
 }
 
 paperweight {
-    serverProject.set(project(":Papyrus-Server"))
+    serverProject.set(project(":papyrus-server"))
 
     remapRepo.set("https://maven.fabricmc.net/")
     decompileRepo.set("https://files.minecraftforge.net/maven/")
@@ -77,12 +77,12 @@ paperweight {
                 register("api") {
                     upstreamDir.set(paperDir.dir("Paper-API"))
                     patchDir.set(layout.projectDirectory.dir("patches/api"))
-                    outputDir.set(layout.projectDirectory.dir("Papyrus-API"))
+                    outputDir.set(layout.projectDirectory.dir("papyrus-api"))
                 }
                 register("server") {
                     upstreamDir.set(paperDir.dir("Paper-Server"))
                     patchDir.set(layout.projectDirectory.dir("patches/server"))
-                    outputDir.set(layout.projectDirectory.dir("Papyrus-Server"))
+                    outputDir.set(layout.projectDirectory.dir("papyrus-server"))
                     importMcDev.set(true)
                 }
             }

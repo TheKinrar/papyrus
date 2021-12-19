@@ -46,7 +46,7 @@ out/
 # other stuff
 run/
 
-Papyrus-Server
-Papyrus-API
+papyrus-server
+papyrus-api
 
 !gradle/wrapper/gradle-wrapper.jar
