@@ -5,7 +5,7 @@ Subject: [PATCH] Branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 93d4d490da802f8a432124b3120e7adc485b6d41..5d421e464c046ae5c5ed63fb550b3bb1b51c9dbe 100644
+index 93d4d490da802f8a432124b3120e7adc485b6d41..af4702514e23cd81e68a94863935c5f33900b8e4 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -18,8 +18,8 @@ repositories {
@@ -15,7 +15,7 @@ index 93d4d490da802f8a432124b3120e7adc485b6d41..5d421e464c046ae5c5ed63fb550b3bb1
 -    implementation(project(":paper-api"))
 -    implementation(project(":paper-mojangapi"))
 +    implementation(project(":papyrus-api")) // Papyrus
-+    implementation("com.destroystokyo.paper:paper-mojangapi:1.18.1-R0.1-SNAPSHOT") // Papyrus
++    implementation("io.papermc.paper:paper-mojangapi:1.18.1-R0.1-SNAPSHOT") // Papyrus
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
