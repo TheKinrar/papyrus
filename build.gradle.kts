@@ -89,3 +89,43 @@ paperweight {
         }
     }
 }
+
+tasks.generateDevelopmentBundle {
+    apiCoordinates.set("fr.thekinrar.papyrus:papyrus-api")
+    mojangApiCoordinates.set("io.papermc.paper:paper-mojangapi")
+    libraryRepositories.set(
+        listOf(
+            "https://repo.maven.apache.org/maven2/",
+            "https://libraries.minecraft.net/",
+            "https://papermc.io/repo/repository/maven-public/",
+            "https://maven.quiltmc.org/repository/release/",
+            "https://maven.atlanti.se/repository/maven-public/",
+        )
+    )
+}
+
+allprojects {
+    // Publishing API:
+    // ./gradlew :papyrus-api:publish[ToMavenLocal]
+    publishing {
+        repositories {
+            maven {
+                name = "atlantis-papyrus"
+                url = uri("https://maven.atlanti.se/repository/maven-papyrus/")
+                credentials(PasswordCredentials::class)
+            }
+        }
+    }
+}
+
+publishing {
+    // Publishing dev bundle:
+    // ./gradlew publishDevBundlePublicationTo(MavenLocal|MyRepoSnapshotsRepository) -PpublishDevBundle
+    if (project.hasProperty("publishDevBundle")) {
+        publications.create<MavenPublication>("devBundle") {
+            artifact(tasks.generateDevelopmentBundle) {
+                artifactId = "dev-bundle"
+            }
+        }
+    }
+}
