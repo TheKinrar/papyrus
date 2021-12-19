@@ -6,10 +6,10 @@ Subject: [PATCH] Case-insensitive command matching for command blocks
 (Which matches the behaviour for players and console)
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index 6fec6a47538da4c0c5a4505e9bedf492bb3376dd..de914f586ef1a3708cf3542e966382e5ed137a62 100644
+index f6b73f8c6638ddf79e45042f5c8902ea1f271f5c..c1bd06c351162a19c671c5e16e782df761b67c7a 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
-@@ -238,6 +238,7 @@ public class Commands {
+@@ -247,6 +247,7 @@ public class Commands {
  
          String[] args = command.split(" ");
          if (args.length == 0) return 0; // Paper - empty commands shall not be dispatched

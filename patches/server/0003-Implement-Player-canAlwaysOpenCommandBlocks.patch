@@ -5,10 +5,10 @@ Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java b/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
-index 12998d0e9ae0e148a155faa4468b0f78b8462cc9..403ab2bbfe80a1bfc599abc84213bd2ff01c4c81 100644
+index 3125af569ec2bb1cd613a9dd96c3a181d723006d..a49bd1bdc188f25ee0af53efbc3842eece527279 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
-@@ -431,8 +431,9 @@ public class ServerPlayerGameMode {
+@@ -429,8 +429,9 @@ public class ServerPlayerGameMode {
              BlockEntity tileentity = this.level.getBlockEntity(pos);
              Block block = iblockdata.getBlock();
  
@@ -17,13 +17,13 @@ index 12998d0e9ae0e148a155faa4468b0f78b8462cc9..403ab2bbfe80a1bfc599abc84213bd2f
                  this.level.sendBlockUpdated(pos, iblockdata, iblockdata, 3);
 +
                  return false;
-             } else if (this.player.blockActionRestricted((Level) this.level, pos, this.gameModeForPlayer)) {
+             } else if (this.player.blockActionRestricted(this.level, pos, this.gameModeForPlayer)) {
                  return false;
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index ad9fb50791779a5fe7d22268b71bd10d9c9ff3f0..c361775f1f928cfbc35ca3a0acd03e25fb42b82e 100644
+index 042be2cf60a9d01698808d84f2e537a5eb952079..c2d5ef4a2144fcf9406315406721a02abfbd6424 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1005,6 +1005,9 @@ public abstract class PlayerList {
+@@ -1001,6 +1001,9 @@ public abstract class PlayerList {
          GameProfile gameprofile = player.getGameProfile();
          int i = this.server.getProfilePermissions(gameprofile);
  
@@ -49,10 +49,10 @@ index 8cfce2d85041849ef3943e56c204fefeb07f96ec..b82e4e8220b0dd4444e51aed4b10cc75
      }
  }
 diff --git a/src/main/java/net/minecraft/world/level/block/CommandBlock.java b/src/main/java/net/minecraft/world/level/block/CommandBlock.java
-index fd73e9100feac8c7bf9a5fee21a0ab2d502dc3e0..59fb3a3bfb764efc97f4ee13e2d9d3ad64beeff3 100644
+index 135f37f79d1463896e47679e1d13e123b78f97c9..ee60c08ce5fb78611fe583af215a29d11f46f033 100644
 --- a/src/main/java/net/minecraft/world/level/block/CommandBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/CommandBlock.java
-@@ -26,6 +26,7 @@ import net.minecraft.world.phys.BlockHitResult;
+@@ -27,6 +27,7 @@ import net.minecraft.world.phys.BlockHitResult;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
  
@@ -60,7 +60,7 @@ index fd73e9100feac8c7bf9a5fee21a0ab2d502dc3e0..59fb3a3bfb764efc97f4ee13e2d9d3ad
  import org.bukkit.event.block.BlockRedstoneEvent; // CraftBukkit
  
  public class CommandBlock extends BaseEntityBlock implements GameMasterBlock {
-@@ -129,7 +130,11 @@ public class CommandBlock extends BaseEntityBlock implements GameMasterBlock {
+@@ -130,7 +131,11 @@ public class CommandBlock extends BaseEntityBlock implements GameMasterBlock {
      public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
          BlockEntity tileentity = world.getBlockEntity(pos);
  
@@ -74,10 +74,10 @@ index fd73e9100feac8c7bf9a5fee21a0ab2d502dc3e0..59fb3a3bfb764efc97f4ee13e2d9d3ad
              return InteractionResult.sidedSuccess(world.isClientSide);
          } else {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 8c8698f6e17562651fe790dc19825e428d5d0352..a8031f894154a6da5904d1c5c4b8f89b1b4880d3 100644
+index c6cd4a5790384811f3171ce740afb9459f3d6fc0..087c7cc277c9eabeabc22677a9fad1b6c5fe56be 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -153,6 +153,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -158,6 +158,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime;
      // Paper end
@@ -85,10 +85,11 @@ index 8c8698f6e17562651fe790dc19825e428d5d0352..a8031f894154a6da5904d1c5c4b8f89b
  
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -2435,6 +2436,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2459,6 +2460,21 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         }
      }
      // Paper end
- 
++
 +    // Papyrus start
 +    @Override
 +    public boolean canAlwaysOpenCommandBlocks() {

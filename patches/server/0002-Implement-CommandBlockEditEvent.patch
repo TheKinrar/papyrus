@@ -5,10 +5,10 @@ Subject: [PATCH] Implement CommandBlockEditEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 559572d3ff37e016ed07d428cf5d73a00ef48d70..9a1fe222b328062edc5c3ba28e0ec4b45ee335db 100644
+index 057fcbc389e54e0c9f7a90a3e8b965cd46db9d58..a43a0ba792151d4b31e15bc18c8fdb0d1a3b1381 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -849,67 +849,119 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -854,67 +854,119 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      @Override
      public void handleSetCommandBlock(ServerboundSetCommandBlockPacket packet) {
          PacketUtils.ensureRunningOnSameThread(packet, this, this.player.getLevel());

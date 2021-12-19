@@ -5,10 +5,10 @@ Subject: [PATCH] Add helper methods to Material
 
 
 diff --git a/src/main/java/org/bukkit/Material.java b/src/main/java/org/bukkit/Material.java
-index ed6dfb28f8f434680fc8eacbe49a9d0b6cf9be83..f7777e05e7c50b62e515780793c5c41039df8549 100644
+index f24820f14d689d49dfea25605199d5299ec28e7c..4368d05d1ee5e6ec2988fc1a00a82a8bfcfc2fe0 100644
 --- a/src/main/java/org/bukkit/Material.java
 +++ b/src/main/java/org/bukkit/Material.java
-@@ -9826,4 +9826,878 @@ public enum Material implements Keyed, net.kyori.adventure.translation.Translata
+@@ -9832,4 +9832,878 @@ public enum Material implements Keyed, net.kyori.adventure.translation.Translata
              // </editor-fold>
          }
      }

@@ -6,10 +6,10 @@ Subject: [PATCH] Implement noWeight, noDeclaration, maxVectorLength in
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
-index 309bafd257d4932cfd69c2c212b32306938cd234..9fdae51e9df25cdbffa268b4fc31694de45bd755 100644
+index ad49dcc3473fbad306d21cbac4600574e80220a7..f77bfc7e9e2eab1ba7d510d849c2be4e869323e2 100644
 --- a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
 +++ b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
-@@ -112,6 +112,12 @@ public abstract class AbstractMinecart extends Entity {
+@@ -110,6 +110,12 @@ public abstract class AbstractMinecart extends Entity {
      public double maxSpeed = 0.4D;
      // CraftBukkit end
  
@@ -22,7 +22,7 @@ index 309bafd257d4932cfd69c2c212b32306938cd234..9fdae51e9df25cdbffa268b4fc31694d
      protected AbstractMinecart(EntityType<?> type, Level world) {
          super(type, world);
          this.blocksBuilding = true;
-@@ -567,7 +573,7 @@ public abstract class AbstractMinecart extends Entity {
+@@ -565,7 +571,7 @@ public abstract class AbstractMinecart extends Entity {
              d5 = -d5;
          }
  
@@ -31,7 +31,7 @@ index 309bafd257d4932cfd69c2c212b32306938cd234..9fdae51e9df25cdbffa268b4fc31694d
  
          vec3d1 = new Vec3(d8 * d4 / d6, vec3d1.y, d8 * d5 / d6);
          this.setDeltaMovement(vec3d1);
-@@ -619,7 +625,7 @@ public abstract class AbstractMinecart extends Entity {
+@@ -617,7 +623,7 @@ public abstract class AbstractMinecart extends Entity {
          d0 = d11 + d4 * d15;
          d2 = d12 + d5 * d15;
          this.setPos(d0, d1, d2);
@@ -40,7 +40,7 @@ index 309bafd257d4932cfd69c2c212b32306938cd234..9fdae51e9df25cdbffa268b4fc31694d
          d17 = this.getMaxSpeed();
          vec3d1 = this.getDeltaMovement();
          this.move(MoverType.SELF, new Vec3(Mth.clamp(d16 * vec3d1.x, -d17, d17), 0.0D, Mth.clamp(d16 * vec3d1.z, -d17, d17)));
-@@ -697,6 +703,7 @@ public abstract class AbstractMinecart extends Entity {
+@@ -695,6 +701,7 @@ public abstract class AbstractMinecart extends Entity {
  
      protected void applyNaturalSlowdown() {
          double d0 = this.isVehicle() || !this.slowWhenEmpty ? 0.997D : 0.96D; // CraftBukkit - add !this.slowWhenEmpty
@@ -49,10 +49,10 @@ index 309bafd257d4932cfd69c2c212b32306938cd234..9fdae51e9df25cdbffa268b4fc31694d
  
          vec3d = vec3d.multiply(d0, 0.0D, d0);
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftMinecart.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftMinecart.java
-index 5b8a83b250987fe5c939ab06b1021621820ad56e..f88c14ec276d2c12358ab1e353ecd5cd48282a88 100644
+index 067fcc1f44d59dd675a9cc5485234c87366ffe10..3ba79a529b1df094a87b7e450815c332f9ff8b32 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftMinecart.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftMinecart.java
-@@ -152,4 +152,36 @@ public abstract class CraftMinecart extends CraftVehicle implements Minecart {
+@@ -136,4 +136,36 @@ public abstract class CraftMinecart extends CraftVehicle implements Minecart {
      public int getDisplayBlockOffset() {
          return this.getHandle().getDisplayOffset();
      }

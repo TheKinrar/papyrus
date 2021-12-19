@@ -5,7 +5,7 @@ Subject: [PATCH] Add unsafe PluginDescriptionFile API
 
 
 diff --git a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
-index 857e9100ddacbf893815e1c6480770b4ceee5a42..fb30581f676d66288234c5d9aecb193dce8da7bc 100644
+index fcbd52c62fff2370089771834a9e861ccc3de9d7..74b00e5a6c775ba0f4453445995ea4e91d7deb7a 100644
 --- a/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
 +++ b/src/main/java/org/bukkit/plugin/PluginDescriptionFile.java
 @@ -257,7 +257,11 @@ public final class PluginDescriptionFile {

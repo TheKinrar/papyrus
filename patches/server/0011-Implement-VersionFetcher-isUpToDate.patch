@@ -5,10 +5,10 @@ Subject: [PATCH] Implement VersionFetcher#isUpToDate
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index 580bae0d414d371a07a6bfeefc41fdd989dc0083..4783a7fdda2fcfbd8c2b31c89dc1adf2dbf3a736 100644
+index ece77f5ea4b14bbed7c070131b3251ea86764538..15b50a6ef038434a1c248ed15635e1cd2dff3ba3 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-@@ -36,6 +36,11 @@ public class PaperVersionFetcher implements VersionFetcher {
+@@ -38,6 +38,11 @@ public class PaperVersionFetcher implements VersionFetcher {
          return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
      }
  
