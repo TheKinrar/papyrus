@@ -5,7 +5,7 @@ Subject: [PATCH] Implement canSeePlayerEntities API
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 0e474819c506e6d5e1731d49610c7cf472aa49c4..f9b041dc97d420f7b510baf9cd268fdbdc133bf6 100644
+index 0e474819c506e6d5e1731d49610c7cf472aa49c4..d62494e97fa817c1a1586f90b171719d0a304362 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
 @@ -2324,7 +2324,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
@@ -13,12 +13,12 @@ index 0e474819c506e6d5e1731d49610c7cf472aa49c4..f9b041dc97d420f7b510baf9cd268fdb
  
                  // CraftBukkit start - respect vanish API
 -                if (!player.getBukkitEntity().canSee(this.entity.getBukkitEntity())) {
-+                if (!player.getBukkitEntity().canSeePlayerEntity(this.entity.getBukkitEntity())) { // Papyrus - canSeePlayerEntity
++                if (!player.getBukkitEntity().canSeePlayerEntity((Player) this.entity.getBukkitEntity())) { // Papyrus - canSeePlayerEntity
                      flag = false;
                  }
                  // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 28f605c3daa969c1a54745e552d55ecb874120a9..7758e455d1d4fbc8cd070f7d1b1100cbc5c0b595 100644
+index 28f605c3daa969c1a54745e552d55ecb874120a9..50f9d646ec1aa602db925344f4a4090d180716ac 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -1489,7 +1489,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -26,7 +26,7 @@ index 28f605c3daa969c1a54745e552d55ecb874120a9..7758e455d1d4fbc8cd070f7d1b1100cb
  
                  // CraftBukkit start
 -                if (entityhuman != null && !entityplayer.getBukkitEntity().canSee(entityhuman.getBukkitEntity())) {
-+                if (entityhuman != null && !entityplayer.getBukkitEntity().canSeePlayerEntity(entityhuman.getBukkitEntity())) { // Papyrus - canSeePlayerEntity
++                if (entityhuman != null && !entityplayer.getBukkitEntity().canSeePlayerEntity((org.bukkit.entity.Player) entityhuman.getBukkitEntity())) { // Papyrus - canSeePlayerEntity
                      continue;
                  }
                  // CraftBukkit end
@@ -80,7 +80,7 @@ index 77209dfe179f97a5be89bdf812622773b90e6214..c3bf9dfb6a11b817b857d37655e378a1
                  }
              });
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 08b4b9346b94c70ba61597adf9fc6b30d7de24a3..a8a0723dabd4f594959e06b36bab961057bf9617 100644
+index 08b4b9346b94c70ba61597adf9fc6b30d7de24a3..b83b2d64420da08e5ac525ab6bc373c66134dd82 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -147,6 +147,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
@@ -129,7 +129,7 @@ index 08b4b9346b94c70ba61597adf9fc6b30d7de24a3..a8a0723dabd4f594959e06b36bab9610
 +
 +        var tracker = getHandle().getLevel().getChunkSource().chunkMap;
 +        for(var other : getHandle().getLevel().players()) {
-+            if(!hiddenPlayers.containsKey(other.getUUID())) { // Other might still be hidden using hidePlayer
++            if(!hiddenEntities.containsKey(other.getUUID())) { // Other might still be hidden using hidePlayer
 +            if(canSeePlayerEntities()) { // Papyrus
 +                var entry = tracker.entityMap.get(other.getId());
 +                if (entry != null && !entry.seenBy.contains(getHandle().connection)) {
