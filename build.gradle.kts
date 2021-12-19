@@ -110,7 +110,7 @@ allprojects {
     publishing {
         repositories {
             maven {
-                name = "atlantis-papyrus"
+                name = "papyrus"
                 url = uri("https://maven.atlanti.se/repository/maven-papyrus/")
                 credentials(PasswordCredentials::class)
             }
