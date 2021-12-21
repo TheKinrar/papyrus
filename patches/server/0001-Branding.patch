@@ -5,7 +5,7 @@ Subject: [PATCH] Branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 93d4d490da802f8a432124b3120e7adc485b6d41..af4702514e23cd81e68a94863935c5f33900b8e4 100644
+index da31e84cb558e6fad9cab015cfae753ce7be7db0..90d0237e7141aeda98793e235a182ad12813fc48 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -18,8 +18,8 @@ repositories {
@@ -1011,10 +1011,10 @@ index 4247dcb003626535dbb997f48ad9f61380bd17e9..05b4a761a55db4fc88856937361b99a8
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
          this.ticksPerAnimalSpawns = this.getCraftServer().getTicksPerAnimalSpawns(); // CraftBukkit
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index b70a6d126e80d775870cfececf6724cde89d4554..330982389f96ac3616b3472022232a92d0111133 100644
+index ba7023e7ca5d29375ff53c2951892138d155f69f..1b20f2ce8f60a34f327b11e90ff6a0759ba76e85 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -253,7 +253,7 @@ import javax.annotation.Nullable; // Paper
+@@ -254,7 +254,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
@@ -1023,7 +1023,7 @@ index b70a6d126e80d775870cfececf6724cde89d4554..330982389f96ac3616b3472022232a92
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
-@@ -931,6 +931,7 @@ public final class CraftServer implements Server {
+@@ -952,6 +952,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper

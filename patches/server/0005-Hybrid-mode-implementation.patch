@@ -433,10 +433,10 @@ index 2c00a766130a7f682fc6c4c74321e10637ca7932..97d2af8d1100212503c51108390c680b
          float f = this.inventory.getDestroySpeed(block);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 330982389f96ac3616b3472022232a92d0111133..1491b253316b09efcbff0f07b264f07a3b021a02 100644
+index 1b20f2ce8f60a34f327b11e90ff6a0759ba76e85..923426853561652f345c43e758c207eb75e5b952 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -490,6 +490,7 @@ public final class CraftServer implements Server {
+@@ -491,6 +491,7 @@ public final class CraftServer implements Server {
              if (!com.destroystokyo.paper.PaperConfig.loadPermsBeforePlugins) this.loadCustomPermissions(); // Paper
              this.helpMap.initializeCommands();
              this.syncCommands();
@@ -444,7 +444,7 @@ index 330982389f96ac3616b3472022232a92d0111133..1491b253316b09efcbff0f07b264f07a
          }
      }
  
-@@ -989,6 +990,7 @@ public final class CraftServer implements Server {
+@@ -1010,6 +1011,7 @@ public final class CraftServer implements Server {
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
@@ -452,7 +452,7 @@ index 330982389f96ac3616b3472022232a92d0111133..1491b253316b09efcbff0f07b264f07a
  
          int pollCount = 0;
  
-@@ -2796,4 +2798,24 @@ public final class CraftServer implements Server {
+@@ -2817,4 +2819,24 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
@@ -506,7 +506,7 @@ index c022751e3b45469cc0ad6732e2d6ff08918bafa4..f42cac626952d762a713534a9c4e13b8
      public Collection<PotionEffect> getActivePotionEffects() {
          List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 087c7cc277c9eabeabc22677a9fad1b6c5fe56be..08b4b9346b94c70ba61597adf9fc6b30d7de24a3 100644
+index 9c421b050a7f0377cbc421c9592755f542e95fb6..06b4eb3ca3b838488fc35bf19a22ce2f0a7d40f4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -159,6 +159,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
@@ -528,7 +528,7 @@ index 087c7cc277c9eabeabc22677a9fad1b6c5fe56be..08b4b9346b94c70ba61597adf9fc6b30
      public GameProfile getProfile() {
          return this.getHandle().getGameProfile();
      }
-@@ -2473,6 +2478,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2490,6 +2495,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
          net.minecraft.server.MinecraftServer.getServer().getPlayerList().sendPlayerPermissionLevel(getHandle());
      }
