@@ -5,7 +5,7 @@ Subject: [PATCH] Implement disableVanillaEntityCollisions API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 9bb44918af119d9afae4a0a050c6a5381f028364..b067353b3d5c3c02995a24c940e7a61cd2a40017 100644
+index 8ea81f6ac7503c68f0aea34802843bc545f46db0..092beac2d569d80e058d26443c70b2f0fefe7653 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -326,6 +326,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, i
@@ -26,11 +26,11 @@ index 9bb44918af119d9afae4a0a050c6a5381f028364..b067353b3d5c3c02995a24c940e7a61c
          final AABB currBoundingBox = this.getBoundingBox();
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 5aae88e20bc04560d6ad52cfcaa872d28bfcee8f..c8e0b4c30e6e93b8dd9bdd14478505d0b1a2f727 100644
+index 5893d2028679d23315a32433f6affa0c8d63c01c..abe50c5085e4e04645dfe5627998b61a24aa9079 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -1287,4 +1287,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
-         return !entity.valid && entity.level.addFreshEntity(entity, reason);
+@@ -1292,4 +1292,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+         return getHandle().isInPowderSnow || getHandle().wasInPowderSnow; // depending on the location in the entity "tick" either could be needed.
      }
      // Paper end
 +

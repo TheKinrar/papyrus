@@ -45,10 +45,10 @@ index e48af3822e9f118399c3a1c9358c56efae12e0da..4874f265ad53622f81df7041945c60d5
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index cd0d4c0b42687494cf5d93e471e259ca17d2ffe2..2d506fea091b3ffbf480bb82b9aa41d166e9655b 100644
+index 7099674bcb117613130a5385db0ccf18cf347d11..95c66e6f8f3a3ce9d11514155ef6d66e6f2d8194 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -2382,6 +2382,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -2478,6 +2478,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * @param canAlwaysOpenCommandBlocks whether this player can always open command blocks
       */
      void setCanAlwaysOpenCommandBlocks(boolean canAlwaysOpenCommandBlocks);
