@@ -192,10 +192,10 @@ index 7b23535a680d2a8534dcb8dd87770f66fb982c13..e6ec0fe553a21adf7886de44e7677c03
  
              if (this.tickCount % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index a43a0ba792151d4b31e15bc18c8fdb0d1a3b1381..965642043329eb00dcaf051e087d79ab47030f9f 100644
+index eecd7e05a6eaa1e55bd37859bb028aee39a6e947..886d6a7c68627f5d827777d3a2d93dea4b3327ef 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -1406,6 +1406,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -1420,6 +1420,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                              }
                              // Paper end
  
@@ -209,7 +209,7 @@ index a43a0ba792151d4b31e15bc18c8fdb0d1a3b1381..965642043329eb00dcaf051e087d79ab
                              if (!this.player.isChangingDimension() && (!this.player.getLevel().getGameRules().getBoolean(GameRules.RULE_DISABLE_ELYTRA_MOVEMENT_CHECK) || !this.player.isFallFlying())) {
                                  float f2 = this.player.isFallFlying() ? 300.0F : 100.0F;
  
-@@ -1731,6 +1738,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -1748,6 +1755,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
          switch (packetplayinblockdig_enumplayerdigtype) {
              case SWAP_ITEM_WITH_OFFHAND:
@@ -218,7 +218,7 @@ index a43a0ba792151d4b31e15bc18c8fdb0d1a3b1381..965642043329eb00dcaf051e087d79ab
                  if (!this.player.isSpectator()) {
                      ItemStack itemstack = this.player.getItemInHand(InteractionHand.OFF_HAND);
  
-@@ -1758,6 +1767,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -1775,6 +1784,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
                  return;
              case DROP_ITEM:
@@ -227,7 +227,7 @@ index a43a0ba792151d4b31e15bc18c8fdb0d1a3b1381..965642043329eb00dcaf051e087d79ab
                  if (!this.player.isSpectator()) {
                      // limit how quickly items can be dropped
                      // If the ticks aren't the same then the count starts from 0 and we update the lastDropTick.
-@@ -1779,12 +1790,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -1796,12 +1807,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
                  return;
              case DROP_ALL_ITEMS:
@@ -244,7 +244,7 @@ index a43a0ba792151d4b31e15bc18c8fdb0d1a3b1381..965642043329eb00dcaf051e087d79ab
                  this.player.releaseUsingItem();
                  return;
              case START_DESTROY_BLOCK:
-@@ -2125,6 +2140,10 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2142,6 +2157,10 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
              // CraftBukkit start
              boolean isSync = s.startsWith("/");
@@ -255,7 +255,7 @@ index a43a0ba792151d4b31e15bc18c8fdb0d1a3b1381..965642043329eb00dcaf051e087d79ab
              if (isSync) {
                  try {
                      this.server.server.playerCommandState = true;
-@@ -3175,6 +3194,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3192,6 +3211,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      // CraftBukkit start
      private static final ResourceLocation CUSTOM_REGISTER = new ResourceLocation("register");
      private static final ResourceLocation CUSTOM_UNREGISTER = new ResourceLocation("unregister");
@@ -263,7 +263,7 @@ index a43a0ba792151d4b31e15bc18c8fdb0d1a3b1381..965642043329eb00dcaf051e087d79ab
  
      private static final ResourceLocation MINECRAFT_BRAND = new ResourceLocation("brand"); // Paper - Brand support
  
-@@ -3201,6 +3221,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3218,6 +3238,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                  ServerGamePacketListenerImpl.LOGGER.error("Couldn\'t unregister custom payload", ex);
                  this.disconnect("Invalid payload UNREGISTER!", org.bukkit.event.player.PlayerKickEvent.Cause.INVALID_PAYLOAD); // Paper - kick event cause
              }
@@ -283,7 +283,7 @@ index a43a0ba792151d4b31e15bc18c8fdb0d1a3b1381..965642043329eb00dcaf051e087d79ab
              try {
                  byte[] data = new byte[packet.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index c2d5ef4a2144fcf9406315406721a02abfbd6424..e7a1781d76b54228c84003bac818e92eae7b6e14 100644
+index b6ea88f6b6612e843399317dfcc7c374792a9b2c..94b3867350eb5597682b5ac5980d9186b560400c 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -233,6 +233,12 @@ public abstract class PlayerList {
@@ -347,7 +347,7 @@ index c2d5ef4a2144fcf9406315406721a02abfbd6424..e7a1781d76b54228c84003bac818e92e
          return this.players.size();
      }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index fe7e22d9a69d69dfcce63faa28e90945ea45fc49..9e585b79edf13141717268e37cf5a98336bacdb4 100644
+index 43378561cf48f969f5bf1fd0db349415f4d1c866..45af309da0602680031f36a788dd21ffceac70bf 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -1102,9 +1102,12 @@ public abstract class LivingEntity extends Entity {
@@ -391,7 +391,7 @@ index fe7e22d9a69d69dfcce63faa28e90945ea45fc49..9e585b79edf13141717268e37cf5a983
  
          return (MobEffectInstance) this.activeEffects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 2c00a766130a7f682fc6c4c74321e10637ca7932..97d2af8d1100212503c51108390c680b98fafd3d 100644
+index 570d2325997e2465a8e17803ea882bc07ca64c38..1a1b36f2f65e16d539f3aa94642aa9d8f10fd62f 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -191,6 +191,10 @@ public abstract class Player extends LivingEntity {
