@@ -152,7 +152,7 @@ index 0000000000000000000000000000000000000000..9e689ecad1618108d6f9d3a9a3d15b73
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 24b36a8e81d1080679ff4b2ac2e5fb9b8034732f..4ec93265771979ec78b7719c6323b3265451ced8 100644
+index fac4dd0ead47294837bf459f7e8f3d0725a564af..0e47fabd05ffd497189a42b7d59b066f67abc55d 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1553,6 +1553,18 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -283,7 +283,7 @@ index eecd7e05a6eaa1e55bd37859bb028aee39a6e947..886d6a7c68627f5d827777d3a2d93dea
              try {
                  byte[] data = new byte[packet.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index b6ea88f6b6612e843399317dfcc7c374792a9b2c..94b3867350eb5597682b5ac5980d9186b560400c 100644
+index 7201f5b8f08d4be4592b75ed3afa35b863b1eba1..018670a78e9826b358398e2b648ac3ac97133942 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -233,6 +233,12 @@ public abstract class PlayerList {
@@ -297,9 +297,9 @@ index b6ea88f6b6612e843399317dfcc7c374792a9b2c..94b3867350eb5597682b5ac5980d9186
 +        // Papyrus end
 +
          player.setLevel(worldserver1);
-         String s1 = "local";
- 
-@@ -275,7 +281,8 @@ public abstract class PlayerList {
+         // Paper start - make s1 final
+         final String s1;
+@@ -279,7 +285,8 @@ public abstract class PlayerList {
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
          playerconnection.send(new ClientboundUpdateRecipesPacket(this.server.getRecipeManager().getRecipes()));
          playerconnection.send(new ClientboundUpdateTagsPacket(this.server.getTags().serializeToNetwork(this.registryHolder)));
@@ -309,7 +309,7 @@ index b6ea88f6b6612e843399317dfcc7c374792a9b2c..94b3867350eb5597682b5ac5980d9186
          player.getStats().markAllDirty();
          player.getRecipeBook().sendInitialRecipeBook(player);
          this.updateEntireScoreboard(worldserver1.getScoreboard(), player);
-@@ -1280,18 +1287,32 @@ public abstract class PlayerList {
+@@ -1284,18 +1291,32 @@ public abstract class PlayerList {
      }
  
      public void sendAllPlayerInfo(ServerPlayer player) {
@@ -347,7 +347,7 @@ index b6ea88f6b6612e843399317dfcc7c374792a9b2c..94b3867350eb5597682b5ac5980d9186
          return this.players.size();
      }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 43378561cf48f969f5bf1fd0db349415f4d1c866..45af309da0602680031f36a788dd21ffceac70bf 100644
+index 572f9ca81b78c6229725f6693940ac0a70ecdfd5..034f419225c390e08030a22ac515dbc5e24d9381 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -1102,9 +1102,12 @@ public abstract class LivingEntity extends Entity {
@@ -391,7 +391,7 @@ index 43378561cf48f969f5bf1fd0db349415f4d1c866..45af309da0602680031f36a788dd21ff
  
          return (MobEffectInstance) this.activeEffects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 570d2325997e2465a8e17803ea882bc07ca64c38..1a1b36f2f65e16d539f3aa94642aa9d8f10fd62f 100644
+index d85da02be7f1d494af8f2cc840c49073774f5f9c..4105d4e975e3c1f852a55569bfe7180ad55c6b69 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -191,6 +191,10 @@ public abstract class Player extends LivingEntity {
@@ -433,7 +433,7 @@ index 570d2325997e2465a8e17803ea882bc07ca64c38..1a1b36f2f65e16d539f3aa94642aa9d8
          float f = this.inventory.getDestroySpeed(block);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 1b20f2ce8f60a34f327b11e90ff6a0759ba76e85..923426853561652f345c43e758c207eb75e5b952 100644
+index c2f25149746bed64cd7032532e150a2d5d472013..0ce4fa4d05fdde5287e62f6c435d6c27b9151a9c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -491,6 +491,7 @@ public final class CraftServer implements Server {
@@ -506,10 +506,10 @@ index c022751e3b45469cc0ad6732e2d6ff08918bafa4..f42cac626952d762a713534a9c4e13b8
      public Collection<PotionEffect> getActivePotionEffects() {
          List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index e813647b75f58e05c4f1e7daad60a60be8dd6533..2975d3546fd4a134043037976f8c76e97bfe7313 100644
+index 47da3df4b2428ffd0af3723d1bfbb773c46e39f3..fd9298e5c09ac45689afd1dff878d6d335140e2f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -159,6 +159,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -160,6 +160,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private long lastSaveTime;
      // Paper end
      private boolean canAlwaysOpenCommandBlocks = false; // Papyrus
@@ -517,7 +517,7 @@ index e813647b75f58e05c4f1e7daad60a60be8dd6533..2975d3546fd4a134043037976f8c76e9
  
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -166,6 +167,10 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -167,6 +168,10 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          this.firstPlayed = System.currentTimeMillis();
      }
  
@@ -528,7 +528,7 @@ index e813647b75f58e05c4f1e7daad60a60be8dd6533..2975d3546fd4a134043037976f8c76e9
      public GameProfile getProfile() {
          return this.getHandle().getGameProfile();
      }
-@@ -2505,6 +2510,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2519,6 +2524,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
          net.minecraft.server.MinecraftServer.getServer().getPlayerList().sendPlayerPermissionLevel(getHandle());
      }
@@ -547,7 +547,7 @@ index e813647b75f58e05c4f1e7daad60a60be8dd6533..2975d3546fd4a134043037976f8c76e9
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index c667baa2da8222eb66344c8f1cc0fed416c4df01..adb56e8d5e853680e0cc559b66c3ff3dd92c3e56 100644
+index 35cc150adf51f79e2fccef8b094c90554aafbee2..17366f5349de312c0e043ca0b29fede2367a66cf 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -540,7 +540,12 @@ public class CraftEventFactory {

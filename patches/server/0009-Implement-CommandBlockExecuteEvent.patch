@@ -5,10 +5,10 @@ Subject: [PATCH] Implement CommandBlockExecuteEvent
 
 
 diff --git a/src/main/java/net/minecraft/world/level/BaseCommandBlock.java b/src/main/java/net/minecraft/world/level/BaseCommandBlock.java
-index c0dd148d08abf064b5f3c261046cf41d0d1bcf06..6359ea8c2bce34510ad8622756a0f66f352eff0c 100644
+index fca57e5d1e25db6367c53ad04e49508ebf2223e7..1760965a0716d7aaced00776b0d1f8d7f4600197 100644
 --- a/src/main/java/net/minecraft/world/level/BaseCommandBlock.java
 +++ b/src/main/java/net/minecraft/world/level/BaseCommandBlock.java
-@@ -125,14 +125,29 @@ public abstract class BaseCommandBlock implements CommandSource {
+@@ -124,14 +124,29 @@ public abstract class BaseCommandBlock implements CommandSource {
                  if (minecraftserver.isCommandBlockEnabled() && !StringUtil.isNullOrEmpty(this.command)) {
                      try {
                          this.lastOutput = null;
