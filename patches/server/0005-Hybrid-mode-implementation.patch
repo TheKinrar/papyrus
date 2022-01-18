@@ -192,7 +192,7 @@ index 7b23535a680d2a8534dcb8dd87770f66fb982c13..e6ec0fe553a21adf7886de44e7677c03
  
              if (this.tickCount % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index eecd7e05a6eaa1e55bd37859bb028aee39a6e947..886d6a7c68627f5d827777d3a2d93dea4b3327ef 100644
+index 5ac9c73ec800332ffbf32a8aa4114bde33427326..58348cdbfebdb4bf285c8925153d75abd2a6ad6e 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1420,6 +1420,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -244,7 +244,7 @@ index eecd7e05a6eaa1e55bd37859bb028aee39a6e947..886d6a7c68627f5d827777d3a2d93dea
                  this.player.releaseUsingItem();
                  return;
              case START_DESTROY_BLOCK:
-@@ -2142,6 +2157,10 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2144,6 +2159,10 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
              // CraftBukkit start
              boolean isSync = s.startsWith("/");
@@ -255,7 +255,7 @@ index eecd7e05a6eaa1e55bd37859bb028aee39a6e947..886d6a7c68627f5d827777d3a2d93dea
              if (isSync) {
                  try {
                      this.server.server.playerCommandState = true;
-@@ -3192,6 +3211,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3194,6 +3213,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      // CraftBukkit start
      private static final ResourceLocation CUSTOM_REGISTER = new ResourceLocation("register");
      private static final ResourceLocation CUSTOM_UNREGISTER = new ResourceLocation("unregister");
@@ -263,7 +263,7 @@ index eecd7e05a6eaa1e55bd37859bb028aee39a6e947..886d6a7c68627f5d827777d3a2d93dea
  
      private static final ResourceLocation MINECRAFT_BRAND = new ResourceLocation("brand"); // Paper - Brand support
  
-@@ -3218,6 +3238,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3220,6 +3240,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                  ServerGamePacketListenerImpl.LOGGER.error("Couldn\'t unregister custom payload", ex);
                  this.disconnect("Invalid payload UNREGISTER!", org.bukkit.event.player.PlayerKickEvent.Cause.INVALID_PAYLOAD); // Paper - kick event cause
              }
