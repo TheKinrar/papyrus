@@ -5,18 +5,18 @@ Subject: [PATCH] Implement disableVanillaEntityCollisions API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 8ea81f6ac7503c68f0aea34802843bc545f46db0..092beac2d569d80e058d26443c70b2f0fefe7653 100644
+index 4584dcec835f97e94dcf12788b66703075dafe45..29a294c67b13e6b1eb550f0bacc2f3a6c6913a12 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -326,6 +326,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, i
-     private org.bukkit.util.Vector origin;
+@@ -333,6 +333,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, i
      @javax.annotation.Nullable
      private UUID originWorld;
+     public boolean freezeLocked = false; // Paper - Freeze Tick Lock API
 +    public boolean disableVanillaEntityCollisions; // Papyrus
  
      public void setOrigin(@javax.annotation.Nonnull Location location) {
          this.origin = location.toVector();
-@@ -1253,6 +1254,8 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, i
+@@ -1260,6 +1261,8 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, i
              return movement;
          }
  
@@ -26,10 +26,10 @@ index 8ea81f6ac7503c68f0aea34802843bc545f46db0..092beac2d569d80e058d26443c70b2f0
          final AABB currBoundingBox = this.getBoundingBox();
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 69223b13e894d86d9529f2ef8b60a08a1f7a9267..707284bfdfa9582b4eec057f5a56f13b99aa36e7 100644
+index a3673e2943f251e056ecf84a9bff2de12efdb52a..b00670463e71406964a3c13acac8af3005188c78 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -1293,4 +1293,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -1304,4 +1304,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
          return getHandle().isInPowderSnow || getHandle().wasInPowderSnow; // depending on the location in the entity "tick" either could be needed.
      }
      // Paper end

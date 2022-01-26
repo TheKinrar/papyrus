@@ -347,10 +347,10 @@ index 7201f5b8f08d4be4592b75ed3afa35b863b1eba1..018670a78e9826b358398e2b648ac3ac
          return this.players.size();
      }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 572f9ca81b78c6229725f6693940ac0a70ecdfd5..034f419225c390e08030a22ac515dbc5e24d9381 100644
+index 25338fe4cfdc683ca4c01487e166a1649c6f640b..a8a92675fe6c79bcd7c72281cecf1eaee182b998 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -1102,9 +1102,12 @@ public abstract class LivingEntity extends Entity {
+@@ -1101,9 +1101,12 @@ public abstract class LivingEntity extends Entity {
                  override = new MobEffectInstance(mobeffect1).update(mobeffect);
              }
  
@@ -366,7 +366,7 @@ index 572f9ca81b78c6229725f6693940ac0a70ecdfd5..034f419225c390e08030a22ac515dbc5
              }
              // CraftBukkit end
  
-@@ -1113,7 +1116,7 @@ public abstract class LivingEntity extends Entity {
+@@ -1112,7 +1115,7 @@ public abstract class LivingEntity extends Entity {
                  this.onEffectAdded(mobeffect, entity);
                  return true;
                  // CraftBukkit start
@@ -375,7 +375,7 @@ index 572f9ca81b78c6229725f6693940ac0a70ecdfd5..034f419225c390e08030a22ac515dbc5
                  mobeffect1.update(mobeffect);
                  this.onEffectUpdated(mobeffect1, true, entity);
                  // CraftBukkit end
-@@ -1171,9 +1174,11 @@ public abstract class LivingEntity extends Entity {
+@@ -1170,9 +1173,11 @@ public abstract class LivingEntity extends Entity {
              return null;
          }
  
@@ -506,10 +506,10 @@ index c022751e3b45469cc0ad6732e2d6ff08918bafa4..f42cac626952d762a713534a9c4e13b8
      public Collection<PotionEffect> getActivePotionEffects() {
          List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 47da3df4b2428ffd0af3723d1bfbb773c46e39f3..fd9298e5c09ac45689afd1dff878d6d335140e2f 100644
+index ddad3bc0c32a0a160b0c5409ea74a1b286ecc1db..976db3fb0e22af2e8b3430c28bdf21e77fc15dee 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -160,6 +160,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -161,6 +161,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private long lastSaveTime;
      // Paper end
      private boolean canAlwaysOpenCommandBlocks = false; // Papyrus
@@ -517,7 +517,7 @@ index 47da3df4b2428ffd0af3723d1bfbb773c46e39f3..fd9298e5c09ac45689afd1dff878d6d3
  
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -167,6 +168,10 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -168,6 +169,10 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          this.firstPlayed = System.currentTimeMillis();
      }
  
@@ -528,7 +528,7 @@ index 47da3df4b2428ffd0af3723d1bfbb773c46e39f3..fd9298e5c09ac45689afd1dff878d6d3
      public GameProfile getProfile() {
          return this.getHandle().getGameProfile();
      }
-@@ -2519,6 +2524,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2557,6 +2562,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
          net.minecraft.server.MinecraftServer.getServer().getPlayerList().sendPlayerPermissionLevel(getHandle());
      }
@@ -547,7 +547,7 @@ index 47da3df4b2428ffd0af3723d1bfbb773c46e39f3..fd9298e5c09ac45689afd1dff878d6d3
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 35cc150adf51f79e2fccef8b094c90554aafbee2..17366f5349de312c0e043ca0b29fede2367a66cf 100644
+index 519b17fac445b7118f5493508bddccd368dadcde..2c2ce3080692d9b09feec73fbf33948af21b5f7b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -540,7 +540,12 @@ public class CraftEventFactory {

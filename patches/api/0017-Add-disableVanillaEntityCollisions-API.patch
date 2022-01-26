@@ -5,10 +5,10 @@ Subject: [PATCH] Add disableVanillaEntityCollisions API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 51ec2e4ec4239659272bba3d6ba2ad73926ebb88..0f98764b7b3ea97e85c33674400d041d1e78e699 100644
+index c2c45a93887f99466a8ac4275355ac75c7f901c4..2ba0346d7a5cf2432966cf01bc71e35070929804 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
-@@ -802,4 +802,10 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+@@ -822,4 +822,10 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
       */
      boolean isInPowderedSnow();
      // Paper end

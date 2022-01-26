@@ -74,10 +74,10 @@ index 135f37f79d1463896e47679e1d13e123b78f97c9..ee60c08ce5fb78611fe583af215a29d1
              return InteractionResult.sidedSuccess(world.isClientSide);
          } else {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 148e1985017f6955267b5c970730645394d700f6..47da3df4b2428ffd0af3723d1bfbb773c46e39f3 100644
+index 8cac6f49b23841414fbcc7f3a158a7342b382496..ddad3bc0c32a0a160b0c5409ea74a1b286ecc1db 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -159,6 +159,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -160,6 +160,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime;
      // Paper end
@@ -85,7 +85,7 @@ index 148e1985017f6955267b5c970730645394d700f6..47da3df4b2428ffd0af3723d1bfbb773
  
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -2505,6 +2506,21 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2543,6 +2544,21 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          }
      }
      // Paper end
