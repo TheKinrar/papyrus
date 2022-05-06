@@ -119,7 +119,7 @@ index 0000000000000000000000000000000000000000..d5e5729d8b051898e325905aee2fc109
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 4be7b18b4e794734439d1e8bec4304d88328c91e..9aff9faddf928ef348e21457e400f498373a7b9e 100644
+index 41e7ca100073052b99c82fa6a82f8168e0135499..7238bcf8e5e52f0b084f07a243a3591c331bd1df 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -21,6 +21,8 @@ import java.util.Map;
@@ -131,7 +131,7 @@ index 4be7b18b4e794734439d1e8bec4304d88328c91e..9aff9faddf928ef348e21457e400f498
  import net.minecraft.SharedConstants;
  import net.minecraft.advancements.critereon.DeserializationContext;
  import net.minecraft.nbt.CompoundTag;
-@@ -421,7 +423,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -430,7 +432,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
  
      @Override
      public com.destroystokyo.paper.util.VersionFetcher getVersionFetcher() {

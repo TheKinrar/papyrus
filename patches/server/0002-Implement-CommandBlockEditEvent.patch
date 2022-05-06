@@ -5,7 +5,7 @@ Subject: [PATCH] Implement CommandBlockEditEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 926d0a80cbb55184955ac6720948d2e86683cc57..eecd7e05a6eaa1e55bd37859bb028aee39a6e947 100644
+index 1a87f61d534ed531132fb43a9d2a45a4b604a6fc..63a026ca2f4454a616e2aeaf7a2b8cdff512b760 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -868,67 +868,119 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -90,9 +90,7 @@ index 926d0a80cbb55184955ac6720948d2e86683cc57..eecd7e05a6eaa1e55bd37859bb028aee
  
 -            String s = packet.getCommand();
 -            boolean flag = packet.isTrackOutput();
-+            iblockdata.setValue(CommandBlock.FACING, enumdirection);
-+            iblockdata.setValue(CommandBlock.CONDITIONAL, event.getNewConditional());
- 
+-
 -            if (commandblocklistenerabstract != null) {
 -                CommandBlockEntity.Mode tileentitycommand_type = tileentitycommand.getMode();
 -                BlockState iblockdata = this.player.level.getBlockState(blockposition);
@@ -110,7 +108,9 @@ index 926d0a80cbb55184955ac6720948d2e86683cc57..eecd7e05a6eaa1e55bd37859bb028aee
 -                    default:
 -                        iblockdata1 = Blocks.COMMAND_BLOCK.defaultBlockState();
 -                }
--
++            iblockdata.setValue(CommandBlock.FACING, enumdirection);
++            iblockdata.setValue(CommandBlock.CONDITIONAL, event.getNewConditional());
+ 
 -                BlockState iblockdata2 = (BlockState) ((BlockState) iblockdata1.setValue(CommandBlock.FACING, enumdirection)).setValue(CommandBlock.CONDITIONAL, packet.isConditional());
 +            this.player.level.setBlock(blockposition, iblockdata, 2);
 +            tileentity.setBlockState(iblockdata);

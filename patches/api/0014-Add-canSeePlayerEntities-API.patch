@@ -5,11 +5,11 @@ Subject: [PATCH] Add canSeePlayerEntities API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 799698d91dce61931ffd799da7ab84bd4100003d..adcf2df335968c896a504dfc90dea5c137f2fef9 100644
+index 157596d844840358fe93549581e9891f26778990..6a84ed0c9fc847e1b0359344702f49d9084597c9 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1417,6 +1417,35 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
-     @Deprecated
+@@ -1411,6 +1411,35 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+     @org.jetbrains.annotations.ApiStatus.Experimental // Paper
      public boolean canSee(@NotNull Entity entity);
  
 +    /**

@@ -5,10 +5,10 @@ Subject: [PATCH] Call ServerShutdownEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 4ec93265771979ec78b7719c6323b3265451ced8..00da1366ef504b50d942b7acbe05ccbfec74b99d 100644
+index a56351d90961f6d37028523b32081aa2aa05de31..f0573c49f9d998b906ed9b35b37e818701f3a1f6 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1123,6 +1123,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1084,6 +1084,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          this.safeShutdown(flag, false);
      }
      public void safeShutdown(boolean flag, boolean isRestarting) {

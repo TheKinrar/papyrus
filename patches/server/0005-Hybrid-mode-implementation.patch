@@ -152,10 +152,10 @@ index 0000000000000000000000000000000000000000..9e689ecad1618108d6f9d3a9a3d15b73
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index fac4dd0ead47294837bf459f7e8f3d0725a564af..0e47fabd05ffd497189a42b7d59b066f67abc55d 100644
+index d5e4f4fc571df1645c641bc0c8c13bdf6e243358..a56351d90961f6d37028523b32081aa2aa05de31 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1553,6 +1553,18 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1537,6 +1537,18 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          this.profiler.popPush("levels");
          Iterator iterator = this.getAllLevels().iterator();
  
@@ -175,10 +175,10 @@ index fac4dd0ead47294837bf459f7e8f3d0725a564af..0e47fabd05ffd497189a42b7d59b066f
          // Run tasks that are waiting on processing
          MinecraftTimings.processQueueTimer.startTiming(); // Spigot
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 7b23535a680d2a8534dcb8dd87770f66fb982c13..e6ec0fe553a21adf7886de44e7677c0317c457cd 100644
+index 2f5e40437d1865a874c352999edd084226d4e47b..3a75a22482d00f33cf817e61335eb19920624856 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -726,7 +726,12 @@ public class ServerPlayer extends Player {
+@@ -725,7 +725,12 @@ public class ServerPlayer extends Player {
  
              if (this.totalExperience != this.lastSentExp) {
                  this.lastSentExp = this.totalExperience;
@@ -192,10 +192,10 @@ index 7b23535a680d2a8534dcb8dd87770f66fb982c13..e6ec0fe553a21adf7886de44e7677c03
  
              if (this.tickCount % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 5ac9c73ec800332ffbf32a8aa4114bde33427326..58348cdbfebdb4bf285c8925153d75abd2a6ad6e 100644
+index 63a026ca2f4454a616e2aeaf7a2b8cdff512b760..ef1c85af6a0bf341816abe02bcc502c8b0b350e0 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -1420,6 +1420,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -1426,6 +1426,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                              }
                              // Paper end
  
@@ -209,7 +209,7 @@ index 5ac9c73ec800332ffbf32a8aa4114bde33427326..58348cdbfebdb4bf285c8925153d75ab
                              if (!this.player.isChangingDimension() && (!this.player.getLevel().getGameRules().getBoolean(GameRules.RULE_DISABLE_ELYTRA_MOVEMENT_CHECK) || !this.player.isFallFlying())) {
                                  float f2 = this.player.isFallFlying() ? 300.0F : 100.0F;
  
-@@ -1748,6 +1755,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -1755,6 +1762,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
          switch (packetplayinblockdig_enumplayerdigtype) {
              case SWAP_ITEM_WITH_OFFHAND:
@@ -218,7 +218,7 @@ index 5ac9c73ec800332ffbf32a8aa4114bde33427326..58348cdbfebdb4bf285c8925153d75ab
                  if (!this.player.isSpectator()) {
                      ItemStack itemstack = this.player.getItemInHand(InteractionHand.OFF_HAND);
  
-@@ -1775,6 +1784,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -1782,6 +1791,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
                  return;
              case DROP_ITEM:
@@ -227,7 +227,7 @@ index 5ac9c73ec800332ffbf32a8aa4114bde33427326..58348cdbfebdb4bf285c8925153d75ab
                  if (!this.player.isSpectator()) {
                      // limit how quickly items can be dropped
                      // If the ticks aren't the same then the count starts from 0 and we update the lastDropTick.
-@@ -1796,12 +1807,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -1803,12 +1814,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
                  return;
              case DROP_ALL_ITEMS:
@@ -244,7 +244,7 @@ index 5ac9c73ec800332ffbf32a8aa4114bde33427326..58348cdbfebdb4bf285c8925153d75ab
                  this.player.releaseUsingItem();
                  return;
              case START_DESTROY_BLOCK:
-@@ -2144,6 +2159,10 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2163,6 +2178,10 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
              // CraftBukkit start
              boolean isSync = s.startsWith("/");
@@ -255,7 +255,7 @@ index 5ac9c73ec800332ffbf32a8aa4114bde33427326..58348cdbfebdb4bf285c8925153d75ab
              if (isSync) {
                  try {
                      this.server.server.playerCommandState = true;
-@@ -3194,6 +3213,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3227,6 +3246,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      // CraftBukkit start
      private static final ResourceLocation CUSTOM_REGISTER = new ResourceLocation("register");
      private static final ResourceLocation CUSTOM_UNREGISTER = new ResourceLocation("unregister");
@@ -263,7 +263,7 @@ index 5ac9c73ec800332ffbf32a8aa4114bde33427326..58348cdbfebdb4bf285c8925153d75ab
  
      private static final ResourceLocation MINECRAFT_BRAND = new ResourceLocation("brand"); // Paper - Brand support
  
-@@ -3220,6 +3240,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3253,6 +3273,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                  ServerGamePacketListenerImpl.LOGGER.error("Couldn\'t unregister custom payload", ex);
                  this.disconnect("Invalid payload UNREGISTER!", org.bukkit.event.player.PlayerKickEvent.Cause.INVALID_PAYLOAD); // Paper - kick event cause
              }
@@ -283,7 +283,7 @@ index 5ac9c73ec800332ffbf32a8aa4114bde33427326..58348cdbfebdb4bf285c8925153d75ab
              try {
                  byte[] data = new byte[packet.data.readableBytes()];
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 7201f5b8f08d4be4592b75ed3afa35b863b1eba1..018670a78e9826b358398e2b648ac3ac97133942 100644
+index c67d8205bdf1bdeda3e6825fe63c1c808aa65790..d57b4f3ab10330b04c1209807033e88ec96ceb46 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -233,6 +233,12 @@ public abstract class PlayerList {
@@ -302,14 +302,14 @@ index 7201f5b8f08d4be4592b75ed3afa35b863b1eba1..018670a78e9826b358398e2b648ac3ac
 @@ -279,7 +285,8 @@ public abstract class PlayerList {
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
          playerconnection.send(new ClientboundUpdateRecipesPacket(this.server.getRecipeManager().getRecipes()));
-         playerconnection.send(new ClientboundUpdateTagsPacket(this.server.getTags().serializeToNetwork(this.registryHolder)));
+         playerconnection.send(new ClientboundUpdateTagsPacket(TagNetworkSerialization.serializeTagsToNetwork(this.registryHolder)));
 -        this.sendPlayerPermissionLevel(player);
 +        playerconnection.send(new ClientboundEntityEventPacket(player, (byte) (hasReducedDebugInfo(player) ? 22 : 23))); // Paper - fix this rule not being initialized on the client
 +        this.sendPlayerPermissionLevel(player); // TODO Papyrus - use this instead of above line
          player.getStats().markAllDirty();
          player.getRecipeBook().sendInitialRecipeBook(player);
          this.updateEntireScoreboard(worldserver1.getScoreboard(), player);
-@@ -1284,18 +1291,32 @@ public abstract class PlayerList {
+@@ -1291,18 +1298,32 @@ public abstract class PlayerList {
      }
  
      public void sendAllPlayerInfo(ServerPlayer player) {
@@ -347,10 +347,10 @@ index 7201f5b8f08d4be4592b75ed3afa35b863b1eba1..018670a78e9826b358398e2b648ac3ac
          return this.players.size();
      }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 25338fe4cfdc683ca4c01487e166a1649c6f640b..a8a92675fe6c79bcd7c72281cecf1eaee182b998 100644
+index bd5825c5b5c81e0694a3635b981588f0d2ba83cb..577eec91fb1163e9ae752675f2d596043310e85c 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -1101,9 +1101,12 @@ public abstract class LivingEntity extends Entity {
+@@ -1104,9 +1104,12 @@ public abstract class LivingEntity extends Entity {
                  override = new MobEffectInstance(mobeffect1).update(mobeffect);
              }
  
@@ -366,7 +366,7 @@ index 25338fe4cfdc683ca4c01487e166a1649c6f640b..a8a92675fe6c79bcd7c72281cecf1eae
              }
              // CraftBukkit end
  
-@@ -1112,7 +1115,7 @@ public abstract class LivingEntity extends Entity {
+@@ -1115,7 +1118,7 @@ public abstract class LivingEntity extends Entity {
                  this.onEffectAdded(mobeffect, entity);
                  return true;
                  // CraftBukkit start
@@ -375,7 +375,7 @@ index 25338fe4cfdc683ca4c01487e166a1649c6f640b..a8a92675fe6c79bcd7c72281cecf1eae
                  mobeffect1.update(mobeffect);
                  this.onEffectUpdated(mobeffect1, true, entity);
                  // CraftBukkit end
-@@ -1170,9 +1173,11 @@ public abstract class LivingEntity extends Entity {
+@@ -1173,9 +1176,11 @@ public abstract class LivingEntity extends Entity {
              return null;
          }
  
@@ -391,10 +391,10 @@ index 25338fe4cfdc683ca4c01487e166a1649c6f640b..a8a92675fe6c79bcd7c72281cecf1eae
  
          return (MobEffectInstance) this.activeEffects.remove(mobeffectlist);
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index d85da02be7f1d494af8f2cc840c49073774f5f9c..4105d4e975e3c1f852a55569bfe7180ad55c6b69 100644
+index 2483d7df7f1bf94344afd38b37602c645a4a2dff..ebad24ed414648baa4a6fb2d437952e0ab927073 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -191,6 +191,10 @@ public abstract class Player extends LivingEntity {
+@@ -192,6 +192,10 @@ public abstract class Player extends LivingEntity {
      }
      // CraftBukkit end
  
@@ -405,19 +405,19 @@ index d85da02be7f1d494af8f2cc840c49073774f5f9c..4105d4e975e3c1f852a55569bfe7180a
      public Player(Level world, BlockPos pos, float yaw, GameProfile profile) {
          super(EntityType.PLAYER, world);
          this.lastItemInMainHand = ItemStack.EMPTY;
-@@ -743,10 +747,7 @@ public abstract class Player extends LivingEntity {
+@@ -756,10 +760,7 @@ public abstract class Player extends LivingEntity {
              org.bukkit.entity.Player player = (org.bukkit.entity.Player) this.getBukkitEntity();
              Item drop = (Item) entityitem.getBukkitEntity();
  
 -            PlayerDropItemEvent event = new PlayerDropItemEvent(player, drop);
 -            this.level.getCraftServer().getPluginManager().callEvent(event);
 -
--            if (event.isCancelled() && !alwaysSucceed) { // Paper - Fix duplicating /give items on item drop cancel
-+            if (hybridCall(new PlayerDropItemEvent(player, drop)) && !alwaysSucceed) { // Paper - Fix duplicating /give items on item drop cancel
+-            if (event.isCancelled()) {
++            if (hybridCall(new PlayerDropItemEvent(player, drop))) {
                  org.bukkit.inventory.ItemStack cur = player.getInventory().getItemInHand();
-                 if (retainOwnership && (cur == null || cur.getAmount() == 0)) {
+                 if (flag1 && (cur == null || cur.getAmount() == 0)) {
                      // The complete stack was dropped
-@@ -775,6 +776,14 @@ public abstract class Player extends LivingEntity {
+@@ -788,6 +789,14 @@ public abstract class Player extends LivingEntity {
          }
      }
  
@@ -433,10 +433,10 @@ index d85da02be7f1d494af8f2cc840c49073774f5f9c..4105d4e975e3c1f852a55569bfe7180a
          float f = this.inventory.getDestroySpeed(block);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index c2f25149746bed64cd7032532e150a2d5d472013..0ce4fa4d05fdde5287e62f6c435d6c27b9151a9c 100644
+index 90a84975884b39c418361025ffeb7a4fd4170e6b..a2138a391bb0a517a2b2295bf260cd23e04fdfaf 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -491,6 +491,7 @@ public final class CraftServer implements Server {
+@@ -487,6 +487,7 @@ public final class CraftServer implements Server {
              if (!com.destroystokyo.paper.PaperConfig.loadPermsBeforePlugins) this.loadCustomPermissions(); // Paper
              this.helpMap.initializeCommands();
              this.syncCommands();
@@ -444,7 +444,7 @@ index c2f25149746bed64cd7032532e150a2d5d472013..0ce4fa4d05fdde5287e62f6c435d6c27
          }
      }
  
-@@ -1010,6 +1011,7 @@ public final class CraftServer implements Server {
+@@ -990,6 +991,7 @@ public final class CraftServer implements Server {
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
@@ -452,7 +452,7 @@ index c2f25149746bed64cd7032532e150a2d5d472013..0ce4fa4d05fdde5287e62f6c435d6c27
  
          int pollCount = 0;
  
-@@ -2817,4 +2819,24 @@ public final class CraftServer implements Server {
+@@ -2874,4 +2876,24 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
@@ -506,10 +506,10 @@ index c022751e3b45469cc0ad6732e2d6ff08918bafa4..f42cac626952d762a713534a9c4e13b8
      public Collection<PotionEffect> getActivePotionEffects() {
          List<PotionEffect> effects = new ArrayList<PotionEffect>();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index ddad3bc0c32a0a160b0c5409ea74a1b286ecc1db..976db3fb0e22af2e8b3430c28bdf21e77fc15dee 100644
+index c896d6f21842d53245394be2d94ec3f376f44a80..f25333b2778611e7ed3abf7887de2c4dea12e2cb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -161,6 +161,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -175,6 +175,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private long lastSaveTime;
      // Paper end
      private boolean canAlwaysOpenCommandBlocks = false; // Papyrus
@@ -517,7 +517,7 @@ index ddad3bc0c32a0a160b0c5409ea74a1b286ecc1db..976db3fb0e22af2e8b3430c28bdf21e7
  
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -168,6 +169,10 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -182,6 +183,10 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          this.firstPlayed = System.currentTimeMillis();
      }
  
@@ -528,7 +528,7 @@ index ddad3bc0c32a0a160b0c5409ea74a1b286ecc1db..976db3fb0e22af2e8b3430c28bdf21e7
      public GameProfile getProfile() {
          return this.getHandle().getGameProfile();
      }
-@@ -2557,6 +2562,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2687,6 +2692,17 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
          net.minecraft.server.MinecraftServer.getServer().getPlayerList().sendPlayerPermissionLevel(getHandle());
      }
@@ -547,10 +547,10 @@ index ddad3bc0c32a0a160b0c5409ea74a1b286ecc1db..976db3fb0e22af2e8b3430c28bdf21e7
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 519b17fac445b7118f5493508bddccd368dadcde..2c2ce3080692d9b09feec73fbf33948af21b5f7b 100644
+index a3c8a0291fa9ae6f3c96d937dd4621edd7c48535..696bb1373ba6e1277fbe5cd2a933bf06b0717394 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -540,7 +540,12 @@ public class CraftEventFactory {
+@@ -541,7 +541,12 @@ public class CraftEventFactory {
          if (cancelledBlock) {
              event.setUseInteractedBlock(Event.Result.DENY);
          }

@@ -5,10 +5,10 @@ Subject: [PATCH] Branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index da31e84cb558e6fad9cab015cfae753ce7be7db0..90d0237e7141aeda98793e235a182ad12813fc48 100644
+index dd8f449dddbe0838835ae8f8d5033aa422db403d..516f089b1899de1be5e557d21dc6aab72acd57e9 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -18,8 +18,8 @@ repositories {
+@@ -9,8 +9,8 @@ plugins {
  }
  
  dependencies {
@@ -19,7 +19,7 @@ index da31e84cb558e6fad9cab015cfae753ce7be7db0..90d0237e7141aeda98793e235a182ad1
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
-@@ -68,7 +68,7 @@ tasks.jar {
+@@ -59,7 +59,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -28,7 +28,7 @@ index da31e84cb558e6fad9cab015cfae753ce7be7db0..90d0237e7141aeda98793e235a182ad1
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -156,7 +156,7 @@ fun TaskContainer.registerRunTask(
+@@ -147,7 +147,7 @@ fun TaskContainer.registerRunTask(
      name: String,
      block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
@@ -38,7 +38,7 @@ index da31e84cb558e6fad9cab015cfae753ce7be7db0..90d0237e7141aeda98793e235a182ad1
      standardInput = System.`in`
      workingDir = rootProject.layout.projectDirectory
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index cd918cec00d8202252af0d20b1a8891371c538e3..cf9e67103e11d1a6c82c9048ab02aa6f59d92cb1 100644
+index 33adaac9449862879724da25f0c138709a536dbe..b2dd684eb24809d1bd135c53d6849988ecf19468 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -124,7 +124,7 @@ public class PaperConfig {
@@ -957,10 +957,10 @@ index 0000000000000000000000000000000000000000..52274c1bb387ae8e42f3c7078328d99f
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 481a5dbad82f3f8dd5b1bf8ab207d82ec73d5bbd..24b36a8e81d1080679ff4b2ac2e5fb9b8034732f 100644
+index c8d56947305c981a3268ce4ae3e975db350ceff2..d5e4f4fc571df1645c641bc0c8c13bdf6e243358 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1709,7 +1709,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1693,7 +1693,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -970,10 +970,10 @@ index 481a5dbad82f3f8dd5b1bf8ab207d82ec73d5bbd..24b36a8e81d1080679ff4b2ac2e5fb9b
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 38a0fb9a7c4ade9cacfd30dffabfea7e6b773981..0fdf174ebae996c683de15678905dc0a80acd8df 100644
+index 257c94f7c1cb00c9a91ab82e311dfd8eca29c538..377fe96e763af479279049f3befac4b043bf003e 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -232,6 +232,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -235,6 +235,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
@@ -990,10 +990,10 @@ index 38a0fb9a7c4ade9cacfd30dffabfea7e6b773981..0fdf174ebae996c683de15678905dc0a
          this.setPvpAllowed(dedicatedserverproperties.pvp);
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 4247dcb003626535dbb997f48ad9f61380bd17e9..05b4a761a55db4fc88856937361b99a83f834081 100644
+index 160c0f37aa3aaf7598f852acf9bd444f79444c97..33b8c0034728ac2c83065ddd69b81942ba86b8c9 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -186,6 +186,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -181,6 +181,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      }
      // Paper end - fix and optimise world upgrading
  
@@ -1002,19 +1002,19 @@ index 4247dcb003626535dbb997f48ad9f61380bd17e9..05b4a761a55db4fc88856937361b99a8
      public CraftWorld getWorld() {
          return this.world;
      }
-@@ -311,6 +313,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
-     protected Level(WritableLevelData worlddatamutable, ResourceKey<Level> resourcekey, final DimensionType dimensionmanager, Supplier<ProfilerFiller> supplier, boolean flag, boolean flag1, long i, org.bukkit.generator.ChunkGenerator gen, org.bukkit.generator.BiomeProvider biomeProvider, org.bukkit.World.Environment env, java.util.concurrent.Executor executor) { // Paper - Async-Anti-Xray - Pass executor
+@@ -264,6 +266,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+     protected Level(WritableLevelData worlddatamutable, ResourceKey<Level> resourcekey, Holder<DimensionType> holder, Supplier<ProfilerFiller> supplier, boolean flag, boolean flag1, long i, org.bukkit.generator.ChunkGenerator gen, org.bukkit.generator.BiomeProvider biomeProvider, org.bukkit.World.Environment env, java.util.concurrent.Executor executor) { // Paper - Async-Anti-Xray - Pass executor
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Spigot
          this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), this.spigotConfig); // Paper
 +        this.papyrusConfig = new fr.thekinrar.papyrus.PapyrusWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Papyrus
          this.generator = gen;
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
-         this.ticksPerAnimalSpawns = this.getCraftServer().getTicksPerAnimalSpawns(); // CraftBukkit
+ 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index ba7023e7ca5d29375ff53c2951892138d155f69f..1b20f2ce8f60a34f327b11e90ff6a0759ba76e85 100644
+index 15278bb897e6169bc5d02bf47b455634baec7be1..90a84975884b39c418361025ffeb7a4fd4170e6b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -254,7 +254,7 @@ import javax.annotation.Nullable; // Paper
+@@ -249,7 +249,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
@@ -1023,7 +1023,7 @@ index ba7023e7ca5d29375ff53c2951892138d155f69f..1b20f2ce8f60a34f327b11e90ff6a075
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
-@@ -952,6 +952,7 @@ public final class CraftServer implements Server {
+@@ -956,6 +956,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
@@ -1032,7 +1032,7 @@ index ba7023e7ca5d29375ff53c2951892138d155f69f..1b20f2ce8f60a34f327b11e90ff6a075
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters, config.spawnAnimals); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 55bae3efbc630be6d40d415509de4c3e744a5004..6bd2974baf27dc9983b9bba666e0f6dbe7f170c8 100644
+index fbe68bd4739d9a0e7d9bc4c3d5ba8ecfd2d13954..193df41b9b004261659f86c49831b45073410045 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -153,6 +153,14 @@ public class Main {
@@ -1064,7 +1064,7 @@ index 774556a62eb240da42e84db4502e2ed43495be17..b9f5ac9bd016643ebbaa630b26b5ead9
  
          if (stream != null) {
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index bee38307494188800886a1622fed229b88dbd8f1..aab49e9a7d9066bad8454af48bf3d68f3d1ddceb 100644
+index 24fefa521093448e608e217af7b88a6397a4b054..01ca5a3d87581e4b85dac88fa9e474504e1e9e9d 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
 @@ -97,7 +97,7 @@ public class WatchdogThread extends Thread

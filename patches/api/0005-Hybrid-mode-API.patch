@@ -5,10 +5,10 @@ Subject: [PATCH] Hybrid mode API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 53c4e5ca208ee17c7c244e416c537c7b63edf194..353a71f159244794f8a4690eec451d9f0ea41e7e 100644
+index d8666481f9a407403d0114ff02024fd3c50c27c4..abdd189edd4317f4ba88509e4a4d769f8138cbdc 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2177,6 +2177,17 @@ public final class Bukkit {
+@@ -2364,6 +2364,17 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -27,12 +27,12 @@ index 53c4e5ca208ee17c7c244e416c537c7b63edf194..353a71f159244794f8a4690eec451d9f
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index e48af3822e9f118399c3a1c9358c56efae12e0da..4874f265ad53622f81df7041945c60d534bd34fd 100644
+index 743a4091e06015b303d1eebc3b6bd393f98e4b9f..dfb373cc4f840eaa10ead2bd6f4ce64366d8159d 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1888,4 +1888,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
-     @NotNull
-     io.papermc.paper.datapack.DatapackManager getDatapackManager();
+@@ -2058,4 +2058,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+      */
+     @NotNull org.bukkit.potion.PotionBrewer getPotionBrewer();
      // Paper end
 +
 +    // Papyrus start
@@ -45,10 +45,10 @@ index e48af3822e9f118399c3a1c9358c56efae12e0da..4874f265ad53622f81df7041945c60d5
 +    // Papyrus end
  }
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 7f91f6d30cb3f2c53e1ffd7f2cdd23755ce824fb..799698d91dce61931ffd799da7ab84bd4100003d 100644
+index 65876d94f5237be583beabed119f34ae8a6ec5f5..157596d844840358fe93549581e9891f26778990 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -2532,6 +2532,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -2568,6 +2568,16 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * @param canAlwaysOpenCommandBlocks whether this player can always open command blocks
       */
      void setCanAlwaysOpenCommandBlocks(boolean canAlwaysOpenCommandBlocks);

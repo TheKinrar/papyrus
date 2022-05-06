@@ -5,10 +5,10 @@ Subject: [PATCH] Implement Player canAlwaysOpenCommandBlocks
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java b/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
-index 3125af569ec2bb1cd613a9dd96c3a181d723006d..a49bd1bdc188f25ee0af53efbc3842eece527279 100644
+index 415b6c2bbf11c5a2ac75d18f52b93f80b9e14fe4..0adb3cbc20845d239e801b45eaf561973b379c0c 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
-@@ -429,8 +429,9 @@ public class ServerPlayerGameMode {
+@@ -441,8 +441,9 @@ public class ServerPlayerGameMode {
              BlockEntity tileentity = this.level.getBlockEntity(pos);
              Block block = iblockdata.getBlock();
  
@@ -20,10 +20,10 @@ index 3125af569ec2bb1cd613a9dd96c3a181d723006d..a49bd1bdc188f25ee0af53efbc3842ee
              } else if (this.player.blockActionRestricted(this.level, pos, this.gameModeForPlayer)) {
                  return false;
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index cd08f9b16c065be8f0eacaeba51d3e72d332daf9..7201f5b8f08d4be4592b75ed3afa35b863b1eba1 100644
+index 95fe4240f3e1174ec36598f24d63f0073c13b376..c67d8205bdf1bdeda3e6825fe63c1c808aa65790 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1005,6 +1005,9 @@ public abstract class PlayerList {
+@@ -1012,6 +1012,9 @@ public abstract class PlayerList {
          GameProfile gameprofile = player.getGameProfile();
          int i = this.server.getProfilePermissions(gameprofile);
  
@@ -49,12 +49,12 @@ index 8cfce2d85041849ef3943e56c204fefeb07f96ec..b82e4e8220b0dd4444e51aed4b10cc75
      }
  }
 diff --git a/src/main/java/net/minecraft/world/level/block/CommandBlock.java b/src/main/java/net/minecraft/world/level/block/CommandBlock.java
-index 135f37f79d1463896e47679e1d13e123b78f97c9..ee60c08ce5fb78611fe583af215a29d11f46f033 100644
+index 1a48c5ea1f2f755abfa85469e26f37ea5f02d6da..37b51187df4968c2a589e9b347133298e7e33d1b 100644
 --- a/src/main/java/net/minecraft/world/level/block/CommandBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/CommandBlock.java
-@@ -27,6 +27,7 @@ import net.minecraft.world.phys.BlockHitResult;
- import org.apache.logging.log4j.LogManager;
- import org.apache.logging.log4j.Logger;
+@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
+ import net.minecraft.world.phys.BlockHitResult;
+ import org.slf4j.Logger;
  
 +import org.bukkit.craftbukkit.entity.CraftPlayer;
  import org.bukkit.event.block.BlockRedstoneEvent; // CraftBukkit
@@ -74,10 +74,10 @@ index 135f37f79d1463896e47679e1d13e123b78f97c9..ee60c08ce5fb78611fe583af215a29d1
              return InteractionResult.sidedSuccess(world.isClientSide);
          } else {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 8cac6f49b23841414fbcc7f3a158a7342b382496..ddad3bc0c32a0a160b0c5409ea74a1b286ecc1db 100644
+index f12efe51b14ed3637a8ba45def9c94634a6f5e8f..c896d6f21842d53245394be2d94ec3f376f44a80 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -160,6 +160,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -174,6 +174,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime;
      // Paper end
@@ -85,7 +85,7 @@ index 8cac6f49b23841414fbcc7f3a158a7342b382496..ddad3bc0c32a0a160b0c5409ea74a1b2
  
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
-@@ -2543,6 +2544,21 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2673,6 +2674,21 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          }
      }
      // Paper end

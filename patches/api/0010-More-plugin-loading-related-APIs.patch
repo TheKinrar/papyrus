@@ -5,10 +5,10 @@ Subject: [PATCH] More plugin-loading related APIs
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 353a71f159244794f8a4690eec451d9f0ea41e7e..28f87b0b779b5349a319107053e9e14e244a546b 100644
+index abdd189edd4317f4ba88509e4a4d769f8138cbdc..aa66083fb729155fdbc70fd88ab1beac14cedd61 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -442,6 +442,13 @@ public final class Bukkit {
+@@ -444,6 +444,13 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -23,10 +23,10 @@ index 353a71f159244794f8a4690eec451d9f0ea41e7e..28f87b0b779b5349a319107053e9e14e
       * Gets the name of the update folder. The update folder is used to safely
       * update plugins at the right moment on a plugin load.
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 4874f265ad53622f81df7041945c60d534bd34fd..5f7a2b42b0a1eeeb3173075142aa2ebd4aa4582a 100644
+index dfb373cc4f840eaa10ead2bd6f4ce64366d8159d..2431ec30a242c0b94eb39d7ddeb32cc85a7e0cb0 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -352,6 +352,11 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -354,6 +354,11 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      }
      // Paper end
  
@@ -114,10 +114,10 @@ index 0d1b20f2b5580ea5505ccc2f003925dbcee67199..af2329daba597b7b1aa7161ca2b36e59
       * Disables all the loaded plugins
       */
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 1366496271c4c7f72d1e5f990e51775b1c371f99..2191e8c0acf5168b6ba8e825747f204d4012c236 100644
+index bab8bb3a52cdeef5f7052d4e3f404c42f37d117d..61f20f33d0411a281232fc5660813c3425def25d 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-@@ -382,6 +382,23 @@ public final class SimplePluginManager implements PluginManager {
+@@ -383,6 +383,23 @@ public final class SimplePluginManager implements PluginManager {
          return result.toArray(new Plugin[result.size()]);
      }
  
@@ -141,7 +141,7 @@ index 1366496271c4c7f72d1e5f990e51775b1c371f99..2191e8c0acf5168b6ba8e825747f204d
      /**
       * Loads the plugin in the specified file
       * <p>
-@@ -397,6 +414,12 @@ public final class SimplePluginManager implements PluginManager {
+@@ -398,6 +415,12 @@ public final class SimplePluginManager implements PluginManager {
      @Override
      @Nullable
      public synchronized Plugin loadPlugin(@NotNull File file) throws InvalidPluginException, UnknownDependencyException {
@@ -153,8 +153,8 @@ index 1366496271c4c7f72d1e5f990e51775b1c371f99..2191e8c0acf5168b6ba8e825747f204d
 +    public synchronized Plugin loadPlugin(@NotNull File file, @Nullable File parentFile) throws InvalidPluginException, UnknownDependencyException {
          Validate.notNull(file, "File cannot be null");
  
-         checkUpdate(file);
-@@ -411,7 +434,7 @@ public final class SimplePluginManager implements PluginManager {
+         file = checkUpdate(file); // Paper - update the reference in case checkUpdate renamed it
+@@ -412,7 +435,7 @@ public final class SimplePluginManager implements PluginManager {
              if (match.find()) {
                  PluginLoader loader = fileAssociations.get(filter);
  
