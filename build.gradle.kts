@@ -1,25 +1,26 @@
-import io.papermc.paperweight.util.constants.*
 import io.papermc.paperweight.util.Git
 
 plugins {
     java
     `maven-publish`
-    id("com.github.johnrengelman.shadow") version "7.1.1" apply false
-    id("io.papermc.paperweight.patcher") version "1.3.4"
+    id("com.github.johnrengelman.shadow") version "7.1.2" apply false
+    id("io.papermc.paperweight.patcher") version "1.3.6"
 }
+
+val paperMavenPublicUrl = "https://papermc.io/repo/repository/maven-public/"
 
 repositories {
     mavenCentral()
-    maven("https://papermc.io/repo/repository/maven-public/") {
+    maven(paperMavenPublicUrl) {
         content {
-            onlyForConfigurations(PAPERCLIP_CONFIG)
+            onlyForConfigurations(configurations.paperclip.name)
         }
     }
 }
 
 dependencies {
-    remapper("net.fabricmc:tiny-remapper:0.7.0:fat")
-    decompiler("net.minecraftforge:forgeflower:1.5.498.22")
+    remapper("net.fabricmc:tiny-remapper:0.8.2:fat")
+    decompiler("net.minecraftforge:forgeflower:1.5.498.29")
     paperclip("io.papermc:paperclip:3.0.2")
 }
 
@@ -48,7 +49,7 @@ subprojects {
 
     repositories {
         mavenCentral()
-        maven("https://papermc.io/repo/repository/maven-public/")
+        maven(paperMavenPublicUrl)
     }
 }
 
@@ -63,8 +64,8 @@ val initSubmodules by tasks.registering {
 paperweight {
     serverProject.set(project(":papyrus-server"))
 
-    remapRepo.set("https://maven.fabricmc.net/")
-    decompileRepo.set("https://files.minecraftforge.net/maven/")
+    remapRepo.set(paperMavenPublicUrl)
+    decompileRepo.set(paperMavenPublicUrl)
 
     upstreams {
         register("paper") {
@@ -96,9 +97,7 @@ tasks.generateDevelopmentBundle {
     libraryRepositories.set(
         listOf(
             "https://repo.maven.apache.org/maven2/",
-            "https://libraries.minecraft.net/",
-            "https://papermc.io/repo/repository/maven-public/",
-            "https://maven.quiltmc.org/repository/release/",
+            paperMavenPublicUrl,
             "https://maven.atlanti.se/repository/maven-public/",
         )
     )
