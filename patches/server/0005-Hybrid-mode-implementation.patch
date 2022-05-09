@@ -192,7 +192,7 @@ index 2f5e40437d1865a874c352999edd084226d4e47b..3a75a22482d00f33cf817e61335eb199
  
              if (this.tickCount % 20 == 0) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 63a026ca2f4454a616e2aeaf7a2b8cdff512b760..ef1c85af6a0bf341816abe02bcc502c8b0b350e0 100644
+index da4fdb1422a1ef94d6f2c09d45a887d6810104b8..0cf90030bd10028ee1068bed76872a9bd777b250 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1426,6 +1426,13 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -255,7 +255,7 @@ index 63a026ca2f4454a616e2aeaf7a2b8cdff512b760..ef1c85af6a0bf341816abe02bcc502c8
              if (isSync) {
                  try {
                      this.server.server.playerCommandState = true;
-@@ -3227,6 +3246,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3234,6 +3253,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      // CraftBukkit start
      private static final ResourceLocation CUSTOM_REGISTER = new ResourceLocation("register");
      private static final ResourceLocation CUSTOM_UNREGISTER = new ResourceLocation("unregister");
@@ -263,7 +263,7 @@ index 63a026ca2f4454a616e2aeaf7a2b8cdff512b760..ef1c85af6a0bf341816abe02bcc502c8
  
      private static final ResourceLocation MINECRAFT_BRAND = new ResourceLocation("brand"); // Paper - Brand support
  
-@@ -3253,6 +3273,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3260,6 +3280,18 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                  ServerGamePacketListenerImpl.LOGGER.error("Couldn\'t unregister custom payload", ex);
                  this.disconnect("Invalid payload UNREGISTER!", org.bukkit.event.player.PlayerKickEvent.Cause.INVALID_PAYLOAD); // Paper - kick event cause
              }
