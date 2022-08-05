@@ -119,7 +119,7 @@ index 0000000000000000000000000000000000000000..d5e5729d8b051898e325905aee2fc109
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 41e7ca100073052b99c82fa6a82f8168e0135499..7238bcf8e5e52f0b084f07a243a3591c331bd1df 100644
+index 8961da579b114cbafb329c00aadf1cf75e70cf97..156bca5221a5f2c472ade9b7caef9855843bab33 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -21,6 +21,8 @@ import java.util.Map;

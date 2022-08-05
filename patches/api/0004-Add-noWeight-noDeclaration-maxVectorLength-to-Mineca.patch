@@ -5,10 +5,10 @@ Subject: [PATCH] Add noWeight, noDeclaration, maxVectorLength to Minecart
 
 
 diff --git a/src/main/java/org/bukkit/entity/Minecart.java b/src/main/java/org/bukkit/entity/Minecart.java
-index 53b042f8ebbbf6ee77435b93d4e89371375cc515..708f2f7ff1f82a10cdca57dae683b9b828bb78c6 100644
+index bc1e62759c995a1463ebcd10d73c7d502c9acc45..46a593ddbb4766e8d9354c7e8347c61c806cdea9 100644
 --- a/src/main/java/org/bukkit/entity/Minecart.java
 +++ b/src/main/java/org/bukkit/entity/Minecart.java
-@@ -154,4 +154,18 @@ public interface Minecart extends Vehicle {
+@@ -158,4 +158,18 @@ public interface Minecart extends Vehicle {
      @NotNull
      public Material getMinecartMaterial();
      // Paper end

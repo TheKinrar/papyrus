@@ -317,22 +317,6 @@ index 0000000000000000000000000000000000000000..cf534fa9618b536c6a7602d2e5206b15
 +        return location;
 +    }
 +}
-diff --git a/src/main/java/org/bukkit/event/world/WorldEvent.java b/src/main/java/org/bukkit/event/world/WorldEvent.java
-index cffeff33f007d3b03b7c862b25be453f705da739..3d5c0bf870309fefc333878ea798235e41f4e495 100644
---- a/src/main/java/org/bukkit/event/world/WorldEvent.java
-+++ b/src/main/java/org/bukkit/event/world/WorldEvent.java
-@@ -14,6 +14,11 @@ public abstract class WorldEvent extends Event {
-         this.world = world;
-     }
- 
-+    public WorldEvent(@NotNull final World world, boolean async) {
-+        super(async);
-+        this.world = world;
-+    }
-+
-     /**
-      * Gets the world primarily involved with this event
-      *
 diff --git a/src/main/java/org/bukkit/plugin/RegisteredListener.java b/src/main/java/org/bukkit/plugin/RegisteredListener.java
 index 419aec56b0e3fa8bcec2ea7f340caa3456b57d00..78f18b39ca9a3165c487d220d96aa7ad9e6988a7 100644
 --- a/src/main/java/org/bukkit/plugin/RegisteredListener.java
@@ -386,7 +370,7 @@ index 0000000000000000000000000000000000000000..50e48e8be078bde13bde4b93040ee59e
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index b347b07af3a9f07312fe04705c022c7f00c86e8f..890a930126244e3b205f9766f254a574d73a6a24 100644
+index 8ff78fad47f6086aa289e32590f4fbec24b3d500..c549f0966e824afce1e01edb7bb6d5676a35f779 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 @@ -28,6 +28,7 @@ import org.bukkit.event.Event;
@@ -405,7 +389,7 @@ index b347b07af3a9f07312fe04705c022c7f00c86e8f..890a930126244e3b205f9766f254a574
  import org.bukkit.plugin.TimedRegisteredListener;
  import org.bukkit.plugin.UnknownDependencyException;
  import org.jetbrains.annotations.NotNull;
-@@ -341,6 +343,8 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -336,6 +338,8 @@ public final class JavaPluginLoader implements PluginLoader {
              EventExecutor executor = new co.aikar.timings.TimedEventExecutor(EventExecutor.create(method, eventClass), plugin, method, eventClass); // Paper // Paper (Yes.) - Use factory method `EventExecutor.create()`
              if (false) { // Spigot - RL handles useTimings check now
                  eventSet.add(new TimedRegisteredListener(listener, executor, eh.priority(), plugin, eh.ignoreCancelled()));

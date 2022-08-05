@@ -5,13 +5,13 @@ Subject: [PATCH] Add disableVanillaEntityCollisions API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 8bc6876c82935988436597161fa0ec94c032174b..5085387f8913537e2e7b51cfe1d56571d51a5735 100644
+index 4d4a0d15876cc48c9c0456b9f11a5dda37fd56ce..ef8151bd2e6ec333fcde6a7508175656614c9010 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
-@@ -830,4 +830,10 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+@@ -919,4 +919,10 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
       */
-     boolean isInPowderedSnow();
-     // Paper end
+     boolean wouldCollideUsing(@NotNull BoundingBox boundingBox);
+     // Paper End - Collision API
 +
 +    // Papyrus start
 +    public void setIgnoresVanillaEntityCollisions(boolean ignores);
