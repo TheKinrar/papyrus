@@ -7,4 +7,4 @@ pluginManagement {
 
 rootProject.name = "papyrus"
 
-include("papyrus-api", "papyrus-server")
+include("papyrus-api", "papyrus-mojangapi", "papyrus-server")

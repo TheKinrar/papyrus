@@ -80,6 +80,12 @@ paperweight {
                     patchDir.set(layout.projectDirectory.dir("patches/api"))
                     outputDir.set(layout.projectDirectory.dir("papyrus-api"))
                 }
+                register("mojangApi") {
+                    isBareDirectory.set(true)
+                    upstreamDir.set(paperDir.dir("Paper-MojangAPI"))
+                    patchDir.set(layout.projectDirectory.dir("patches/mojangapi"))
+                    outputDir.set(layout.projectDirectory.dir("papyrus-mojangapi"))
+                }
                 register("server") {
                     upstreamDir.set(paperDir.dir("Paper-Server"))
                     patchDir.set(layout.projectDirectory.dir("patches/server"))
