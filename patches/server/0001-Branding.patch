@@ -677,10 +677,10 @@ index 0000000000000000000000000000000000000000..7c284c9b2ffd4145b6cffb73b1cfcc3b
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index dd9ab51e904be2f2f2a2981d4f0f6638a6895e8d..d9205cfd3720e36aa95f369d25bab90458e53c89 100644
+index d2161a3c3b9a2b2d463ac778656c95167c10a49d..85719a8e3c178d5db2acbf12755afb7b5ff3810b 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1672,7 +1672,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1673,7 +1673,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -703,7 +703,7 @@ index bdd6560fe85950b0a857a949cb38c044da44ca6b..7e7f40de739a40bf94ce351a74003805
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index b777c1294370bdc68bc6265b039e2a405d89f2f5..6c2af7a8544673a719b233ba97e98a270e2f6a0e 100644
+index b443aba38258f501f8f00be6b055f07b709277c4..759ee1487a359d7eac24c90b205df3984545500d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -248,7 +248,7 @@ import javax.annotation.Nullable; // Paper
