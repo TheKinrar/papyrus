@@ -5,10 +5,10 @@ Subject: [PATCH] Add disableVanillaEntityCollisions API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 4d4a0d15876cc48c9c0456b9f11a5dda37fd56ce..ef8151bd2e6ec333fcde6a7508175656614c9010 100644
+index 33a6b7a27dc91552799c07a7aad9b3df31ad13f7..7a91b41ecfeb24aabdc74b9b3be60f740c9cd32b 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
-@@ -919,4 +919,10 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+@@ -951,4 +951,10 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
       */
      boolean wouldCollideUsing(@NotNull BoundingBox boundingBox);
      // Paper End - Collision API

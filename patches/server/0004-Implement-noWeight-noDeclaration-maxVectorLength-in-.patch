@@ -6,7 +6,7 @@ Subject: [PATCH] Implement noWeight, noDeclaration, maxVectorLength in
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
-index 3f31a3c17ecca6e93b794478129b95ecff4e1a9c..3781ad5a6e2512a778c9b88805b9012e67d781fb 100644
+index c71120fe57a76c4638be5dcbda5a756cc2d62ffc..5ae870401efbcca9535dd667cb9734a519898a56 100644
 --- a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
 +++ b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
 @@ -109,6 +109,12 @@ public abstract class AbstractMinecart extends Entity {
@@ -22,7 +22,7 @@ index 3f31a3c17ecca6e93b794478129b95ecff4e1a9c..3781ad5a6e2512a778c9b88805b9012e
      protected AbstractMinecart(EntityType<?> type, Level world) {
          super(type, world);
          this.blocksBuilding = true;
-@@ -566,7 +572,7 @@ public abstract class AbstractMinecart extends Entity {
+@@ -574,7 +580,7 @@ public abstract class AbstractMinecart extends Entity {
              d5 = -d5;
          }
  
@@ -31,7 +31,7 @@ index 3f31a3c17ecca6e93b794478129b95ecff4e1a9c..3781ad5a6e2512a778c9b88805b9012e
  
          vec3d1 = new Vec3(d8 * d4 / d6, vec3d1.y, d8 * d5 / d6);
          this.setDeltaMovement(vec3d1);
-@@ -618,7 +624,7 @@ public abstract class AbstractMinecart extends Entity {
+@@ -626,7 +632,7 @@ public abstract class AbstractMinecart extends Entity {
          d0 = d11 + d4 * d15;
          d2 = d12 + d5 * d15;
          this.setPos(d0, d1, d2);
@@ -40,7 +40,7 @@ index 3f31a3c17ecca6e93b794478129b95ecff4e1a9c..3781ad5a6e2512a778c9b88805b9012e
          d17 = this.getMaxSpeed();
          vec3d1 = this.getDeltaMovement();
          this.move(MoverType.SELF, new Vec3(Mth.clamp(d16 * vec3d1.x, -d17, d17), 0.0D, Mth.clamp(d16 * vec3d1.z, -d17, d17)));
-@@ -696,6 +702,7 @@ public abstract class AbstractMinecart extends Entity {
+@@ -704,6 +710,7 @@ public abstract class AbstractMinecart extends Entity {
  
      protected void applyNaturalSlowdown() {
          double d0 = this.isVehicle() || !this.slowWhenEmpty ? 0.997D : 0.96D; // CraftBukkit - add !this.slowWhenEmpty

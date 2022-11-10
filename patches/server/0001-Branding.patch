@@ -5,10 +5,10 @@ Subject: [PATCH] Branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 2374cc9bab5039d0a0dc11d4b2ec573ab75778a7..617b3f47f0a47b0d2a3bf992e104244fe33aeb07 100644
+index b0e4f11e8af4b909a56bb5576d05ef0537fb25f7..0a500e2d4f7b4c48936efe46e22678d6fb24ae11 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -9,8 +9,8 @@ plugins {
+@@ -7,8 +7,8 @@ plugins {
  }
  
  dependencies {
@@ -19,7 +19,7 @@ index 2374cc9bab5039d0a0dc11d4b2ec573ab75778a7..617b3f47f0a47b0d2a3bf992e104244f
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
-@@ -64,7 +64,7 @@ tasks.jar {
+@@ -62,7 +62,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -28,7 +28,7 @@ index 2374cc9bab5039d0a0dc11d4b2ec573ab75778a7..617b3f47f0a47b0d2a3bf992e104244f
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -163,7 +163,7 @@ fun TaskContainer.registerRunTask(
+@@ -134,7 +134,7 @@ fun TaskContainer.registerRunTask(
      name: String,
      block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
@@ -677,10 +677,10 @@ index 0000000000000000000000000000000000000000..7c284c9b2ffd4145b6cffb73b1cfcc3b
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index d2161a3c3b9a2b2d463ac778656c95167c10a49d..85719a8e3c178d5db2acbf12755afb7b5ff3810b 100644
+index 6dc6c3bccb4ba34268a87b0754c87eb1e0df4135..50ebde9495cdd2bbfed1fd6de7d96567db61539a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1673,7 +1673,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1654,7 +1654,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -690,7 +690,7 @@ index d2161a3c3b9a2b2d463ac778656c95167c10a49d..85719a8e3c178d5db2acbf12755afb7b
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index bdd6560fe85950b0a857a949cb38c044da44ca6b..7e7f40de739a40bf94ce351a74003805c2727a68 100644
+index ff3eced0e20c39b825586897ee2fed01dd471d88..65a7905a170676b3ec470323aff13b20bbe9edce 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -222,7 +222,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -703,7 +703,7 @@ index bdd6560fe85950b0a857a949cb38c044da44ca6b..7e7f40de739a40bf94ce351a74003805
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index b443aba38258f501f8f00be6b055f07b709277c4..759ee1487a359d7eac24c90b205df3984545500d 100644
+index 4212568bf8de6988c71f43d3e2152fa0fe51d0d7..9f2b1897a88d5fd49da6dd7c34d4778a22bb8699 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -248,7 +248,7 @@ import javax.annotation.Nullable; // Paper
@@ -729,10 +729,10 @@ index 774556a62eb240da42e84db4502e2ed43495be17..b9f5ac9bd016643ebbaa630b26b5ead9
  
          if (stream != null) {
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index d568fc92d03c313a782796cc720a1ebb1a5ad8be..eb3fe42baa655d906a3c98a910f3630e8e565fe5 100644
+index e9fa7faaa4451e36b3908cbcbbe0baf213abde96..8b59e214bf30d85d982871d274e91ea1e8bf8629 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
-@@ -96,7 +96,7 @@ public class WatchdogThread extends Thread
+@@ -96,7 +96,7 @@ public final class WatchdogThread extends io.papermc.paper.util.TickThread // Pa
  
      private WatchdogThread(long timeoutTime, boolean restart)
      {
@@ -741,7 +741,7 @@ index d568fc92d03c313a782796cc720a1ebb1a5ad8be..eb3fe42baa655d906a3c98a910f3630e
          this.timeoutTime = timeoutTime;
          this.restart = restart;
          earlyWarningEvery = Math.min(io.papermc.paper.configuration.GlobalConfiguration.get().watchdog.earlyWarningEvery, timeoutTime); // Paper
-@@ -155,14 +155,14 @@ public class WatchdogThread extends Thread
+@@ -155,14 +155,14 @@ public final class WatchdogThread extends io.papermc.paper.util.TickThread // Pa
                  if (isLongTimeout) {
                  // Paper end
                  log.log( Level.SEVERE, "------------------------------" );
@@ -759,7 +759,7 @@ index d568fc92d03c313a782796cc720a1ebb1a5ad8be..eb3fe42baa655d906a3c98a910f3630e
                  //
                  if ( net.minecraft.world.level.Level.lastPhysicsProblem != null )
                  {
-@@ -185,12 +185,12 @@ public class WatchdogThread extends Thread
+@@ -185,12 +185,12 @@ public final class WatchdogThread extends io.papermc.paper.util.TickThread // Pa
                  // Paper end
                  } else
                  {
@@ -771,10 +771,10 @@ index d568fc92d03c313a782796cc720a1ebb1a5ad8be..eb3fe42baa655d906a3c98a910f3630e
                  log.log( Level.SEVERE, "------------------------------" );
 -                log.log( Level.SEVERE, "Server thread dump (Look for plugins here before reporting to Paper!):" ); // Paper
 +                log.log( Level.SEVERE, "Server thread dump (Look for plugins here before reporting to Papyrus!):" ); // Paper // Papyrus
-                 com.destroystokyo.paper.io.chunk.ChunkTaskManager.dumpAllChunkLoadInfo(); // Paper
+                 io.papermc.paper.chunk.system.scheduling.ChunkTaskScheduler.dumpAllChunkLoadInfo(isLongTimeout); // Paper // Paper - rewrite chunk system
                  this.dumpTickingInfo(); // Paper - log detailed tick information
-                 WatchdogThread.dumpThread( ManagementFactory.getThreadMXBean().getThreadInfo( server.serverThread.getId(), Integer.MAX_VALUE ), log );
-@@ -206,7 +206,7 @@ public class WatchdogThread extends Thread
+                 WatchdogThread.dumpThread( ManagementFactory.getThreadMXBean().getThreadInfo( MinecraftServer.getServer().serverThread.getId(), Integer.MAX_VALUE ), log );
+@@ -206,7 +206,7 @@ public final class WatchdogThread extends io.papermc.paper.util.TickThread // Pa
                      WatchdogThread.dumpThread( thread, log );
                  }
                  } else {
