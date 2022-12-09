@@ -318,7 +318,7 @@ index 0000000000000000000000000000000000000000..cf534fa9618b536c6a7602d2e5206b15
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/plugin/RegisteredListener.java b/src/main/java/org/bukkit/plugin/RegisteredListener.java
-index 419aec56b0e3fa8bcec2ea7f340caa3456b57d00..78f18b39ca9a3165c487d220d96aa7ad9e6988a7 100644
+index 3b3d9642a8d63798dc28f2f8df77f0466451cbff..92857714e92f619d54162f722924072f78dc5a98 100644
 --- a/src/main/java/org/bukkit/plugin/RegisteredListener.java
 +++ b/src/main/java/org/bukkit/plugin/RegisteredListener.java
 @@ -67,6 +67,10 @@ public class RegisteredListener {
@@ -370,7 +370,7 @@ index 0000000000000000000000000000000000000000..50e48e8be078bde13bde4b93040ee59e
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index 8ff78fad47f6086aa289e32590f4fbec24b3d500..c549f0966e824afce1e01edb7bb6d5676a35f779 100644
+index 7e5149a21b6747f64425a277c142e69f0ef43b3f..920719459f107db0db9bb1bbe8032f247c793df8 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 @@ -28,6 +28,7 @@ import org.bukkit.event.Event;
@@ -389,7 +389,7 @@ index 8ff78fad47f6086aa289e32590f4fbec24b3d500..c549f0966e824afce1e01edb7bb6d567
  import org.bukkit.plugin.TimedRegisteredListener;
  import org.bukkit.plugin.UnknownDependencyException;
  import org.jetbrains.annotations.NotNull;
-@@ -336,6 +338,8 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -337,6 +339,8 @@ public final class JavaPluginLoader implements PluginLoader {
              EventExecutor executor = new co.aikar.timings.TimedEventExecutor(EventExecutor.create(method, eventClass), plugin, method, eventClass); // Paper // Paper (Yes.) - Use factory method `EventExecutor.create()`
              if (false) { // Spigot - RL handles useTimings check now
                  eventSet.add(new TimedRegisteredListener(listener, executor, eh.priority(), plugin, eh.ignoreCancelled()));

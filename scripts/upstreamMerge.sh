@@ -24,7 +24,7 @@ function update {
     fi
 }
 
-update Paper origin/1.19.2
+update Paper origin/master
 
 if [ "$updated" == "1" ]; then
     echo "Rebuilding patches without filtering to improve apply ability"
