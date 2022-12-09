@@ -5,7 +5,7 @@ Subject: [PATCH] Implement disableVanillaEntityCollisions API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 6fa47becd0f83ac4273ef3a10c314aa27b08184b..577e5c70b92158a2bb8daefba34b29ba25155d30 100644
+index 22cd5f0e40d7e3cd04793a9dda29d113428fa093..7da5bb4be6cd213c99391137f637908ff883babb 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -397,6 +397,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
@@ -26,10 +26,10 @@ index 6fa47becd0f83ac4273ef3a10c314aa27b08184b..577e5c70b92158a2bb8daefba34b29ba
          final AABB currBoundingBox = this.getBoundingBox();
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 9368ec01e498f913bc5b7b3e77fe87659090d9b5..cb1bdbd61400f34eb46f9e1e7d6af08af7c77f85 100644
+index 01132b10799034232e7e5cbb460d848601e04012..863363978b682269f2cc4bda1956efe4864f0cbc 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -1369,6 +1369,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -1375,6 +1375,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
          return getHandle().isInPowderSnow || getHandle().wasInPowderSnow; // depending on the location in the entity "tick" either could be needed.
      }
      // Paper end
@@ -37,7 +37,7 @@ index 9368ec01e498f913bc5b7b3e77fe87659090d9b5..cb1bdbd61400f34eb46f9e1e7d6af08a
      // Paper Start - Collision API
      @Override
      public boolean collidesAt(@org.jetbrains.annotations.NotNull Location location) {
-@@ -1384,4 +1385,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -1390,4 +1391,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
          return !this.getHandle().level.noCollision(this.getHandle(), aabb);
      }
      // Paper End - Collision API
