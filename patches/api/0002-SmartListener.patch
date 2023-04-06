@@ -370,7 +370,7 @@ index 0000000000000000000000000000000000000000..50e48e8be078bde13bde4b93040ee59e
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index 7e5149a21b6747f64425a277c142e69f0ef43b3f..920719459f107db0db9bb1bbe8032f247c793df8 100644
+index eaefbb00e9993d54906cc8cf35cf753c0d6c7707..6cb2cbc3578c5b1b48087df3da19ba22a7dc9c45 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 @@ -28,6 +28,7 @@ import org.bukkit.event.Event;
@@ -389,8 +389,8 @@ index 7e5149a21b6747f64425a277c142e69f0ef43b3f..920719459f107db0db9bb1bbe8032f24
  import org.bukkit.plugin.TimedRegisteredListener;
  import org.bukkit.plugin.UnknownDependencyException;
  import org.jetbrains.annotations.NotNull;
-@@ -337,6 +339,8 @@ public final class JavaPluginLoader implements PluginLoader {
-             EventExecutor executor = new co.aikar.timings.TimedEventExecutor(EventExecutor.create(method, eventClass), plugin, method, eventClass); // Paper // Paper (Yes.) - Use factory method `EventExecutor.create()`
+@@ -310,6 +312,8 @@ public final class JavaPluginLoader implements PluginLoader {
+             }, plugin, method, eventClass); // Paper
              if (false) { // Spigot - RL handles useTimings check now
                  eventSet.add(new TimedRegisteredListener(listener, executor, eh.priority(), plugin, eh.ignoreCancelled()));
 +            } else if(listener instanceof SmartListener) {

@@ -5,18 +5,18 @@ Subject: [PATCH] Implement disableVanillaEntityCollisions API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 7f94da8059147760cbdc2476d0e8beda4a105f40..1e9092ee7e7f5316bd892a029621c51a2b499108 100644
+index 4705d7066207250c03a5f98eef61554c901f2e35..586596c414599043cb8f21c495ce7dd6a8f7ed89 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -397,6 +397,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
-     @javax.annotation.Nullable
+@@ -399,6 +399,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
      private UUID originWorld;
      public boolean freezeLocked = false; // Paper - Freeze Tick Lock API
+     public boolean collidingWithWorldBorder; // Paper
 +    public boolean disableVanillaEntityCollisions; // Papyrus
  
      public void setOrigin(@javax.annotation.Nonnull Location location) {
          this.origin = location.toVector();
-@@ -1357,6 +1358,8 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -1359,6 +1360,8 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
              return movement;
          }
  
@@ -26,10 +26,10 @@ index 7f94da8059147760cbdc2476d0e8beda4a105f40..1e9092ee7e7f5316bd892a029621c51a
          final AABB currBoundingBox = this.getBoundingBox();
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 6cd6cb256bde958416a0e4b13fc1d3df74f230fd..4c3e03da7c169497053d06c75ca9bcb16c881121 100644
+index 57a0dbb23a32123d30c3b3572f4d129be9d97847..2f0acb9b0748fc3da4cf15f8c1d1805d8b23c65b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -1377,6 +1377,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -1427,6 +1427,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
          return getHandle().isInPowderSnow || getHandle().wasInPowderSnow; // depending on the location in the entity "tick" either could be needed.
      }
      // Paper end
@@ -37,7 +37,7 @@ index 6cd6cb256bde958416a0e4b13fc1d3df74f230fd..4c3e03da7c169497053d06c75ca9bcb1
      // Paper Start - Collision API
      @Override
      public boolean collidesAt(@org.jetbrains.annotations.NotNull Location location) {
-@@ -1392,4 +1393,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -1442,4 +1443,16 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
          return !this.getHandle().level.noCollision(this.getHandle(), aabb);
      }
      // Paper End - Collision API

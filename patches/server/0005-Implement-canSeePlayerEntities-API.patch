@@ -5,25 +5,34 @@ Subject: [PATCH] Implement canSeePlayerEntities API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 52071101c16ae84f69f1a00857b4895f328f6edd..544698b125594fbacb7ca2ad4ee2c2881d7aac53 100644
+index 589783e93785196eb9f7ff6890c03e84f3102d93..f017fe5bbb92dd0e017b347d73b9151e821707fe 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -165,6 +165,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -166,6 +166,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private final ConversationTracker conversationTracker = new ConversationTracker();
      private final Set<String> channels = new HashSet<String>();
-     private final Map<UUID, Set<WeakReference<Plugin>>> hiddenEntities = new HashMap<>();
+     private final Map<UUID, Set<WeakReference<Plugin>>> invertedVisibilityEntities = new HashMap<>();
 +    private final Set<WeakReference<Plugin>> hideAllPlugins = new HashSet<>();
      private static final WeakHashMap<Plugin, WeakReference<Plugin>> pluginWeakReferences = new WeakHashMap<>();
      private int hash = 0;
      private double health = 20;
-@@ -1845,9 +1846,68 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1983,7 +1984,13 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
      @Override
      public boolean canSee(org.bukkit.entity.Entity entity) {
+-        return this.equals(entity) || entity.isVisibleByDefault() ^ this.invertedVisibilityEntities.containsKey(entity.getUniqueId()); // SPIGOT-7312: Can always see self
++        if(this.equals(entity))
++            return true;
++
 +        if(entity instanceof Player && !canSeePlayerEntities())
 +            return false;
 +
-         return !this.hiddenEntities.containsKey(entity.getUniqueId());
++        return entity.isVisibleByDefault() ^ this.invertedVisibilityEntities.containsKey(entity.getUniqueId()); // SPIGOT-7312: Can always see self
+     }
+ 
+     public boolean canSee(UUID uuid) {
+@@ -1995,6 +2002,60 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         return (entity != null) ? this.canSee(entity) : false; // If we can't find it, we can't see it
      }
  
 +    @Override
@@ -61,13 +70,11 @@ index 52071101c16ae84f69f1a00857b4895f328f6edd..544698b125594fbacb7ca2ad4ee2c288
 +
 +        var tracker = getHandle().getLevel().getChunkSource().chunkMap;
 +        for(var other : getHandle().getLevel().players()) {
-+            if(!hiddenEntities.containsKey(other.getUUID())) { // Other might still be hidden using hidePlayer
-+            if(canSeePlayerEntities()) { // Papyrus
++            if(other.visibleByDefault ^ invertedVisibilityEntities.containsKey(other.getUUID())) { // Other might still be hidden using hidePlayer
 +                var entry = tracker.entityMap.get(other.getId());
 +                if (entry != null && !entry.seenBy.contains(getHandle().connection)) {
 +                    entry.updatePlayer(getHandle());
 +                }
-+            }
 +            }
 +        }
 +    }
