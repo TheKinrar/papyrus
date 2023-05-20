@@ -703,10 +703,10 @@ index a7e133f3495e9132a5fdae2c24f225e7b026295a..48cea16082b7e23f8256aa75d0828cd4
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 4cd95134811fd65465681d159b2f30cf77455830..71518346b5c8f8fc5a64d8fae6b3fdbf9af1ebb4 100644
+index e769f7b0904814ee63e2a73dca57e5dc33382fba..f52a17d0de6bc7dc2ac34a7f3c3a879ff66f91db 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -256,7 +256,7 @@ import javax.annotation.Nullable; // Paper
+@@ -257,7 +257,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {

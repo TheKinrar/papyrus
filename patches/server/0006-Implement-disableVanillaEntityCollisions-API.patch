@@ -5,10 +5,10 @@ Subject: [PATCH] Implement disableVanillaEntityCollisions API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 4705d7066207250c03a5f98eef61554c901f2e35..586596c414599043cb8f21c495ce7dd6a8f7ed89 100644
+index df316ca580a0a3b4ba6b658f7d7bdf542f4ad85b..af0e872dc192ab8f226cc68ec1c6321477a1375a 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -399,6 +399,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -400,6 +400,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
      private UUID originWorld;
      public boolean freezeLocked = false; // Paper - Freeze Tick Lock API
      public boolean collidingWithWorldBorder; // Paper
@@ -16,7 +16,7 @@ index 4705d7066207250c03a5f98eef61554c901f2e35..586596c414599043cb8f21c495ce7dd6
  
      public void setOrigin(@javax.annotation.Nonnull Location location) {
          this.origin = location.toVector();
-@@ -1359,6 +1360,8 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -1360,6 +1361,8 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
              return movement;
          }
  
@@ -26,7 +26,7 @@ index 4705d7066207250c03a5f98eef61554c901f2e35..586596c414599043cb8f21c495ce7dd6
          final AABB currBoundingBox = this.getBoundingBox();
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 57a0dbb23a32123d30c3b3572f4d129be9d97847..2f0acb9b0748fc3da4cf15f8c1d1805d8b23c65b 100644
+index 56c75029a94e8812c9e0ce5375aaa7cbcda90b87..13b806cabd0056b45a42c2f666f6f81cc1475495 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 @@ -1427,6 +1427,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
