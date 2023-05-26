@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Amaury Rousseau <kinrar@kinrar.io>
+Date: Fri, 26 May 2023 19:09:16 +0200
+Subject: [PATCH] Remove "insecure" warnings
+
+
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index 48cea16082b7e23f8256aa75d0828cd410b925aa..083a32f3e3829408b825854b86e8682653ab7b02 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -274,6 +274,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+         server.enablePlugins(org.bukkit.plugin.PluginLoadOrder.STARTUP);
+         // CraftBukkit end
+ 
++        // Papyrus start - remove insecure warnings
++        if(false) {
+         // Paper start
+         boolean usingProxy = org.spigotmc.SpigotConfig.bungee || io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled;
+         String proxyFlavor = (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled) ? "Velocity" : "BungeeCord";
+@@ -294,6 +296,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+             // Spigot end
+             DedicatedServer.LOGGER.warn("To change this, set \"online-mode\" to \"true\" in the server.properties file.");
+         }
++        }
++        // Papyrus end
+ 
+ 
+         if (!OldUsersConverter.serverReadyAfterUserconversion(this)) {
