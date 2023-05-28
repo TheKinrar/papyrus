@@ -5,10 +5,28 @@ Subject: [PATCH] Remove "insecure" warnings
 
 
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 48cea16082b7e23f8256aa75d0828cd410b925aa..083a32f3e3829408b825854b86e8682653ab7b02 100644
+index 48cea16082b7e23f8256aa75d0828cd410b925aa..e1fe812d480edaf6ba5ba655074567401b125e21 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -274,6 +274,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -179,6 +179,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+             DedicatedServer.LOGGER.warn("To start the server with more ram, launch it as \"java -Xmx1024M -Xms1024M -jar minecraft_server.jar\"");
+         }
+ 
++        // Papyrus start - remove insecure warnings
++        if(false) {
+         // Paper start - detect running as root
+         if (io.papermc.paper.util.ServerEnvironment.userIsRootOrAdmin()) {
+             DedicatedServer.LOGGER.warn("****************************");
+@@ -188,6 +190,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+             DedicatedServer.LOGGER.warn("****************************");
+         }
+         // Paper end
++        }
++        // Papyrus end
+ 
+         DedicatedServer.LOGGER.info("Loading properties");
+         DedicatedServerProperties dedicatedserverproperties = this.settings.getProperties();
+@@ -274,6 +278,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          server.enablePlugins(org.bukkit.plugin.PluginLoadOrder.STARTUP);
          // CraftBukkit end
  
@@ -17,7 +35,7 @@ index 48cea16082b7e23f8256aa75d0828cd410b925aa..083a32f3e3829408b825854b86e86826
          // Paper start
          boolean usingProxy = org.spigotmc.SpigotConfig.bungee || io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled;
          String proxyFlavor = (io.papermc.paper.configuration.GlobalConfiguration.get().proxies.velocity.enabled) ? "Velocity" : "BungeeCord";
-@@ -294,6 +296,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -294,6 +300,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
              // Spigot end
              DedicatedServer.LOGGER.warn("To change this, set \"online-mode\" to \"true\" in the server.properties file.");
          }
