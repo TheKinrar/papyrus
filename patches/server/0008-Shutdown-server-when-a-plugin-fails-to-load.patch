@@ -1,0 +1,88 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Amaury Rousseau <kinrar@kinrar.io>
+Date: Tue, 6 Jun 2023 21:13:53 +0200
+Subject: [PATCH] Shutdown server when a plugin fails to load
+
+
+diff --git a/src/main/java/io/papermc/paper/plugin/entrypoint/strategy/LegacyPluginLoadingStrategy.java b/src/main/java/io/papermc/paper/plugin/entrypoint/strategy/LegacyPluginLoadingStrategy.java
+index f59f48654eaa299bcac862991b1e2e622264639b..39ad734ee317c6134a3b3f828f5d4284924153c3 100644
+--- a/src/main/java/io/papermc/paper/plugin/entrypoint/strategy/LegacyPluginLoadingStrategy.java
++++ b/src/main/java/io/papermc/paper/plugin/entrypoint/strategy/LegacyPluginLoadingStrategy.java
+@@ -168,6 +168,10 @@ public class LegacyPluginLoadingStrategy<T> implements ProviderLoadingStrategy<T
+                             Level.SEVERE,
+                             "Could not load '" + entry.getValue().getSource() + "' in folder '" + entry.getValue().getParentSource() + "'", // Paper
+                             new UnknownDependencyException(missingHardDependencies, providerIdentifier)); // Paper
++                        // Papyrus start - shutdown server when a plugin fails to load
++                        net.minecraft.server.MinecraftServer.getServer().stopServer();
++                        Runtime.getRuntime().exit(1);
++                        // Papyrus end
+                     }
+ 
+                     if (dependencies.containsKey(providerIdentifier) && dependencies.get(providerIdentifier).isEmpty()) {
+@@ -210,6 +214,10 @@ public class LegacyPluginLoadingStrategy<T> implements ProviderLoadingStrategy<T
+ 
+                     } catch (Throwable ex) {
+                         LOGGER.log(Level.SEVERE, "Could not load '" + file.getSource() + "' in folder '" + file.getParentSource() + "'", ex); // Paper
++                        // Papyrus start - shutdown server when a plugin fails to load
++                        net.minecraft.server.MinecraftServer.getServer().stopServer();
++                        Runtime.getRuntime().exit(1);
++                        // Papyrus end
+                     }
+                 }
+             }
+diff --git a/src/main/java/io/papermc/paper/plugin/entrypoint/strategy/modern/ModernPluginLoadingStrategy.java b/src/main/java/io/papermc/paper/plugin/entrypoint/strategy/modern/ModernPluginLoadingStrategy.java
+index 9af388a8e56806ab44f8c3ef4f97086ce38ef3b4..251a0a8284420d38e6907540ae9b697fe17a78ee 100644
+--- a/src/main/java/io/papermc/paper/plugin/entrypoint/strategy/modern/ModernPluginLoadingStrategy.java
++++ b/src/main/java/io/papermc/paper/plugin/entrypoint/strategy/modern/ModernPluginLoadingStrategy.java
+@@ -80,6 +80,10 @@ public class ModernPluginLoadingStrategy<T> implements ProviderLoadingStrategy<T
+                 validatedProviders.add(provider);
+             } else {
+                 LOGGER.error("Could not load '%s' in '%s'".formatted(provider.getSource(), provider.getParentSource()), new UnknownDependencyException(missingDependencies, configuration.getName())); // Paper
++                // Papyrus start - shutdown server when a plugin fails to load
++                net.minecraft.server.MinecraftServer.getServer().stopServer();
++                Runtime.getRuntime().exit(1);
++                // Papyrus end
+                 // Because the validator is invalid, remove it from the provider map
+                 providerMap.remove(configuration.getName());
+                 // Cleanup plugins that failed to load
+@@ -120,6 +124,10 @@ public class ModernPluginLoadingStrategy<T> implements ProviderLoadingStrategy<T
+                 }
+             } catch (Throwable ex) {
+                 LOGGER.error("Could not load plugin '%s' in folder '%s'".formatted(retrievedProvider.getFileName(), retrievedProvider.getParentSource()), ex); // Paper
++                // Papyrus start - shutdown server when a plugin fails to load
++                net.minecraft.server.MinecraftServer.getServer().stopServer();
++                Runtime.getRuntime().exit(1);
++                // Papyrus end
+             }
+         }
+ 
+diff --git a/src/main/java/io/papermc/paper/plugin/manager/PaperPluginInstanceManager.java b/src/main/java/io/papermc/paper/plugin/manager/PaperPluginInstanceManager.java
+index 9c7552968b8c017c71a7a77557a66a03ed89f125..5c64893fe6e5aba30fe2b1ff16fe6d47c34027a3 100644
+--- a/src/main/java/io/papermc/paper/plugin/manager/PaperPluginInstanceManager.java
++++ b/src/main/java/io/papermc/paper/plugin/manager/PaperPluginInstanceManager.java
+@@ -189,6 +189,10 @@ class PaperPluginInstanceManager {
+                 jPlugin.setEnabled(true);
+             } catch (Throwable ex) {
+                 this.server.getLogger().log(Level.SEVERE, "Error occurred while enabling " + plugin.getPluginMeta().getDisplayName() + " (Is it up to date?)", ex);
++                // Papyrus start - shutdown server when a plugin fails to load
++                net.minecraft.server.MinecraftServer.getServer().stopServer();
++                Runtime.getRuntime().exit(1);
++                // Papyrus end
+                 // Paper start - Disable plugins that fail to load
+                 this.server.getPluginManager().disablePlugin(jPlugin);
+                 return;
+diff --git a/src/main/java/io/papermc/paper/plugin/storage/ServerPluginProviderStorage.java b/src/main/java/io/papermc/paper/plugin/storage/ServerPluginProviderStorage.java
+index cb9b13522a976b82bcb71cef486f11f4172e3e99..0a0a152fe329fd63cf91b7616bd210c04646e3cb 100644
+--- a/src/main/java/io/papermc/paper/plugin/storage/ServerPluginProviderStorage.java
++++ b/src/main/java/io/papermc/paper/plugin/storage/ServerPluginProviderStorage.java
+@@ -60,6 +60,10 @@ public class ServerPluginProviderStorage extends ConfiguredProviderStorage<JavaP
+         } catch (Throwable ex) {
+             // Don't mark that provider as ERRORED, as this apparently still needs to run the onEnable logic.
+             provided.getSLF4JLogger().error("Error initializing plugin '%s' in folder '%s' (Is it up to date?)".formatted(provider.getFileName(), provider.getParentSource()), ex);
++            // Papyrus start - shutdown server when a plugin fails to load
++            net.minecraft.server.MinecraftServer.getServer().stopServer();
++            Runtime.getRuntime().exit(1);
++            // Papyrus end
+         }
+     }
+ 
