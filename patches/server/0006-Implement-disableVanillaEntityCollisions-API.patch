@@ -5,10 +5,10 @@ Subject: [PATCH] Implement disableVanillaEntityCollisions API
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index df316ca580a0a3b4ba6b658f7d7bdf542f4ad85b..af0e872dc192ab8f226cc68ec1c6321477a1375a 100644
+index 280ee1838106201f5e3ba7753caced6d030f7e55..ed82ed3bb3ea616059568815a4cd0674ce7d7d6a 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -400,6 +400,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -401,6 +401,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
      private UUID originWorld;
      public boolean freezeLocked = false; // Paper - Freeze Tick Lock API
      public boolean collidingWithWorldBorder; // Paper
@@ -16,7 +16,7 @@ index df316ca580a0a3b4ba6b658f7d7bdf542f4ad85b..af0e872dc192ab8f226cc68ec1c63214
  
      public void setOrigin(@javax.annotation.Nonnull Location location) {
          this.origin = location.toVector();
-@@ -1360,6 +1361,8 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -1361,6 +1362,8 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
              return movement;
          }
  
