@@ -5,10 +5,10 @@ Subject: [PATCH] Implement canSeePlayerEntities API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 59c00045ec903a635966f16cf33e5b4110262953..b8caba17550dbef0f55257dbf3480f50fa70b227 100644
+index 9273d21d59bfd93d6480e57b83ebc4b8df2cc758..d4b1c49e9d77d72b307bdd86c51c45661d025ea1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -175,6 +175,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -182,6 +182,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      private final ConversationTracker conversationTracker = new ConversationTracker();
      private final Set<String> channels = new HashSet<String>();
      private final Map<UUID, Set<WeakReference<Plugin>>> invertedVisibilityEntities = new HashMap<>();
@@ -16,7 +16,7 @@ index 59c00045ec903a635966f16cf33e5b4110262953..b8caba17550dbef0f55257dbf3480f50
      private static final WeakHashMap<Plugin, WeakReference<Plugin>> pluginWeakReferences = new WeakHashMap<>();
      private int hash = 0;
      private double health = 20;
-@@ -1993,7 +1994,13 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2070,7 +2071,13 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
  
      @Override
      public boolean canSee(org.bukkit.entity.Entity entity) {
@@ -31,7 +31,7 @@ index 59c00045ec903a635966f16cf33e5b4110262953..b8caba17550dbef0f55257dbf3480f50
      }
  
      public boolean canSee(UUID uuid) {
-@@ -2005,6 +2012,60 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2082,6 +2089,60 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return (entity != null) ? this.canSee(entity) : false; // If we can't find it, we can't see it
      }
  
