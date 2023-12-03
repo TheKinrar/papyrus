@@ -6,10 +6,10 @@ Subject: [PATCH] Implement noWeight, noDeclaration, maxVectorLength in
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
-index 9948a28dae4edba877c13ef0156be5ff58df3fa2..fda90a43495edc31558d42a98818f1b7990f1984 100644
+index 44a6118d3bd67a95180f750c17967561946e2e87..fefab1bd601a3c732dc73e78c07fe461ddd603db 100644
 --- a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
 +++ b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecart.java
-@@ -110,6 +110,12 @@ public abstract class AbstractMinecart extends Entity {
+@@ -114,6 +114,12 @@ public abstract class AbstractMinecart extends Entity {
      public double maxSpeed = 0.4D;
      // CraftBukkit end
  
@@ -21,7 +21,7 @@ index 9948a28dae4edba877c13ef0156be5ff58df3fa2..fda90a43495edc31558d42a98818f1b7
 +
      protected AbstractMinecart(EntityType<?> type, Level world) {
          super(type, world);
-         this.blocksBuilding = true;
+         this.targetDeltaMovement = Vec3.ZERO;
 @@ -576,7 +582,7 @@ public abstract class AbstractMinecart extends Entity {
              d5 = -d5;
          }
@@ -49,7 +49,7 @@ index 9948a28dae4edba877c13ef0156be5ff58df3fa2..fda90a43495edc31558d42a98818f1b7
  
          vec3d = vec3d.multiply(d0, 0.0D, d0);
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftMinecart.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftMinecart.java
-index 067fcc1f44d59dd675a9cc5485234c87366ffe10..3ba79a529b1df094a87b7e450815c332f9ff8b32 100644
+index 8920af5a0dfe737c1f38d906b53e6a278456d2aa..09934b00ff449413ce23145145de7c6fd51d87fe 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftMinecart.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftMinecart.java
 @@ -136,4 +136,36 @@ public abstract class CraftMinecart extends CraftVehicle implements Minecart {

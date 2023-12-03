@@ -5,7 +5,7 @@ Subject: [PATCH] Remove "insecure" warnings
 
 
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 48cea16082b7e23f8256aa75d0828cd410b925aa..e1fe812d480edaf6ba5ba655074567401b125e21 100644
+index 27cc20da44b69bd61634cdb7b2e1198ac3e7208a..e6abf2eb9769bb826c5f8e4a6885abae981dd6c2 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -179,6 +179,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -27,7 +27,7 @@ index 48cea16082b7e23f8256aa75d0828cd410b925aa..e1fe812d480edaf6ba5ba65507456740
          DedicatedServer.LOGGER.info("Loading properties");
          DedicatedServerProperties dedicatedserverproperties = this.settings.getProperties();
 @@ -274,6 +278,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
-         server.enablePlugins(org.bukkit.plugin.PluginLoadOrder.STARTUP);
+         this.server.enablePlugins(org.bukkit.plugin.PluginLoadOrder.STARTUP);
          // CraftBukkit end
  
 +        // Papyrus start - remove insecure warnings

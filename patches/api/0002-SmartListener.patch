@@ -398,32 +398,11 @@ index eaefbb00e9993d54906cc8cf35cf753c0d6c7707..6cb2cbc3578c5b1b48087df3da19ba22
              } else {
                  eventSet.add(new RegisteredListener(listener, executor, eh.priority(), plugin, eh.ignoreCancelled()));
              }
-diff --git a/src/test/java/org/bukkit/LocationTest.java b/src/test/java/org/bukkit/LocationTest.java
-index 887305c05c3e53079347502c187984ca3e42a1f8..840c24befeefcd842237a95262032137e746b581 100644
---- a/src/test/java/org/bukkit/LocationTest.java
-+++ b/src/test/java/org/bukkit/LocationTest.java
-@@ -189,7 +189,7 @@ public class LocationTest {
-         return new Vector(x, y, z);
-     }
- 
--    private static Location getEmptyLocation() {
-+    public static Location getEmptyLocation() {
-         return new Location(TestWorld.INSTANCE, 0, 0, 0);
-     }
- 
 diff --git a/src/test/java/org/bukkit/plugin/TimedRegisteredListenerTest.java b/src/test/java/org/bukkit/plugin/TimedRegisteredListenerTest.java
-index 351fc4a9f45745984d1d4811ba836959a3f3eadb..7726c184e695b56f1ab62f0d3838af9531998381 100644
+index 9ed416ed57676c845833736f93ed6088513c6da4..8f44fcc5246967531eae80a495f4963a09f710c2 100644
 --- a/src/test/java/org/bukkit/plugin/TimedRegisteredListenerTest.java
 +++ b/src/test/java/org/bukkit/plugin/TimedRegisteredListenerTest.java
-@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
- import org.bukkit.event.player.PlayerEvent;
- import org.bukkit.event.player.PlayerInteractEvent;
- import org.bukkit.event.player.PlayerMoveEvent;
-+import org.bukkit.plugin.messaging.TestPlayer;
- import org.junit.Test;
- 
- public class TimedRegisteredListenerTest {
-@@ -23,8 +24,8 @@ public class TimedRegisteredListenerTest {
+@@ -23,8 +23,8 @@ public class TimedRegisteredListenerTest {
          };
          TestPlugin plugin = new TestPlugin("Test");
  
@@ -434,24 +413,3 @@ index 351fc4a9f45745984d1d4811ba836959a3f3eadb..7726c184e695b56f1ab62f0d3838af95
          BlockBreakEvent breakEvent = new BlockBreakEvent(null, null);
  
          TimedRegisteredListener trl = new TimedRegisteredListener(listener, executor, EventPriority.NORMAL, plugin, false);
-diff --git a/src/test/java/org/bukkit/plugin/messaging/TestPlayer.java b/src/test/java/org/bukkit/plugin/messaging/TestPlayer.java
-index 1b7642dc1c55c6bf87018b67d8c368478c0b9ca1..bb482578f2656839edae3cc0892f0c325275ade6 100644
---- a/src/test/java/org/bukkit/plugin/messaging/TestPlayer.java
-+++ b/src/test/java/org/bukkit/plugin/messaging/TestPlayer.java
-@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationHandler;
- import java.lang.reflect.Method;
- import java.lang.reflect.Proxy;
- import java.util.HashMap;
-+
-+import org.bukkit.LocationTest;
- import org.bukkit.entity.Player;
- 
- 
-@@ -24,6 +26,7 @@ public final class TestPlayer implements InvocationHandler {
-                 });
-             */
-             constructor = Proxy.getProxyClass(Player.class.getClassLoader(), Player.class).asSubclass(Player.class).getConstructor(InvocationHandler.class);
-+            methods.put(Player.class.getMethod("getLocation"), (server, args) -> LocationTest.getEmptyLocation());
-         } catch (Throwable t) {
-             throw new Error(t);
-         }

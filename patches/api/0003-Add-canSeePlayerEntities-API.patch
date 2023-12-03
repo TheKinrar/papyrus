@@ -5,12 +5,12 @@ Subject: [PATCH] Add canSeePlayerEntities API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index e3a6c9fc63b36663d33c6a1513e7dc1522790d85..7be6790f7bbbe716ba7c3f8bf57eaccb29656f97 100644
+index 47fcfa2a3358766dfda2efc9bbcf5b50e3f2f7c1..d341938cc5559457c6152c269eaa394dfe9d79fb 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1841,6 +1841,35 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
-     @ApiStatus.Experimental
-     public boolean canSee(@NotNull Entity entity);
+@@ -1927,6 +1927,35 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+     boolean listPlayer(@NotNull Player other);
+     // Paper end
  
 +    /**
 +     * Hides player entities from this player. This is different from {@link Player#hidePlayer(Plugin, Player)}

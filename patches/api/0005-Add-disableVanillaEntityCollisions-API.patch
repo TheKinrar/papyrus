@@ -5,13 +5,13 @@ Subject: [PATCH] Add disableVanillaEntityCollisions API
 
 
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 6b842453589cf148ab32c1507cf374056826316e..8e1ecfbab0d8d77f8fc8f861e2ec218502c8aa54 100644
+index 9e3cb75536ae260dc898ab9dafbc1d98398782bc..d4ae6e6c10212054ea886eb86e8841b9a87dbfa9 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
-@@ -965,4 +965,10 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+@@ -1063,4 +1063,10 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
       */
-     @NotNull io.papermc.paper.threadedregions.scheduler.EntityScheduler getScheduler();
-     // Paper end - Folia schedulers
+     @NotNull String getScoreboardEntryName();
+     // Paper end - entity scoreboard name
 +
 +    // Papyrus start
 +    public void setIgnoresVanillaEntityCollisions(boolean ignores);

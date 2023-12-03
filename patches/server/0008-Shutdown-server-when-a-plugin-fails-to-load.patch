@@ -57,10 +57,10 @@ index 9af388a8e56806ab44f8c3ef4f97086ce38ef3b4..251a0a8284420d38e6907540ae9b697f
          }
  
 diff --git a/src/main/java/io/papermc/paper/plugin/manager/PaperPluginInstanceManager.java b/src/main/java/io/papermc/paper/plugin/manager/PaperPluginInstanceManager.java
-index 9c7552968b8c017c71a7a77557a66a03ed89f125..5c64893fe6e5aba30fe2b1ff16fe6d47c34027a3 100644
+index 08b1aab5d37a56dc42542ce15ba1f7ccd1b08400..31fef3a4e2d356dd6cd8c53d6a0e6cb9769c23c3 100644
 --- a/src/main/java/io/papermc/paper/plugin/manager/PaperPluginInstanceManager.java
 +++ b/src/main/java/io/papermc/paper/plugin/manager/PaperPluginInstanceManager.java
-@@ -189,6 +189,10 @@ class PaperPluginInstanceManager {
+@@ -190,6 +190,10 @@ class PaperPluginInstanceManager {
                  jPlugin.setEnabled(true);
              } catch (Throwable ex) {
                  this.server.getLogger().log(Level.SEVERE, "Error occurred while enabling " + plugin.getPluginMeta().getDisplayName() + " (Is it up to date?)", ex);

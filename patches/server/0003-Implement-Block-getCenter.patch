@@ -5,11 +5,11 @@ Subject: [PATCH] Implement Block#getCenter
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-index 5401ab9f8f6ce12e1c5368dbc3acc78a250b3822..3ab83a7c294eb4dff6f145e80ac70c8473161834 100644
+index bec8e6b62dba2bd0e4e85a7d1fb51287384f1290..9e9d1e654c7ac3144acb1d6a8aa6d87d45fa6370 100644
 --- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
 +++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlock.java
-@@ -104,6 +104,11 @@ public class CraftBlock implements Block {
-         return CraftLocation.toBukkit(position, this.getWorld());
+@@ -99,6 +99,11 @@ public class CraftBlock implements Block {
+         return CraftLocation.toBukkit(this.position, this.getWorld());
      }
  
 +    @Override
